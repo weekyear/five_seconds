@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:Five_Seconds.CustomControls"
+             xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             mc:Ignorable="d"
+             x:Class="Five_Seconds.Views.MissionsPage"
+             Title="{Binding Title}"
+             x:Name="BrowseItemsPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:TimeStringConverter x:Key="TimeStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="ic_plus.png" Text="AddMission" Clicked="AddMissionClicked"/>
+    </ContentPage.ToolbarItems>
+
+    <StackLayout BackgroundColor="White">
+        <ListView x:Name="MissionsListView"
+                ItemsSource="{Binding Items}"
+                Margin="10"
+                RowHeight="100"
+                ItemTapped="ShowMenuByItemClicked"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                RefreshCommand="{Binding LoadItemsCommand}"
+                IsPullToRefreshEnabled="true"
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <custom:CustomViewCell SelectedBackgroundColor="#ADF3BE">
+                        <custom:CustomViewCell.ContextActions>
+                            <MenuItem Text="Delete" Clicked="AddMissionClicked"/>
+                            <MenuItem Text="Add Mission" Clicked="AddMissionClicked" IconImageSource="ic_plus.png"/>
+                        </custom:CustomViewCell.ContextActions>
+                        <Grid Padding="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="80" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                       TextColor="{StaticResource PrimaryTextColor}"
+                                       FontSize="28"
+                                       FontAttributes="Bold" />
+                            <Label Grid.Column="1" 
+                                       VerticalTextAlignment="End"
+                                       Text="에"
+                                       TextColor="{StaticResource SecondaryTextColor}"
+                                       FontSize="20"
+                                       FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.ColumnSpan="2"
+                                       TextColor="{StaticResource PrimaryTextColor}"
+                                       FontSize="28"
+                                       Text="{Binding Description}"
+                                       HorizontalTextAlignment="Start"
+                                       MaxLines="1"
+                                       FontAttributes="Bold" />
+                            <Label Grid.Row="0" Grid.Column="2"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{StaticResource PrimaryTextColor}"
+                                       FontSize="22"
+                                       Text="성공률"
+                                       FontAttributes="Bold" />
+                            <Label Grid.Row="1" Grid.Column="2"
+                                       TextColor="Blue"
+                                       FontSize="30"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding Percentage}"/>
+                        </Grid>
+                    </custom:CustomViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <d:ListView.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>First Item</x:String>
+                    <x:String>Second Item</x:String>
+                    <x:String>Third Item</x:String>
+                    <x:String>Forth Item</x:String>
+                    <x:String>Fifth Item</x:String>
+                    <x:String>Sixth Item</x:String>
+                </x:Array>
+            </d:ListView.ItemsSource>
+        </ListView>
+    </StackLayout>
+    
+</ContentPage>
