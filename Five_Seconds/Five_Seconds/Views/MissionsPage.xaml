@@ -22,7 +22,7 @@
 
     <StackLayout BackgroundColor="White">
         <ListView x:Name="MissionsListView"
-                ItemsSource="{Binding Items}"
+                ItemsSource="{Binding Missions}"
                 Margin="10"
                 RowHeight="100"
                 ItemTapped="ShowMenuByItemClicked"

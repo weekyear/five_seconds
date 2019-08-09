@@ -3,6 +3,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
+using Five_Seconds.Repository;
 
 namespace Five_Seconds
 {
@@ -13,7 +14,7 @@ namespace Five_Seconds
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
+            //DependencyService.Register<MockDataStore>();
             DependencyService.Register<IMessageBoxService>();
 
             MainPage = new MainPage();
@@ -32,6 +33,19 @@ namespace Five_Seconds
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        static MissionRepository repository;
+        public static MissionRepository Repository
+        {
+            get
+            {
+                if (repository == null)
+                {
+                    repository = new MissionRepository();
+                }
+                return repository;
+            }
         }
     }
 }

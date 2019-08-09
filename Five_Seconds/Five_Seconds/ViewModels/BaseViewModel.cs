@@ -7,12 +7,14 @@ using Xamarin.Forms;
 
 using Five_Seconds.Models;
 using Five_Seconds.Services;
+using Five_Seconds.Repository;
 
 namespace Five_Seconds.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Mission> DataStore => DependencyService.Get<IDataStore<Mission>>() ?? new MockDataStore();
+        //public IDataStore<Mission> DataStore => DependencyService.Get<IDataStore<Mission>>() ?? new MockDataStore();
+        public MissionRepository repository = App.Repository;
         public static IMessageBoxService MessageBoxService => new MessageBoxService();
 
         bool isBusy = false;

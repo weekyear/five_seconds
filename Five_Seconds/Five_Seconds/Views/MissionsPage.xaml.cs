@@ -47,7 +47,7 @@ namespace Five_Seconds.Views
         {
             base.OnAppearing();
 
-            if (viewModel.Items.Count == 0)
+            if (viewModel.Missions.Count == 0)
                 viewModel.LoadItemsCommand.Execute(null);
         }
 
