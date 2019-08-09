@@ -19,13 +19,6 @@ namespace Five_Seconds.ViewModels
             Items = new ObservableCollection<Mission>();
 
             ConstructCommand();
-
-            MessagingCenter.Subscribe<NewItemPage, Mission>(this, "AddItem", async (obj, item) =>
-            {
-                var newItem = item as Mission;
-                Items.Add(newItem);
-                await DataStore.AddItemAsync(newItem);
-            });
         }
 
         private void ConstructCommand()
