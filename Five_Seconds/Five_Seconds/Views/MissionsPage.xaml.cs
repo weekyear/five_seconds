@@ -31,18 +31,6 @@ namespace Five_Seconds.Views
             BindingContext = viewModel;
         }
 
-        async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            var item = args.SelectedItem as Mission;
-            if (item == null)
-                return;
-
-            await Navigation.PushAsync(new MissionDetailPage(new MissionDetailViewModel(item)));
-
-            // Manually deselect item.
-            MissionsListView.SelectedItem = null;
-        }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();

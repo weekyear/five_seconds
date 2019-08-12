@@ -14,7 +14,6 @@ namespace Five_Seconds
         {
             InitializeComponent();
 
-            //DependencyService.Register<MockDataStore>();
             DependencyService.Register<IMessageBoxService>();
 
             MainPage = new MainPage();
@@ -35,16 +34,16 @@ namespace Five_Seconds
             // Handle when your app resumes
         }
 
-        static MissionRepository repository;
-        public static MissionRepository Repository
+        static ILocalData localData;
+        public static ILocalData LocalData
         {
             get
             {
-                if (repository == null)
+                if (localData == null)
                 {
-                    repository = new MissionRepository();
+                    localData = new LocalData();
                 }
-                return repository;
+                return localData;
             }
         }
     }

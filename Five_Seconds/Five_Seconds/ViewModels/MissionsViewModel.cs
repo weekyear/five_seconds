@@ -9,6 +9,7 @@ using Five_Seconds.Models;
 using Five_Seconds.Views;
 using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
+using Five_Seconds.Repository;
 
 namespace Five_Seconds.ViewModels
 {
@@ -17,11 +18,52 @@ namespace Five_Seconds.ViewModels
         public MissionsViewModel()
         {
             Title = "자, 5초 준다";
-            Missions = new ObservableCollection<Mission>();
 
             InitMissions();
 
             ConstructCommand();
+
+            SubscribeMessage();
+        }
+
+        private void InitMissions()
+        {
+            var missionsList = repository.GetMissions() as List<Mission>;
+
+            if (missionsList.Count == 0)
+            {
+                var dateNow = DateTime.UtcNow;
+
+                Record record1 = new Record() { Date = DateTime.UtcNow, IsSuccess = false, RecordTime = 5 };
+                Record record2 = new Record() { Date = DateTime.UtcNow.AddDays(1), IsSuccess = false, RecordTime = 3 };
+                Record record3 = new Record() { Date = DateTime.UtcNow.AddDays(2), IsSuccess = true, RecordTime = 7 };
+
+                var records = new ObservableCollection<Record>();
+                records.Add(record3);
+                records.Add(record2);
+                records.Add(record1);
+
+                var mockItems = new List<Mission>
+                {
+                    //new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%", Records = records },
+                    new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%" },
+                    new Mission { Description = "운동하기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 2, 30, 00), Percentage = "40%" },
+                    new Mission { Description = "공부하기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 3, 40, 00), Percentage = "50%" },
+                    new Mission { Description = "잠자기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 50, 00), Percentage = "70%" }
+                };
+
+                foreach (var item in mockItems)
+                {
+                    repository.SaveMission(item);
+                }
+            }
+
+            var missions = repository.GetMissions();
+
+            foreach (var mission in missions)
+            {
+                Missions.Add(mission);
+            }
         }
 
         private void ConstructCommand()
@@ -30,38 +72,20 @@ namespace Five_Seconds.ViewModels
             AddMissionCommand = new Command(async () => await AddMission());
         }
 
-        private void InitMissions()
+        private void SubscribeMessage()
         {
-            var dateNow = DateTime.UtcNow;
+        }
 
-            Record record1 = new Record() { Date = DateTime.UtcNow, IsSuccess = false, RecordTime = 5 };
-            Record record2 = new Record() { Date = DateTime.UtcNow.AddDays(1), IsSuccess = false, RecordTime = 3 };
-            Record record3 = new Record() { Date = DateTime.UtcNow.AddDays(2), IsSuccess = true, RecordTime = 7 };
 
-            var records = new ObservableCollection<Record>();
-            records.Add(record3);
-            records.Add(record2);
-            records.Add(record1);
-
-            var mockItems = new List<Mission>
+        private void AddMissionOfMissions(int id)
+        {
+            for (int i = 0; i < Missions.Count; i++)
             {
-                //new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%", Records = records },
-                new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%" },
-                new Mission { Description = "운동하기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 2, 30, 00), Percentage = "40%" },
-                new Mission { Description = "공부하기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 3, 40, 00), Percentage = "50%" },
-                new Mission { Description = "잠자기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 50, 00), Percentage = "70%" }
-            };
-
-            foreach (var item in mockItems)
-            {
-                repository.SaveMission(item);
-            }
-
-            var missions = repository.GetMissions();
-
-            foreach (var mission in missions)
-            {
-                Missions.Add(mission);
+                if (Missions[i].Id == id)
+                {
+                    Missions.RemoveAt(i);
+                    return;
+                }
             }
         }
 
@@ -91,6 +115,8 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        // Methods
+
         private async Task ShowMissionRecord(Mission mission)
         {
             await Navigation.PushAsync(new RecordPage(new RecordViewModel(mission)));
@@ -114,7 +140,7 @@ namespace Five_Seconds.ViewModels
                     await ShowMissionRecord(mission);
                     break;
                 case "Delete":
-
+                    repository.DeleteMission(mission.Id);
                     break;
             }
         }
@@ -125,8 +151,13 @@ namespace Five_Seconds.ViewModels
         }
 
 
+        // Property
+
         public INavigation Navigation;
-        public ObservableCollection<Mission> Missions { get; set; }
+        public ObservableCollection<Mission> Missions
+        {
+            get => repository.Missions;
+        }
         public Command LoadItemsCommand { get; set; }
 
         public Command AddMissionCommand { get; set; }

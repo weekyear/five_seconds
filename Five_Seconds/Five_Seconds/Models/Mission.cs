@@ -9,7 +9,7 @@ namespace Five_Seconds.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey, Unique]
         public int Id { get; set; }
         public string Description { get; set; }
         public DateTime Time { get; set; }

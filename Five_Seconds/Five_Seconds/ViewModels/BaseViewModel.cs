@@ -14,7 +14,7 @@ namespace Five_Seconds.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         //public IDataStore<Mission> DataStore => DependencyService.Get<IDataStore<Mission>>() ?? new MockDataStore();
-        public MissionRepository repository = App.Repository;
+        public ILocalData repository = App.LocalData;
         public static IMessageBoxService MessageBoxService => new MessageBoxService();
 
         bool isBusy = false;
