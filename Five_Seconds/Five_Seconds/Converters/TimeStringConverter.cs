@@ -15,16 +15,19 @@ namespace Five_Seconds.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DateTime.Parse(value.ToString());
+            return TimeSpan.Parse(value.ToString());
         }
         private object TimeToString(object value)
         {
-            if ((DateTime)value == DateTime.MinValue)
+            var timeSpan = (TimeSpan)value;
+
+            if (timeSpan == TimeSpan.MinValue)
             {
                 return "시간 없음";
             }
-            var dateTime = string.Format(((DateTime)value).ToShortTimeString());
-            return dateTime;
+            var dateTime = new DateTime() + timeSpan;
+            var timeString = string.Format(dateTime.ToShortTimeString());
+            return timeString;
         }
     }
 }

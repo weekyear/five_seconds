@@ -1,4 +1,5 @@
 ﻿using Five_Seconds.Models;
+using Five_Seconds.ViewModels;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using System;
@@ -16,17 +17,28 @@ namespace Five_Seconds.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MissionPopupPage : PopupPage
     {
+        MissionPopupViewModel viewModel;
+
         private int step_value = 1;
         DateTime _triggerTime;
 
         public MissionPopupPage()
         {
+            viewModel = new MissionPopupViewModel();
+
+            BindingContext = viewModel;
+
             InitializeComponent();
         }
 
         public MissionPopupPage(Mission mission)
         {
+            viewModel = new MissionPopupViewModel(mission);
+
+            BindingContext = viewModel;
             Mission = mission;
+
+            InitializeComponent();
         }
 
         public Mission Mission
@@ -34,29 +46,13 @@ namespace Five_Seconds.Views
             get; set;
         }
 
-        public DateTime Time
-        {
-            get; set;
-        }
+        //void SliderValueChanged(object sender, ValueChangedEventArgs e)
+        //{
+        //    var newStep = Math.Round(e.NewValue / step_value);
 
-        private void SetMissionData()
-        {
-            Mission_Name.Text = Mission.Description;
-            Timeout_Text.Text = Mission.Time.ToString() + "초";
-        }
-
-        private async void Close_Popup(object sender, EventArgs e)
-        {
-            await PopupNavigation.Instance.PopAsync(true);
-        }
-
-        void SliderValueChanged(object sender, ValueChangedEventArgs e)
-        {
-            var newStep = Math.Round(e.NewValue / step_value);
-
-            TheSlider.Value = newStep * step_value;
-            Timeout_Text.Text = TheSlider.Value.ToString() + "초";
-        }
+        //    TheSlider.Value = newStep * step_value;
+        //    Timeout_Text.Text = TheSlider.Value.ToString() + "초";
+        //}
         void MissionPickerIndexChanged(object sender, EventArgs e)
         {
             MissionType_Text.Text = (string)MissionPicker.ItemsSource[MissionPicker.SelectedIndex];

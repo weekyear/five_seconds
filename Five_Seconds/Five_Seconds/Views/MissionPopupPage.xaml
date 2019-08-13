@@ -37,13 +37,13 @@
             <Entry x:Name="Mission_Name" 
                    FontSize="20"
                    Placeholder="Please Insert Name"
-                   Text="username@email.com" />
+                   Text="{Binding Description}" />
         </StackLayout>
         <StackLayout>
             <Label Text="Mission Time" />
             <TimePicker x:Name="_timePicker"
-                        Time="{Binding Time, Converter={StaticResource TimeStringConverter}, Mode=TwoWay}"
-                        Format="hh:mm tt"
+                        Time="{Binding TimeOfDay}"
+                        Format="t"
                         FontSize="20"
                         PropertyChanged="OnTimePickerPropertyChanged">
             </TimePicker>
@@ -51,10 +51,11 @@
         <StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Timeout" />
-                <Label x:Name="Timeout_Text" Text="5초"/>
+                <Label x:Name="TimeLimit" Text="{Binding TimeLimit}"/>
+                <Label x:Name="TimeLimit_Unit" Text="초"/>
             </StackLayout>
-            <Slider x:Name="TheSlider" Minimum="0" Maximum="10" Value="5"
-                    VerticalOptions="CenterAndExpand" ValueChanged="SliderValueChanged"/>
+            <Slider x:Name="TheSlider" Minimum="0" Maximum="10" Value="{Binding TimeLimit}"
+                    VerticalOptions="CenterAndExpand"/>
         </StackLayout>
         <StackLayout>
             <StackLayout Orientation="Horizontal">
@@ -77,13 +78,13 @@
                 Padding="10"
                 Text="Close"
                 TextColor="White"
-                Clicked="Close_Popup"/>
+                Command="{Binding CloseCommand}"/>
             <Button BackgroundColor="DodgerBlue"
                 FontSize="20"
                 Padding="10"
                 Text="Save"
                 TextColor="White"
-                Clicked="Close_Popup"/>
+                Command="{Binding SaveCommand}"/>
         </StackLayout>
     </StackLayout>
 </pages:PopupPage>

@@ -40,13 +40,27 @@ namespace Five_Seconds.Repository
         }
         public int SaveMission(Mission mission)
         {
-            SendMessage(mission, "save");
-            return itemDatabase.SaveObject<Mission>(mission);
+            AddOrModifyMissionToMissions(mission);
+            SendMessage("save");
+            return itemDatabase.SaveObject(mission);
         }
+        private void AddOrModifyMissionToMissions(Mission mission)
+        {
+            for (int i = 0; i < Missions.Count; i++)
+            {
+                if (Missions[i].Id == mission.Id)
+                {
+                    Missions[i] = mission;
+                    return;
+                }
+            }
+            Missions.Add(mission);
+        }
+
         public int DeleteMission(int id)
         {
             DeleteMissionOfMissions(id);
-            SendMessage(id, "delete");
+            SendMessage("delete");
             return itemDatabase.DeleteObject<Mission>(id);
         }
         private void DeleteMissionOfMissions(int id)
@@ -66,10 +80,10 @@ namespace Five_Seconds.Repository
             itemDatabase.DeleteAllObjects<Mission>();
         }
 
-        private void SendMessage<T>(T args, string type)
+        private void SendMessage(string type)
         {
             var messageType = type;
-            MessagingCenter.Send(this, messageType, args);
+            MessagingCenter.Send(this, messageType);
         }
     }
 }

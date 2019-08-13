@@ -17,7 +17,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="ic_plus.png" Text="AddMission" Clicked="AddMissionClicked"/>
+        <ToolbarItem Icon="ic_plus.png" Text="AddMission" Command="{Binding AddMissionCommand}"/>
     </ContentPage.ToolbarItems>
 
     <StackLayout BackgroundColor="White">
@@ -37,7 +37,7 @@
                     <custom:CustomViewCell SelectedBackgroundColor="#ADF3BE">
                         <custom:CustomViewCell.ContextActions>
                             <MenuItem Text="Delete" Clicked="AddMissionClicked"/>
-                            <MenuItem Text="Add Mission" Clicked="AddMissionClicked" IconImageSource="ic_plus.png"/>
+                            <MenuItem Text="Add Mission" Command="{Binding AddMissionCommand}" IconImageSource="ic_plus.png"/>
                         </custom:CustomViewCell.ContextActions>
                         <Grid Padding="10">
                             <Grid.RowDefinitions>
@@ -49,7 +49,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="80" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                            <Label Text="{Binding TimeOfDay, Converter={StaticResource TimeStringConverter}}"
                                        TextColor="{StaticResource PrimaryTextColor}"
                                        FontSize="28"
                                        FontAttributes="Bold" />

@@ -28,6 +28,8 @@ namespace Five_Seconds.ViewModels
 
         private void InitMissions()
         {
+            repository.DeleteAllMissions();
+
             var missionsList = repository.GetMissions() as List<Mission>;
 
             if (missionsList.Count == 0)
@@ -46,10 +48,10 @@ namespace Five_Seconds.ViewModels
                 var mockItems = new List<Mission>
                 {
                     //new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%", Records = records },
-                    new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%" },
-                    new Mission { Description = "운동하기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 2, 30, 00), Percentage = "40%" },
-                    new Mission { Description = "공부하기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 3, 40, 00), Percentage = "50%" },
-                    new Mission { Description = "잠자기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 4, 50, 00), Percentage = "70%" }
+                    new Mission { Description = "일어나기", TimeOfDay = new TimeSpan(1, 20, 00), Percentage = "80%" },
+                    new Mission { Description = "운동하기", TimeOfDay = new TimeSpan(2, 30, 00), Percentage = "40%" },
+                    new Mission { Description = "공부하기", TimeOfDay = new TimeSpan(3, 40, 00), Percentage = "50%" },
+                    new Mission { Description = "잠자기", TimeOfDay = new TimeSpan(4, 50, 00), Percentage = "70%" }
                 };
 
                 foreach (var item in mockItems)
@@ -125,16 +127,14 @@ namespace Five_Seconds.ViewModels
         public async Task ShowMenu(object sender, ItemTappedEventArgs e)
         {
             Mission mission = (Mission)e.Item;
-            string description = mission.Description;
-            string time = mission.Time.ToShortTimeString();
-            string percentage = mission.Percentage;
             string[] actionSheetBtns = { "Modify", "Record", "Delete" };
+
             string action = await MessageBoxService.ShowActionSheet("Options", "Cancel", null, actionSheetBtns);
 
             switch (action)
             {
                 case "Modify":
-                    await PopupNavigation.Instance.PushAsync(new MissionPopupPage());
+                    await PopupNavigation.Instance.PushAsync(new MissionPopupPage(mission));
                     break;
                 case "Record":
                     await ShowMissionRecord(mission);
@@ -161,5 +161,6 @@ namespace Five_Seconds.ViewModels
         public Command LoadItemsCommand { get; set; }
 
         public Command AddMissionCommand { get; set; }
+        public Command ShowMenuCommand { get; set; }
     }
 }
