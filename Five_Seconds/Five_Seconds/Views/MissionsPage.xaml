@@ -36,7 +36,7 @@
                 <DataTemplate>
                     <custom:CustomViewCell SelectedBackgroundColor="#ADF3BE">
                         <custom:CustomViewCell.ContextActions>
-                            <MenuItem Text="Delete" Clicked="AddMissionClicked"/>
+                            <MenuItem Text="Delete" Command="{Binding AddMissionCommand}"/>
                             <MenuItem Text="Add Mission" Command="{Binding AddMissionCommand}" IconImageSource="ic_plus.png"/>
                         </custom:CustomViewCell.ContextActions>
                         <Grid Padding="10">

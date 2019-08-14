@@ -15,15 +15,16 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionsViewModel : BaseViewModel
     {
-        public MissionsViewModel()
+        private INavigation Navigation;
+        public MissionsViewModel(INavigation navigation)
         {
             Title = "자, 5초 준다";
+
+            Navigation = navigation;
 
             InitMissions();
 
             ConstructCommand();
-
-            SubscribeMessage();
         }
 
         private void InitMissions()
@@ -59,74 +60,32 @@ namespace Five_Seconds.ViewModels
                     repository.SaveMission(item);
                 }
             }
-
-            var missions = repository.GetMissions();
-
-            foreach (var mission in missions)
-            {
-                Missions.Add(mission);
-            }
         }
 
         private void ConstructCommand()
         {
-            LoadItemsCommand = new Command(() => ExecuteLoadItemsCommand());
             AddMissionCommand = new Command(async () => await AddMission());
+            ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
         }
 
-        private void SubscribeMessage()
+        // Property
+
+        public ObservableCollection<Mission> Missions
         {
+            get => repository.Missions;
         }
 
+        public Command AddMissionCommand { get; set; }
+        public Command<object> ShowMenuCommand { get; set; }
 
-        private void AddMissionOfMissions(int id)
+        public async Task AddMission()
         {
-            for (int i = 0; i < Missions.Count; i++)
-            {
-                if (Missions[i].Id == id)
-                {
-                    Missions.RemoveAt(i);
-                    return;
-                }
-            }
+            await PopupNavigation.Instance.PushAsync(new MissionPopupPage());
         }
 
-        void ExecuteLoadItemsCommand()
+        public async Task ShowMenu(object _mission)
         {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
-            {
-                Missions.Clear();
-                var items = repository.GetMissions();
-                foreach (var item in items)
-                {
-                    Missions.Add(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        // Methods
-
-        private async Task ShowMissionRecord(Mission mission)
-        {
-            await Navigation.PushAsync(new RecordPage(new RecordViewModel(mission)));
-        }
-
-        public async Task ShowMenu(object sender, ItemTappedEventArgs e)
-        {
-            Mission mission = (Mission)e.Item;
+            var mission = _mission as Mission;
             string[] actionSheetBtns = { "Modify", "Record", "Delete" };
 
             string action = await MessageBoxService.ShowActionSheet("Options", "Cancel", null, actionSheetBtns);
@@ -145,22 +104,10 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public async Task AddMission()
+        private async Task ShowMissionRecord(Mission mission)
         {
-            await PopupNavigation.Instance.PushAsync(new MissionPopupPage());
+            await Navigation.PushAsync(new RecordPage(new RecordViewModel(mission)));
         }
 
-
-        // Property
-
-        public INavigation Navigation;
-        public ObservableCollection<Mission> Missions
-        {
-            get => repository.Missions;
-        }
-        public Command LoadItemsCommand { get; set; }
-
-        public Command AddMissionCommand { get; set; }
-        public Command ShowMenuCommand { get; set; }
     }
 }

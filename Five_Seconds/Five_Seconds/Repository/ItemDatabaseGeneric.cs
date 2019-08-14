@@ -12,11 +12,13 @@ namespace Five_Seconds.Repository
     public class ItemDatabaseGeneric
     {
         static object locker = new object();
+        private readonly IDependencyService dependencyService = new DependencyServiceWrapper();
+
         SQLiteConnection database;
 
         public ItemDatabaseGeneric()
         {
-            database = DependencyService.Get<IDatabase>().DBConnect();
+            database = dependencyService.Get<IDatabase>().DBConnect();
             database.CreateTable<Mission>();
         }
         public IEnumerable<T> GetObjects<T>() where T : IObject, new()

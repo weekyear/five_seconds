@@ -24,9 +24,7 @@ namespace Five_Seconds.Views
         {
             InitializeComponent();
 
-            viewModel = new MissionsViewModel();
-
-            viewModel.Navigation = Navigation;
+            viewModel = new MissionsViewModel(Navigation);
 
             BindingContext = viewModel;
         }
@@ -34,19 +32,11 @@ namespace Five_Seconds.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            if (viewModel.Missions.Count == 0)
-                viewModel.LoadItemsCommand.Execute(null);
         }
 
-        protected async void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
+        protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
         {
-            await viewModel.ShowMenu(sender, e);
-        }
-
-        protected async void AddMissionClicked(object sender, EventArgs e)
-        {
-            await viewModel.AddMission();
+            viewModel.ShowMenuCommand.Execute(e.Item);
         }
     }
 }

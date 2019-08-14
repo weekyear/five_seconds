@@ -34,7 +34,7 @@ namespace Five_Seconds
             // Handle when your app resumes
         }
 
-        static ILocalData localData;
+        private static ILocalData localData;
         public static ILocalData LocalData
         {
             get
