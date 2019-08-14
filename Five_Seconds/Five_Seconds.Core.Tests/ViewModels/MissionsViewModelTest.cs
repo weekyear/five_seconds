@@ -27,7 +27,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             navigationService = new Mock<INavigation>();
             var ds = new DependencyServiceForUT();
 
-            ds.Register<IDatabase>();
+            //ds.Register<IDatabase>();
 
             missionsViewModel = new MissionsViewModel(navigationService.Object);
         }
