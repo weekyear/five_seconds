@@ -10,17 +10,26 @@ using Five_Seconds.Views;
 using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
 using Five_Seconds.Repository;
+using Rg.Plugins.Popup.Contracts;
+using Five_Seconds.Services;
 
 namespace Five_Seconds.ViewModels
 {
     public class MissionsViewModel : BaseViewModel
     {
-        private INavigation Navigation;
-        public MissionsViewModel(INavigation navigation)
+        private readonly INavigation Navigation;
+        private readonly ILocalData LocalData;
+
+        private readonly IMessageBoxService MessageBoxService;
+        private readonly IPopupNavigation PopupNavigation;
+        public MissionsViewModel(INavigation navigation, ILocalData localData, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation, localData)
         {
             Title = "자, 5초 준다";
 
             Navigation = navigation;
+            LocalData = localData;
+            MessageBoxService = messageBoxService;
+            PopupNavigation = popupNavigation;
 
             InitMissions();
 
@@ -29,9 +38,11 @@ namespace Five_Seconds.ViewModels
 
         private void InitMissions()
         {
-            repository.DeleteAllMissions();
+            if (Device.RuntimePlatform == "Test") return;
 
-            var missionsList = repository.GetMissions() as List<Mission>;
+            LocalData.DeleteAllMissions();
+
+            var missionsList = LocalData.GetMissions() as List<Mission>;
 
             if (missionsList.Count == 0)
             {
@@ -57,14 +68,14 @@ namespace Five_Seconds.ViewModels
 
                 foreach (var item in mockItems)
                 {
-                    repository.SaveMission(item);
+                    LocalData.SaveMission(item);
                 }
             }
         }
 
         private void ConstructCommand()
         {
-            AddMissionCommand = new Command(async () => await AddMission());
+            ShowAddMissionCommand = new Command(async () => await ShowAddMission());
             ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
         }
 
@@ -72,15 +83,15 @@ namespace Five_Seconds.ViewModels
 
         public ObservableCollection<Mission> Missions
         {
-            get => repository.Missions;
+            get => LocalData.Missions;
         }
 
-        public Command AddMissionCommand { get; set; }
+        public Command ShowAddMissionCommand { get; set; }
         public Command<object> ShowMenuCommand { get; set; }
 
-        public async Task AddMission()
+        public async Task ShowAddMission()
         {
-            await PopupNavigation.Instance.PushAsync(new MissionPopupPage());
+            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, LocalData, PopupNavigation));
         }
 
         public async Task ShowMenu(object _mission)
@@ -90,23 +101,33 @@ namespace Five_Seconds.ViewModels
 
             string action = await MessageBoxService.ShowActionSheet("Options", "Cancel", null, actionSheetBtns);
 
+            await ClickMenuAction(action, mission);
+        }
+
+        private async Task ClickMenuAction(string action, Mission mission)
+        {
             switch (action)
             {
                 case "Modify":
-                    await PopupNavigation.Instance.PushAsync(new MissionPopupPage(mission));
+                    await ShowModifyMission(mission);
                     break;
                 case "Record":
                     await ShowMissionRecord(mission);
                     break;
                 case "Delete":
-                    repository.DeleteMission(mission.Id);
+                    LocalData.DeleteMission(mission.Id);
                     break;
             }
         }
 
+        public async Task ShowModifyMission(Mission mission)
+        {
+            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, LocalData, mission, PopupNavigation));
+        }
+
         private async Task ShowMissionRecord(Mission mission)
         {
-            await Navigation.PushAsync(new RecordPage(new RecordViewModel(mission)));
+            await Navigation.PushAsync(new RecordPage(new RecordViewModel(navigation, localData, mission)));
         }
 
     }

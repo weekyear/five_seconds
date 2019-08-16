@@ -44,8 +44,7 @@
             <TimePicker x:Name="_timePicker"
                         Time="{Binding TimeOfDay}"
                         Format="t"
-                        FontSize="20"
-                        PropertyChanged="OnTimePickerPropertyChanged">
+                        FontSize="20">
             </TimePicker>
         </StackLayout>
         <StackLayout>
@@ -56,21 +55,6 @@
             </StackLayout>
             <Slider x:Name="TheSlider" Minimum="0" Maximum="10" Value="{Binding TimeLimit}"
                     VerticalOptions="CenterAndExpand"/>
-        </StackLayout>
-        <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label Text="Mission Type" />
-                <Label x:Name="MissionType_Text" Text="None"/>
-            </StackLayout>
-            <Picker x:Name="MissionPicker" Title="Options" SelectedIndexChanged="MissionPickerIndexChanged">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>None</x:String>
-                        <x:String>Calculation</x:String>
-                        <x:String>Shake</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
         </StackLayout>
         <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" >
             <Button BackgroundColor="MediumVioletRed"

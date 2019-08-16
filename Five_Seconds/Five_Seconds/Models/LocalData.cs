@@ -1,11 +1,13 @@
 ﻿using Five_Seconds.Models;
+using Five_Seconds.Repository;
+using Five_Seconds.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 
-namespace Five_Seconds.Repository
+namespace Five_Seconds.Models
 {
     public class LocalData : ILocalData
     {
@@ -24,6 +26,7 @@ namespace Five_Seconds.Repository
 
         public LocalData()
         {
+            if (Device.RuntimePlatform == "Test") return;
             itemDatabase = new ItemDatabaseGeneric();
         }
         public Mission GetMission(int id)

@@ -16,5 +16,16 @@ namespace Five_Seconds.Models
         public string Percentage { get; set; }
         public int TimeLimit { get; set; } = 5;
         //public ObservableCollection<Record> Records { get; set; } = new ObservableCollection<Record>();
+
+        public Mission() { }
+
+        public Mission (Mission original)
+        {
+            Id = original.Id;
+            Description = original.Description;
+            TimeOfDay = original.TimeOfDay;
+            Percentage = original.Percentage;
+            TimeLimit = original.TimeLimit;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Five_Seconds.Models;
+using Five_Seconds.ViewModels;
+using System;
 using System.ComponentModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,9 +12,14 @@ namespace Five_Seconds.Views
     [DesignTimeVisible(false)]
     public partial class AboutPage : ContentPage
     {
+        AboutViewModel viewModel;
         public AboutPage()
         {
             InitializeComponent();
+
+            viewModel = new AboutViewModel(Navigation, App.LocalData);
+
+            BindingContext = viewModel;
         }
     }
 }

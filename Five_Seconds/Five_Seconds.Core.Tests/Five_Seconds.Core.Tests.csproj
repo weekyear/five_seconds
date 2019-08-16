@@ -11,14 +11,14 @@
     <PackageReference Include="nunit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.14.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
+    <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
     <PackageReference Include="Xamarin.Forms.Mocks" Version="3.5.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="Converters\" />
-    <Folder Include="Repository\" />
-    <Folder Include="Services\" />
+    <Folder Include="Models_Tests\" />
+    <Folder Include="Repository_Tests\" />
+    <Folder Include="Services_Tests\" />
   </ItemGroup>
 
   <ItemGroup>

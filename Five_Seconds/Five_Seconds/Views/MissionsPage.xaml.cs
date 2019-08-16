@@ -10,6 +10,8 @@ using Xamarin.Forms.Xaml;
 using Five_Seconds.Models;
 using Five_Seconds.Views;
 using Five_Seconds.ViewModels;
+using Rg.Plugins.Popup.Services;
+using Five_Seconds.Services;
 
 namespace Five_Seconds.Views
 {
@@ -24,7 +26,7 @@ namespace Five_Seconds.Views
         {
             InitializeComponent();
 
-            viewModel = new MissionsViewModel(Navigation);
+            viewModel = new MissionsViewModel(Navigation, App.LocalData, new MessageBoxService(), PopupNavigation.Instance);
 
             BindingContext = viewModel;
         }

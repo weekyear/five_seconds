@@ -23,7 +23,7 @@ namespace Five_Seconds.Views
             BindingContext = this.viewModel = viewModel;
         }
 
-        public RecordPage()
+        public RecordPage(INavigation navigation, ILocalData localData)
         {
             InitializeComponent();
 
@@ -32,7 +32,7 @@ namespace Five_Seconds.Views
                 Description = "This is an item description."
             };
 
-            viewModel = new RecordViewModel(item);
+            viewModel = new RecordViewModel(navigation, localData, item);
             BindingContext = viewModel;
         }
     }

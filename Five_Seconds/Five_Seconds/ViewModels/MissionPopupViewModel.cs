@@ -1,4 +1,6 @@
 ﻿using Five_Seconds.Models;
+using Five_Seconds.Services;
+using Rg.Plugins.Popup.Contracts;
 using Rg.Plugins.Popup.Services;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,27 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionPopupViewModel : BaseViewModel
     {
-        public MissionPopupViewModel()
+        private readonly INavigation Navigation;
+        private readonly ILocalData LocalData;
+        private readonly IPopupNavigation PopupNavigation;
+        public MissionPopupViewModel(INavigation navigation, ILocalData localData, IPopupNavigation popupNavigation) : base(navigation, localData)
         {
             Mission = new Mission();
+
+            Navigation = navigation;
+            LocalData = localData;
+            PopupNavigation = popupNavigation;
 
             ConstructCommand();
         }
 
-        public MissionPopupViewModel(Mission mission)
+        public MissionPopupViewModel(INavigation navigation, ILocalData localData, Mission mission, IPopupNavigation popupNavigation) : base(navigation, localData)
         {
-            Mission = mission;
+            Mission = new Mission(mission);
+
+            Navigation = navigation;
+            LocalData = localData;
+            PopupNavigation = popupNavigation;
 
             ConstructCommand();
         }
@@ -29,9 +42,12 @@ namespace Five_Seconds.ViewModels
             CloseCommand = new Command(async() => await ClosePopup());
             SaveCommand = new Command(async() => await Save());
         }
+
+        // Command
         public Command CloseCommand { get; set; }
         public Command SaveCommand { get; set; }
 
+        // Property
         public Mission Mission
         {
             get; set;
@@ -81,14 +97,16 @@ namespace Five_Seconds.ViewModels
             get; set;
         }
 
+        // Methods
+
         private async Task ClosePopup()
         {
-            await PopupNavigation.Instance.PopAsync(true);
+            await PopupNavigation.PopAsync(true);
         }
         private async Task Save()
         {
-            repository.SaveMission(Mission);
-            await PopupNavigation.Instance.PopAsync(true);
+            localData.SaveMission(Mission);
+            await ClosePopup();
         }
 
         public static bool AreEqual<T>(T left, T right)

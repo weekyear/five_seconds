@@ -4,6 +4,7 @@ using Xamarin.Forms.Xaml;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
 using Five_Seconds.Repository;
+using Five_Seconds.Models;
 
 namespace Five_Seconds
 {
@@ -14,6 +15,7 @@ namespace Five_Seconds
         {
             InitializeComponent();
 
+            DependencyService.Register<ILocalData>();
             DependencyService.Register<IMessageBoxService>();
 
             MainPage = new MainPage();

@@ -13,9 +13,14 @@ namespace Five_Seconds.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        //public IDataStore<Mission> DataStore => DependencyService.Get<IDataStore<Mission>>() ?? new MockDataStore();
-        public ILocalData repository = App.LocalData;
-        public static IMessageBoxService MessageBoxService => new MessageBoxService();
+        protected readonly INavigation navigation;
+        protected readonly ILocalData localData;
+
+        public BaseViewModel(INavigation navigation, ILocalData localData)
+        {
+            this.navigation = navigation;
+            this.localData = localData;
+        }
 
         bool isBusy = false;
         public bool IsBusy

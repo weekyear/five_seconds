@@ -23,9 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\MissionDetailPage.xaml.cs">
-      <DependentUpon>MissionDetailPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\MissionsPage.xaml.cs">
       <DependentUpon>MissionsPage.xaml</DependentUpon>
     </Compile>

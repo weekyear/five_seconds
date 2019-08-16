@@ -15,7 +15,9 @@ namespace Five_Seconds.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return TimeSpan.Parse(value.ToString());
+            var timeValue = value as string;
+            TimeSpan _time = DateTime.Parse(timeValue).TimeOfDay;
+            return _time;
         }
         private object TimeToString(object value)
         {

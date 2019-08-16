@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace Five_Seconds.Repository
+namespace Five_Seconds.Models
 {
     public interface ILocalData
     {
