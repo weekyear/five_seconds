@@ -6,7 +6,7 @@ namespace Five_Seconds.Models
 {
     public enum MenuItemType
     {
-        Browse,
+        Main,
         About
     }
     public class HomeMenuItem

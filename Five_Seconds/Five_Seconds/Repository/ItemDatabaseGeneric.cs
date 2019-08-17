@@ -19,6 +19,7 @@ namespace Five_Seconds.Repository
         {
             database = DependencyService.Get<IDatabase>().DBConnect();
             database.CreateTable<Mission>();
+            database.CreateTable<Record>();
         }
         public IEnumerable<T> GetObjects<T>() where T : IObject, new()
         {

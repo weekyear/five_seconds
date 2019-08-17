@@ -1,10 +1,12 @@
 ﻿using SQLite;
+using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
 namespace Five_Seconds.Models
 {
+    [Table("Missions")]
     public class Mission : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -13,9 +15,11 @@ namespace Five_Seconds.Models
         public int Id { get; set; }
         public string Description { get; set; }
         public TimeSpan TimeOfDay { get; set; }
-        public string Percentage { get; set; }
+        public double Percentage { get; set; }
         public int TimeLimit { get; set; } = 5;
-        //public ObservableCollection<Record> Records { get; set; } = new ObservableCollection<Record>();
+
+        [OneToMany]
+        public ObservableCollection<Record> Records { get; set; } = new ObservableCollection<Record>();
 
         public Mission() { }
 

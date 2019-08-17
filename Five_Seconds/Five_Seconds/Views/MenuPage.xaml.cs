@@ -20,8 +20,8 @@ namespace Five_Seconds.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="About" }
+                new HomeMenuItem {Id = MenuItemType.Main, Title="모든 미션" },
+                new HomeMenuItem {Id = MenuItemType.About, Title="5초의 법칙이란" }
             };
 
             ListViewMenu.ItemsSource = menuItems;

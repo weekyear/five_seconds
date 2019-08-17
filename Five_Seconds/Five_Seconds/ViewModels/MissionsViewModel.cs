@@ -17,17 +17,12 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionsViewModel : BaseViewModel
     {
-        private readonly INavigation Navigation;
-        private readonly ILocalData LocalData;
-
         private readonly IMessageBoxService MessageBoxService;
         private readonly IPopupNavigation PopupNavigation;
         public MissionsViewModel(INavigation navigation, ILocalData localData, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation, localData)
         {
             Title = "자, 5초 준다";
 
-            Navigation = navigation;
-            LocalData = localData;
             MessageBoxService = messageBoxService;
             PopupNavigation = popupNavigation;
 
@@ -46,8 +41,6 @@ namespace Five_Seconds.ViewModels
 
             if (missionsList.Count == 0)
             {
-                var dateNow = DateTime.UtcNow;
-
                 Record record1 = new Record() { Date = DateTime.UtcNow, IsSuccess = false, RecordTime = 5 };
                 Record record2 = new Record() { Date = DateTime.UtcNow.AddDays(1), IsSuccess = false, RecordTime = 3 };
                 Record record3 = new Record() { Date = DateTime.UtcNow.AddDays(2), IsSuccess = true, RecordTime = 7 };
@@ -59,11 +52,10 @@ namespace Five_Seconds.ViewModels
 
                 var mockItems = new List<Mission>
                 {
-                    //new Mission { Description = "일어나기", Time = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day, 1, 20, 00), Percentage = "80%", Records = records },
-                    new Mission { Description = "일어나기", TimeOfDay = new TimeSpan(1, 20, 00), Percentage = "80%" },
-                    new Mission { Description = "운동하기", TimeOfDay = new TimeSpan(2, 30, 00), Percentage = "40%" },
-                    new Mission { Description = "공부하기", TimeOfDay = new TimeSpan(3, 40, 00), Percentage = "50%" },
-                    new Mission { Description = "잠자기", TimeOfDay = new TimeSpan(4, 50, 00), Percentage = "70%" }
+                    new Mission { Description = "일어나기", TimeOfDay = new TimeSpan(1, 20, 00), Percentage = 0.835, Records = records },
+                    new Mission { Description = "운동하기", TimeOfDay = new TimeSpan(2, 30, 00), Percentage = 0.434 },
+                    new Mission { Description = "공부하기", TimeOfDay = new TimeSpan(3, 40, 00), Percentage = 0.025 },
+                    new Mission { Description = "잠자기", TimeOfDay = new TimeSpan(4, 50, 00), Percentage = 1.00 }
                 };
 
                 foreach (var item in mockItems)
@@ -80,7 +72,6 @@ namespace Five_Seconds.ViewModels
         }
 
         // Property
-
         public ObservableCollection<Mission> Missions
         {
             get => LocalData.Missions;
@@ -127,7 +118,7 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowMissionRecord(Mission mission)
         {
-            await Navigation.PushAsync(new RecordPage(new RecordViewModel(navigation, localData, mission)));
+            await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, base.LocalData, mission)));
         }
 
     }

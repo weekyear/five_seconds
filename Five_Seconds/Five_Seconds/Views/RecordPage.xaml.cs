@@ -22,18 +22,5 @@ namespace Five_Seconds.Views
 
             BindingContext = this.viewModel = viewModel;
         }
-
-        public RecordPage(INavigation navigation, ILocalData localData)
-        {
-            InitializeComponent();
-
-            var item = new Mission
-            {
-                Description = "This is an item description."
-            };
-
-            viewModel = new RecordViewModel(navigation, localData, item);
-            BindingContext = viewModel;
-        }
     }
 }

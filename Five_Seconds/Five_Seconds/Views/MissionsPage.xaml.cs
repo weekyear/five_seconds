@@ -12,6 +12,7 @@ using Five_Seconds.Views;
 using Five_Seconds.ViewModels;
 using Rg.Plugins.Popup.Services;
 using Five_Seconds.Services;
+using Five_Seconds.CustomControls;
 
 namespace Five_Seconds.Views
 {
@@ -29,6 +30,8 @@ namespace Five_Seconds.Views
             viewModel = new MissionsViewModel(Navigation, App.LocalData, new MessageBoxService(), PopupNavigation.Instance);
 
             BindingContext = viewModel;
+
+            MissionsListView.ItemSelected += MissionsListView_ItemSelected;
         }
 
         protected override void OnAppearing()
@@ -39,6 +42,13 @@ namespace Five_Seconds.Views
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
         {
             viewModel.ShowMenuCommand.Execute(e.Item);
+        }
+        private void MissionsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (MissionsListView.SelectedItem != null || e.SelectedItem != null)
+            {
+                ((ListView)sender).SelectedItem = null;
+            }
         }
     }
 }

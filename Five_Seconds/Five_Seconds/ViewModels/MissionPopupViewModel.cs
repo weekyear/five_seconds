@@ -12,15 +12,11 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionPopupViewModel : BaseViewModel
     {
-        private readonly INavigation Navigation;
-        private readonly ILocalData LocalData;
         private readonly IPopupNavigation PopupNavigation;
         public MissionPopupViewModel(INavigation navigation, ILocalData localData, IPopupNavigation popupNavigation) : base(navigation, localData)
         {
             Mission = new Mission();
 
-            Navigation = navigation;
-            LocalData = localData;
             PopupNavigation = popupNavigation;
 
             ConstructCommand();
@@ -30,8 +26,6 @@ namespace Five_Seconds.ViewModels
         {
             Mission = new Mission(mission);
 
-            Navigation = navigation;
-            LocalData = localData;
             PopupNavigation = popupNavigation;
 
             ConstructCommand();
@@ -105,7 +99,7 @@ namespace Five_Seconds.ViewModels
         }
         private async Task Save()
         {
-            localData.SaveMission(Mission);
+            base.LocalData.SaveMission(Mission);
             await ClosePopup();
         }
 

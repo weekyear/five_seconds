@@ -3,13 +3,58 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             x:Class="Five_Seconds.Views.RecordPage"
              mc:Ignorable="d"
-             x:Class="Five_Seconds.Views.RecordPage">
+             Title="Mission Record">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:DateStringConverter x:Key="DateStringConverter"/>
+            <conv:RecordStringConverter x:Key="RecordStringConverter"/>
+            <conv:SuccessStringConverter x:Key="SuccessStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout BackgroundColor="White">
+            <ListView x:Name="CollectionList" 
+                      Margin="10" 
+                      RowHeight="60" 
+                      ItemsSource="{Binding Records}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <custom:CustomViewCell 
+                            SelectedBackgroundColor="#ADF3BE">
+                            <Grid Padding="10"
+                                  VerticalOptions="CenterAndExpand">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Date, Converter={StaticResource DateStringConverter}}"
+                                       TextColor="Black"
+                                       FontSize="25"
+                                       FontAttributes="Bold" />
+                                <Label Grid.Column="1"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="Black"
+                                       FontSize="25"
+                                       Text="{Binding RecordTime, Converter={StaticResource RecordStringConverter}}" />
+                                <Label Grid.Column="2"
+                                       TextColor="Blue"
+                                       FontSize="25"
+                                       FontAttributes="Bold"
+                                       HorizontalTextAlignment="Center"
+                                       Text="{Binding IsSuccess, Converter={StaticResource SuccessStringConverter}}"/>
+                            </Grid>
+                        </custom:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -7,6 +7,7 @@ namespace Five_Seconds.CustomControls
 {
     public class CustomViewCell : ViewCell
     {
+
         public static readonly BindableProperty SelectedBackgroundColorProperty =
             BindableProperty.Create("SelectedBackgroundColor",
                 typeof(Color),

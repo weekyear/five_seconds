@@ -21,7 +21,7 @@ namespace Five_Seconds.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            MenuPages.Add((int)MenuItemType.Main, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
@@ -30,7 +30,7 @@ namespace Five_Seconds.Views
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.Browse:
+                    case (int)MenuItemType.Main:
                         MenuPages.Add(id, new NavigationPage(new MissionsPage()));
                         break;
                     case (int)MenuItemType.About:

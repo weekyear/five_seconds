@@ -13,13 +13,13 @@ namespace Five_Seconds.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        protected readonly INavigation navigation;
-        protected readonly ILocalData localData;
+        protected readonly INavigation Navigation;
+        protected readonly ILocalData LocalData;
 
         public BaseViewModel(INavigation navigation, ILocalData localData)
         {
-            this.navigation = navigation;
-            this.localData = localData;
+            this.Navigation = navigation;
+            this.LocalData = localData;
         }
 
         bool isBusy = false;
