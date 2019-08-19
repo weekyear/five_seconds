@@ -18,8 +18,8 @@ namespace Five_Seconds.ViewModels
 
         public BaseViewModel(INavigation navigation, ILocalData localData)
         {
-            this.Navigation = navigation;
-            this.LocalData = localData;
+            Navigation = navigation;
+            LocalData = localData;
         }
 
         bool isBusy = false;

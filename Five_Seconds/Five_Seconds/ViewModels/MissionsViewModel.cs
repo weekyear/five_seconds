@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-
 using Five_Seconds.Models;
 using Five_Seconds.Views;
-using Rg.Plugins.Popup.Services;
 using System.Collections.Generic;
-using Five_Seconds.Repository;
 using Rg.Plugins.Popup.Contracts;
 using Five_Seconds.Services;
 

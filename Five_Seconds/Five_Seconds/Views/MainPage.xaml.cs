@@ -11,12 +11,14 @@ namespace Five_Seconds.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
-    [DesignTimeVisible(false)]
+    [AdMaiora.RealXaml.Client.MainPage]
     public partial class MainPage : MasterDetailPage
     {
         Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
         public MainPage()
         {
+            AdMaiora.RealXaml.Client.AppManager.Init(this);
+
             InitializeComponent();
 
             MasterBehavior = MasterBehavior.Popover;

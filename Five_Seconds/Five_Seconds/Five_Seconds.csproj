@@ -1,8 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <Version>1.0.10</Version>
+    <FileVersion>1.0.1.10</FileVersion>
+    <AssemblyVersion>1.0.1.10</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -11,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AdMaiora.RealXaml.Client" Version="1.0.0" />
     <PackageReference Include="Fody" Version="5.1.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -13,10 +13,12 @@ namespace Five_Seconds
 
         public App()
         {
-            InitializeComponent();
+            AdMaiora.RealXaml.Client.AppManager.Init(this);
 
             DependencyService.Register<ILocalData>();
             DependencyService.Register<IMessageBoxService>();
+
+            InitializeComponent();
 
             MainPage = new MainPage();
         }
