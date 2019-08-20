@@ -11,7 +11,7 @@ namespace Five_Seconds.Models
 {
     public class LocalData : ILocalData
     {
-        ItemDatabaseGeneric itemDatabase = null;
+        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
 
         private ObservableCollection<Mission> missions = new ObservableCollection<Mission>();
         public ObservableCollection<Mission> Missions
@@ -27,25 +27,24 @@ namespace Five_Seconds.Models
         public LocalData()
         {
             if (Device.RuntimePlatform == "Test") return;
-            itemDatabase = new ItemDatabaseGeneric();
         }
         public Mission GetMission(int id)
         {
-            return itemDatabase.GetObject<Mission>(id);
+            return ItemDatabase.GetObject<Mission>(id);
         }
         public IEnumerable<Mission> GetFirstMissions()
         {
-            return itemDatabase.GetObjects<Mission>();
+            return ItemDatabase.GetObjects<Mission>();
         }
         public IEnumerable<Mission> GetMissions()
         {
-            return itemDatabase.GetObjects<Mission>();
+            return ItemDatabase.GetObjects<Mission>();
         }
         public int SaveMission(Mission mission)
         {
             AddOrModifyMissionToMissions(mission);
             SendMessage("save");
-            return itemDatabase.SaveObject(mission);
+            return ItemDatabase.SaveObject(mission);
         }
         private void AddOrModifyMissionToMissions(Mission mission)
         {
@@ -64,7 +63,7 @@ namespace Five_Seconds.Models
         {
             DeleteMissionOfMissions(id);
             SendMessage("delete");
-            return itemDatabase.DeleteObject<Mission>(id);
+            return ItemDatabase.DeleteObject<Mission>(id);
         }
         private void DeleteMissionOfMissions(int id)
         {
@@ -80,7 +79,7 @@ namespace Five_Seconds.Models
 
         public void DeleteAllMissions()
         {
-            itemDatabase.DeleteAllObjects<Mission>();
+            ItemDatabase.DeleteAllObjects<Mission>();
         }
 
         private void SendMessage(string type)

@@ -30,7 +30,7 @@ namespace Five_Seconds.ViewModels
         {
             if (Device.RuntimePlatform == "Test") return;
 
-            LocalData.DeleteAllMissions();
+            //LocalData.DeleteAllMissions();
 
             var missionsList = LocalData.GetMissions() as List<Mission>;
 
@@ -45,7 +45,7 @@ namespace Five_Seconds.ViewModels
                 records.Add(record2);
                 records.Add(record1);
 
-                var mockItems = new List<Mission>
+                missionsList = new List<Mission>
                 {
                     new Mission { Description = "일어나기", TimeOfDay = new TimeSpan(1, 20, 00), Percentage = 0.835, Records = records },
                     new Mission { Description = "운동하기", TimeOfDay = new TimeSpan(2, 30, 00), Percentage = 0.434 },
@@ -53,9 +53,16 @@ namespace Five_Seconds.ViewModels
                     new Mission { Description = "잠자기", TimeOfDay = new TimeSpan(4, 50, 00), Percentage = 1.00 }
                 };
 
-                foreach (var item in mockItems)
+                foreach (var item in missionsList)
                 {
                     LocalData.SaveMission(item);
+                }
+            }
+            else
+            {
+                foreach (var item in missionsList)
+                {
+                    LocalData.Missions.Add(item);
                 }
             }
         }
