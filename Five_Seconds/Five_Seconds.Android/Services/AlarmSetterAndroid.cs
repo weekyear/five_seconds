@@ -32,17 +32,18 @@ namespace Five_Seconds.Droid.Services
 
         public void SetAlarm(Alarm alarm)
         {
-            var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-            alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            alarmIntent.PutExtra("id", alarm.Id);
-            PendingIntent pendingIntent = PendingIntent.GetBroadcast(Application.Context, GetAlarmId(alarm), alarmIntent, PendingIntentFlags.UpdateCurrent);
-            AlarmManager alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-
             var difference = alarm.Time.Subtract(DateTime.Now.ToLocalTime().TimeOfDay);
             var differenceAsMillis = difference.TotalMilliseconds;
 
             alarm.Time.Add(new TimeSpan(1, 0, 0));
-            _alarmRepo.SaveAlarm(alarm);
+            var id = _alarmRepo.SaveAlarm(alarm);
+
+            var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+            alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            alarmIntent.PutExtra("id", id);
+            PendingIntent pendingIntent = PendingIntent.GetBroadcast(Application.Context, GetAlarmId(alarm), alarmIntent, PendingIntentFlags.UpdateCurrent);
+            AlarmManager alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+
             alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)differenceAsMillis, pendingIntent);
         }
 

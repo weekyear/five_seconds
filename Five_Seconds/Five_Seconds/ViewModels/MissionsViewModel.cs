@@ -15,7 +15,7 @@ namespace Five_Seconds.ViewModels
     {
         private readonly IMessageBoxService MessageBoxService;
         private readonly IPopupNavigation PopupNavigation;
-        public MissionsViewModel(INavigation navigation, IMissionsRepository localData, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation, localData)
+        public MissionsViewModel(INavigation navigation, IMissionsRepository missionsRepo, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation, missionsRepo)
         {
             Title = "자, 5초 준다";
 
@@ -31,7 +31,7 @@ namespace Five_Seconds.ViewModels
         {
             if (Device.RuntimePlatform == "Test") return;
 
-            //LocalData.DeleteAllMissions();
+            MissionRepo.DeleteAllMissions();
 
             var missionsList = MissionRepo.GetMissions() as List<Mission>;
 

@@ -105,7 +105,6 @@ namespace Five_Seconds.ViewModels
             MissionRepo.SaveMission(Mission);
             var alarm = new Alarm()
             {
-                Id = Mission.Id,
                 Name = Mission.Description,
                 Time = Mission.TimeOfDay
             };

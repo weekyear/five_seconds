@@ -33,7 +33,7 @@ namespace Five_Seconds.Repository
         {
             lock (locker)
             {
-                return database.Query<T>("SELECT * FROM Item WHERE Name = 'First'");
+                return database.Query<T>($"SELECT * FROM {nameof(T)} WHERE Name = 'First'");
             }
         }
 

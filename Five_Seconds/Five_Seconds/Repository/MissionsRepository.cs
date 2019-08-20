@@ -50,6 +50,7 @@ namespace Five_Seconds.Repository
             SendMessage("save");
             return ItemDatabase.SaveObject(mission);
         }
+
         private void AddOrModifyMissionToMissions(Mission mission)
         {
             for (int i = 0; i < Missions.Count; i++)

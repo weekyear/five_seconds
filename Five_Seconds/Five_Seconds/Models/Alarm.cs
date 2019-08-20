@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Five_Seconds.Models
 {
-    [Table("Alarms")]
+    [Table("Alarm")]
     public class Alarm : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [PrimaryKey, NotNull]
+        [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -23,6 +23,7 @@ namespace Five_Seconds.Models
             get { return TimeOffset.LocalDateTime.TimeOfDay; }
             set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
         }
+
         protected DateTimeOffset GetDateTimeOffsetFromTimeSpan(TimeSpan time)
         {
             var now = DateTime.Now;

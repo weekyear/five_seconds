@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Five_Seconds.Models
 {
-    [Table("Missions")]
+    [Table("Mission")]
     public class Mission : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
