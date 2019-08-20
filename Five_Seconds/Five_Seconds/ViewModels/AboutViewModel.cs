@@ -1,4 +1,5 @@
 ﻿using Five_Seconds.Models;
+using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using System;
 using System.Windows.Input;
@@ -9,7 +10,7 @@ namespace Five_Seconds.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
-        public AboutViewModel(INavigation navigation, IMissionRepository localData) : base(navigation, localData)
+        public AboutViewModel(INavigation navigation, IMissionsRepository localData) : base(navigation, localData)
         {
             Title = "About";
 

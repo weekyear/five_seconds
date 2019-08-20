@@ -8,11 +8,12 @@ namespace Five_Seconds.Repository
 {
     public class AlarmRepository : IAlarmRepository
     {
-        public ItemDatabaseGeneric ItemDatabase { get; } = MissionsRepository.ItemDatabase;
-
+        public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
 
         public Alarm GetAlarm(int id)
         {
+            var list = GetAllAlarms() as List<Alarm>;
+
             return ItemDatabase.GetObject<Alarm>(id);
         }
 

@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Five_Seconds.Models
 {
-    [Table("Missions")]
+    [Table("Alarms")]
     public class Alarm : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [PrimaryKey, NotNull, AutoIncrement]
+        [PrimaryKey, NotNull]
         public int Id { get; set; }
 
         public string Name { get; set; }

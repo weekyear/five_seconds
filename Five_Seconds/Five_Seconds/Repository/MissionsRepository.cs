@@ -11,7 +11,7 @@ namespace Five_Seconds.Repository
 {
     public class MissionsRepository : IMissionsRepository
     {
-        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
+        public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
 
         private ObservableCollection<Mission> missions = new ObservableCollection<Mission>();
         public ObservableCollection<Mission> Missions

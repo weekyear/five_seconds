@@ -13,6 +13,8 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionPopupViewModel : BaseViewModel
     {
+        IAlarmSetter _alarmSetter = DependencyService.Get<IAlarmSetter>();
+
         private readonly IPopupNavigation PopupNavigation;
         public MissionPopupViewModel(INavigation navigation, IMissionsRepository missionRepo, IPopupNavigation popupNavigation) : base(navigation, missionRepo)
         {
@@ -100,7 +102,14 @@ namespace Five_Seconds.ViewModels
         }
         private async Task Save()
         {
-            base.MissionRepo.SaveMission(Mission);
+            MissionRepo.SaveMission(Mission);
+            var alarm = new Alarm()
+            {
+                Id = Mission.Id,
+                Name = Mission.Description,
+                Time = Mission.TimeOfDay
+            };
+            _alarmSetter.SetAlarm(alarm);
             await ClosePopup();
         }
 

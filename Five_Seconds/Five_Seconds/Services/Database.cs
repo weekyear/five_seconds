@@ -11,38 +11,22 @@ namespace Five_Seconds.Services
 {
     public class Database : IDatabase
     {
-        private SQLiteConnection connection;
         public SQLiteConnection DBConnect()
         {
-            switch (Device.RuntimePlatform)
+            if (Device.RuntimePlatform != "Test")
             {
-                case "Android":
-                    CreateConnection_Android();
-                    break;
-                case "iOS":
-                    CreateConnection_iOS();
-                    break;
-                case "Test":
-                    break;
+                string path = DependencyService.Get<IDeviceStorageService>().GetFilePath("MissionsSQLite.db3");
+                return CreateConnection(path);
             }
-            return connection;
+            else
+            {
+                return null;
+            }
         }
 
-        private void CreateConnection_Android()
+        private SQLiteConnection CreateConnection(string path)
         {
-            var fileName = "MissionsSQLite.db3";
-            string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-            var path = Path.Combine(folder, fileName);
-            connection = new SQLiteConnection(path);
-        }
-
-        private void CreateConnection_iOS()
-        {
-            var fileName_iOS = "MissionsSQLite.db3";
-            string folder_iOS = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            string libraryFolder = Path.Combine(folder_iOS, "..", "Library");
-            var path_iOS = Path.Combine(libraryFolder, fileName_iOS);
-            connection = new SQLiteConnection(path_iOS);
+            return new SQLiteConnection(path);
         }
     }
 }

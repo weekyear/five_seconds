@@ -10,6 +10,7 @@ namespace Five_Seconds
 {
     public partial class App : Application
     {
+        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
 
         public App()
         {
@@ -38,16 +39,29 @@ namespace Five_Seconds
             // Handle when your app resumes
         }
 
-        private static IMissionsRepository localData;
-        public static IMissionsRepository LocalData
+        private static IMissionsRepository missionsRepo;
+        public static IMissionsRepository MissionsRepo
         {
             get
             {
-                if (localData == null)
+                if (missionsRepo == null)
                 {
-                    localData = new MissionsRepository();
+                    missionsRepo = new MissionsRepository();
                 }
-                return localData;
+                return missionsRepo;
+            }
+        }
+
+        private static IAlarmRepository alarmRepo;
+        public static IAlarmRepository AlarmRepo
+        {
+            get
+            {
+                if (alarmRepo == null)
+                {
+                    alarmRepo = new AlarmRepository();
+                }
+                return alarmRepo;
             }
         }
     }
