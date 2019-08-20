@@ -20,7 +20,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
     {
         private MissionsViewModel missionsViewModel;
         private Mock<INavigation> navigation;
-        private Mock<ILocalData> localData;
+        private Mock<IMissionsRepository> localData;
         private Mock<IPopupNavigation> popupNavigation;
         private Mock<IMessageBoxService> messageBoxService;
 
@@ -30,7 +30,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             MockForms.Init();
 
             navigation = new Mock<INavigation>();
-            localData = new Mock<ILocalData>();
+            localData = new Mock<IMissionsRepository>();
             messageBoxService = new Mock<IMessageBoxService>();
             popupNavigation = new Mock<IPopupNavigation>();
 

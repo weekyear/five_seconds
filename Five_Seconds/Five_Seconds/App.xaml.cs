@@ -15,7 +15,7 @@ namespace Five_Seconds
         {
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
-            DependencyService.Register<ILocalData>();
+            DependencyService.Register<IMissionsRepository>();
             DependencyService.Register<IMessageBoxService>();
 
             InitializeComponent();
@@ -38,14 +38,14 @@ namespace Five_Seconds
             // Handle when your app resumes
         }
 
-        private static ILocalData localData;
-        public static ILocalData LocalData
+        private static IMissionsRepository localData;
+        public static IMissionsRepository LocalData
         {
             get
             {
                 if (localData == null)
                 {
-                    localData = new LocalData();
+                    localData = new MissionsRepository();
                 }
                 return localData;
             }

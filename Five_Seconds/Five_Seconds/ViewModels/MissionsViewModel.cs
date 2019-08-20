@@ -7,6 +7,7 @@ using Five_Seconds.Views;
 using System.Collections.Generic;
 using Rg.Plugins.Popup.Contracts;
 using Five_Seconds.Services;
+using Five_Seconds.Repository;
 
 namespace Five_Seconds.ViewModels
 {
@@ -14,7 +15,7 @@ namespace Five_Seconds.ViewModels
     {
         private readonly IMessageBoxService MessageBoxService;
         private readonly IPopupNavigation PopupNavigation;
-        public MissionsViewModel(INavigation navigation, ILocalData localData, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation, localData)
+        public MissionsViewModel(INavigation navigation, IMissionsRepository localData, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation, localData)
         {
             Title = "자, 5초 준다";
 
@@ -32,7 +33,7 @@ namespace Five_Seconds.ViewModels
 
             //LocalData.DeleteAllMissions();
 
-            var missionsList = LocalData.GetMissions() as List<Mission>;
+            var missionsList = MissionRepo.GetMissions() as List<Mission>;
 
             if (missionsList.Count == 0)
             {
@@ -55,14 +56,14 @@ namespace Five_Seconds.ViewModels
 
                 foreach (var item in missionsList)
                 {
-                    LocalData.SaveMission(item);
+                    MissionRepo.SaveMission(item);
                 }
             }
             else
             {
                 foreach (var item in missionsList)
                 {
-                    LocalData.Missions.Add(item);
+                    MissionRepo.Missions.Add(item);
                 }
             }
         }
@@ -76,7 +77,7 @@ namespace Five_Seconds.ViewModels
         // Property
         public ObservableCollection<Mission> Missions
         {
-            get => LocalData.Missions;
+            get => MissionRepo.Missions;
         }
 
         public Command ShowAddMissionCommand { get; set; }
@@ -84,7 +85,7 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowAddMission()
         {
-            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, LocalData, PopupNavigation));
+            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, MissionRepo, PopupNavigation));
         }
 
         public async Task ShowMenu(object _mission)
@@ -108,19 +109,19 @@ namespace Five_Seconds.ViewModels
                     await ShowMissionRecord(mission);
                     break;
                 case "Delete":
-                    LocalData.DeleteMission(mission.Id);
+                    MissionRepo.DeleteMission(mission.Id);
                     break;
             }
         }
 
         public async Task ShowModifyMission(Mission mission)
         {
-            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, LocalData, mission, PopupNavigation));
+            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, MissionRepo, mission, PopupNavigation));
         }
 
         private async Task ShowMissionRecord(Mission mission)
         {
-            await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, base.LocalData, mission)));
+            await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, base.MissionRepo, mission)));
         }
 
     }

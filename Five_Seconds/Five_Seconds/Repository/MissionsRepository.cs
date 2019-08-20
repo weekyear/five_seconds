@@ -7,9 +7,9 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Xamarin.Forms;
 
-namespace Five_Seconds.Models
+namespace Five_Seconds.Repository
 {
-    public class LocalData : ILocalData
+    public class MissionsRepository : IMissionsRepository
     {
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
 
@@ -24,22 +24,26 @@ namespace Five_Seconds.Models
             }
         }
 
-        public LocalData()
+        public MissionsRepository()
         {
             if (Device.RuntimePlatform == "Test") return;
         }
+
         public Mission GetMission(int id)
         {
             return ItemDatabase.GetObject<Mission>(id);
         }
+
         public IEnumerable<Mission> GetFirstMissions()
         {
             return ItemDatabase.GetObjects<Mission>();
         }
+
         public IEnumerable<Mission> GetMissions()
         {
             return ItemDatabase.GetObjects<Mission>();
         }
+
         public int SaveMission(Mission mission)
         {
             AddOrModifyMissionToMissions(mission);

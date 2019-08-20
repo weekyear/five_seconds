@@ -1,4 +1,5 @@
 ﻿using Five_Seconds.Models;
+using Five_Seconds.Repository;
 using Five_Seconds.ViewModels;
 using Rg.Plugins.Popup.Contracts;
 using Rg.Plugins.Popup.Pages;
@@ -20,16 +21,16 @@ namespace Five_Seconds.Views
     {
         MissionPopupViewModel viewModel;
 
-        public MissionPopupPage(INavigation navigation, ILocalData localData, IPopupNavigation popupNavigation)
+        public MissionPopupPage(INavigation navigation, IMissionsRepository missionRepo, IPopupNavigation popupNavigation)
         {
-            viewModel = new MissionPopupViewModel(navigation, localData, popupNavigation);
+            viewModel = new MissionPopupViewModel(navigation, missionRepo, popupNavigation);
 
             BindingContext = viewModel;
 
             InitializeComponent();
         }
 
-        public MissionPopupPage(INavigation navigation, ILocalData localData, Mission mission, IPopupNavigation popupNavigation)
+        public MissionPopupPage(INavigation navigation, IMissionsRepository localData, Mission mission, IPopupNavigation popupNavigation)
         {
             viewModel = new MissionPopupViewModel(navigation, localData, mission, popupNavigation);
 

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
-namespace Five_Seconds.Models
+namespace Five_Seconds.Repository
 {
-    public interface ILocalData
+    public interface IMissionsRepository
     {
         // getters
         ObservableCollection<Mission> Missions { get; set; }
