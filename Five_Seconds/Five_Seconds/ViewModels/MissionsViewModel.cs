@@ -31,7 +31,7 @@ namespace Five_Seconds.ViewModels
         {
             if (Device.RuntimePlatform == "Test") return;
 
-            MissionRepo.DeleteAllMissions();
+            //MissionRepo.DeleteAllMissions();
 
             var missionsList = MissionRepo.GetMissions() as List<Mission>;
 

@@ -38,12 +38,18 @@ namespace Five_Seconds.Droid.Services
             alarm.Time.Add(new TimeSpan(1, 0, 0));
             var id = _alarmRepo.SaveAlarm(alarm);
 
-            var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-            alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            alarmIntent.PutExtra("id", id);
-            PendingIntent pendingIntent = PendingIntent.GetBroadcast(Application.Context, GetAlarmId(alarm), alarmIntent, PendingIntentFlags.UpdateCurrent);
-            AlarmManager alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+            //var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+            //alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            //alarmIntent.PutExtra("id", id);
+            //var pendingIntent = PendingIntent.GetBroadcast(Application.Context, GetAlarmId(alarm), alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
+            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)differenceAsMillis, pendingIntent);
+
+            var _alarmIntent = new Intent(Application.Context, typeof(AlarmIntentService));
+            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            _alarmIntent.PutExtra("id", id);
+            var pendingIntent = PendingIntent.GetService(Application.Context, 0, _alarmIntent, PendingIntentFlags.CancelCurrent);
             alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)differenceAsMillis, pendingIntent);
         }
 
@@ -147,6 +153,22 @@ namespace Five_Seconds.Droid.Services
             disIntent.PutExtra("id", id);
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);
+            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+        }
+    }
+
+    [Service(Label = "AlarmIntentService")]
+    public class AlarmIntentService : IntentService
+    {
+        protected override void OnHandleIntent(Intent intent)
+        {
+            Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
+            var id = intent.GetIntExtra("id", 0);
+
+            var disIntent = new Intent(ApplicationContext, typeof(AlarmActivity));
+            disIntent.PutExtra("id", id);
+            disIntent.SetFlags(ActivityFlags.NewTask);
+            ApplicationContext.StartActivity(disIntent);
             Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
         }
     }

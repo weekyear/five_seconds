@@ -6,6 +6,8 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Content.Res;
+using Android.Media;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -24,7 +26,7 @@ namespace Five_Seconds.Droid
         Alarm _alarm;
         //AlarmApp.Models.Settings _settings;
 
-        //MediaPlayer _mediaPlayer = new MediaPlayer();
+        MediaPlayer _mediaPlayer = new MediaPlayer();
         Vibrator _vibrator;
         readonly long[] _pattern =
         {
@@ -63,41 +65,20 @@ namespace Five_Seconds.Droid
             timeTextView.Text = _alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
             nameTextView.Text = _alarm.Name;
 
-            //_settings = _alarmRepo.GetSettings();
-            //string alarmTonePath = "alarm_tone.m4a";
-            //var alarmTone = _settings.AlarmTone;
-            //if (alarmTone != null)
-            //{
-            //    if (alarmTone.IsCustomTone)
-            //    {
+            // 벨소리 늘리거나 커스텀 벨소리 넣게할라면 AlarmApp 솔루션 열어서 확인
+            string alarmTonePath = "rocket.m4a";
+            AssetFileDescriptor assetFileDescriptor = Assets.OpenFd(alarmTonePath);
+            _mediaPlayer.SetDataSource(assetFileDescriptor.FileDescriptor, assetFileDescriptor.StartOffset, assetFileDescriptor.Length);
 
-            //        string[] split = alarmTone.Path.Split(':');
-            //        string type = split[0];
-
-            //        if (type.Contains("primary"))
-            //        {
-            //            alarmTonePath = Android.OS.Environment.ExternalStorageDirectory + "/" + split[1];
-            //            _mediaPlayer.SetDataSource(alarmTonePath);
-            //        }
-            //    }
-            //    else
-            //    {
-
-            //        alarmTonePath = _settings.AlarmTone.Path;
-            //        AssetFileDescriptor assetFileDescriptor = Assets.OpenFd(alarmTonePath);
-            //        _mediaPlayer.SetDataSource(assetFileDescriptor.FileDescriptor, assetFileDescriptor.StartOffset, assetFileDescriptor.Length);
-            //    }
-            //}
-
-            //_mediaPlayer.Looping = true;
-            //_mediaPlayer.Prepare();
-            //_mediaPlayer.Start();
+            _mediaPlayer.Looping = true;
+            _mediaPlayer.Prepare();
+            _mediaPlayer.Start();
 
             //if (_alarm.IsVibrateOn) return;
 
 
             _vibrator = Vibrator.FromContext(this);
-            _vibrator.Vibrate(_pattern, 0);
+            _vibrator.Vibrate(VibrationEffect.CreateOneShot(500, VibrationEffect.DefaultAmplitude));
             Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
         }
 
