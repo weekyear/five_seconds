@@ -24,26 +24,26 @@ namespace Five_Seconds.Droid.Services
     public class AlarmSetterAndroid : IAlarmSetter
     {
         public static string AlarmTag = "Al4rm";
-        IAlarmRepository _alarmRepo = App.AlarmRepo;
+        IAlarmToneRepository _alarmRepo = App.AlarmRepo;
 
         public AlarmSetterAndroid()
         {
 
         }
 
-        public void SetAlarm(Alarm alarm)
+        public void SetAlarm(Mission mission)
         {
             var dateNow = DateTime.Now.ToLocalTime().TimeOfDay;
+            var alarm = mission.Alarm;
             var difference = alarm.Time.Subtract(dateNow);
             // 마이너스값일 때 12시간 추가해줘야 함
             var differenceAsMillis = difference.TotalMilliseconds;
 
             alarm.Time.Add(new TimeSpan(1, 0, 0));
-            var id = _alarmRepo.SaveAlarm(alarm);
 
             var receiverIntent = new Intent(Application.Context, typeof(AlarmService));
             receiverIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            receiverIntent.PutExtra("id", id);
+            receiverIntent.PutExtra("id", mission.Id);
             receiverIntent.PutExtra("diffAsMillis", differenceAsMillis);
             receiverIntent.SetAction("ActionStartService");
 
@@ -55,42 +55,21 @@ namespace Five_Seconds.Droid.Services
             {
                 Application.Context.StartService(receiverIntent);
             }
-
-            //var pendingIntent = PendingIntent.GetBroadcast(Application.Context, GetAlarmId(alarm), alarmIntent, PendingIntentFlags.UpdateCurrent);
-            //var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-
-            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis(), pendingIntent);
-            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)differenceAsMillis, pendingIntent);
-
-            
-
-            //var _alarmIntent = new Intent(Application.Context, typeof(AlarmIntentService));
-            //_alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            //_alarmIntent.PutExtra("id", id);
-            //var pendingIntent = PendingIntent.GetService(Application.Context, 0, _alarmIntent, PendingIntentFlags.CancelCurrent);
-
-            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)differenceAsMillis, pendingIntent);
         }
 
         public void SetRepeatingAlarm(Alarm alarm)
         {
         }
 
-        public void DeleteAlarm(Alarm alarm)
+        public void DeleteAlarm(int id)
         {
             var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            alarmIntent.PutExtra("id", alarm.Id);
+            alarmIntent.PutExtra("id", id);
 
-            var alarmToDeleteId = GetAlarmId(alarm);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, alarmToDeleteId, alarmIntent, PendingIntentFlags.CancelCurrent);
+            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.CancelCurrent);
             alarmManager.Cancel(toDeletePendingIntent);
-        }
-
-        int GetAlarmId(Alarm alarm)
-        {
-            return (int)alarm.Time.TotalMilliseconds;
         }
 
         string GetTimeDifferenceAsString(DateTime alarmTime)
@@ -151,11 +130,11 @@ namespace Five_Seconds.Droid.Services
             return diff;
         }
 
-        public void DeleteAllAlarms(List<Alarm> alarms)
+        public void DeleteAllAlarms(List<Mission> missions)
         {
-            foreach (Alarm alarm in alarms)
+            foreach (Mission mission in missions)
             {
-                DeleteAlarm(alarm);
+                DeleteAlarm(mission.Id);
             }
         }
     }
@@ -185,7 +164,6 @@ namespace Five_Seconds.Droid.Services
         private void StartMyOwnForeground()
         {
             var NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
-            int NOTIFICATION_ID = 1000;
             var channelName = "My Background Service";
             var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
             var manager = (NotificationManager)GetSystemService(Context.NotificationService);
@@ -203,7 +181,7 @@ namespace Five_Seconds.Droid.Services
 
             StartForeground(2, notification);
 
-            manager.Notify(2, notification);
+            //manager.Notify(2, notification);
             //manager.Cancel(2);
         }
 
@@ -243,20 +221,6 @@ namespace Five_Seconds.Droid.Services
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);
             Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
-
-            //Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
-            //var id = intent.GetIntExtra("id", 0);
-            //var diffAsMillis = intent.GetDoubleExtra("diffAsMillis", 0);
-
-            //var _alarmIntent = new Intent(Application.Context, typeof(AlarmIntentService));
-            //_alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            //_alarmIntent.PutExtra("id", id);
-            //var pendingIntent = PendingIntent.GetService(Application.Context, 0, _alarmIntent, PendingIntentFlags.CancelCurrent);
-            //var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-
-            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffAsMillis, pendingIntent);
-            ////context.StartForegroundService(_alarmIntent);
-            //Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
         }
     }
 

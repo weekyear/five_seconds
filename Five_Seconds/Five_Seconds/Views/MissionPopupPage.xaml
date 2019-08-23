@@ -42,7 +42,7 @@
         <StackLayout>
             <Label Text="Mission Time" />
             <TimePicker x:Name="_timePicker"
-                        Time="{Binding TimeOfDay}"
+                        Time="{Binding Time}"
                         Format="t"
                         FontSize="20">
             </TimePicker>

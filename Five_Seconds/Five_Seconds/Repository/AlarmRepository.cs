@@ -1,46 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 
 namespace Five_Seconds.Repository
 {
-    public class AlarmRepository : IAlarmRepository
+    public class AlarmToneRepository : IAlarmToneRepository
     {
         public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
 
-        public Alarm GetAlarm(int id)
+        public IEnumerable<AlarmTone> GetAllTones()
         {
-            var list = GetAllAlarms() as List<Alarm>;
-
-            return ItemDatabase.GetObject<Alarm>(id);
+            return ItemDatabase.GetObjects<AlarmTone>();
         }
 
-        public int SaveAlarm(Alarm alarm)
+        public int AddTone(AlarmTone alarmTone)
         {
-            return ItemDatabase.SaveObject(alarm);
+            return ItemDatabase.SaveObject(alarmTone);
         }
 
-        public int DeleteAlarm(Alarm alarm)
+        public int DeleteTone(AlarmTone alarmTone)
         {
-            return ItemDatabase.DeleteObject<Alarm>(alarm.Id);
+            return ItemDatabase.DeleteObject<AlarmTone>(alarmTone.Id);
         }
 
-        public void DeleteAllAlarms()
+        public void SetDefaultTones()
         {
-            ItemDatabase.DeleteAllObjects<Alarm>();
+            var tones = AlarmTone.Tones;
+
+            foreach (AlarmTone tone in tones)
+            {
+                ItemDatabase.SaveObject(tone);
+            }
         }
 
-        public bool DoesAlarmExist(Alarm alarm)
+        public AlarmTone GetTone(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Alarm> GetAllAlarms()
-        {
-            return ItemDatabase.GetObjects<Alarm>();
+            return ItemDatabase.GetObject<AlarmTone>(id);
         }
 
         //public List<Alarm> GetTodaysAlarms()

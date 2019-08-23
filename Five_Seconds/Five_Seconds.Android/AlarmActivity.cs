@@ -22,8 +22,8 @@ namespace Five_Seconds.Droid
     [Activity(Label = "AlarmActivity", NoHistory = true, Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        IAlarmRepository _alarmRepo = App.AlarmRepo;
-        Alarm _alarm;
+        IMissionsRepository missionRepo = App.MissionsRepo;
+        Mission mission;
         //AlarmApp.Models.Settings _settings;
 
         MediaPlayer _mediaPlayer = new MediaPlayer();
@@ -61,9 +61,9 @@ namespace Five_Seconds.Droid
             var id = (int)bundle.Get("id");
             var timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
             var nameTextView = FindViewById<TextView>(Resource.Id.nameTextView);
-            _alarm = _alarmRepo.GetAlarm(id);
-            timeTextView.Text = _alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
-            nameTextView.Text = _alarm.Name;
+            mission = missionRepo.GetMission(id);
+            timeTextView.Text = mission.Alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
+            nameTextView.Text = mission.Name;
 
             // 벨소리 늘리거나 커스텀 벨소리 넣게할라면 AlarmApp 솔루션 열어서 확인
             string alarmTonePath = "rocket.m4a";

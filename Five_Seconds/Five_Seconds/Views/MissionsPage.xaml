@@ -49,14 +49,14 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding TimeOfDay, Converter={StaticResource TimeStringConverter}}"
+                            <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                        TextColor="{StaticResource PrimaryTextColor}"
                                        FontSize="28"
                                        FontAttributes="Bold" />
                             <Label Grid.Row="1" Grid.ColumnSpan="1"
                                        TextColor="{StaticResource PrimaryTextColor}"
                                        FontSize="28"
-                                       Text="{Binding Description}"
+                                       Text="{Binding Name}"
                                        HorizontalTextAlignment="Start"
                                        MaxLines="1"
                                        FontAttributes="Bold" />

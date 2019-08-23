@@ -1,11 +1,7 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
-using Five_Seconds.Services;
 using Rg.Plugins.Popup.Contracts;
-using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -13,8 +9,6 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionPopupViewModel : BaseViewModel
     {
-        IAlarmSetter _alarmSetter = DependencyService.Get<IAlarmSetter>();
-
         private readonly IPopupNavigation PopupNavigation;
         public MissionPopupViewModel(INavigation navigation, IMissionsRepository missionRepo, IPopupNavigation popupNavigation) : base(navigation, missionRepo)
         {
@@ -52,30 +46,30 @@ namespace Five_Seconds.ViewModels
 
         public string Description
         {
-            get { return Mission.Description; }
+            get { return Mission.Name; }
             set
             {
-                if (Mission.Description == value) return;
-                Mission.Description = value;
+                if (Mission.Name == value) return;
+                Mission.Name = value;
                 OnPropertyChanged(nameof(Description));
             }
         }
 
-        public TimeSpan TimeOfDay
+        public TimeSpan Time
         {
             get
             {
-                if (Mission.TimeOfDay == TimeSpan.Zero)
+                if (Mission.Alarm.Time== TimeSpan.Zero)
                 {
-                    Mission.TimeOfDay = DateTime.Now.TimeOfDay;
+                    Mission.Alarm.Time = DateTime.Now.TimeOfDay;
                 }
-                return Mission.TimeOfDay;
+                return Mission.Alarm.Time;
             }
             set
             {
-                if (Mission.TimeOfDay == value) return;
-                Mission.TimeOfDay = value;
-                OnPropertyChanged(nameof(TimeOfDay));
+                if (Mission.Alarm.Time == value) return;
+                Mission.Alarm.Time = value;
+                OnPropertyChanged(nameof(Time));
             }
         }
         public int TimeLimit
@@ -89,11 +83,6 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public DateTime Time
-        {
-            get; set;
-        }
-
         // Methods
 
         private async Task ClosePopup()
@@ -103,12 +92,6 @@ namespace Five_Seconds.ViewModels
         private async Task Save()
         {
             MissionRepo.SaveMission(Mission);
-            var alarm = new Alarm()
-            {
-                Name = Mission.Description,
-                Time = Mission.TimeOfDay
-            };
-            _alarmSetter.SetAlarm(alarm);
             await ClosePopup();
         }
 

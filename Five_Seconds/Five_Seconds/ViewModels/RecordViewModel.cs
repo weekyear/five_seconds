@@ -12,7 +12,7 @@ namespace Five_Seconds.ViewModels
     {
         public RecordViewModel(INavigation navigation, IMissionsRepository missionRepo, Mission mission = null) : base(navigation, missionRepo)
         {
-            Title = mission?.Description;
+            Title = mission?.Name;
             Mission = mission;
         }
 

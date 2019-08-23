@@ -4,6 +4,7 @@ using Five_Seconds.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using Xamarin.Forms;
 
@@ -12,6 +13,8 @@ namespace Five_Seconds.Repository
     public class MissionsRepository : IMissionsRepository
     {
         public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
+
+        IAlarmSetter alarmSetter = DependencyService.Get<IAlarmSetter>();
 
         private ObservableCollection<Mission> missions = new ObservableCollection<Mission>();
         public ObservableCollection<Mission> Missions
@@ -48,7 +51,9 @@ namespace Five_Seconds.Repository
         {
             AddOrModifyMissionToMissions(mission);
             SendMessage("save");
-            return ItemDatabase.SaveObject(mission);
+            var id = ItemDatabase.SaveObject(mission);
+            alarmSetter.SetAlarm(mission);
+            return id;
         }
 
         private void AddOrModifyMissionToMissions(Mission mission)
@@ -66,6 +71,7 @@ namespace Five_Seconds.Repository
 
         public int DeleteMission(int id)
         {
+            alarmSetter.DeleteAlarm(id);
             DeleteMissionOfMissions(id);
             SendMessage("delete");
             return ItemDatabase.DeleteObject<Mission>(id);
@@ -84,7 +90,34 @@ namespace Five_Seconds.Repository
 
         public void DeleteAllMissions()
         {
+            DeleteAllAlarms();
             ItemDatabase.DeleteAllObjects<Mission>();
+        }
+
+        private void DeleteAllAlarms()
+        {
+            var listMission = GetMissions() as List<Mission>;
+            alarmSetter.DeleteAllAlarms(listMission);
+        }
+
+        public Alarm GetAlarm(int id)
+        {
+            return GetMission(id).Alarm;
+        }
+
+        public List<Alarm> GetAllAlarms()
+        {
+            var allMissions = GetMissions();
+            var listAlarm = new List<Alarm>();
+
+            foreach (var mission in allMissions)
+            {
+                if (mission.Alarm.IsActive == true)
+                {
+                    listAlarm.Add(mission.Alarm);
+                }
+            }
+            return listAlarm;
         }
 
         private void SendMessage(string type)

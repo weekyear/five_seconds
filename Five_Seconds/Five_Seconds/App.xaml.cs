@@ -52,14 +52,14 @@ namespace Five_Seconds
             }
         }
 
-        private static IAlarmRepository alarmRepo;
-        public static IAlarmRepository AlarmRepo
+        private static IAlarmToneRepository alarmRepo;
+        public static IAlarmToneRepository AlarmRepo
         {
             get
             {
                 if (alarmRepo == null)
                 {
-                    alarmRepo = new AlarmRepository();
+                    alarmRepo = new AlarmToneRepository();
                 }
                 return alarmRepo;
             }

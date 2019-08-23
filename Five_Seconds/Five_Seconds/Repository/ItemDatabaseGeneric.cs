@@ -21,6 +21,8 @@ namespace Five_Seconds.Repository
             database.CreateTable<Mission>();
             database.CreateTable<Record>();
             database.CreateTable<Alarm>();
+            database.CreateTable<DaysOfWeek>();
+            database.CreateTable<AlarmTone>();
         }
         public IEnumerable<T> GetObjects<T>() where T : IObject, new()
         {

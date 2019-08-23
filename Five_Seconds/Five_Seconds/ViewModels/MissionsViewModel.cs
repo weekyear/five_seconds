@@ -22,7 +22,9 @@ namespace Five_Seconds.ViewModels
             MessageBoxService = messageBoxService;
             PopupNavigation = popupNavigation;
 
-            InitMissions();
+            MissionRepo.DeleteAllMissions();
+
+            //InitMissions();
 
             ConstructCommand();
         }
@@ -31,7 +33,7 @@ namespace Five_Seconds.ViewModels
         {
             if (Device.RuntimePlatform == "Test") return;
 
-            //MissionRepo.DeleteAllMissions();
+            MissionRepo.DeleteAllMissions();
 
             var missionsList = MissionRepo.GetMissions() as List<Mission>;
 
@@ -48,10 +50,10 @@ namespace Five_Seconds.ViewModels
 
                 missionsList = new List<Mission>
                 {
-                    new Mission { Description = "일어나기", TimeOfDay = new TimeSpan(1, 20, 00), Percentage = 0.835, Records = records },
-                    new Mission { Description = "운동하기", TimeOfDay = new TimeSpan(2, 30, 00), Percentage = 0.434 },
-                    new Mission { Description = "공부하기", TimeOfDay = new TimeSpan(3, 40, 00), Percentage = 0.025 },
-                    new Mission { Description = "잠자기", TimeOfDay = new TimeSpan(4, 50, 00), Percentage = 1.00 }
+                    new Mission { Name = "일어나기", Alarm = new Alarm(new TimeSpan(1, 20, 00)), Percentage = 0.835, Records = records },
+                    new Mission { Name = "운동하기", Alarm = new Alarm(new TimeSpan(2, 30, 00)), Percentage = 0.434 },
+                    new Mission { Name = "공부하기", Alarm = new Alarm(new TimeSpan(3, 40, 00)), Percentage = 0.025 },
+                    new Mission { Name = "잠자기", Alarm = new Alarm(new TimeSpan(4, 50, 00)), Percentage = 1.00 }
                 };
 
                 foreach (var item in missionsList)

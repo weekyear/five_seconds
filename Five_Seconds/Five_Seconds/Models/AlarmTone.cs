@@ -14,6 +14,13 @@ namespace Five_Seconds.Models
         public string Path { get; set; }
         public bool IsCustomTone { get; set; }
 
+        public AlarmTone()
+        {
+            Name = string.Empty;
+            Path = string.Empty;
+            IsCustomTone = false;
+        }
+
         public AlarmTone(string name, string path)
         {
             Name = name;
@@ -36,5 +43,16 @@ namespace Five_Seconds.Models
 
             return false;
         }
+
+        public static readonly List<AlarmTone> Tones = new List<AlarmTone>()
+        {
+            new AlarmTone("Select custom tone...", null),
+            new AlarmTone("Buzz", "buzz.mp3"),
+            new AlarmTone("Synth", "synth.mp3"),
+            new AlarmTone("Xylophone", "xylophone.mp3"),
+            new AlarmTone("Shooting Stars", "shooting_stars.mp3"),
+            new AlarmTone("Sixteen Bit", "sixteen_bit.mp3"),
+            new AlarmTone("Sci-fi", "sci_fi.mp3")
+        };
     }
 }
