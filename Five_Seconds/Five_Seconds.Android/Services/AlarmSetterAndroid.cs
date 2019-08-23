@@ -171,6 +171,8 @@ namespace Five_Seconds.Droid.Services
                 StartMyOwnForeground();
             else
                 StartForeground(1, new Notification());
+
+            
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
@@ -182,16 +184,16 @@ namespace Five_Seconds.Droid.Services
 
         private void StartMyOwnForeground()
         {
-            string NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+            var NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
             int NOTIFICATION_ID = 1000;
-            string channelName = "My Background Service";
-            NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.None);
-            NotificationManager manager = (NotificationManager)GetSystemService(Context.NotificationService);
+            var channelName = "My Background Service";
+            var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
+            var manager = (NotificationManager)GetSystemService(Context.NotificationService);
 
             manager?.CreateNotificationChannel(chan);
 
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-            Notification notification = notificationBuilder.SetOngoing(true)
+            var notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+            var notification = notificationBuilder.SetOngoing(true)
                     .SetSmallIcon(Resource.Drawable.ic_plus)
                     .SetContentTitle("App is running in background")
                     .SetPriority((int)NotificationImportance.Min)
@@ -214,7 +216,7 @@ namespace Five_Seconds.Droid.Services
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", id);
-            var pendingIntent = PendingIntent.GetService(Application.Context, 0, _alarmIntent, PendingIntentFlags.CancelCurrent);
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
             alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffAsMillis, pendingIntent);
@@ -225,58 +227,6 @@ namespace Five_Seconds.Droid.Services
         public override IBinder OnBind(Intent intent)
         {
             return null;
-        }
-    }
-
-    [Service(Label = "AlarmIntentService")]
-    public class AlarmIntentService : IntentService
-    {
-        public override void OnCreate()
-        {
-            base.OnCreate();
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-                StartMyOwnForeground();
-            else
-                StartForeground(1, new Notification());
-        }
-
-        private void StartMyOwnForeground()
-        {
-            string NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
-            int NOTIFICATION_ID = 1000;
-            string channelName = "My Background Service";
-            NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.None);
-            NotificationManager manager = (NotificationManager)GetSystemService(Context.NotificationService);
-
-            manager?.CreateNotificationChannel(chan);
-
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-            Notification notification = notificationBuilder.SetOngoing(true)
-                    .SetSmallIcon(Resource.Drawable.ic_plus)
-                    .SetContentTitle("App is running in background")
-                    .SetPriority((int)NotificationImportance.Min)
-                    .SetCategory(Notification.CategoryService)
-                    .Build();
-
-            StartForeground(2, notification);
-        }
-
-        protected override void OnHandleIntent(Intent intent)
-        {
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
-            var id = intent.GetIntExtra("id", 0);
-            var diffAsMillis = intent.GetDoubleExtra("diffAsMillis", 0);
-
-            var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            _alarmIntent.PutExtra("id", id);
-            var pendingIntent = PendingIntent.GetService(Application.Context, 0, _alarmIntent, PendingIntentFlags.CancelCurrent);
-            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-
-            alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffAsMillis, pendingIntent);
-            //context.StartForegroundService(_alarmIntent);
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
         }
     }
 
