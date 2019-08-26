@@ -33,30 +33,6 @@ namespace Five_Seconds.ViewModels
         public Command CloseCommand { get; set; }
         public Command SaveCommand { get; set; }
 
-        public ICommand DayPressedCommand
-        {
-            get
-            {
-                return new Command((param) =>
-                {
-                    var isSelected = (bool)param;
-                    if (HasDayBeenSelected == false)
-                    {
-                        if (!isSelected)
-                        {
-                            HasDayBeenSelected = true;
-                            return;
-                        }
-
-                        if (DaysOfWeek.GetHasADayBeenSelected(Days))
-                        {
-                            HasDayBeenSelected = true;
-                        }
-                    }
-                });
-            }
-        }
-
         // Property
         public Mission Mission
         {
@@ -102,7 +78,16 @@ namespace Five_Seconds.ViewModels
                 OnPropertyChanged(nameof(Time));
             }
         }
-        public DaysOfWeek Days { get; set; }
+        public DaysOfWeek Days
+        {
+            get { return Mission.Alarm.Days; }
+            set
+            {
+                if (Mission.Alarm.Days == value) return;
+                Mission.Alarm.Days = value;
+                OnPropertyChanged(nameof(Days));
+            }
+        }
 
         public bool IsAlarmOn
         {

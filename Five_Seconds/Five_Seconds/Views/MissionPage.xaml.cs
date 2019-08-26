@@ -1,4 +1,5 @@
-﻿using Five_Seconds.Models;
+﻿using Five_Seconds.CustomControls;
+using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.ViewModels;
 using System;
@@ -33,6 +34,38 @@ namespace Five_Seconds.Views
             BindingContext = viewModel;
 
             InitializeComponent();
+        }
+
+        void OnIsSelectedChanged(object sender, ClickedEventArgs e)
+        {
+            var button = sender as DayOfWeekButton;
+
+            button.IsSelected = !button.IsSelected;
+
+            if (button.IsSelected == true)
+            {
+                button.BorderColor = Color.IndianRed;
+            }
+            else
+            {
+                button.BorderColor = Color.Transparent;
+            }
+        }
+
+        private void DayOfWeekButton_Clicked(object sender, EventArgs e)
+        {
+            var button = sender as DayOfWeekButton;
+
+            button.IsSelected = !button.IsSelected;
+
+            if (button.IsSelected == true)
+            {
+                button.BorderColor = Color.IndianRed;
+            }
+            else
+            {
+                button.BorderColor = Color.Transparent;
+            }
         }
     }
 }
