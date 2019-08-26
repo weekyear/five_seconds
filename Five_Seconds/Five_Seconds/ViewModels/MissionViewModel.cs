@@ -80,11 +80,11 @@ namespace Five_Seconds.ViewModels
         }
         public DaysOfWeek Days
         {
-            get { return Mission.Alarm.Days; }
+            get { return Alarm.Days; }
             set
             {
-                if (Mission.Alarm.Days == value) return;
-                Mission.Alarm.Days = value;
+                if (Alarm.Days == value) return;
+                Alarm.Days = value;
                 OnPropertyChanged(nameof(Days));
             }
         }

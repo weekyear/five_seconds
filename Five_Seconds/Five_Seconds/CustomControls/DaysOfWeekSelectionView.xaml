@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
+         xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+         xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+         mc:Ignorable="d"
+         x:Class="Five_Seconds.CustomControls.DaysOfWeekSelectionView"
+		 x:Name="ThisView">
+    <ContentView.Content>
+        <Grid HorizontalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45"/>
+            </Grid.ColumnDefinitions>
+            <custom:DayOfWeekButton 
+                            BackgroundColor="Transparent" 
+                            Grid.Column="0" 
+                            FontSize="16" Text="S" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Sunday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+            <custom:DayOfWeekButton 
+                            Grid.Column="1"
+                            BackgroundColor="Transparent"
+                            Padding="10"
+                            FontSize="16" Text="M" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Monday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+            <custom:DayOfWeekButton 
+                            Grid.Column="2"
+                            BackgroundColor="Transparent"
+                            FontSize="16" Text="T" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Tuesday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+            <custom:DayOfWeekButton 
+                            Grid.Column="3"
+                            BackgroundColor="Transparent"
+                            FontSize="16" Text="W" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Wednesday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+            <custom:DayOfWeekButton 
+                            Grid.Column="4"
+                            BackgroundColor="Transparent"
+                            FontSize="16" Text="T" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Thursday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+            <custom:DayOfWeekButton 
+                            Grid.Column="5"
+                            BackgroundColor="Transparent"
+                            FontSize="16" Text="F" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Friday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+            <custom:DayOfWeekButton 
+                            Grid.Column="6"
+                            BackgroundColor="Transparent"
+                            FontSize="16" Text="S" TextColor="Black"
+                            BorderWidth="3" CornerRadius="50"
+                            IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Saturday}"
+                            IsSelectedChanged="OnIsSelectedChanged"
+                            Clicked="DayOfWeekButton_Clicked"/>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

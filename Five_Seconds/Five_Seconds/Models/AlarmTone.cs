@@ -46,7 +46,6 @@ namespace Five_Seconds.Models
 
         public static readonly List<AlarmTone> Tones = new List<AlarmTone>()
         {
-            new AlarmTone("Select custom tone...", null),
             new AlarmTone("Buzz", "buzz.mp3"),
             new AlarmTone("Synth", "synth.mp3"),
             new AlarmTone("Xylophone", "xylophone.mp3"),

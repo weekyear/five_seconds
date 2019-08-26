@@ -45,70 +45,9 @@
             </TableSection>
             <TableSection Title="Repeat">
                 <custom:TableViewCell AllowHighlight="False">
-                    <Grid HorizontalOptions="FillAndExpand">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <custom:DayOfWeekButton 
-                            BackgroundColor="Transparent" 
-                            Grid.Column="0" 
-                            FontSize="16" Text="S" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Sunday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                        <custom:DayOfWeekButton 
-                            Grid.Column="1"
-                            BackgroundColor="Transparent"
-                            Padding="10"
-                            FontSize="16" Text="M" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Monday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                        <custom:DayOfWeekButton 
-                            Grid.Column="2"
-                            BackgroundColor="Transparent"
-                            FontSize="16" Text="T" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Tuesday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                        <custom:DayOfWeekButton 
-                            Grid.Column="3"
-                            BackgroundColor="Transparent"
-                            FontSize="16" Text="W" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Wednesday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                        <custom:DayOfWeekButton 
-                            Grid.Column="4"
-                            BackgroundColor="Transparent"
-                            FontSize="16" Text="T" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Thursday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                        <custom:DayOfWeekButton 
-                            Grid.Column="5"
-                            BackgroundColor="Transparent"
-                            FontSize="16" Text="F" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Friday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                        <custom:DayOfWeekButton 
-                            Grid.Column="6"
-                            BackgroundColor="Transparent"
-                            FontSize="16" Text="S" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
-                            IsSelected="{Binding Days.Saturday}"
-                            Clicked="DayOfWeekButton_Clicked"/>
-                    </Grid>
+                    <ScrollView Orientation="Horizontal">
+                        <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
+                    </ScrollView>
                 </custom:TableViewCell>
             </TableSection>
             <TableSection Title="Alarm Option">

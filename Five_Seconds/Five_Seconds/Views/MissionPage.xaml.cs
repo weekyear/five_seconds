@@ -3,10 +3,6 @@ using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
