@@ -64,7 +64,9 @@
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />
     <Compile Include="CustomRenderers\CustomViewCellRenderer.cs" />
+    <Compile Include="CustomRenderers\DayOfWeekButtonRenderer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\DeviceStorageIos.cs" />

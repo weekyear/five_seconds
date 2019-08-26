@@ -72,16 +72,6 @@ namespace Five_Seconds.ViewModels
                 OnPropertyChanged(nameof(Time));
             }
         }
-        public int TimeLimit
-        {
-            get { return Mission.TimeLimit; }
-            set
-            {
-                if (Mission.TimeLimit == value) return;
-                Mission.TimeLimit = value;
-                OnPropertyChanged(nameof(TimeLimit));
-            }
-        }
 
         // Methods
 

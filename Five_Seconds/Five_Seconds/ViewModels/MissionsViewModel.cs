@@ -22,8 +22,6 @@ namespace Five_Seconds.ViewModels
             MessageBoxService = messageBoxService;
             PopupNavigation = popupNavigation;
 
-            MissionRepo.DeleteAllMissions();
-
             //InitMissions();
 
             ConstructCommand();
@@ -87,7 +85,7 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowAddMission()
         {
-            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, MissionRepo, PopupNavigation));
+            await Navigation.PushAsync(new MissionPage(Navigation, MissionRepo));
         }
 
         public async Task ShowMenu(object _mission)
@@ -118,7 +116,7 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowModifyMission(Mission mission)
         {
-            await PopupNavigation.PushAsync(new MissionPopupPage(Navigation, MissionRepo, mission, PopupNavigation));
+            await Navigation.PushAsync(new MissionPage(Navigation, MissionRepo, mission));
         }
 
         private async Task ShowMissionRecord(Mission mission)

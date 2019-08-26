@@ -12,22 +12,28 @@ namespace Five_Seconds.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DateTimeOffset TimeOffset { get; set; }
+        [PrimaryKey, NotNull, AutoIncrement]
+        public int Id { get; set; }
 
         public TimeSpan Time
         {
             get { return TimeOffset.LocalDateTime.TimeOfDay; }
             set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
         }
-
         public bool IsActive { get; set; }
+        public bool IsAlarmOn { get; set; } = false;
+        public int Volume { get; set; } = 5;
+
         public bool OccursToday { get { return Days.Equals(DateTime.Now.DayOfWeek); } }
         public bool IsVibrateOn { get; set; } = false;
+        public int VibeFrequency { get; set; } = 5;
 
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public string Tone { get; set; }
 
+
+        public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);
         protected DateTimeOffset GetDateTimeOffsetFromTimeSpan(TimeSpan time)
         {
             var now = DateTime.Now;
@@ -35,7 +41,9 @@ namespace Five_Seconds.Models
             return new DateTimeOffset(dateTime);
         }
 
-        public Alarm() { }
+        public Alarm()
+        {
+        }
         public Alarm(TimeSpan timeSpan)
         {
             Time = timeSpan;

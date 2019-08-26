@@ -73,7 +73,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AlarmActivity.cs" />
+    <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />
     <Compile Include="CustomRenderers\CustomViewCellRenderer.cs" />
+    <Compile Include="CustomRenderers\MusicSelectionButtonRenderer.cs" />
+    <Compile Include="CustomRenderers\TableViewCellRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

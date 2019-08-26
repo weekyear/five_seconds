@@ -49,7 +49,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="100" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                            <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
                                        TextColor="{StaticResource PrimaryTextColor}"
                                        FontSize="28"
                                        FontAttributes="Bold" />
@@ -76,16 +76,6 @@
                     </custom:CustomViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <d:ListView.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>First Item</x:String>
-                    <x:String>Second Item</x:String>
-                    <x:String>Third Item</x:String>
-                    <x:String>Forth Item</x:String>
-                    <x:String>Fifth Item</x:String>
-                    <x:String>Sixth Item</x:String>
-                </x:Array>
-            </d:ListView.ItemsSource>
         </ListView>
     </StackLayout>
     

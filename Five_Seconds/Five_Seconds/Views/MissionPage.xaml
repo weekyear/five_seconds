@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
+             xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             mc:Ignorable="d"
+             x:Class="Five_Seconds.Views.MissionPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:TimeStringConverter x:Key="TimeStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Command="{Binding SaveCommand}"/>
+    </ContentPage.ToolbarItems>
+
+    <TableView HasUnevenRows="True" IsTabStop="True">
+        <TableRoot>
+            <TableSection Title="Mission">
+                <custom:TableViewCell AllowHighlight="False">
+                    <StackLayout Padding="12,0" Orientation="Horizontal">
+                        <Label Text="Name"
+                               VerticalOptions="CenterAndExpand"/>
+                        <Entry x:Name="Mission_Name"
+                               HorizontalOptions="FillAndExpand"
+                               FontSize="18"
+                               Placeholder="Please Insert Name"
+                               Text="{Binding Name}" />
+                    </StackLayout>
+                </custom:TableViewCell>
+                <custom:TableViewCell AllowHighlight="False">
+                    <StackLayout Orientation="Horizontal" Padding="13, 0">
+                        <Label Text="Time" VerticalOptions="Center"></Label>
+                        <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
+                        Time="{Binding Alarm.Time}" Margin="10"
+                        Format="t"
+                        FontSize="35"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+            </TableSection>
+            <TableSection Title="Repeat">
+                <custom:TableViewCell AllowHighlight="False">
+                    <Grid HorizontalOptions="FillAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button BackgroundColor="Transparent" Grid.Column="0" 
+                        FontSize="16"
+                        Text="S"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                        <Button Grid.Column="1"
+                        BackgroundColor="Transparent"
+                        Padding="10"
+                        FontSize="16"
+                        Text="M"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                        <Button Grid.Column="2"
+                        BackgroundColor="Transparent"
+                        FontSize="16"
+                        Text="T"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                        <Button Grid.Column="3"
+                        BackgroundColor="Transparent"
+                        FontSize="16"
+                        Text="W"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                        <Button Grid.Column="4"
+                        BackgroundColor="Transparent"
+                        FontSize="16"
+                        Text="T"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                        <Button Grid.Column="5"
+                        BackgroundColor="Transparent"
+                        FontSize="16"
+                        Text="F"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                        <Button Grid.Column="6"
+                        BackgroundColor="Transparent"
+                        FontSize="16"
+                        Text="S"
+                        TextColor="Black"
+                        Command="{Binding CloseCommand}"/>
+                    </Grid>
+                </custom:TableViewCell>
+            </TableSection>
+            <TableSection Title="Alarm Option">
+                <custom:TableViewCell AllowHighlight="False">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Alarm Type" VerticalOptions="CenterAndExpand"/>
+                        <custom:MusicSelectionButton Text="Alarm Type" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+                <custom:TableViewCell AllowHighlight="False">
+                    <StackLayout HorizontalOptions="FillAndExpand"
+                                 Margin="10">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Alarm Volume" VerticalOptions="CenterAndExpand"/>
+                            <Switch IsToggled="{Binding Alarm.IsAlarmOn}" 
+                                    HorizontalOptions="EndAndExpand"
+                                    OnColor="LightSteelBlue"
+                                    ThumbColor="SkyBlue"/>
+                        </StackLayout>
+                        <Slider x:Name="VolumeSlider" 
+                                IsEnabled="{Binding Alarm.IsAlarmOn}"
+                                WidthRequest="500"
+                                MinimumTrackColor="LightSkyBlue"
+                                MaximumTrackColor="LightSkyBlue"
+                                ThumbColor="DeepSkyBlue"
+                                Maximum="10" Minimum="1" 
+                                Margin="5"
+                                Value="{Binding Alarm.Volume}"
+                                VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+                <custom:TableViewCell AllowHighlight="False">
+                    <StackLayout Margin="10">
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="Vibrate?" VerticalOptions="CenterAndExpand" />
+                            <Switch IsToggled="{Binding Alarm.IsVibrateOn}" 
+                                    HorizontalOptions="EndAndExpand"
+                                    OnColor="LightSteelBlue"
+                                    ThumbColor="SkyBlue"/>
+                        </StackLayout>
+                        <Slider x:Name="VibrateSlider"
+                                IsEnabled="{Binding Alarm.IsVibrateOn}"
+                                HorizontalOptions="FillAndExpand" 
+                                MinimumTrackColor="LightSkyBlue"
+                                MaximumTrackColor="LightSkyBlue"
+                                ThumbColor="DeepSkyBlue"
+                                Maximum="10" Minimum="1" 
+                                Margin="5"
+                                Value="{Binding Alarm.VibeFrequency}"
+                                VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+            </TableSection>
+        </TableRoot>
+    </TableView>
+</ContentPage>
