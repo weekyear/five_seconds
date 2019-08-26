@@ -12,15 +12,12 @@ namespace Five_Seconds.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [PrimaryKey, NotNull, AutoIncrement]
-        public int Id { get; set; }
-
         public TimeSpan Time
         {
             get { return TimeOffset.LocalDateTime.TimeOfDay; }
             set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
         }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         public bool IsAlarmOn { get; set; } = false;
         public int Volume { get; set; } = 5;
 
@@ -30,7 +27,7 @@ namespace Five_Seconds.Models
 
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
-        public string Tone { get; set; }
+        public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
 
         public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);

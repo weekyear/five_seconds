@@ -94,7 +94,7 @@ namespace Five_Seconds.Repository
             ItemDatabase.DeleteAllObjects<Mission>();
         }
 
-        private void DeleteAllAlarms()
+        public void DeleteAllAlarms()
         {
             var listMission = GetMissions() as List<Mission>;
             alarmSetter.DeleteAllAlarms(listMission);

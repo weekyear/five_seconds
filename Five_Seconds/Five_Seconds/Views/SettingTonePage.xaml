@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 Title="Select Tone"
+             mc:Ignorable="d"
+             x:Name="tonePage"
+             x:Class="Five_Seconds.Views.SettingTonePage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate 
+				x:Key="DefaultTemplate">
+                <ViewCell>
+                    <ViewCell.View>
+                        <StackLayout Orientation="Horizontal">
+                            <Label 
+                                Text="{Binding Name}" 
+                                FontSize="17" 
+                                TextColor="Black" 
+                                Margin="20"/>
+                            <Button
+                                HorizontalOptions="EndAndExpand"
+                                BackgroundColor="AliceBlue"
+                                ImageSource="ic_plus.png"
+                                Command="{Binding Source={x:Reference tonePage}, Path=BindingContext.PlayToneCommand}"
+                                CommandParameter="{Binding .}"/>
+                        </StackLayout>
+                    </ViewCell.View>
+                </ViewCell>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ListView x:Name="ToneListView" 
+				  ItemTemplate="{StaticResource DefaultTemplate}"
+				  ItemsSource="{Binding AllAlarmTones, Mode=OneWay}" 
+				  SelectedItem="{Binding SelectedTone, Mode=TwoWay}"
+                  ItemSelected="ToneListView_ItemSelected"
+				  HasUnevenRows="true">
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

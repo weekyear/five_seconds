@@ -22,6 +22,9 @@ namespace Five_Seconds.ViewModels
             MessageBoxService = messageBoxService;
             PopupNavigation = popupNavigation;
 
+            MissionRepo.DeleteAllMissions();
+            MissionRepo.DeleteAllAlarms();
+
             //InitMissions();
 
             ConstructCommand();

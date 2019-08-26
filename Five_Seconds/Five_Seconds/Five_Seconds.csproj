@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-    <Version>1.0.71</Version>
-    <FileVersion>1.0.1.71</FileVersion>
-    <AssemblyVersion>1.0.1.71</AssemblyVersion>
+    <Version>1.0.75</Version>
+    <FileVersion>1.0.1.75</FileVersion>
+    <AssemblyVersion>1.0.1.75</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,7 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="CustomControls\DaysOfWeekSelectionView.xaml">
+    <EmbeddedResource Update="CustomControls\Days
+                      SelectionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MissionPage.xaml">
@@ -44,6 +45,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\RecordPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\SettingTonePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

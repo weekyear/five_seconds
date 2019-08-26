@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Views;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -27,11 +28,13 @@ namespace Five_Seconds.ViewModels
         {
             CloseCommand = new Command(async () => await ClosePopup());
             SaveCommand = new Command(async () => await Save());
+            ShowSettingToneCommand = new Command(async () => await ShowSettingTone());
         }
 
         // Command
         public Command CloseCommand { get; set; }
         public Command SaveCommand { get; set; }
+        public Command ShowSettingToneCommand { get; set; }
 
         // Property
         public Mission Mission
@@ -146,6 +149,11 @@ namespace Five_Seconds.ViewModels
         {
             MissionRepo.SaveMission(Mission);
             await ClosePopup();
+        }
+
+        private async Task ShowSettingTone()
+        {
+            await Navigation.PushAsync(new SettingTonePage(Navigation, MissionRepo, Mission));
         }
 
         public static bool AreEqual<T>(T left, T right)

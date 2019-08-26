@@ -54,7 +54,11 @@
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal">
                         <Label Text="Alarm Type" VerticalOptions="CenterAndExpand"/>
-                        <custom:MusicSelectionButton Text="Alarm Type" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand"/>
+                        <custom:MusicSelectionButton 
+                            Text="{Binding Alarm.Tone}" 
+                            BackgroundColor="LightGray" 
+                            HorizontalOptions="FillAndExpand"
+                            Command="{Binding ShowSettingToneCommand}"/>
                     </StackLayout>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False">

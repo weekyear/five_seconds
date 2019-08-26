@@ -18,5 +18,8 @@ namespace Five_Seconds.Repository
         int SaveMission(Mission mission);
         int DeleteMission(int id);
         void DeleteAllMissions();
+        void DeleteAllAlarms();
+        Alarm GetAlarm(int id);
+        List<Alarm> GetAllAlarms();
     }
 }

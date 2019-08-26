@@ -36,10 +36,13 @@ namespace Five_Seconds.Droid.Services
             var dateNow = DateTime.Now.ToLocalTime().TimeOfDay;
             var alarm = mission.Alarm;
             var difference = alarm.Time.Subtract(dateNow);
-            // 마이너스값일 때 12시간 추가해줘야 함
+
             var differenceAsMillis = difference.TotalMilliseconds;
 
-            alarm.Time.Add(new TimeSpan(1, 0, 0));
+            if (differenceAsMillis < 0)
+            {
+                differenceAsMillis += new TimeSpan(1, 0, 0, 0).TotalMilliseconds;
+            }
 
             var receiverIntent = new Intent(Application.Context, typeof(AlarmService));
             receiverIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
@@ -216,11 +219,21 @@ namespace Five_Seconds.Droid.Services
             Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
             var id = intent.GetIntExtra("id", 0);
 
-            var disIntent = new Intent(context, typeof(AlarmActivity));
-            disIntent.PutExtra("id", id);
-            disIntent.SetFlags(ActivityFlags.NewTask);
-            context.StartActivity(disIntent);
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+            var mission = App.MissionsRepo.GetMission(id);
+
+            if (mission is null)
+            {
+                return;
+            }
+
+            if (mission.Alarm.IsActive)
+            {
+                var disIntent = new Intent(context, typeof(AlarmActivity));
+                disIntent.PutExtra("id", id);
+                disIntent.SetFlags(ActivityFlags.NewTask);
+                context.StartActivity(disIntent);
+                Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+            }
         }
     }
 
