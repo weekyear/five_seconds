@@ -8,10 +8,11 @@ using System.Text;
 namespace Five_Seconds.Models
 {
     [Table("Alarm")]
-    public class Alarm : INotifyPropertyChanged
+    public class Alarm : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
+        [PrimaryKey, NotNull, AutoIncrement]
+        public int Id { get; set; }
         public TimeSpan Time
         {
             get { return TimeOffset.LocalDateTime.TimeOfDay; }
@@ -25,6 +26,7 @@ namespace Five_Seconds.Models
         public bool IsVibrateOn { get; set; } = false;
         public int VibeFrequency { get; set; } = 5;
 
+        public int DaysId { get; set; }
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;

@@ -34,7 +34,10 @@ namespace Five_Seconds.Repository
 
         public Mission GetMission(int id)
         {
-            return ItemDatabase.GetObject<Mission>(id);
+            var mission = ItemDatabase.GetObject<Mission>(id);
+            mission.Alarm = ItemDatabase.GetObject<Alarm>(mission.AlarmId);
+            mission.Alarm.Days = ItemDatabase.GetObject<DaysOfWeek>(mission.Alarm.DaysId);
+            return mission;
         }
 
         public IEnumerable<Mission> GetFirstMissions()
@@ -51,6 +54,8 @@ namespace Five_Seconds.Repository
         {
             AddOrModifyMissionToMissions(mission);
             SendMessage("save");
+            mission.Alarm.DaysId = ItemDatabase.SaveObject(mission.Alarm.Days);
+            mission.AlarmId = ItemDatabase.SaveObject(mission.Alarm);
             var id = ItemDatabase.SaveObject(mission);
             alarmSetter.SetAlarm(mission);
             return id;

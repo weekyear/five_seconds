@@ -19,8 +19,8 @@ namespace Five_Seconds.Repository
         {
             database = DependencyService.Get<IDatabase>().DBConnect();
             database.CreateTable<Mission>();
-            database.CreateTable<Record>();
             database.CreateTable<Alarm>();
+            database.CreateTable<Record>();
             database.CreateTable<DaysOfWeek>();
             database.CreateTable<AlarmTone>();
         }

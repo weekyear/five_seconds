@@ -7,8 +7,10 @@ using System.Text;
 namespace Five_Seconds.Models
 {
     [Table("DaysOfWeek")]
-    public class DaysOfWeek
+    public class DaysOfWeek : IObject
     {
+        [PrimaryKey, NotNull, AutoIncrement]
+        public int Id { get; set; }
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
         public bool Wednesday { get; set; }
