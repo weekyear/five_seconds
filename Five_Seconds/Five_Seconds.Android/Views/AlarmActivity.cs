@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -9,6 +10,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
+using Five_Seconds.Services;
+using Xamarin.Forms;
+using Button = Android.Widget.Button;
 
 namespace Five_Seconds.Droid
 {
@@ -82,7 +86,7 @@ namespace Five_Seconds.Droid
             }
         }
 
-        void CloseButton_Click(object sender, EventArgs e)
+        async void CloseButton_Click(object sender, EventArgs e)
         {
 
             _mediaPlayer?.Stop();
@@ -91,12 +95,19 @@ namespace Five_Seconds.Droid
             //removes our app from the scree and from 'recent apps' section
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
-                StartTellMeActivity(Application.Context);
+                //StartTellMeActivity(Application.Context);
+                await WaitForSpeechToText();
             }
             else
             {
-                StartTellMeActivity(Application.Context);
+                //StartTellMeActivity(Application.Context);
+                await WaitForSpeechToText();
             }
+        }
+
+        async Task<string> WaitForSpeechToText()
+        {
+            return await DependencyService.Get<ISpeechToText>().SpeechToTextAsync();
         }
 
         private void StartTellMeActivity(Context context)
