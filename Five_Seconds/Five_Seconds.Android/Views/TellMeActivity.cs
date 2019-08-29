@@ -22,7 +22,6 @@ namespace Five_Seconds.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "OnCreate");
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.TellMeActivity);
@@ -48,8 +47,21 @@ namespace Five_Seconds.Droid
             missionTextView.Text = mission.Name;
 
             // 벨소리 늘리거나 커스텀 벨소리 넣으려면 AlarmApp example솔루션 열어서 확인
+        }
 
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
+        private void CheckIsExistMic()
+        {
+            string rec = Android.Content.PM.PackageManager.FeatureMicrophone;
+            if (rec != "android.hardware.microphone")
+            {
+                var alert = new AlertDialog.Builder(Application.Context);
+                alert.SetTitle("You don't seem to have a microphone to record with");
+                alert.SetPositiveButton("OK", (sender, e) =>
+                {
+                    return;
+                });
+                alert.Show();
+            }
         }
 
         void TellmeButton_Click(object sender, EventArgs e)

@@ -66,17 +66,20 @@ namespace Five_Seconds.Droid
             var maxVolume = 10;
             float log1 = (float)(Math.Log(maxVolume - alarm.Volume) / Math.Log(maxVolume));
 
-            //_mediaPlayer.SetVolume(1 - log1, 1 - log1);
-            //_mediaPlayer.Looping = true;
-            //_mediaPlayer.Prepare();
-            //_mediaPlayer.Start();
+            if (alarm.IsAlarmOn)
+            {
+                _mediaPlayer.SetVolume(1 - log1, 1 - log1);
+                _mediaPlayer.Looping = true;
+                _mediaPlayer.Prepare();
+                _mediaPlayer.Start();
+            }
 
-            //if (alarm.IsVibrateOn) return;
-
-
-            //_vibrator = Vibrator.FromContext(this);
-            //_vibrator.Vibrate(VibrationEffect.CreateOneShot(500 * alarm.VibeFrequency / 10, VibrationEffect.DefaultAmplitude));
-            //Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
+            if (alarm.IsVibrateOn)
+            {
+                _vibrator = Vibrator.FromContext(this);
+                _vibrator.Vibrate(VibrationEffect.CreateOneShot(500 * alarm.VibeFrequency / 10, VibrationEffect.DefaultAmplitude));
+                Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
+            }
         }
 
         void CloseButton_Click(object sender, EventArgs e)
@@ -89,12 +92,10 @@ namespace Five_Seconds.Droid
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
                 StartTellMeActivity(Application.Context);
-                Finish();
             }
             else
             {
                 StartTellMeActivity(Application.Context);
-                Finish();
             }
         }
 
@@ -105,6 +106,11 @@ namespace Five_Seconds.Droid
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);
             Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
 
         protected override void Dispose(bool disposing)
