@@ -11,15 +11,15 @@ namespace Five_Seconds.Models
     {
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
-        public bool Monday { get; set; }
-        public bool Tuesday { get; set; }
-        public bool Wednesday { get; set; }
-        public bool Thursday { get; set; }
-        public bool Friday { get; set; }
-        public bool Saturday { get; set; }
-        public bool Sunday { get; set; }
+        public bool Sunday { get; set; } = false;
+        public bool Monday { get; set; } = false;
+        public bool Tuesday { get; set; } = false;
+        public bool Wednesday { get; set; } = false;
+        public bool Thursday { get; set; } = false;
+        public bool Friday { get; set; } = false;
+        public bool Saturday { get; set; } = false;
 
-        public bool[] AllDays => new bool[] { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday };
+        public bool[] AllDays => new bool[] { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
 
         public DaysOfWeek() { }
 
@@ -27,16 +27,16 @@ namespace Five_Seconds.Models
         {
             if (allDays.Length != 7) return;
 
-            Monday = allDays[0];
-            Tuesday = allDays[1];
-            Wednesday = allDays[2];
-            Thursday = allDays[3];
-            Friday = allDays[4];
-            Saturday = allDays[5];
-            Sunday = allDays[6];
+            Sunday = allDays[0];
+            Monday = allDays[1];
+            Tuesday = allDays[2];
+            Wednesday = allDays[3];
+            Thursday = allDays[4];
+            Friday = allDays[5];
+            Saturday = allDays[6];
         }
 
-        public DaysOfWeek(bool monday, bool tuesday, bool wednesday, bool thursday, bool friday, bool saturday, bool sunday) : this(new bool[] { monday, tuesday, wednesday, thursday, friday, saturday, sunday })
+        public DaysOfWeek(bool sunday, bool monday, bool tuesday, bool wednesday, bool thursday, bool friday, bool saturday) : this(new bool[] { monday, tuesday, wednesday, thursday, friday, saturday, sunday })
         {
         }
 
@@ -47,40 +47,40 @@ namespace Five_Seconds.Models
             return days.AllDays.Contains(true);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj is DayOfWeek)
-            {
-                //cast enum to int (sunday = 0, Saturday = 6)
-                var dayOfWeek = (int)obj;
-                if (dayOfWeek == 0)
-                {
-                    if (Sunday)
-                        return true;
-                    else
-                        return false;
-                }
-                else
-                {
-                    var day = AllDays[dayOfWeek - 1];
-                    if (day)
-                        return true;
-                    else
-                        return false;
-                }
-            }
+        //public override bool Equals(object obj)
+        //{
+        //    if (obj is DayOfWeek)
+        //    {
+        //        //cast enum to int (sunday = 0, Saturday = 6)
+        //        var dayOfWeek = (int)obj;
+        //        if (dayOfWeek == 0)
+        //        {
+        //            if (Sunday)
+        //                return true;
+        //            else
+        //                return false;
+        //        }
+        //        else
+        //        {
+        //            var day = AllDays[dayOfWeek - 1];
+        //            if (day)
+        //                return true;
+        //            else
+        //                return false;
+        //        }
+        //    }
 
-            if (obj is DaysOfWeek)
-            {
-                var daysOfWeek = (DaysOfWeek)obj;
-                if (this.AllDays == daysOfWeek.AllDays)
-                {
-                    return true;
-                }
-                return false;
-            }
+        //    if (obj is DaysOfWeek)
+        //    {
+        //        var daysOfWeek = (DaysOfWeek)obj;
+        //        if (this.AllDays == daysOfWeek.AllDays)
+        //        {
+        //            return true;
+        //        }
+        //        return false;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
     }
 }

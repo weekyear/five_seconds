@@ -11,6 +11,7 @@ namespace Five_Seconds.Models
     public class Alarm : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
         public TimeSpan Time

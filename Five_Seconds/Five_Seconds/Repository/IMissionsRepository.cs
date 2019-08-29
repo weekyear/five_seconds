@@ -9,17 +9,47 @@ namespace Five_Seconds.Repository
     public interface IMissionsRepository
     {
         // getters
-        ObservableCollection<Mission> Missions { get; set; }
+        List<Mission> MissionsFromDB { get; set; }
+        List<Alarm> AlarmsFromDB { get; set; }
+        List<DaysOfWeek> DaysOfWeeksFromDB { get; set; }
+        List<Record> RecordFromDB { get; set; }
 
         // methods
+        // Mission
+
         Mission GetMission(int id);
-        IEnumerable<Mission> GetFirstMissions();
-        IEnumerable<Mission> GetMissions();
+        IEnumerable<Mission> GetAllMissions();
         int SaveMission(Mission mission);
+
         int DeleteMission(int id);
+
         void DeleteAllMissions();
-        void DeleteAllAlarms();
+
+        // Alarm
         Alarm GetAlarm(int id);
-        List<Alarm> GetAllAlarms();
+        IEnumerable<Alarm> GetAllAlarms();
+        int SaveAlarm(Alarm alarm);
+
+        int DeleteAlarm(int id);
+
+        void DeleteAllAlarms();
+
+        // DayOfWeek
+        DaysOfWeek GetDaysOfWeek(int id);
+        IEnumerable<DaysOfWeek> GetAllDaysOfWeeks();
+
+        int SaveDaysOfWeek(DaysOfWeek daysOfWeek);
+
+        int DeleteDaysOfWeek(int id);
+
+        void DeleteAllDaysOfWeeks();
+
+        // Record
+
+        int SaveRecords(Record record);
+
+        int DeleteRecords(int id);
+
+        void DeleteAllRecords();
     }
 }

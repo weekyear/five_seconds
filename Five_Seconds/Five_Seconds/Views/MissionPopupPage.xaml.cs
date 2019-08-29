@@ -21,18 +21,18 @@ namespace Five_Seconds.Views
     {
         MissionPopupViewModel viewModel;
 
-        public MissionPopupPage(INavigation navigation, IMissionsRepository missionRepo, IPopupNavigation popupNavigation)
+        public MissionPopupPage(INavigation navigation, IPopupNavigation popupNavigation)
         {
-            viewModel = new MissionPopupViewModel(navigation, missionRepo, popupNavigation);
+            viewModel = new MissionPopupViewModel(navigation, popupNavigation);
 
             BindingContext = viewModel;
 
             InitializeComponent();
         }
 
-        public MissionPopupPage(INavigation navigation, IMissionsRepository localData, Mission mission, IPopupNavigation popupNavigation)
+        public MissionPopupPage(INavigation navigation, Mission mission, IPopupNavigation popupNavigation)
         {
-            viewModel = new MissionPopupViewModel(navigation, localData, mission, popupNavigation);
+            viewModel = new MissionPopupViewModel(navigation, mission, popupNavigation);
 
             BindingContext = viewModel;
 

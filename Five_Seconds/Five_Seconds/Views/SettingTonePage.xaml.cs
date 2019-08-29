@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Services;
 using Five_Seconds.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace Five_Seconds.Views
     {
         private SettingToneViewModel viewModel;
 
-        public SettingTonePage(INavigation navigation, IMissionsRepository localData, Mission mission)
+        public SettingTonePage(INavigation navigation, Mission mission)
         {
-            viewModel = new SettingToneViewModel(navigation, localData, mission);
+            viewModel = new SettingToneViewModel(navigation, mission);
 
             BindingContext = viewModel;
 

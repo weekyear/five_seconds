@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ namespace Five_Seconds.ViewModels
 {
     public class RecordViewModel : BaseViewModel
     {
-        public RecordViewModel(INavigation navigation, IMissionsRepository missionRepo, Mission mission = null) : base(navigation, missionRepo)
+        public RecordViewModel(INavigation navigation, Mission mission = null) : base(navigation)
         {
             Title = mission?.Name;
             Mission = mission;
@@ -22,7 +23,7 @@ namespace Five_Seconds.ViewModels
             set;
         }
 
-        public ObservableCollection<Record> Records
+        public List<Record> Records
         {
             get { return Mission.Records; }
         }

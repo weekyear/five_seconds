@@ -35,15 +35,6 @@ namespace Five_Seconds.CustomControls
             var button = sender as DayOfWeekButton;
 
             button.IsSelected = !button.IsSelected;
-
-            //if (button.IsSelected == true)
-            //{
-            //    button.BorderColor = Color.IndianRed;
-            //}
-            //else
-            //{
-            //    button.BorderColor = Color.Transparent;
-            //}
         }
 
         void OnIsSelectedChanged(object sender, EventArgs e)

@@ -17,7 +17,7 @@ namespace Five_Seconds.Views
         {
             InitializeComponent();
 
-            viewModel = new AboutViewModel(Navigation, App.MissionsRepo);
+            viewModel = new AboutViewModel(Navigation);
 
             BindingContext = viewModel;
         }

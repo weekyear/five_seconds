@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 
@@ -17,7 +18,7 @@ namespace Five_Seconds.Models
         public double Percentage { get; set; }
 
         [OneToMany]
-        public ObservableCollection<Record> Records { get; set; } = new ObservableCollection<Record>();
+        public List<Record> Records { get; set; } = new List<Record>();
 
         public int AlarmId { get; set; }
         [OneToOne]

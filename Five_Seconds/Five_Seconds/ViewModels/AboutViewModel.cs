@@ -10,7 +10,7 @@ namespace Five_Seconds.ViewModels
 {
     public class AboutViewModel : BaseViewModel
     {
-        public AboutViewModel(INavigation navigation, IMissionsRepository localData) : base(navigation, localData)
+        public AboutViewModel(INavigation navigation) : base(navigation)
         {
             Title = "About";
 

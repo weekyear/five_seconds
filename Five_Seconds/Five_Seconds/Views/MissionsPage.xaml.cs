@@ -27,7 +27,7 @@ namespace Five_Seconds.Views
         {
             InitializeComponent();
 
-            viewModel = new MissionsViewModel(Navigation, App.MissionsRepo, new MessageBoxService(), PopupNavigation.Instance);
+            viewModel = new MissionsViewModel(Navigation, new MessageBoxService(), PopupNavigation.Instance);
 
             BindingContext = viewModel;
 

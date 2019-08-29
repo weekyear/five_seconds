@@ -1,6 +1,7 @@
 ﻿using Five_Seconds.CustomControls;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Services;
 using Five_Seconds.ViewModels;
 using System;
 
@@ -14,18 +15,18 @@ namespace Five_Seconds.Views
     {
         MissionViewModel viewModel;
 
-        public MissionPage(INavigation navigation, IMissionsRepository missionRepo)
+        public MissionPage(INavigation navigation)
         {
-            viewModel = new MissionViewModel(navigation, missionRepo);
+            viewModel = new MissionViewModel(navigation);
 
             BindingContext = viewModel;
 
             InitializeComponent();
         }
 
-        public MissionPage(INavigation navigation, IMissionsRepository localData, Mission mission)
+        public MissionPage(INavigation navigation, Mission mission)
         {
-            viewModel = new MissionViewModel(navigation, localData, mission);
+            viewModel = new MissionViewModel(navigation, mission);
 
             BindingContext = viewModel;
 

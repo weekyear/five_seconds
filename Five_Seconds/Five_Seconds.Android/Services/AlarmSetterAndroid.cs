@@ -24,7 +24,7 @@ namespace Five_Seconds.Droid.Services
     public class AlarmSetterAndroid : IAlarmSetter
     {
         public static string AlarmTag = "Al4rm";
-        IAlarmToneRepository _alarmRepo = App.AlarmRepo;
+        IAlarmToneRepository _alarmRepo = App.AlarmToneRepo;
 
         public AlarmSetterAndroid()
         {
@@ -33,21 +33,9 @@ namespace Five_Seconds.Droid.Services
 
         public void SetAlarm(Mission mission)
         {
-            var dateNow = DateTime.Now.ToLocalTime().TimeOfDay;
-            var alarm = mission.Alarm;
-            var difference = alarm.Time.Subtract(dateNow);
-
-            var differenceAsMillis = difference.TotalMilliseconds;
-
-            if (differenceAsMillis < 0)
-            {
-                differenceAsMillis += new TimeSpan(1, 0, 0, 0).TotalMilliseconds;
-            }
-
             var receiverIntent = new Intent(Application.Context, typeof(AlarmService));
             receiverIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             receiverIntent.PutExtra("id", mission.Id);
-            receiverIntent.PutExtra("diffAsMillis", differenceAsMillis);
             receiverIntent.SetAction("ActionStartService");
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
@@ -192,17 +180,74 @@ namespace Five_Seconds.Droid.Services
         {
             Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
             var id = intent.GetIntExtra("id", 0);
-            var diffAsMillis = intent.GetDoubleExtra("diffAsMillis", 0);
+            var mission = App.MissionsRepo.GetMission(id);
+            var alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
+            alarm.Days = App.MissionsRepo.GetDaysOfWeek(alarm.DaysId);
+            var diffMillis = CalculateFirstAlarmMillis(alarm);
 
+            SetAlarmByManager(id, diffMillis);
+            //context.StartForegroundService(_alarmIntent);
+            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+        }
+
+        private void SetAlarmByManager(int id, long diffMillis)
+        {
+            if (diffMillis == 0) return;
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", id);
             var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
-            alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffAsMillis, pendingIntent);
-            //context.StartForegroundService(_alarmIntent);
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+            alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
+        }
+
+        private long CalculateFirstAlarmMillis(Alarm alarm)
+        {
+            var alarmTimeMillis = alarm.TimeOffset.ToUnixTimeMilliseconds();
+            var addingDateMillis = CalculateAddingDate(alarm);
+
+            return alarmTimeMillis + addingDateMillis;
+        }
+
+        private long CalculateAddingDate(Alarm alarm)
+        {
+            var MillisecondPerDay = TimeSpan.TicksPerDay / TimeSpan.TicksPerMillisecond;
+
+            if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
+            {
+                var allDays = alarm.Days.AllDays;
+                int diffDays = 10;
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (allDays[i])
+                    {
+                        var today = (int)DateTime.Now.DayOfWeek;
+                        diffDays = i - today > 0 ? i - today : i - today + 7;
+                    }
+                }
+
+                var diffSecondsMillis = new TimeSpan(0, 0, diffDays).TotalMilliseconds;
+                var diffDaysMillis = MillisecondPerDay * diffDays;
+
+                return diffDaysMillis;
+            }
+            else
+            {
+                var currentTimeSpan = DateTime.Now.TimeOfDay;
+
+                var difference = alarm.Time.Subtract(currentTimeSpan).TotalMilliseconds;
+
+                if (difference < 0)
+                {
+                    return MillisecondPerDay;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
 
         public override IBinder OnBind(Intent intent)
@@ -220,20 +265,62 @@ namespace Five_Seconds.Droid.Services
             var id = intent.GetIntExtra("id", 0);
 
             var mission = App.MissionsRepo.GetMission(id);
+            var alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
+            alarm.Days = App.MissionsRepo.GetDaysOfWeek(alarm.DaysId);
+            var diffMillis = CalculateNextAlarmMillis(alarm);
 
-            if (mission is null)
-            {
-                return;
-            }
+            SetAlarmByManager(id, diffMillis);
 
             if (mission.Alarm.IsActive)
             {
-                var disIntent = new Intent(context, typeof(AlarmActivity));
-                disIntent.PutExtra("id", id);
-                disIntent.SetFlags(ActivityFlags.NewTask);
-                context.StartActivity(disIntent);
-                Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+                StartAlarmActivity(context, id);
             }
+        }
+
+        private void SetAlarmByManager(int id, long diffMillis)
+        {
+            if (diffMillis == 0) return;
+            var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            _alarmIntent.PutExtra("id", id);
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, 0, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+
+            alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
+        }
+
+        private long CalculateNextAlarmMillis(Alarm alarm)
+        {
+            var allDays = alarm.Days.AllDays;
+            int diffDays = 100;
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (allDays[i])
+                {
+                    var today = (int)DateTime.Now.DayOfWeek;
+                    diffDays = i - today > 0 ? i - today : i - today + 7;
+                }
+            }
+
+            if (diffDays > 99) return 0;
+
+            var diffSecondsMillis = new TimeSpan(0, 0, diffDays).TotalMilliseconds;
+            var diffDaysMillis = new TimeSpan(diffDays, 0, 0, 0).TotalMilliseconds;
+
+            var currentTimeMillis = alarm.TimeOffset.ToUnixTimeMilliseconds();
+
+            //return currentTimeMillis + (long)diffDaysMillis;
+            return currentTimeMillis + (long)diffSecondsMillis * 10;
+        }
+
+        private void StartAlarmActivity(Context context, int id)
+        {
+            var disIntent = new Intent(context, typeof(AlarmActivity));
+            disIntent.PutExtra("id", id);
+            disIntent.SetFlags(ActivityFlags.NewTask);
+            context.StartActivity(disIntent);
+            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
         }
     }
 

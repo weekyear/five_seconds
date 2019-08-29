@@ -13,7 +13,7 @@ namespace Five_Seconds.Models
         public int Id { get; set; }
 
         [ForeignKey(typeof(Mission))]
-        public int MissionKey { get; set; }
+        public int MissionId { get; set; }
 
         public DateTime Date { get; set; }
         public int RecordTime { get; set; }

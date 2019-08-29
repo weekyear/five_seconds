@@ -14,7 +14,7 @@ namespace Five_Seconds.ViewModels
     {
         IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
 
-        public SettingToneViewModel(INavigation navigation, IMissionsRepository missionRepo, Mission mission) : base(navigation, missionRepo)
+        public SettingToneViewModel(INavigation navigation, Mission mission) : base(navigation)
         {
             Mission = mission;
             ConstructCommand();

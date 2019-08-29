@@ -17,6 +17,7 @@ namespace Five_Seconds
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
             DependencyService.Register<IMissionsRepository>();
+            DependencyService.Register<IMissionService>();
             DependencyService.Register<IMessageBoxService>();
 
             InitializeComponent();
@@ -52,16 +53,29 @@ namespace Five_Seconds
             }
         }
 
-        private static IAlarmToneRepository alarmRepo;
-        public static IAlarmToneRepository AlarmRepo
+        private static IMissionService service;
+        public static IMissionService Service
         {
             get
             {
-                if (alarmRepo == null)
+                if (service == null)
                 {
-                    alarmRepo = new AlarmToneRepository();
+                    service = new MissionService(App.MissionsRepo);
                 }
-                return alarmRepo;
+                return service;
+            }
+        }
+
+        private static IAlarmToneRepository alarmToneRepo;
+        public static IAlarmToneRepository AlarmToneRepo
+        {
+            get
+            {
+                if (alarmToneRepo == null)
+                {
+                    alarmToneRepo = new AlarmToneRepository();
+                }
+                return alarmToneRepo;
             }
         }
     }

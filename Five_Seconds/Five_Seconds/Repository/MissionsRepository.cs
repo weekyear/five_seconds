@@ -14,30 +14,26 @@ namespace Five_Seconds.Repository
     {
         public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
 
-        IAlarmSetter alarmSetter = DependencyService.Get<IAlarmSetter>();
-
-        private ObservableCollection<Mission> missions = new ObservableCollection<Mission>();
-        public ObservableCollection<Mission> Missions
-        {
-            get => missions;
-            set
-            {
-                if (missions == value) return;
-                missions = value;
-            }
-        }
+        public List<Mission> MissionsFromDB { get; set; }
+        public List<Alarm> AlarmsFromDB { get; set; }
+        public List<DaysOfWeek> DaysOfWeeksFromDB { get; set; }
+        public List<Record> RecordFromDB { get; set; }
 
         public MissionsRepository()
         {
             if (Device.RuntimePlatform == "Test") return;
+
+            MissionsFromDB = GetAllMissions() as List<Mission>;
+            AlarmsFromDB = GetAllAlarms() as List<Alarm>;
+            DaysOfWeeksFromDB = GetAllDaysOfWeeks() as List<DaysOfWeek>;
+            RecordFromDB = GetAllRecords() as List<Record>;
         }
+
+        // Mission
 
         public Mission GetMission(int id)
         {
-            var mission = ItemDatabase.GetObject<Mission>(id);
-            mission.Alarm = ItemDatabase.GetObject<Alarm>(mission.AlarmId);
-            mission.Alarm.Days = ItemDatabase.GetObject<DaysOfWeek>(mission.Alarm.DaysId);
-            return mission;
+            return ItemDatabase.GetObject<Mission>(id);
         }
 
         public IEnumerable<Mission> GetFirstMissions()
@@ -45,90 +41,104 @@ namespace Five_Seconds.Repository
             return ItemDatabase.GetObjects<Mission>();
         }
 
-        public IEnumerable<Mission> GetMissions()
+        public IEnumerable<Mission> GetAllMissions()
         {
             return ItemDatabase.GetObjects<Mission>();
         }
 
         public int SaveMission(Mission mission)
         {
-            AddOrModifyMissionToMissions(mission);
-            SendMessage("save");
-            mission.Alarm.DaysId = ItemDatabase.SaveObject(mission.Alarm.Days);
-            mission.AlarmId = ItemDatabase.SaveObject(mission.Alarm);
-            var id = ItemDatabase.SaveObject(mission);
-            alarmSetter.SetAlarm(mission);
-            return id;
-        }
-
-        private void AddOrModifyMissionToMissions(Mission mission)
-        {
-            for (int i = 0; i < Missions.Count; i++)
-            {
-                if (Missions[i].Id == mission.Id)
-                {
-                    Missions[i] = mission;
-                    return;
-                }
-            }
-            Missions.Add(mission);
+            return ItemDatabase.SaveObject(mission);
         }
 
         public int DeleteMission(int id)
         {
-            alarmSetter.DeleteAlarm(id);
-            DeleteMissionOfMissions(id);
-            SendMessage("delete");
             return ItemDatabase.DeleteObject<Mission>(id);
-        }
-        private void DeleteMissionOfMissions(int id)
-        {
-            for (int i = 0; i < Missions.Count; i++)
-            {
-                if (Missions[i].Id == id)
-                {
-                    Missions.RemoveAt(i);
-                    return;
-                }
-            }
         }
 
         public void DeleteAllMissions()
         {
-            DeleteAllAlarms();
             ItemDatabase.DeleteAllObjects<Mission>();
+        }
+
+        // Alarm
+
+        public Alarm GetAlarm(int id)
+        {
+            return ItemDatabase.GetObject<Alarm>(id);
+        }
+
+        public IEnumerable<Alarm> GetAllAlarms()
+        {
+            return ItemDatabase.GetObjects<Alarm>();
+        }
+
+        public int SaveAlarm(Alarm alarm)
+        {
+            return ItemDatabase.SaveObject(alarm);
+        }
+        public int DeleteAlarm(int id)
+        {
+            return ItemDatabase.DeleteObject<Alarm>(id);
         }
 
         public void DeleteAllAlarms()
         {
-            var listMission = GetMissions() as List<Mission>;
-            alarmSetter.DeleteAllAlarms(listMission);
+            ItemDatabase.DeleteAllObjects<Alarm>();
         }
 
-        public Alarm GetAlarm(int id)
+        // DaysOfWeek
+
+        public DaysOfWeek GetDaysOfWeek(int id)
         {
-            return GetMission(id).Alarm;
+            return ItemDatabase.GetObject<DaysOfWeek>(id);
         }
 
-        public List<Alarm> GetAllAlarms()
+        public IEnumerable<DaysOfWeek> GetAllDaysOfWeeks()
         {
-            var allMissions = GetMissions();
-            var listAlarm = new List<Alarm>();
-
-            foreach (var mission in allMissions)
-            {
-                if (mission.Alarm.IsActive == true)
-                {
-                    listAlarm.Add(mission.Alarm);
-                }
-            }
-            return listAlarm;
+            return ItemDatabase.GetObjects<DaysOfWeek>();
         }
 
-        private void SendMessage(string type)
+        public int SaveDaysOfWeek(DaysOfWeek daysOfWeek)
         {
-            var messageType = type;
-            MessagingCenter.Send(this, messageType);
+            return ItemDatabase.SaveObject(daysOfWeek);
+        }
+
+        public int DeleteDaysOfWeek(int id)
+        {
+            return ItemDatabase.DeleteObject<DaysOfWeek>(id);
+        }
+
+        public void DeleteAllDaysOfWeeks()
+        {
+            ItemDatabase.DeleteAllObjects<DaysOfWeek>();
+        }
+
+        // Record
+
+        private Record GetRecord(int id)
+        {
+            return ItemDatabase.GetObject<Record>(id);
+        }
+
+        private IEnumerable<Record> GetAllRecords()
+        {
+            return ItemDatabase.GetObjects<Record>();
+        }
+
+        public int SaveRecords(Record record)
+        {
+            return ItemDatabase.SaveObject(record);
+        }
+
+        public int DeleteRecords(int id)
+        {
+            return ItemDatabase.DeleteObject<Record>(id);
+        }
+
+        public void DeleteAllRecords()
+        {
+            ItemDatabase.DeleteAllObjects<Record>();
         }
     }
 }

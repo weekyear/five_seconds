@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
 using System.Threading.Tasks;
@@ -10,14 +11,14 @@ namespace Five_Seconds.ViewModels
 {
     public class MissionViewModel : BaseViewModel
     {
-        public MissionViewModel(INavigation navigation, IMissionsRepository missionRepo) : base(navigation, missionRepo)
+        public MissionViewModel(INavigation navigation) : base(navigation)
         {
             Mission = new Mission();
 
             ConstructCommand();
         }
 
-        public MissionViewModel(INavigation navigation, IMissionsRepository missionRepo, Mission mission) : base(navigation, missionRepo)
+        public MissionViewModel(INavigation navigation, Mission mission) : base(navigation)
         {
             Mission = new Mission(mission);
 
@@ -147,13 +148,13 @@ namespace Five_Seconds.ViewModels
         }
         private async Task Save()
         {
-            MissionRepo.SaveMission(Mission);
+            Service.SaveMission(Mission);
             await ClosePopup();
         }
 
         private async Task ShowSettingTone()
         {
-            await Navigation.PushAsync(new SettingTonePage(Navigation, MissionRepo, Mission));
+            await Navigation.PushAsync(new SettingTonePage(Navigation, Mission));
         }
 
         public static bool AreEqual<T>(T left, T right)

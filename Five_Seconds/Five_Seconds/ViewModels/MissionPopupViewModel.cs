@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Services;
 using Rg.Plugins.Popup.Contracts;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace Five_Seconds.ViewModels
     public class MissionPopupViewModel : BaseViewModel
     {
         private readonly IPopupNavigation PopupNavigation;
-        public MissionPopupViewModel(INavigation navigation, IMissionsRepository missionRepo, IPopupNavigation popupNavigation) : base(navigation, missionRepo)
+        public MissionPopupViewModel(INavigation navigation, IPopupNavigation popupNavigation) : base(navigation)
         {
             Mission = new Mission();
 
@@ -19,7 +20,7 @@ namespace Five_Seconds.ViewModels
             ConstructCommand();
         }
 
-        public MissionPopupViewModel(INavigation navigation, IMissionsRepository missionRepo, Mission mission, IPopupNavigation popupNavigation) : base(navigation, missionRepo)
+        public MissionPopupViewModel(INavigation navigation,  Mission mission, IPopupNavigation popupNavigation) : base(navigation)
         {
             Mission = new Mission(mission);
 
@@ -81,7 +82,7 @@ namespace Five_Seconds.ViewModels
         }
         private async Task Save()
         {
-            MissionRepo.SaveMission(Mission);
+            Service.SaveMission(Mission);
             await ClosePopup();
         }
 

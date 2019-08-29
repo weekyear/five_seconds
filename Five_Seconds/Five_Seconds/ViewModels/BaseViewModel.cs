@@ -14,12 +14,12 @@ namespace Five_Seconds.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         protected readonly INavigation Navigation;
-        protected readonly IMissionsRepository MissionRepo;
+        protected readonly IMissionService Service;
 
-        public BaseViewModel(INavigation navigation, IMissionsRepository missionRepo)
+        public BaseViewModel(INavigation navigation)
         {
             Navigation = navigation;
-            MissionRepo = missionRepo;
+            Service = App.Service;
         }
 
         bool isBusy = false;
