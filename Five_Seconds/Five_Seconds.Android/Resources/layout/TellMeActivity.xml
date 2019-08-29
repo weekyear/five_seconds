@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#212121">
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1"
+        android:gravity="center_horizontal">
+        <TextView
+            android:text="Timeout"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:id="@+id/timeTextView"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:phoneNumber="true"
+            android:textSize="45dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1"
+        android:gravity="center"
+        android:layout_gravity="center">
+        <TextView
+            android:text="이제 뭘 할지 말해주세요!!"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/explanationTextView"
+            android:textColor="#ffcec6ff"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:text="Mission Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/missionTextView"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:phoneNumber="true"
+            android:textSize="45dp" />
+        <Button
+            android:text="Tell me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:id="@+id/tellmeButton"
+            android:textAllCaps="false"
+            android:gravity="center" />
+    </LinearLayout>
+</RelativeLayout>

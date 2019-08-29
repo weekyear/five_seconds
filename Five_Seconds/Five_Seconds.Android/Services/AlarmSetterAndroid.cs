@@ -181,8 +181,8 @@ namespace Five_Seconds.Droid.Services
             Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
             var id = intent.GetIntExtra("id", 0);
             var mission = App.MissionsRepo.GetMission(id);
-            var alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
-            alarm.Days = App.MissionsRepo.GetDaysOfWeek(alarm.DaysId);
+            var alarm = App.MissionsRepo.GetAlarm(id);
+            alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
             var diffMillis = CalculateFirstAlarmMillis(alarm);
 
             SetAlarmByManager(id, diffMillis);
@@ -265,8 +265,8 @@ namespace Five_Seconds.Droid.Services
             var id = intent.GetIntExtra("id", 0);
 
             var mission = App.MissionsRepo.GetMission(id);
-            var alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
-            alarm.Days = App.MissionsRepo.GetDaysOfWeek(alarm.DaysId);
+            var alarm = App.MissionsRepo.GetAlarm(id);
+            alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
             var diffMillis = CalculateNextAlarmMillis(alarm);
 
             SetAlarmByManager(id, diffMillis);

@@ -6721,6 +6721,9 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b0085
 			public const int expanded_menu = 2131427461;
 			
+			// aapt resource value: 0x7f0b00ff
+			public const int explanationTextView = 2131427583;
+			
 			// aapt resource value: 0x7f0b005e
 			public const int fill = 2131427422;
 			
@@ -6814,8 +6817,8 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b00fb
 			public const int main_viewpager = 2131427579;
 			
-			// aapt resource value: 0x7f0b0101
-			public const int masked = 2131427585;
+			// aapt resource value: 0x7f0b0104
+			public const int masked = 2131427588;
 			
 			// aapt resource value: 0x7f0b00eb
 			public const int media_actions = 2131427563;
@@ -6828,6 +6831,9 @@ namespace Five_Seconds.Droid
 			
 			// aapt resource value: 0x7f0b0059
 			public const int mini = 2131427417;
+			
+			// aapt resource value: 0x7f0b0100
+			public const int missionTextView = 2131427584;
 			
 			// aapt resource value: 0x7f0b00d2
 			public const int mr_art = 2131427538;
@@ -7174,6 +7180,9 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b0020
 			public const int tag_unhandled_key_listeners = 2131427360;
 			
+			// aapt resource value: 0x7f0b0101
+			public const int tellmeButton = 2131427585;
+			
 			// aapt resource value: 0x7f0b0021
 			public const int text = 2131427361;
 			
@@ -7216,8 +7225,8 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b007e
 			public const int title_template = 2131427454;
 			
-			// aapt resource value: 0x7f0b00ff
-			public const int toolbar = 2131427583;
+			// aapt resource value: 0x7f0b0102
+			public const int toolbar = 2131427586;
 			
 			// aapt resource value: 0x7f0b0045
 			public const int top = 2131427397;
@@ -7258,8 +7267,8 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b001b
 			public const int view_offset_helper = 2131427355;
 			
-			// aapt resource value: 0x7f0b0100
-			public const int visible = 2131427584;
+			// aapt resource value: 0x7f0b0103
+			public const int visible = 2131427587;
 			
 			// aapt resource value: 0x7f0b00d8
 			public const int volume_item_container = 2131427544;
@@ -7640,7 +7649,10 @@ namespace Five_Seconds.Droid
 			public const int Tabbar = 2130968660;
 			
 			// aapt resource value: 0x7f040055
-			public const int Toolbar = 2130968661;
+			public const int TellMeActivity = 2130968661;
+			
+			// aapt resource value: 0x7f040056
+			public const int Toolbar = 2130968662;
 			
 			static Layout()
 			{

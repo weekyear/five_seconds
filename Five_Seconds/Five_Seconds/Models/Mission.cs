@@ -20,7 +20,7 @@ namespace Five_Seconds.Models
         [OneToMany]
         public List<Record> Records { get; set; } = new List<Record>();
 
-        public int AlarmId { get; set; }
+        //public int AlarmId { get; set; }
         [OneToOne]
         public Alarm Alarm { get; set; } = new Alarm();
 

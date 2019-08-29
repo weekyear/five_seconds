@@ -34,7 +34,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             messageBoxService = new Mock<IMessageBoxService>();
             popupNavigation = new Mock<IPopupNavigation>();
 
-            missionsViewModel = new MissionsViewModel(navigation.Object, localData.Object, messageBoxService.Object, popupNavigation.Object);
+            missionsViewModel = new MissionsViewModel(navigation.Object, messageBoxService.Object, popupNavigation.Object);
         }
 
         [Test]

@@ -72,7 +72,7 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AlarmActivity.cs" />
+    <Compile Include="Views\AlarmActivity.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />
     <Compile Include="CustomRenderers\CustomViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\MusicSelectionButtonRenderer.cs" />
@@ -83,6 +83,7 @@
     <Compile Include="Services\AlarmSetterAndroid.cs" />
     <Compile Include="Services\DeviceStorageAndroid.cs" />
     <Compile Include="Services\PlaySoundServiceAndroid.cs" />
+    <Compile Include="Views\TellMeActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -148,6 +149,11 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\buzz.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\TellMeActivity.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

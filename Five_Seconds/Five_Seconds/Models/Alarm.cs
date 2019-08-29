@@ -27,7 +27,7 @@ namespace Five_Seconds.Models
         public bool IsVibrateOn { get; set; } = false;
         public int VibeFrequency { get; set; } = 5;
 
-        public int DaysId { get; set; }
+        //public int DaysId { get; set; }
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;

@@ -39,7 +39,7 @@ namespace Five_Seconds.Services
             {
                 for (int i = 0; i < alarms.Count; i++)
                 {
-                    if (alarms[i].DaysId == days.Id)
+                    if (alarms[i].Id == days.Id)
                     {
                         alarms[i].Days = days;
                     }
@@ -57,7 +57,7 @@ namespace Five_Seconds.Services
             {
                 for (int i = 0; i < missions.Count; i++)
                 {
-                    if (missions[i].AlarmId == alarm.Id)
+                    if (missions[i].Id == alarm.Id)
                     {
                         missions[i].Alarm = alarm;
                     }
@@ -103,10 +103,10 @@ namespace Five_Seconds.Services
         public int DeleteMission(Mission mission)
         {
             // Mission 지우고, Alarm 지우고, Record 지우고, DaysOfWeek 지우고, Local Missions에서 지우고, AlarmManager에 인텐트 지우고
-            alarmSetter.DeleteAlarm(mission.AlarmId);
+            alarmSetter.DeleteAlarm(mission.Id);
             var id = Repository.DeleteMission(mission.Id);
-            Repository.DeleteAlarm(mission.AlarmId);
-            Repository.DeleteDaysOfWeek(mission.Alarm.DaysId);
+            Repository.DeleteAlarm(mission.Id);
+            Repository.DeleteDaysOfWeek(mission.Id);
             Missions.Remove(mission);
             SendMessage("delete");
             return id;
@@ -114,8 +114,8 @@ namespace Five_Seconds.Services
 
         public int SaveMission(Mission mission)
         {
-            mission.Alarm.DaysId = Repository.SaveDaysOfWeek(mission.Alarm.Days);
-            mission.AlarmId = Repository.SaveAlarm(mission.Alarm);
+            mission.Alarm.Days.Id = Repository.SaveDaysOfWeek(mission.Alarm.Days);
+            mission.Alarm.Id = Repository.SaveAlarm(mission.Alarm);
             var id = Repository.SaveMission(mission);
             alarmSetter.SetAlarm(mission);
             AddOrModifyMissionToMissions(mission);
