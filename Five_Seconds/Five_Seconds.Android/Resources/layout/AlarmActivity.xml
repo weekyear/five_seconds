@@ -53,6 +53,7 @@
             android:phoneNumber="true"
             android:textSize="45dp" />
         <EditText
+            android:id="@+id/missionEditText"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_margin="20dp"

@@ -7,7 +7,7 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.MissionsPage"
-             Title="자, 5초 준다"
+             Title="{Binding Title}"
              x:Name="BrowseItemsPage">
 
     <ContentPage.Resources>
@@ -19,6 +19,7 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="ic_plus.png" Text="AddMission" Command="{Binding ShowAddMissionCommand}"/>
+        <ToolbarItem Icon="ic_plus.png" Text="Tellme" Command="{Binding TellmeCommand}"/>
     </ContentPage.ToolbarItems>
 
     <StackLayout BackgroundColor="White">

@@ -6,6 +6,7 @@ using Android.Content.PM;
 using Android.Content.Res;
 using Android.Media;
 using Android.OS;
+using Android.Speech;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -16,13 +17,14 @@ using Button = Android.Widget.Button;
 
 namespace Five_Seconds.Droid
 {
-    [Activity(Label = "AlarmActivity", NoHistory = true, Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "AlarmActivity", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         //AlarmApp.Models.Settings _settings;
 
         MediaPlayer _mediaPlayer = new MediaPlayer();
         Vibrator _vibrator;
+        EditText missionEditText;
         int id;
 
         readonly long[] _pattern =
@@ -41,8 +43,8 @@ namespace Five_Seconds.Droid
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.AlarmActivity);
-            var closeButton = FindViewById<Button>(Resource.Id.closeButton);
-            closeButton.Click += CloseButton_Click;
+            var tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
+            tellmeButton.Click += CloseButton_Click;
 
             // add flags to turn screen on and appear over lock screen
             Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
@@ -57,11 +59,12 @@ namespace Five_Seconds.Droid
 
             id = (int)bundle.Get("id");
             var timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
-            var nameTextView = FindViewById<TextView>(Resource.Id.nameTextView);
+            var missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
+            missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
             var mission = App.MissionsRepo.GetMission(id);
             var alarm = App.MissionsRepo.GetAlarm(id);
             timeTextView.Text = alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
-            nameTextView.Text = mission.Name;
+            missionTextView.Text = mission.Name;
 
             // 벨소리 늘리거나 커스텀 벨소리 넣으려면 AlarmApp example솔루션 열어서 확인
             string alarmTonePath = $"{alarm.Tone.ToLower()}.mp3";
@@ -95,28 +98,18 @@ namespace Five_Seconds.Droid
             //removes our app from the scree and from 'recent apps' section
             if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
-                //StartTellMeActivity(Application.Context);
-                await WaitForSpeechToText();
+                missionEditText.Text = await WaitForSpeechToText();
             }
             else
             {
-                //StartTellMeActivity(Application.Context);
-                await WaitForSpeechToText();
+                missionEditText.Text = await WaitForSpeechToText();
             }
         }
 
         async Task<string> WaitForSpeechToText()
         {
-            return await DependencyService.Get<ISpeechToText>().SpeechToTextAsync();
-        }
-
-        private void StartTellMeActivity(Context context)
-        {
-            var disIntent = new Intent(context, typeof(TellMeActivity));
-            disIntent.PutExtra("id", id);
-            disIntent.SetFlags(ActivityFlags.NewTask);
-            context.StartActivity(disIntent);
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "START ACTIVITY");
+            var stt = DependencyService.Get<ISpeechToText>();
+            return await stt.SpeechToTextAsync();
         }
 
         protected override void OnDestroy()
@@ -129,6 +122,27 @@ namespace Five_Seconds.Droid
 
             //close mediaplayer? and vibrator?
             base.Dispose(disposing);
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            var VOICE = 10;
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (requestCode == VOICE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    var matches = data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
+                    if (matches.Count != 0)
+                    {
+                        var textInput = matches[0];
+                        if (textInput.Length > 500)
+                            textInput = textInput.Substring(0, 500);
+                        SpeechToText_Android.SpeechText = textInput;
+                    }
+                }
+                SpeechToText_Android.autoEvent.Set();
+            }
         }
     }
 }

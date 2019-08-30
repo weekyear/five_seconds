@@ -30,6 +30,7 @@ namespace Five_Seconds.ViewModels
         private void ConstructCommand()
         {
             ShowAddMissionCommand = new Command(async () => await ShowAddMission());
+            TellmeCommand = new Command(async () => await Tellme());
             ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
         }
 
@@ -53,11 +54,18 @@ namespace Five_Seconds.ViewModels
         }
 
         public Command ShowAddMissionCommand { get; set; }
+        public Command TellmeCommand { get; set; }
         public Command<object> ShowMenuCommand { get; set; }
 
         public async Task ShowAddMission()
         {
             await Navigation.PushAsync(new MissionPage(Navigation));
+        }
+
+        public async Task Tellme()
+        {
+            var sss = DependencyService.Get<ISpeechToText>();
+            Title = await sss.SpeechToTextAsync();
         }
 
         public async Task ShowMenu(object _mission)

@@ -11,10 +11,12 @@ using Android.Runtime;
 using Android.Speech;
 using Android.Views;
 using Android.Widget;
+using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
 using Xamarin.Forms;
 using Application = Android.App.Application;
 
+[assembly: Xamarin.Forms.Dependency(typeof(SpeechToText_Android))]
 namespace Five_Seconds.Droid.Services
 {
     public class SpeechToText_Android : ISpeechToText
@@ -22,11 +24,12 @@ namespace Five_Seconds.Droid.Services
         public static AutoResetEvent autoEvent = new AutoResetEvent(false);
         public static string SpeechText;
         const int VOICE = 10;
+
         public async Task<string> SpeechToTextAsync()
         {
             var voiceIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
             voiceIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
-            voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Sprechen Sie jetzt");
+            voiceIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Speak now");
             voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
             voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
             voiceIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
@@ -35,7 +38,7 @@ namespace Five_Seconds.Droid.Services
 
             SpeechText = "";
             autoEvent.Reset();
-            ((Activity)Application.Context).StartActivityForResult(voiceIntent, VOICE);
+            ((Activity)Forms.Context).StartActivityForResult(voiceIntent, VOICE);
             await Task.Run(() => { autoEvent.WaitOne(new TimeSpan(0, 2, 0)); });
             return SpeechText;
         }

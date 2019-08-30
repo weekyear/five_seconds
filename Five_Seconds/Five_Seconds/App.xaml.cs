@@ -19,6 +19,7 @@ namespace Five_Seconds
             DependencyService.Register<IMissionsRepository>();
             DependencyService.Register<IMissionService>();
             DependencyService.Register<IMessageBoxService>();
+            DependencyService.Register<ISpeechToText>();
 
             InitializeComponent();
 
