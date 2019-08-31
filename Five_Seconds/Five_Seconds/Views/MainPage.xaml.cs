@@ -53,5 +53,13 @@ namespace Five_Seconds.Views
                 IsPresented = false;
             }
         }
+
+        //public void ToggleScreenLock()
+        //{
+        //    if (!ScreenLock.IsActive)
+        //        ScreenLock.RequestActive();
+        //    else
+        //        ScreenLock.RequestRelease();
+        //}
     }
 }

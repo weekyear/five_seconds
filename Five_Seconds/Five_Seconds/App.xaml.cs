@@ -16,6 +16,7 @@ namespace Five_Seconds
         {
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
+            DependencyService.Register<INavigation>();
             DependencyService.Register<IMissionsRepository>();
             DependencyService.Register<IMissionService>();
             DependencyService.Register<IMessageBoxService>();

@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Content;
 using Android.Speech;
 using Five_Seconds.Droid.Services;
+using Plugin.CurrentActivity;
 
 namespace Five_Seconds.Droid
 {
@@ -25,6 +26,7 @@ namespace Five_Seconds.Droid
 
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }

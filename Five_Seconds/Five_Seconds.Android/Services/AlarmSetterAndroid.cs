@@ -15,6 +15,7 @@ using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
+using Five_Seconds.Views;
 using Xamarin.Forms;
 using Application = Android.App.Application;
 
@@ -265,15 +266,18 @@ namespace Five_Seconds.Droid.Services
             var id = intent.GetIntExtra("id", 0);
 
             var mission = App.MissionsRepo.GetMission(id);
-            var alarm = App.MissionsRepo.GetAlarm(id);
-            alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
-            var diffMillis = CalculateNextAlarmMillis(alarm);
+            mission.Alarm = App.MissionsRepo.GetAlarm(id);
+            mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
+            var diffMillis = CalculateNextAlarmMillis(mission.Alarm);
 
             SetAlarmByManager(id, diffMillis);
 
             if (mission.Alarm.IsActive)
             {
                 StartAlarmActivity(context, id);
+                //var mainPage = Xamarin.Forms.Application.Current.MainPage;
+                //var navigation = mainPage.Navigation;
+                //mainPage.Navigation.PushModalAsync(new MissionPage(navigation, mission));
             }
         }
 

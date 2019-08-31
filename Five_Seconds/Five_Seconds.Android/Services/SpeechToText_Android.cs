@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
+using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Application = Android.App.Application;
 
@@ -38,7 +39,7 @@ namespace Five_Seconds.Droid.Services
 
             SpeechText = "";
             autoEvent.Reset();
-            ((Activity)Forms.Context).StartActivityForResult(voiceIntent, VOICE);
+            (CrossCurrentActivity.Current.Activity).StartActivityForResult(voiceIntent, VOICE);
             await Task.Run(() => { autoEvent.WaitOne(new TimeSpan(0, 2, 0)); });
             return SpeechText;
         }

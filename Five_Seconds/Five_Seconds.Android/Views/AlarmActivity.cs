@@ -11,6 +11,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
+using Five_Seconds.Models;
 using Five_Seconds.Services;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
@@ -20,17 +21,15 @@ namespace Five_Seconds.Droid
     [Activity(Label = "AlarmActivity", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        //AlarmApp.Models.Settings _settings;
-
         MediaPlayer _mediaPlayer = new MediaPlayer();
         Vibrator _vibrator;
-        EditText missionEditText;
-        int id;
 
-        readonly long[] _pattern =
-        {
-            0, 500, 500
-        };
+        private Button tellmeButton;
+        private TextView timeTextView;
+        private TextView missionTextView;
+        private EditText missionEditText;
+
+        int id;
 
         public AlarmActivity()
         {
@@ -42,30 +41,66 @@ namespace Five_Seconds.Droid
             Log.Debug(AlarmSetterAndroid.AlarmTag, "OnCreate");
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.AlarmActivity);
-            var tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
-            tellmeButton.Click += CloseButton_Click;
+            Intent intent = Intent;
+            Bundle bundle = intent.Extras;
+            id = (int)bundle.Get("id");
 
+            var mission = GetMissionById(id);
+            var alarm = GetAlarmById(id);
+
+            SetContentView(Resource.Layout.AlarmActivity);
+            SetControls(mission, alarm);
+
+            AddWindowManagerFlags();
+
+            if (bundle == null) return;
+
+
+            SetMediaPlayer(alarm);
+
+            SetVibrator(alarm);
+
+        }
+
+        private Mission GetMissionById(int id)
+        {
+            var mission = App.MissionsRepo.GetMission(id);
+
+            return mission;
+        }
+
+        private Alarm GetAlarmById(int id)
+        {
+            var alarm = App.MissionsRepo.GetAlarm(id);
+
+            return alarm;
+        }
+
+        private void SetControls(Mission mission, Alarm alarm)
+        {
+            tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
+            timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
+            missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
+            missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
+
+            tellmeButton.Click += TellmeButton_Click;
+            timeTextView.Text = alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
+            missionTextView.Text = mission.Name;
+
+            missionEditText.Enabled = false;
+        }
+
+        private void AddWindowManagerFlags()
+        {
             // add flags to turn screen on and appear over lock screen
             Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
             Window.AddFlags(WindowManagerFlags.DismissKeyguard);
             Window.AddFlags(WindowManagerFlags.KeepScreenOn);
             Window.AddFlags(WindowManagerFlags.TurnScreenOn);
+        }
 
-            Intent intent = Intent;
-            Bundle bundle = intent.Extras;
-
-            if (bundle == null) return;
-
-            id = (int)bundle.Get("id");
-            var timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
-            var missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
-            missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
-            var mission = App.MissionsRepo.GetMission(id);
-            var alarm = App.MissionsRepo.GetAlarm(id);
-            timeTextView.Text = alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
-            missionTextView.Text = mission.Name;
-
+        private void SetMediaPlayer(Alarm alarm)
+        {
             // 벨소리 늘리거나 커스텀 벨소리 넣으려면 AlarmApp example솔루션 열어서 확인
             string alarmTonePath = $"{alarm.Tone.ToLower()}.mp3";
             AssetFileDescriptor assetFileDescriptor = Assets.OpenFd(alarmTonePath);
@@ -80,29 +115,39 @@ namespace Five_Seconds.Droid
                 _mediaPlayer.Prepare();
                 _mediaPlayer.Start();
             }
+        }
 
+        private void SetVibrator(Alarm alarm)
+        {
             if (alarm.IsVibrateOn)
             {
                 _vibrator = Vibrator.FromContext(this);
-                _vibrator.Vibrate(VibrationEffect.CreateOneShot(500 * alarm.VibeFrequency / 10, VibrationEffect.DefaultAmplitude));
+                long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
+                VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, VibrationEffect.DefaultAmplitude);
+                _vibrator.Vibrate(effect);
                 Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
             }
         }
 
-        async void CloseButton_Click(object sender, EventArgs e)
+        async void TellmeButton_Click(object sender, EventArgs e)
         {
-
             _mediaPlayer?.Stop();
             _vibrator?.Cancel();
 
-            //removes our app from the scree and from 'recent apps' section
-            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            if (!missionEditText.Enabled)
             {
                 missionEditText.Text = await WaitForSpeechToText();
+                missionEditText.Enabled = true;
+                tellmeButton.Text = "submit";
+            }
+
+            if (missionEditText.Text.Trim() == missionTextView.Text.Trim())
+            {
+                ShowAlertSuccessOfFailed();
             }
             else
             {
-                missionEditText.Text = await WaitForSpeechToText();
+                ShowAlertDoNotMatchText();
             }
         }
 
@@ -110,6 +155,33 @@ namespace Five_Seconds.Droid
         {
             var stt = DependencyService.Get<ISpeechToText>();
             return await stt.SpeechToTextAsync();
+        }
+
+        private void ShowAlertDoNotMatchText()
+        {
+            Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog alert = dialog.Create();
+            alert.SetTitle("미션 내용 불일치");
+            alert.SetMessage("미션 내용을 정확히 기입하여주세요");
+            alert.SetButton("확인", (c, ev) =>
+            {
+                alert.Dispose();
+            });
+            alert.Show();
+        }
+
+        private void ShowAlertSuccessOfFailed()
+        {
+            Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog alert = dialog.Create();
+            alert.SetTitle("미션 성공");
+            alert.SetMessage("미션 성공했습니다~~");
+            alert.SetButton("확인", (c, ev) =>
+            {
+                alert.Dispose();
+                Finish();
+            });
+            alert.Show();
         }
 
         protected override void OnDestroy()

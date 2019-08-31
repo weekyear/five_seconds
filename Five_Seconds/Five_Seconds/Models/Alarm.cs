@@ -20,11 +20,11 @@ namespace Five_Seconds.Models
             set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
         }
         public bool IsActive { get; set; } = true;
-        public bool IsAlarmOn { get; set; } = false;
+        public bool IsAlarmOn { get; set; } = true;
         public int Volume { get; set; } = 5;
 
         public bool OccursToday { get { return Days.Equals(DateTime.Now.DayOfWeek); } }
-        public bool IsVibrateOn { get; set; } = false;
+        public bool IsVibrateOn { get; set; } = true;
         public int VibeFrequency { get; set; } = 5;
 
         //public int DaysId { get; set; }
