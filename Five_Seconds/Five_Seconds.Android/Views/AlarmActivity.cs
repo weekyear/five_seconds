@@ -25,9 +25,10 @@ namespace Five_Seconds.Droid
         Vibrator _vibrator;
 
         private Button tellmeButton;
-        private TextView timeTextView;
+        public TextView timeTextView;
         private TextView missionTextView;
         private EditText missionEditText;
+        private CountDown countDown;
 
         int id;
 
@@ -60,6 +61,7 @@ namespace Five_Seconds.Droid
 
             SetVibrator(alarm);
 
+            SetCountDown();
         }
 
         private Mission GetMissionById(int id)
@@ -84,7 +86,7 @@ namespace Five_Seconds.Droid
             missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
 
             tellmeButton.Click += TellmeButton_Click;
-            timeTextView.Text = alarm.TimeOffset.ToLocalTime().ToString(@"hh\:mm");
+            timeTextView.Text = "5.00 초";
             missionTextView.Text = mission.Name;
 
             missionEditText.Enabled = false;
@@ -134,9 +136,12 @@ namespace Five_Seconds.Droid
             _mediaPlayer?.Stop();
             _vibrator?.Cancel();
 
+            SetCountDown();
+
             if (!missionEditText.Enabled)
             {
                 missionEditText.Text = await WaitForSpeechToText();
+                StopCountDown();
                 missionEditText.Enabled = true;
                 tellmeButton.Text = "submit";
             }
@@ -186,6 +191,7 @@ namespace Five_Seconds.Droid
 
         protected override void OnDestroy()
         {
+            //Java.Lang.JavaSystem.Exit(0);
             base.OnDestroy();
         }
 
@@ -215,6 +221,46 @@ namespace Five_Seconds.Droid
                 }
                 SpeechToText_Android.autoEvent.Set();
             }
+        }
+
+        private void SetCountDown()
+        {
+            countDown = new CountDown(5000, 10, this);
+            countDown.Start();
+        }
+
+        private void StopCountDown()
+        {
+            countDown.Cancel();
+        }
+    }
+
+    public class CountDown : CountDownTimer
+    {
+        private Activity _activity;
+        private long _millisInFuture;
+        private long _countDownInterval;
+
+        public CountDown(long millisInFuture, long countDownInterval, Activity activity) : base(millisInFuture, countDownInterval)
+        {
+            _activity = activity;
+            _millisInFuture = millisInFuture;
+            _countDownInterval = countDownInterval;
+        }
+
+        public override void OnFinish()
+        {
+            
+        }
+
+        public override void OnTick(long millisUntilFinished)
+        {
+            var alarmActivity = _activity as AlarmActivity;
+            var timeTextView = alarmActivity.timeTextView;
+
+            double count = (double)millisUntilFinished / 1000;
+            var stringFormat = string.Format("{0:f2}", count);
+            timeTextView.Text = stringFormat + "초";
         }
     }
 }
