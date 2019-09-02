@@ -1,18 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using Five_Seconds.Models;
-using Five_Seconds.Views;
+﻿using Xamarin.Forms;
 using Five_Seconds.ViewModels;
-using Rg.Plugins.Popup.Services;
 using Five_Seconds.Services;
-using Five_Seconds.CustomControls;
 
 namespace Five_Seconds.Views
 {
@@ -27,11 +15,9 @@ namespace Five_Seconds.Views
         {
             InitializeComponent();
 
-            viewModel = new MissionsViewModel(Navigation, new MessageBoxService(), PopupNavigation.Instance);
+            viewModel = new MissionsViewModel(Navigation, new MessageBoxService());
 
             BindingContext = viewModel;
-
-            MissionsListView.ItemSelected += MissionsListView_ItemSelected;
         }
 
         protected override void OnAppearing()

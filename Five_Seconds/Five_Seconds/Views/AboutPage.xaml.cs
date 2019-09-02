@@ -21,5 +21,18 @@ namespace Five_Seconds.Views
 
             BindingContext = viewModel;
         }
+
+        protected void ShowAboutByItemClicked(object sender, ItemTappedEventArgs e)
+        {
+            viewModel.ShowAboutCommand.Execute(e.ItemIndex);
+        }
+
+        private void AboutListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (AboutListView.SelectedItem != null || e.SelectedItem != null)
+            {
+                ((ListView)sender).SelectedItem = null;
+            }
+        }
     }
 }

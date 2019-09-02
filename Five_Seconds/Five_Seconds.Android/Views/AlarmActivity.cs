@@ -19,7 +19,7 @@ using Button = Android.Widget.Button;
 namespace Five_Seconds.Droid
 {
     [Activity(Label = "AlarmActivity", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class AlarmActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class AlarmActivity : Activity
     {
         MediaPlayer _mediaPlayer = new MediaPlayer();
         Vibrator _vibrator;
@@ -60,8 +60,6 @@ namespace Five_Seconds.Droid
             SetMediaPlayer(alarm);
 
             SetVibrator(alarm);
-
-            SetCountDown();
         }
 
         private Mission GetMissionById(int id)
@@ -125,7 +123,7 @@ namespace Five_Seconds.Droid
             {
                 _vibrator = Vibrator.FromContext(this);
                 long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
-                VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, VibrationEffect.DefaultAmplitude);
+                VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
                 _vibrator.Vibrate(effect);
                 Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
             }
@@ -136,17 +134,19 @@ namespace Five_Seconds.Droid
             _mediaPlayer?.Stop();
             _vibrator?.Cancel();
 
-            SetCountDown();
-
             if (!missionEditText.Enabled)
             {
+                SetCountDown();
                 missionEditText.Text = await WaitForSpeechToText();
                 StopCountDown();
                 missionEditText.Enabled = true;
                 tellmeButton.Text = "submit";
             }
 
-            if (missionEditText.Text.Trim() == missionTextView.Text.Trim())
+            var editText = missionEditText.Text.Replace(" ", "");
+            var textView = missionTextView.Text.Replace(" ", "");
+
+            if (editText == textView)
             {
                 ShowAlertSuccessOfFailed();
             }
@@ -184,22 +184,9 @@ namespace Five_Seconds.Droid
             alert.SetButton("확인", (c, ev) =>
             {
                 alert.Dispose();
-                Finish();
+                FinishAndRemoveTask();
             });
             alert.Show();
-        }
-
-        protected override void OnDestroy()
-        {
-            //Java.Lang.JavaSystem.Exit(0);
-            base.OnDestroy();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-
-            //close mediaplayer? and vibrator?
-            base.Dispose(disposing);
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -225,7 +212,7 @@ namespace Five_Seconds.Droid
 
         private void SetCountDown()
         {
-            countDown = new CountDown(5000, 10, this);
+            countDown = new CountDown(6000, 10, this);
             countDown.Start();
         }
 

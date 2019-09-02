@@ -16,26 +16,26 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Save" Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="저장" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
 
     <TableView HasUnevenRows="True" IsTabStop="True">
         <TableRoot>
-            <TableSection Title="Mission">
+            <TableSection Title="미션">
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Padding="12,0" Orientation="Horizontal">
-                        <Label Text="Name"
+                        <Label Text="이름"
                                VerticalOptions="CenterAndExpand"/>
                         <Entry x:Name="Mission_Name"
                                HorizontalOptions="FillAndExpand"
                                FontSize="18"
-                               Placeholder="Please Insert Name"
+                               Placeholder="미션 내용을 적어주세요"
                                Text="{Binding Name}" />
                     </StackLayout>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal" Padding="13, 0">
-                        <Label Text="Time" VerticalOptions="Center"></Label>
+                        <Label Text="시간" VerticalOptions="Center"></Label>
                         <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
                         Time="{Binding Alarm.Time}" Margin="10"
                         Format="t"
@@ -43,20 +43,23 @@
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
-            <TableSection Title="Repeat">
+            <TableSection Title="요일 반복">
                 <custom:TableViewCell AllowHighlight="False">
                     <ScrollView Orientation="Horizontal">
                         <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
                     </ScrollView>
                 </custom:TableViewCell>
             </TableSection>
-            <TableSection Title="Alarm Option">
+            <TableSection Title="알람 옵션">
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal">
-                        <Label Text="Alarm Type" VerticalOptions="CenterAndExpand"/>
+                        <Label Text="알람 벨소리" 
+                               VerticalOptions="CenterAndExpand"
+                               Margin="10, 0"/>
                         <custom:MusicSelectionButton 
                             Text="{Binding Alarm.Tone}" 
-                            BackgroundColor="LightGray" 
+                            BackgroundColor="Transparent" 
+                            TextColor="DarkBlue"
                             HorizontalOptions="FillAndExpand"
                             Command="{Binding ShowSettingToneCommand}"/>
                     </StackLayout>
@@ -65,7 +68,7 @@
                     <StackLayout HorizontalOptions="FillAndExpand"
                                  Margin="10">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Alarm Volume" VerticalOptions="CenterAndExpand"/>
+                            <Label Text="벨소리 볼륨" VerticalOptions="CenterAndExpand"/>
                             <Switch IsToggled="{Binding Alarm.IsAlarmOn}" 
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
@@ -86,7 +89,7 @@
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Margin="10">
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="Vibrate?" VerticalOptions="CenterAndExpand" />
+                            <Label Text="진동 세기" VerticalOptions="CenterAndExpand" />
                             <Switch IsToggled="{Binding Alarm.IsVibrateOn}" 
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"

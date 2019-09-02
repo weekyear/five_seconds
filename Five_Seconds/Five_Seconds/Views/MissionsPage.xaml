@@ -19,60 +19,40 @@
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="ic_plus.png" Text="AddMission" Command="{Binding ShowAddMissionCommand}"/>
-        <ToolbarItem Icon="ic_plus.png" Text="Tellme" Command="{Binding TellmeCommand}"/>
     </ContentPage.ToolbarItems>
 
     <StackLayout BackgroundColor="White">
         <ListView x:Name="MissionsListView"
                 ItemsSource="{Binding Missions}"
                 Margin="10"
-                RowHeight="100"
+                RowHeight="75"
                 ItemTapped="ShowMenuByItemClicked"
+                ItemSelected="MissionsListView_ItemSelected"
                 VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding LoadItemsCommand}"
-                IsPullToRefreshEnabled="true"
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
                 CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <custom:CustomViewCell SelectedBackgroundColor="White">
-                        <custom:CustomViewCell.ContextActions>
-                            <MenuItem Text="Delete" Command="{Binding ShowAddMissionCommand}"/>
-                            <MenuItem Text="Add Mission" Command="{Binding ShowAddMissionCommand}" IconImageSource="ic_plus.png"/>
-                        </custom:CustomViewCell.ContextActions>
                         <Grid Padding="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
-                                       TextColor="{StaticResource PrimaryTextColor}"
-                                       FontSize="28"
-                                       FontAttributes="Bold" />
-                            <Label Grid.Row="1" Grid.ColumnSpan="1"
-                                       TextColor="{StaticResource PrimaryTextColor}"
-                                       FontSize="28"
-                                       Text="{Binding Name}"
-                                       HorizontalTextAlignment="Start"
-                                       MaxLines="1"
-                                       FontAttributes="Bold" />
-                            <Label Grid.Row="0" Grid.Column="1"
-                                       HorizontalTextAlignment="Center"
-                                       TextColor="{StaticResource PrimaryTextColor}"
-                                       FontSize="22"
-                                       Text="성공률"
-                                       FontAttributes="Bold" />
-                            <Label Grid.Row="1" Grid.Column="1"
-                                       TextColor="Blue"
-                                       FontSize="30"
-                                       FontAttributes="Bold"
-                                       HorizontalTextAlignment="Center"
-                                       Text="{Binding Percentage, Converter={StaticResource PercentStringConverter}}"/>
+                                   TextColor="{StaticResource PrimaryTextColor}"
+                                   FontSize="32"
+                                   FontAttributes="Bold" />
+                            <Label Grid.Column="1"
+                                   Margin="10, 0, 0, 0"
+                                   TextColor="{StaticResource PrimaryTextColor}"
+                                   FontSize="32"
+                                   Text="{Binding Name}"
+                                   HorizontalTextAlignment="Start"
+                                   MaxLines="1"
+                                   FontAttributes="Bold" />
                         </Grid>
                     </custom:CustomViewCell>
                 </DataTemplate>

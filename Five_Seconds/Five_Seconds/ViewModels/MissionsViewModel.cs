@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Five_Seconds.Models;
 using Five_Seconds.Views;
-using System.Collections.Generic;
-using Rg.Plugins.Popup.Contracts;
 using Five_Seconds.Services;
-using Five_Seconds.Repository;
 
 namespace Five_Seconds.ViewModels
 {
     public class MissionsViewModel : BaseViewModel
     {
         private readonly IMessageBoxService MessageBoxService;
-        private readonly IPopupNavigation PopupNavigation;
-        public MissionsViewModel(INavigation navigation, IMessageBoxService messageBoxService, IPopupNavigation popupNavigation) : base(navigation)
+        public MissionsViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
-            Title = "자, 5초 준다";
+            Title = "자, 5초 센다";
 
             MessageBoxService = messageBoxService;
-            PopupNavigation = popupNavigation;
 
             ConstructCommand();
 
@@ -30,7 +24,6 @@ namespace Five_Seconds.ViewModels
         private void ConstructCommand()
         {
             ShowAddMissionCommand = new Command(async () => await ShowAddMission());
-            TellmeCommand = new Command(async () => await Tellme());
             ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
         }
 
@@ -54,18 +47,11 @@ namespace Five_Seconds.ViewModels
         }
 
         public Command ShowAddMissionCommand { get; set; }
-        public Command TellmeCommand { get; set; }
         public Command<object> ShowMenuCommand { get; set; }
 
         public async Task ShowAddMission()
         {
             await Navigation.PushAsync(new MissionPage(Navigation));
-        }
-
-        public async Task Tellme()
-        {
-            var sss = DependencyService.Get<ISpeechToText>();
-            Title = await sss.SpeechToTextAsync();
         }
 
         public async Task ShowMenu(object _mission)

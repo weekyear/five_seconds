@@ -24,7 +24,7 @@
             <custom:DayOfWeekButton 
                             BackgroundColor="Transparent" 
                             Grid.Column="0" 
-                            FontSize="16" Text="S" TextColor="Black"
+                            FontSize="16" Text="일" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Sunday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -33,7 +33,7 @@
                             Grid.Column="1"
                             BackgroundColor="Transparent"
                             Padding="10"
-                            FontSize="16" Text="M" TextColor="Black"
+                            FontSize="16" Text="월" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Monday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -41,7 +41,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="2"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="T" TextColor="Black"
+                            FontSize="16" Text="화" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Tuesday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -49,7 +49,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="3"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="W" TextColor="Black"
+                            FontSize="16" Text="수" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Wednesday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -57,7 +57,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="4"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="T" TextColor="Black"
+                            FontSize="16" Text="목" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Thursday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -65,7 +65,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="5"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="F" TextColor="Black"
+                            FontSize="16" Text="금" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Friday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -73,7 +73,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="6"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="S" TextColor="Black"
+                            FontSize="16" Text="토" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Saturday}"
                             IsSelectedChanged="OnIsSelectedChanged"
