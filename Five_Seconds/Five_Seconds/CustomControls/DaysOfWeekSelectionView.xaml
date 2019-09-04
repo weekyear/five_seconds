@@ -25,7 +25,7 @@
                             BackgroundColor="Transparent" 
                             Grid.Column="0" 
                             FontSize="16" Text="일" TextColor="Black"
-                            BorderWidth="3" CornerRadius="50"
+                            BorderWidth="2" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Sunday}"
                             IsSelectedChanged="OnIsSelectedChanged"
                             Clicked="DayOfWeekButton_Clicked"/>

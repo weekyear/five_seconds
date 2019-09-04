@@ -41,35 +41,20 @@ namespace Five_Seconds.ViewModels
             get; set;
         }
 
-        //private AlarmTone _selectedTone;
-        //public AlarmTone SelectedTone
-        //{
-        //    get { return _selectedTone; }
-        //    set
-        //    {
-        //        if (value != null) { SetSelectedTone(value); }
-        //        _selectedTone = value;
-        //        OnPropertyChanged(nameof(SelectedTone));
-                    
-        //    }
-        //}
-
-        private AlarmTone _playingTone;
-        public AlarmTone PlayingTone
+        public int Volume
         {
-            get { return _playingTone; }
+            get { return Mission.Alarm.Volume; }
             set
             {
-                if (_playingTone == value) { return; }
-                _playingTone = value;
-                OnPropertyChanged(nameof(PlayingTone));
-
+                if (Mission.Alarm.Volume == value) return;
+                Mission.Alarm.Volume = value;
+                OnPropertyChanged(nameof(Volume));
             }
         }
 
         private void PlayTone(AlarmTone tone)
         {
-            _soundService.PlayAudio(tone);
+            _soundService.PlayAudio(tone, Mission.Alarm.Volume);
         }
 
         private void StopTone()

@@ -21,7 +21,7 @@ namespace Five_Seconds.Droid
     [Activity(Label = "AlarmActivity", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : Activity
     {
-        MediaPlayer _mediaPlayer = new MediaPlayer();
+        IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
         Vibrator _vibrator;
 
         private Button tellmeButton;
@@ -101,19 +101,10 @@ namespace Five_Seconds.Droid
 
         private void SetMediaPlayer(Alarm alarm)
         {
-            // 벨소리 늘리거나 커스텀 벨소리 넣으려면 AlarmApp example솔루션 열어서 확인
-            string alarmTonePath = $"{alarm.Tone.ToLower()}.mp3";
-            AssetFileDescriptor assetFileDescriptor = Assets.OpenFd(alarmTonePath);
-            _mediaPlayer.SetDataSource(assetFileDescriptor.FileDescriptor, assetFileDescriptor.StartOffset, assetFileDescriptor.Length);
-            var maxVolume = 10;
-            float log1 = (float)(Math.Log(maxVolume - alarm.Volume) / Math.Log(maxVolume));
-
             if (alarm.IsAlarmOn)
             {
-                _mediaPlayer.SetVolume(1 - log1, 1 - log1);
-                _mediaPlayer.Looping = true;
-                _mediaPlayer.Prepare();
-                _mediaPlayer.Start();
+                AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == alarm.Tone);
+                _soundService.PlayAudio(alarmTone, true, alarm.Volume);
             }
         }
 
@@ -131,7 +122,7 @@ namespace Five_Seconds.Droid
 
         async void TellmeButton_Click(object sender, EventArgs e)
         {
-            _mediaPlayer?.Stop();
+            _soundService?.StopAudio();
             _vibrator?.Cancel();
 
             if (!missionEditText.Enabled)
@@ -219,6 +210,10 @@ namespace Five_Seconds.Droid
         private void StopCountDown()
         {
             countDown.Cancel();
+        }
+
+        public override void OnBackPressed()
+        {
         }
     }
 

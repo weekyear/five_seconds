@@ -13,7 +13,7 @@ namespace Five_Seconds.ViewModels
         private readonly IMessageBoxService MessageBoxService;
         public MissionsViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
-            Title = "자, 5초 센다";
+            Title = "5초의 알람";
 
             MessageBoxService = messageBoxService;
 

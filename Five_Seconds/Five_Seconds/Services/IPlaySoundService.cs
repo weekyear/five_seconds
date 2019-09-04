@@ -7,8 +7,8 @@ namespace Five_Seconds.Services
 {
     public interface IPlaySoundService
     {
-        void PlayAudio(AlarmTone alarmTone);
-        void PlayAudio(AlarmTone alarmTone, bool isLooping);
+        void PlayAudio(AlarmTone alarmTone, int volume);
+        void PlayAudio(AlarmTone alarmTone, bool isLooping, int volume);
         void StopAudio();
     }
 }

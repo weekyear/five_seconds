@@ -33,25 +33,10 @@ namespace Five_Seconds.Views
             viewModel.StopToneCommand.Execute(null);
         }
 
-        void AddConfirmToolbarItem(object sender, SelectedItemChangedEventArgs e)
-        {
-            //viewModel.SelectedTone = e.SelectedItem as AlarmTone;
-
-            if (ToolbarItems.Count == 0)
-            {
-                ToolbarItems.Add(new ToolbarItem
-                {
-                    Text = "Save",
-                    Icon = "save",
-                    Command = viewModel.ToneSaveCommand
-                });
-            }
-        }
-
         private void ToneListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var selectedTone = e.SelectedItem as AlarmTone;
-            //viewModel.SelectedTone = selectedTone;
+            ToneListView.SelectedItem = e.SelectedItem;
             viewModel.ToneSaveCommand.Execute(selectedTone);
         }
     }

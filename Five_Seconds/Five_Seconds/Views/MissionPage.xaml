@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
+			 Title="알람 설정"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.MissionPage">
     <ContentPage.Resources>
@@ -17,98 +18,79 @@
         <ToolbarItem Text="저장" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <TableView HasUnevenRows="True" IsTabStop="True">
+    <custom:ColoredTableView HasUnevenRows="True" IsTabStop="True" GroupHeaderColor="DarkBlue">
         <TableRoot>
-            <TableSection Title="미션" TextColor="DarkBlue">
+            <TableSection>
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Padding="12,0" Orientation="Horizontal">
-                        <Label Text="이름"
-                               VerticalOptions="CenterAndExpand"/>
                         <Entry x:Name="Mission_Name"
+                               Margin="10"
                                HorizontalOptions="FillAndExpand"
-                               FontSize="18"
-                               Placeholder="미션 내용을 적어주세요"
+                               FontSize="20"
+                               Placeholder="알람 이름을 적어주세요"
                                Text="{Binding Name}" />
                     </StackLayout>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal" Padding="13, 0">
-                        <Label Text="시간" VerticalOptions="Center"></Label>
                         <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
-                        Time="{Binding Alarm.Time}" Margin="10"
+                        Time="{Binding Alarm.Time}" Margin="20"
                         Format="t"
-                        FontSize="30"/>
+                        FontSize="40"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+                <custom:TableViewCell AllowHighlight="False">
+                    <StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Date}"
+                                   Margin="10"
+                                   TextColor="DarkBlue"
+                                   FontSize="16"/>
+                            <Button ImageSource="ic_calendar" 
+                                    Margin="10"
+                                    HorizontalOptions="EndAndExpand"
+                                    BackgroundColor="White" 
+                                    Clicked="CalendarButton_Clicked"
+                                    HeightRequest="30" WidthRequest="30"/>
+                            <DatePicker x:Name="datePicker" IsVisible="False" Date="{Binding Date}" MinimumDate="09/03/2019"/>
+                        </StackLayout>
+                        <ScrollView Orientation="Horizontal">
+                            <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
+                        </ScrollView>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
-            <TableSection Title="요일 반복" TextColor="DarkBlue">
-                <custom:TableViewCell AllowHighlight="False">
-                    <ScrollView Orientation="Horizontal"
-                                Padding="0, 10">
-                        <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
-                    </ScrollView>
-                </custom:TableViewCell>
-            </TableSection>
             <TableSection Title="알람 옵션" TextColor="DarkBlue">
-                <custom:TableViewCell AllowHighlight="False">
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="알람 벨소리" 
+                <custom:TableViewCell AllowHighlight="False" Height="60">
+                    <StackLayout Orientation="Horizontal" Margin="10">
+                        <Label Text="알람음" 
+                               FontSize="20"
                                VerticalOptions="CenterAndExpand"
                                Margin="10, 0"/>
                         <custom:MusicSelectionButton 
                             Text="{Binding Alarm.Tone}" 
                             BackgroundColor="Transparent" 
+                            IsEnabled="{Binding Alarm.IsAlarmOn}"
                             FontSize="20"
                             TextColor="DarkBlue"
-                            FontAttributes="Bold"
                             HorizontalOptions="FillAndExpand"
                             Command="{Binding ShowSettingToneCommand}"/>
-                    </StackLayout>
-                </custom:TableViewCell>
-                <custom:TableViewCell AllowHighlight="False">
-                    <StackLayout HorizontalOptions="FillAndExpand"
-                                 Margin="10">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="벨소리 볼륨" VerticalOptions="CenterAndExpand"/>
-                            <Switch IsToggled="{Binding Alarm.IsAlarmOn}" 
+                        <Switch IsToggled="{Binding Alarm.IsAlarmOn}" 
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
                                     ThumbColor="SkyBlue"/>
-                        </StackLayout>
-                        <Slider x:Name="VolumeSlider" 
-                                IsEnabled="{Binding Alarm.IsAlarmOn}"
-                                WidthRequest="500"
-                                MinimumTrackColor="LightSkyBlue"
-                                MaximumTrackColor="LightSkyBlue"
-                                ThumbColor="DeepSkyBlue"
-                                Maximum="10" Minimum="1" 
-                                Margin="5"
-                                Value="{Binding Alarm.Volume}"
-                                VerticalOptions="CenterAndExpand"/>
                     </StackLayout>
                 </custom:TableViewCell>
-                <custom:TableViewCell AllowHighlight="False">
-                    <StackLayout Margin="10">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="진동 세기" VerticalOptions="CenterAndExpand" />
-                            <Switch IsToggled="{Binding Alarm.IsVibrateOn}" 
+                <custom:TableViewCell AllowHighlight="False" Height="60">
+                    <StackLayout Orientation="Horizontal" Margin="10">
+                        <Label Text="진동" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                        <Switch IsToggled="{Binding Alarm.IsVibrateOn}" 
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
                                     ThumbColor="SkyBlue"/>
-                        </StackLayout>
-                        <Slider x:Name="VibrateSlider"
-                                IsEnabled="{Binding Alarm.IsVibrateOn}"
-                                HorizontalOptions="FillAndExpand" 
-                                MinimumTrackColor="LightSkyBlue"
-                                MaximumTrackColor="LightSkyBlue"
-                                ThumbColor="DeepSkyBlue"
-                                Maximum="10" Minimum="1" 
-                                Margin="5"
-                                Value="{Binding Alarm.VibeFrequency}"
-                                VerticalOptions="CenterAndExpand"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
         </TableRoot>
-    </TableView>
+    </custom:ColoredTableView>
 </ContentPage>

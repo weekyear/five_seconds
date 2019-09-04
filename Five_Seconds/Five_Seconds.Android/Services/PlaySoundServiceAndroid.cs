@@ -29,12 +29,12 @@ namespace Five_Seconds.Droid.Services
         AssetFileDescriptor _assetFileDescriptor;
         Task playSoundTask;
 
-        public void PlayAudio(AlarmTone alarmTone)
+        public void PlayAudio(AlarmTone alarmTone, int volume)
         {
-            PlayAudio(alarmTone, false);
+            PlayAudio(alarmTone, false, volume);
         }
 
-        public void PlayAudio(AlarmTone alarmTone, bool isLooping)
+        public void PlayAudio(AlarmTone alarmTone, bool isLooping, int volume)
         {
             StopAudio();
 
@@ -53,6 +53,10 @@ namespace Five_Seconds.Droid.Services
                 _mediaPlayer.SetDataSource(alarmTonePath);
             }
 
+            var maxVolume = 10;
+            float log1 = (float)(Math.Log(maxVolume - volume) / Math.Log(maxVolume));
+
+            _mediaPlayer.SetVolume(1 - log1, 1 - log1);
             _mediaPlayer.Looping = isLooping;
             _mediaPlayer.Prepare();
             _mediaPlayer.Start();

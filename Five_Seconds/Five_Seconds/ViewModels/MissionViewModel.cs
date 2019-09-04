@@ -15,16 +15,12 @@ namespace Five_Seconds.ViewModels
         {
             Mission = new Mission();
 
-            Title = "미션 설정";
-
             ConstructCommand();
         }
 
         public MissionViewModel(INavigation navigation, Mission mission) : base(navigation)
         {
             Mission = new Mission(mission);
-
-            Title = "미션 설정";
 
             ConstructCommand();
         }
@@ -66,6 +62,21 @@ namespace Five_Seconds.ViewModels
                 if (Mission.Alarm == value) return;
                 Mission.Alarm = value;
                 OnPropertyChanged(nameof(Alarm));
+            }
+        }
+
+        private DateTime dateTime = DateTime.Now;
+        public DateTime Date
+        {
+            get
+            {
+                return dateTime;
+            }
+            set
+            {
+                if (dateTime == value) return;
+                dateTime = value;
+                OnPropertyChanged(nameof(Date));
             }
         }
 

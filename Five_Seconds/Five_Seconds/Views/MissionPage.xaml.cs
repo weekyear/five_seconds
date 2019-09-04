@@ -64,5 +64,12 @@ namespace Five_Seconds.Views
                 button.BorderColor = Color.Transparent;
             }
         }
+
+        private void CalendarButton_Clicked(object sender, EventArgs e)
+        {
+            datePicker.MinimumDate = DateTime.Now;
+            datePicker.IsVisible = true;
+            datePicker.Focus();
+        }
     }
 }
