@@ -9,8 +9,7 @@
              x:Class="Five_Seconds.Views.SettingTonePage">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <DataTemplate 
-				x:Key="DefaultTemplate">
+            <DataTemplate x:Key="DefaultTemplate">
                 <ViewCell Height="65">
                     <ViewCell.View>
                         <StackLayout Orientation="Horizontal">
@@ -38,7 +37,7 @@
 				  ItemTemplate="{StaticResource DefaultTemplate}"
 				  ItemsSource="{Binding AllAlarmTones, Mode=OneWay}" 
 				  SelectedItem="{Binding SelectedTone, Mode=TwoWay}"
-                  ItemSelected="ToneListView_ItemSelected"
+          ItemSelected="ToneListView_ItemSelected"
 				  HasUnevenRows="true">
         </ListView>
     </ContentPage.Content>

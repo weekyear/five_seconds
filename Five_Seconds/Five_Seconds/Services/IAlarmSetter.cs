@@ -9,8 +9,6 @@ namespace Five_Seconds.Services
     {
         void SetAlarm(Mission mission);
 
-        void SetRepeatingAlarm(Alarm alarm);
-
         void DeleteAlarm(int id);
 
         void DeleteAllAlarms(List<Mission> missions);

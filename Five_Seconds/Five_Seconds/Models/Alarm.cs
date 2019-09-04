@@ -19,7 +19,6 @@ namespace Five_Seconds.Models
             get { return TimeOffset.LocalDateTime.TimeOfDay; }
             set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
         }
-        public bool IsActive { get; set; } = true;
         public bool IsAlarmOn { get; set; } = true;
         public int Volume { get; set; } = 5;
 
@@ -52,7 +51,6 @@ namespace Five_Seconds.Models
         public Alarm(Alarm original)
         {
             TimeOffset = original.TimeOffset;
-            IsActive = original.IsActive;
             IsVibrateOn = original.IsVibrateOn;
             Days = original.Days;
             Tone = original.Tone;

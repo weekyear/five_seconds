@@ -4,8 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
-             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
-             xmlns:animations="clr-namespace:Rg.Plugins.Popup.Animations;assembly=Rg.Plugins.Popup"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.MissionPage">
@@ -21,7 +19,7 @@
 
     <TableView HasUnevenRows="True" IsTabStop="True">
         <TableRoot>
-            <TableSection Title="미션">
+            <TableSection Title="미션" TextColor="DarkBlue">
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Padding="12,0" Orientation="Horizontal">
                         <Label Text="이름"
@@ -43,14 +41,15 @@
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
-            <TableSection Title="요일 반복">
+            <TableSection Title="요일 반복" TextColor="DarkBlue">
                 <custom:TableViewCell AllowHighlight="False">
-                    <ScrollView Orientation="Horizontal">
+                    <ScrollView Orientation="Horizontal"
+                                Padding="0, 10">
                         <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
                     </ScrollView>
                 </custom:TableViewCell>
             </TableSection>
-            <TableSection Title="알람 옵션">
+            <TableSection Title="알람 옵션" TextColor="DarkBlue">
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal">
                         <Label Text="알람 벨소리" 

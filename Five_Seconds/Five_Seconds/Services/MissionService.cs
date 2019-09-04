@@ -114,14 +114,21 @@ namespace Five_Seconds.Services
 
         public int SaveMission(Mission mission)
         {
+            var id = SaveMissionAtLocal(mission);
+            alarmSetter.SetAlarm(mission);
+            return id;
+        }
+
+        public int SaveMissionAtLocal(Mission mission)
+        {
             mission.Alarm.Days.Id = Repository.SaveDaysOfWeek(mission.Alarm.Days);
             mission.Alarm.Id = Repository.SaveAlarm(mission.Alarm);
             var id = Repository.SaveMission(mission);
-            alarmSetter.SetAlarm(mission);
             AddOrModifyMissionToMissions(mission);
             SendMessage("save");
             return id;
         }
+
         private void AddOrModifyMissionToMissions(Mission mission)
         {
             for (int i = 0; i < Missions.Count; i++)

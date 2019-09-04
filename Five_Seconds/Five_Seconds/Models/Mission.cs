@@ -16,6 +16,7 @@ namespace Five_Seconds.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public double Percentage { get; set; }
+        public bool IsActive { get; set; } = true;
 
         [OneToMany]
         public List<Record> Records { get; set; } = new List<Record>();
@@ -32,6 +33,7 @@ namespace Five_Seconds.Models
             Name = original.Name;
             Alarm = original.Alarm;
             Percentage = original.Percentage;
+            IsActive = original.IsActive;
         }
     }
 }
