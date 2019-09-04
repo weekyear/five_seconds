@@ -4,6 +4,7 @@ using Xamarin.Forms;
 using Five_Seconds.Models;
 using Five_Seconds.Views;
 using Five_Seconds.Services;
+using System;
 
 namespace Five_Seconds.ViewModels
 {
@@ -89,6 +90,5 @@ namespace Five_Seconds.ViewModels
         {
             await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, mission)));
         }
-
     }
 }

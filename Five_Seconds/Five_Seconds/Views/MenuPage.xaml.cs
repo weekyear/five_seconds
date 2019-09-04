@@ -21,7 +21,8 @@ namespace Five_Seconds.Views
             menuItems = new List<HomeMenuItem>
             {
                 new HomeMenuItem {Id = MenuItemType.Main, Title="모든 미션" },
-                new HomeMenuItem {Id = MenuItemType.About, Title="5초의 법칙이란" }
+                new HomeMenuItem {Id = MenuItemType.About, Title="5초의 법칙이란" },
+                new HomeMenuItem {Id = MenuItemType.AppIntro, Title="간단 사용법" }
             };
 
             ListViewMenu.ItemsSource = menuItems;
@@ -34,6 +35,7 @@ namespace Five_Seconds.Views
 
                 var id = (int)((HomeMenuItem)e.SelectedItem).Id;
                 await RootPage.NavigateFromMenu(id);
+                ListViewMenu.SelectedItem = null;
             };
         }
     }

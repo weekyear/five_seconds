@@ -7,7 +7,8 @@ namespace Five_Seconds.Models
     public enum MenuItemType
     {
         Main,
-        About
+        About,
+        AppIntro
     }
     public class HomeMenuItem
     {

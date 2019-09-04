@@ -1,6 +1,8 @@
 ﻿using Xamarin.Forms;
 using Five_Seconds.ViewModels;
 using Five_Seconds.Services;
+using Five_Seconds.CustomControls;
+using Five_Seconds.Models;
 
 namespace Five_Seconds.Views
 {
@@ -35,6 +37,14 @@ namespace Five_Seconds.Views
             {
                 ((ListView)sender).SelectedItem = null;
             }
+        }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            var activeSwitch = (Switch)sender;
+            var mission = (Mission)activeSwitch.BindingContext;
+
+            App.MissionsRepo.SaveMission(mission);
         }
     }
 }

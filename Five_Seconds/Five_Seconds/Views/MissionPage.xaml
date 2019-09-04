@@ -39,7 +39,7 @@
                         <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
                         Time="{Binding Alarm.Time}" Margin="10"
                         Format="t"
-                        FontSize="35"/>
+                        FontSize="30"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
@@ -59,7 +59,9 @@
                         <custom:MusicSelectionButton 
                             Text="{Binding Alarm.Tone}" 
                             BackgroundColor="Transparent" 
+                            FontSize="20"
                             TextColor="DarkBlue"
+                            FontAttributes="Bold"
                             HorizontalOptions="FillAndExpand"
                             Command="{Binding ShowSettingToneCommand}"/>
                     </StackLayout>

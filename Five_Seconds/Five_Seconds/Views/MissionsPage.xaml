@@ -13,6 +13,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
+            <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -24,8 +25,8 @@
     <StackLayout BackgroundColor="White">
         <ListView x:Name="MissionsListView"
                 ItemsSource="{Binding Missions}"
-                Margin="10"
-                RowHeight="75"
+                Margin="5"
+                RowHeight="100"
                 ItemTapped="ShowMenuByItemClicked"
                 ItemSelected="MissionsListView_ItemSelected"
                 VerticalOptions="FillAndExpand"
@@ -36,23 +37,44 @@
                         <Grid Padding="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Alarm.Time, Converter={StaticResource AmPmStringConverter}}"
                                    TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="32"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="EndAndExpand"/>
+                                <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
+                                   TextColor="{StaticResource PrimaryTextColor}"
+                                   FontSize="25"
                                    FontAttributes="Bold" />
-                            <Label Grid.Column="1"
-                                   Margin="10, 0, 0, 0"
+                            </StackLayout>
+                            <Label Grid.Column="1" 
+                                   Text=""
                                    TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="32"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   Margin="10, 0, 0, 0"
+                                   VerticalOptions="EndAndExpand" />
+                            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                   TextColor="{StaticResource PrimaryTextColor}"
+                                   FontSize="28"
                                    Text="{Binding Name}"
-                                   HorizontalTextAlignment="Start"
+                                   HorizontalOptions="EndAndExpand"
                                    MaxLines="1"
                                    FontAttributes="Bold" />
+                            <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+                                    IsToggled="{Binding Alarm.IsActive}"
+                                    Toggled="Switch_Toggled"
+                                    HorizontalOptions="EndAndExpand"
+                                    OnColor="LightSteelBlue"
+                                    ThumbColor="SkyBlue"/>
                         </Grid>
                     </custom:CustomViewCell>
                 </DataTemplate>

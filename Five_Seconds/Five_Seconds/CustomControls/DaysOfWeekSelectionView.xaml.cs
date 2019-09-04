@@ -43,7 +43,7 @@ namespace Five_Seconds.CustomControls
 
             if (button.IsSelected == true)
             {
-                button.BorderColor = Color.IndianRed;
+                button.BorderColor = Color.DarkBlue;
             }
             else
             {

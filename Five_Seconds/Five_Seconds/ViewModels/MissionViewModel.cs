@@ -15,12 +15,16 @@ namespace Five_Seconds.ViewModels
         {
             Mission = new Mission();
 
+            Title = "미션 설정";
+
             ConstructCommand();
         }
 
         public MissionViewModel(INavigation navigation, Mission mission) : base(navigation)
         {
             Mission = new Mission(mission);
+
+            Title = "미션 설정";
 
             ConstructCommand();
         }
@@ -148,31 +152,20 @@ namespace Five_Seconds.ViewModels
         }
         private async Task Save()
         {
-            Service.SaveMission(Mission);
-            await ClosePopup();
+            if (string.IsNullOrEmpty(Name))
+            {
+                await Application.Current.MainPage.DisplayAlert("", "미션 이름을 깜빡하셨어요!", "확인");
+            }
+            else
+            {
+                Service.SaveMission(Mission);
+                await ClosePopup();
+            }
         }
 
         private async Task ShowSettingTone()
         {
             await Navigation.PushAsync(new SettingTonePage(Navigation, Mission));
-        }
-
-        public static bool AreEqual<T>(T left, T right)
-        {
-            if (left == null)
-                return right == null;
-            if (left is IComparable<T>)
-            {
-                IComparable<T> lval = left as IComparable<T>;
-                if (right is IComparable<T>)
-                    return lval.CompareTo(right) == 0;
-                else
-                    throw new ArgumentException("Type does not implement IComparable<T>", nameof(right));
-            }
-            else // 실패
-            {
-                throw new ArgumentException("Type does not implement IComparable<T>", nameof(left));
-            }
         }
     }
 }

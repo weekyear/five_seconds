@@ -140,7 +140,7 @@ namespace Five_Seconds.Droid
                 missionEditText.Text = await WaitForSpeechToText();
                 StopCountDown();
                 missionEditText.Enabled = true;
-                tellmeButton.Text = "submit";
+                tellmeButton.Text = "5초의 법칙 시작!";
             }
 
             var editText = missionEditText.Text.Replace(" ", "");

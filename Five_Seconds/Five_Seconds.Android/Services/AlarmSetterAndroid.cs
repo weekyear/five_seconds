@@ -142,8 +142,6 @@ namespace Five_Seconds.Droid.Services
                 StartMyOwnForeground();
             else
                 StartForeground(1, new Notification());
-
-            
         }
 
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
@@ -164,7 +162,7 @@ namespace Five_Seconds.Droid.Services
 
             var notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
             var notification = notificationBuilder.SetOngoing(true)
-                    .SetSmallIcon(Resource.Drawable.ic_plus)
+                    .SetSmallIcon(Resource.Drawable.ic_icon_notificatioin)
                     .SetContentTitle("App is running in background")
                     .SetPriority((int)NotificationImportance.Min)
                     .SetCategory(Notification.CategoryService)
@@ -184,7 +182,7 @@ namespace Five_Seconds.Droid.Services
             var mission = App.MissionsRepo.GetMission(id);
             var alarm = App.MissionsRepo.GetAlarm(id);
             alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
-            var diffMillis = CalculateFirstAlarmMillis(alarm);
+            var diffMillis = CalculateTimeDiff(alarm);
 
             SetAlarmByManager(id, diffMillis);
             //context.StartForegroundService(_alarmIntent);
@@ -203,51 +201,69 @@ namespace Five_Seconds.Droid.Services
             alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
         }
 
-        private long CalculateFirstAlarmMillis(Alarm alarm)
+        private long CalculateTimeDiff(Alarm alarm)
         {
-            var alarmTimeMillis = alarm.TimeOffset.ToUnixTimeMilliseconds();
-            var addingDateMillis = CalculateAddingDate(alarm);
+            var dateTimeNow = DateTime.Now;
+            var diffTime = alarm.Time.Subtract(dateTimeNow.TimeOfDay);
+            var diffDays = CalculateAddingDay(alarm, diffTime);
 
-            return alarmTimeMillis + addingDateMillis;
+            var diffTimeSpan = new TimeSpan(diffDays, diffTime.Hours, diffTime.Minutes, diffTime.Seconds);
+
+            var alarmTime = dateTimeNow.Add(diffTimeSpan);
+
+            var diff = alarmTime.Subtract(dateTimeNow);
+            ShowNextAlarmToast(diff);
+
+            return Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diff.TotalMilliseconds;
         }
 
-        private long CalculateAddingDate(Alarm alarm)
+        private int CalculateAddingDay(Alarm alarm, TimeSpan diffTime)
         {
-            var MillisecondPerDay = TimeSpan.TicksPerDay / TimeSpan.TicksPerMillisecond;
+            int diffDays = 0;
 
             if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
                 var allDays = alarm.Days.AllDays;
-                int diffDays = 10;
 
                 for (int i = 0; i < 7; i++)
                 {
                     if (allDays[i])
                     {
                         var today = (int)DateTime.Now.DayOfWeek;
-                        diffDays = i - today > 0 ? i - today : i - today + 7;
+                        diffDays = i - today >= 0 ? i - today : i - today + 7;
                     }
                 }
+            }
 
-                var diffSecondsMillis = new TimeSpan(0, 0, diffDays).TotalMilliseconds;
-                var diffDaysMillis = MillisecondPerDay * diffDays;
+            if (diffDays == 0 && diffTime.Ticks < 0) { diffDays = 1; }
 
-                return diffDaysMillis;
+            return diffDays;
+        }
+
+        private void ShowNextAlarmToast(TimeSpan diff)
+        {
+            var diffString = CreateTimeRemainingString(diff);
+
+            DependencyService.Get<ToastService>().Show(diffString);
+        }
+
+        private string CreateTimeRemainingString(TimeSpan diff)
+        {
+            if (diff.Days > 0)
+            {
+                return $"{diff.Days}일 {diff.Hours}시간 {diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
+            }
+            else if (diff.Hours > 0)
+            {
+                return $"{diff.Hours}시간 {diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
+            }
+            else if (diff.Minutes > 0)
+            {
+                return $"{diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
             }
             else
             {
-                var currentTimeSpan = DateTime.Now.TimeOfDay;
-
-                var difference = alarm.Time.Subtract(currentTimeSpan).TotalMilliseconds;
-
-                if (difference < 0)
-                {
-                    return MillisecondPerDay;
-                }
-                else
-                {
-                    return 0;
-                }
+                return $"{diff.Seconds}초 후에 5초의 법칙을 실행합니다!";
             }
         }
 
@@ -270,20 +286,22 @@ namespace Five_Seconds.Droid.Services
             mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
             var diffMillis = CalculateNextAlarmMillis(mission.Alarm);
 
-            SetAlarmByManager(id, diffMillis);
+            if (diffMillis == 0)
+            {
+                mission.Alarm.IsActive = false;
+                App.MissionsRepo.SaveMission(mission);
+                return;
+            }
 
             if (mission.Alarm.IsActive)
             {
+                SetAlarmByManager(id, diffMillis);
                 StartAlarmActivity(context, id);
-                //var mainPage = Xamarin.Forms.Application.Current.MainPage;
-                //var navigation = mainPage.Navigation;
-                //mainPage.Navigation.PushModalAsync(new MissionPage(navigation, mission));
             }
         }
 
         private void SetAlarmByManager(int id, long diffMillis)
         {
-            if (diffMillis == 0) return;
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", id);
@@ -296,7 +314,7 @@ namespace Five_Seconds.Droid.Services
         private long CalculateNextAlarmMillis(Alarm alarm)
         {
             var allDays = alarm.Days.AllDays;
-            int diffDays = 100;
+            int diffDays = 0;
 
             for (int i = 0; i < 7; i++)
             {
@@ -307,15 +325,13 @@ namespace Five_Seconds.Droid.Services
                 }
             }
 
-            if (diffDays > 99) return 0;
+            if (diffDays == 0) return 0;
 
-            var diffSecondsMillis = new TimeSpan(0, 0, diffDays).TotalMilliseconds;
             var diffDaysMillis = new TimeSpan(diffDays, 0, 0, 0).TotalMilliseconds;
 
             var currentTimeMillis = alarm.TimeOffset.ToUnixTimeMilliseconds();
 
-            //return currentTimeMillis + (long)diffDaysMillis;
-            return currentTimeMillis + (long)diffSecondsMillis * 10;
+            return currentTimeMillis + (long)diffDaysMillis;
         }
 
         private void StartAlarmActivity(Context context, int id)

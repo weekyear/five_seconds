@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 Title="Select Tone"
+			 Title="벨소리 설정"
              mc:Ignorable="d"
              x:Name="tonePage"
              x:Class="Five_Seconds.Views.SettingTonePage">
@@ -11,18 +11,19 @@
         <ResourceDictionary>
             <DataTemplate 
 				x:Key="DefaultTemplate">
-                <ViewCell>
+                <ViewCell Height="65">
                     <ViewCell.View>
                         <StackLayout Orientation="Horizontal">
                             <Label 
                                 Text="{Binding Name}" 
-                                FontSize="17" 
+                                FontSize="18" 
                                 TextColor="Black" 
                                 Margin="20"/>
-                            <Button
+                            <ImageButton
                                 HorizontalOptions="EndAndExpand"
-                                BackgroundColor="AliceBlue"
-                                ImageSource="ic_plus.png"
+                                BackgroundColor="Transparent"
+                                Source="ic_play.png"
+                                Padding="0, 0, 10, 0"
                                 Command="{Binding Source={x:Reference tonePage}, Path=BindingContext.PlayToneCommand}"
                                 CommandParameter="{Binding .}"/>
                         </StackLayout>

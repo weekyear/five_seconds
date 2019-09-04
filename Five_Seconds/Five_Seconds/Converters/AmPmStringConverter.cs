@@ -6,11 +6,11 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class TimeStringConverter : IValueConverter
+    public class AmPmStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return TimeToString(value);
+            return AmPmToString(value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -19,16 +19,16 @@ namespace Five_Seconds.Converters
             TimeSpan _time = DateTime.Parse(timeValue).TimeOfDay;
             return _time;
         }
-        private object TimeToString(object value)
+        private object AmPmToString(object value)
         {
             var timeSpan = (TimeSpan)value;
 
             if (timeSpan == TimeSpan.MinValue)
             {
-                return "시간 없음";
+                return "";
             }
             var dateTime = new DateTime() + timeSpan;
-            var timeString = string.Format("{0:hh : mm} 에", dateTime);
+            var timeString = string.Format("{0:tt}", dateTime);
             return timeString;
         }
     }

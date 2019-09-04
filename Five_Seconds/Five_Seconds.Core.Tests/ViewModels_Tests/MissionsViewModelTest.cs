@@ -34,7 +34,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             messageBoxService = new Mock<IMessageBoxService>();
             popupNavigation = new Mock<IPopupNavigation>();
 
-            missionsViewModel = new MissionsViewModel(navigation.Object, messageBoxService.Object, popupNavigation.Object);
+            missionsViewModel = new MissionsViewModel(navigation.Object, messageBoxService.Object);
         }
 
         [Test]
@@ -44,7 +44,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             // Act
             missionsViewModel.ShowAddMissionCommand.Execute(null);
             // Assert
-            popupNavigation.Verify(n => n.PushAsync(It.IsAny<MissionPopupPage>(), true), Times.Once());
+            navigation.Verify(n => n.PushAsync(It.IsAny<MissionPage>(), true), Times.Once());
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             await methodAsync;
 
             // Assert
-            popupNavigation.Verify(n => n.PushAsync(It.IsAny<MissionPopupPage>(), true), Times.Once());
+            navigation.Verify(n => n.PushAsync(It.IsAny<MissionPage>(), true), Times.Once());
         }
 
         [Test]

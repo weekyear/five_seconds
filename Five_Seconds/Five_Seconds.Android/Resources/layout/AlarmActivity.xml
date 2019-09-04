@@ -59,10 +59,11 @@
             android:layout_margin="20dp"
             android:background="@android:color/white"/>
         <Button
-            android:text="Tell me"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:text="뭐 할 건지 알려주세요"
+            android:layout_width="150dp"
+            android:layout_height="75dp"
             android:layout_marginTop="20dp"
+            android:textSize="18dp"
             android:id="@+id/tellmeButton"
             android:textAllCaps="false"
             android:gravity="center" />
