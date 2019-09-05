@@ -6,14 +6,14 @@ using NUnit.Framework;
 namespace Five_Seconds.Core.Tests.Converters_Tests
 {
     [TestFixture]
-    public class DateStringConverterTest
+    public class RecordDateStringConverterTest
     {
-        private DateStringConverter dateStringConverter;
+        private RecordDateStringConverter recordDateStringConverter;
 
         [SetUp]
         public void Setup()
         {
-            dateStringConverter = new DateStringConverter();
+            recordDateStringConverter = new RecordDateStringConverter();
         }
         
         [Test]
@@ -22,7 +22,7 @@ namespace Five_Seconds.Core.Tests.Converters_Tests
             // Arrange //
             var dateTime = new DateTime(1994, 2, 12, 13, 20, 49);
             // Act //
-            var converted = dateStringConverter.Convert(dateTime, null, null, null);
+            var converted = recordDateStringConverter.Convert(dateTime, null, null, null);
             // Assert //
             Assert.AreEqual("1994-02-12", converted);
         }
@@ -33,7 +33,7 @@ namespace Five_Seconds.Core.Tests.Converters_Tests
             // Arrange //
             var dateTime = "1994/02/12  1:20 PM";
             // Act //
-            var converted = dateStringConverter.ConvertBack(dateTime, null, null, null);
+            var converted = recordDateStringConverter.ConvertBack(dateTime, null, null, null);
             // Assert //
             Assert.AreEqual(new DateTime(1994, 2, 12, 13, 20, 0), converted);
         }
@@ -43,11 +43,11 @@ namespace Five_Seconds.Core.Tests.Converters_Tests
         {
             // Arrange
             object date = new DateTime(1994, 2, 12, 13, 20, 0);
-            MethodInfo methodInfo = typeof(DateStringConverter).GetMethod("DateToString", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo methodInfo = typeof(RecordDateStringConverter).GetMethod("DateToString", BindingFlags.NonPublic | BindingFlags.Instance);
             object[] parameters = { date };
 
             // Act //
-            var converted = (string)methodInfo.Invoke(dateStringConverter, parameters);
+            var converted = (string)methodInfo.Invoke(recordDateStringConverter, parameters);
 
             // Assert
             Assert.AreEqual("1994-02-12", converted);

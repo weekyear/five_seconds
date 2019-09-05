@@ -24,19 +24,28 @@ namespace Five_Seconds.Models
 
         public bool OccursToday { get { return Days.Equals(DateTime.Now.DayOfWeek); } }
         public bool IsVibrateOn { get; set; } = true;
-        public int VibeFrequency { get; set; } = 5;
 
         //public int DaysId { get; set; }
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
+        public DateTime Date
+        {
+            get { return TimeOffset.LocalDateTime.Date; }
+            set { TimeOffset = GetDateTimeOffsetFromDateTime(value); }
+        }
 
         public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);
         protected DateTimeOffset GetDateTimeOffsetFromTimeSpan(TimeSpan time)
         {
-            var now = DateTime.Now;
-            var dateTime = new DateTime(now.Year, now.Month, now.Day, time.Hours, time.Minutes, time.Seconds);
+            var dateTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hours, time.Minutes, time.Seconds);
+            return new DateTimeOffset(dateTime);
+        }
+
+        protected DateTimeOffset GetDateTimeOffsetFromDateTime(DateTime date)
+        {
+            var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, Time.Seconds);
             return new DateTimeOffset(dateTime);
         }
 

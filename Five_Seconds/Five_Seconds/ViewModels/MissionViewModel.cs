@@ -1,8 +1,10 @@
-﻿using Five_Seconds.Models;
+﻿using Five_Seconds.CustomControls;
+using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
@@ -15,6 +17,8 @@ namespace Five_Seconds.ViewModels
         {
             Mission = new Mission();
 
+            SubscribeMessage();
+
             ConstructCommand();
         }
 
@@ -22,7 +26,17 @@ namespace Five_Seconds.ViewModels
         {
             Mission = new Mission(mission);
 
+            SubscribeMessage();
+
             ConstructCommand();
+        }
+
+        private void SubscribeMessage()
+        {
+            MessagingCenter.Subscribe<DaysOfWeekSelectionView>(this, "dayOfWeek_Clicked", (sender) =>
+            {
+                OnPropertyChanged(nameof(DateString));
+            });
         }
 
         private void ConstructCommand()
@@ -65,17 +79,17 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        private DateTime dateTime = DateTime.Now;
         public DateTime Date
         {
             get
             {
-                return dateTime;
+                return Alarm.Date;
             }
             set
             {
-                if (dateTime == value) return;
-                dateTime = value;
+                if (Alarm.Date == value) return;
+                Alarm.Date = value;
+                OnPropertyChanged(nameof(DateString));
                 OnPropertyChanged(nameof(Date));
             }
         }
@@ -94,6 +108,7 @@ namespace Five_Seconds.ViewModels
             {
                 if (Mission.Alarm.Time == value) return;
                 Mission.Alarm.Time = value;
+                DateToStringWhenTimeChanged();
                 OnPropertyChanged(nameof(Time));
             }
         }
@@ -141,15 +156,72 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public int VibeFrequency
+        private string dateString;
+        public string DateString
         {
-            get { return Mission.Alarm.VibeFrequency; }
+            get
+            {
+                dateString = DateToString();
+                return dateString;
+            }
             set
             {
-                if (Mission.Alarm.VibeFrequency == value) return;
-                Mission.Alarm.VibeFrequency = value;
-                OnPropertyChanged(nameof(VibeFrequency));
+                if (dateString == value) return;
+                dateString = value;
+                OnPropertyChanged(nameof(DateString));
             }
+        }
+
+        public string DateToString()
+        {
+            if (DaysOfWeek.GetHasADayBeenSelected(Alarm.Days))
+            {
+                return ConvertDaysOfWeekToString();
+            }
+
+            return ConvertDateToString(Date);
+        }
+
+        private string ConvertDaysOfWeekToString()
+        {
+            var stringBuilder = new StringBuilder();
+
+            var allDays = Alarm.Days.AllDays;
+            var allDaysString = Alarm.Days.AllDaysString;
+
+            for (int i = 0; i < 7; i++)
+            {
+                if (allDays[i])
+                {
+                    stringBuilder.Append($", {allDaysString[i]}");
+                }
+            }
+            stringBuilder.Remove(0, 2);
+
+            return stringBuilder.ToString();
+        }
+
+        private void DateToStringWhenTimeChanged()
+        {
+            if (Date.Date == DateTime.Now.Date && Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+            {
+                Date = Date.AddDays(1);
+            }
+            else if (Date.Date.Subtract(DateTime.Now.Date).Days == 1 && Time.Subtract(DateTime.Now.TimeOfDay).Ticks > 0)
+            {
+                Date = Date.AddDays(-1);
+            }
+        }
+
+        private string ConvertDateToString(DateTime date)
+        {
+            if (date.Subtract(DateTime.Now).Days == 1)
+            {
+                return $"내일-{date.ToShortDateString()},({date.DayOfWeek})";
+            }
+
+            var dateTime = $"{date.ToShortDateString()},({date.DayOfWeek})";
+            return dateTime;
         }
 
         // Validation

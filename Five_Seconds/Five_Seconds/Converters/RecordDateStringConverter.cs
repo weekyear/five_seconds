@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class DateStringConverter : IValueConverter
+    public class RecordDateStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -17,21 +17,13 @@ namespace Five_Seconds.Converters
         {
             return DateTime.Parse(value.ToString());
         }
-
         private object DateToString(object value)
         {
-            var date = (DateTime)value;
-
-            if (date.Subtract(DateTime.Now) == TimeSpan.FromDays(1))
-            {
-                return $"내일-{date.ToShortDateString()},({date.DayOfWeek})";
-            }
-
-            if (date == DateTime.MinValue)
+            if ((DateTime)value == DateTime.MinValue)
             {
                 return "없음";
             }
-            var dateTime = $"{date.ToShortDateString()},({date.DayOfWeek})";
+            var dateTime = string.Format(((DateTime)value).ToShortDateString());
             return dateTime;
         }
     }

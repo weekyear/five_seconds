@@ -20,6 +20,7 @@ namespace Five_Seconds.Models
         public bool Saturday { get; set; } = false;
 
         public bool[] AllDays => new bool[] { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
+        public string[] AllDaysString => new string[] { "일", "월", "화", "수", "목", "금", "토" };
 
         public DaysOfWeek() { }
 

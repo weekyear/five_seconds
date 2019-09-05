@@ -33,42 +33,9 @@ namespace Five_Seconds.Views
             InitializeComponent();
         }
 
-        void OnIsSelectedChanged(object sender, ClickedEventArgs e)
-        {
-            var button = sender as DayOfWeekButton;
-
-            button.IsSelected = !button.IsSelected;
-
-            if (button.IsSelected == true)
-            {
-                button.BorderColor = Color.IndianRed;
-            }
-            else
-            {
-                button.BorderColor = Color.Transparent;
-            }
-        }
-
-        private void DayOfWeekButton_Clicked(object sender, EventArgs e)
-        {
-            var button = sender as DayOfWeekButton;
-
-            button.IsSelected = !button.IsSelected;
-
-            if (button.IsSelected == true)
-            {
-                button.BorderColor = Color.IndianRed;
-            }
-            else
-            {
-                button.BorderColor = Color.Transparent;
-            }
-        }
-
         private void CalendarButton_Clicked(object sender, EventArgs e)
         {
             datePicker.MinimumDate = DateTime.Now;
-            datePicker.IsVisible = true;
             datePicker.Focus();
         }
     }

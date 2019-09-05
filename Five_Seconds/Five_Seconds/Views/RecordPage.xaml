@@ -10,7 +10,7 @@
              Title="Mission Record">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:DateStringConverter x:Key="DateStringConverter"/>
+            <conv:RecordDateStringConverter x:Key="RecordDateStringConverter"/>
             <conv:RecordStringConverter x:Key="RecordStringConverter"/>
             <conv:SuccessStringConverter x:Key="SuccessStringConverter"/>
         </ResourceDictionary>
@@ -35,7 +35,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Date, Converter={StaticResource DateStringConverter}}"
+                                <Label Text="{Binding Date, Converter={StaticResource RecordDateStringConverter}}"
                                        TextColor="Black"
                                        FontSize="25"
                                        FontAttributes="Bold" />

@@ -34,7 +34,7 @@
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal" Padding="13, 0">
                         <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
-                        Time="{Binding Alarm.Time}" Margin="20"
+                        Time="{Binding Time}" Margin="20"
                         Format="t"
                         FontSize="40"/>
                     </StackLayout>
@@ -42,17 +42,17 @@
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Date}"
+                            <Label Text="{Binding DateString}"
                                    Margin="10"
                                    TextColor="DarkBlue"
                                    FontSize="16"/>
                             <Button ImageSource="ic_calendar" 
                                     Margin="10"
                                     HorizontalOptions="EndAndExpand"
-                                    BackgroundColor="White" 
+                                    BackgroundColor="Transparent" 
                                     Clicked="CalendarButton_Clicked"
                                     HeightRequest="30" WidthRequest="30"/>
-                            <DatePicker x:Name="datePicker" IsVisible="False" Date="{Binding Date}" MinimumDate="09/03/2019"/>
+                            <DatePicker x:Name="datePicker" TextColor="Transparent" WidthRequest="1" HeightRequest="1" Date="{Binding Date}"/>
                         </StackLayout>
                         <ScrollView Orientation="Horizontal">
                             <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
