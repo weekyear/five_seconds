@@ -28,7 +28,7 @@ namespace Five_Seconds.Converters
                 return "시간 없음";
             }
             var dateTime = new DateTime() + timeSpan;
-            var timeString = string.Format("{0:hh : mm} 에", dateTime);
+            var timeString = string.Format("{0:hh : mm}", dateTime);
             return timeString;
         }
     }

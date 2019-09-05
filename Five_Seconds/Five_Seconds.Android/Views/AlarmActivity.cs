@@ -13,6 +13,7 @@ using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
 
@@ -24,8 +25,9 @@ namespace Five_Seconds.Droid
         IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
         Vibrator _vibrator;
 
+        private LinearLayout missionLayout;
         private Button tellmeButton;
-        public TextView timeTextView;
+        public TextView countTextView;
         private TextView missionTextView;
         private EditText missionEditText;
         private CountDown countDown;
@@ -50,7 +52,7 @@ namespace Five_Seconds.Droid
             var alarm = GetAlarmById(id);
 
             SetContentView(Resource.Layout.AlarmActivity);
-            SetControls(mission, alarm);
+            SetControls(mission);
 
             AddWindowManagerFlags();
 
@@ -76,15 +78,16 @@ namespace Five_Seconds.Droid
             return alarm;
         }
 
-        private void SetControls(Mission mission, Alarm alarm)
+        private void SetControls(Mission mission)
         {
+            missionLayout = FindViewById<LinearLayout>(Resource.Id.missionLayout);
             tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
-            timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
+            countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
             missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
 
             tellmeButton.Click += TellmeButton_Click;
-            timeTextView.Text = "5.00 초";
+            countTextView.Text = "5.00 초";
             missionTextView.Text = mission.Name;
 
             missionEditText.Enabled = false;
@@ -127,11 +130,9 @@ namespace Five_Seconds.Droid
 
             if (!missionEditText.Enabled)
             {
-                SetCountDown();
                 missionEditText.Text = await WaitForSpeechToText();
-                StopCountDown();
                 missionEditText.Enabled = true;
-                tellmeButton.Text = "5초의 법칙 시작!";
+                tellmeButton.Text = "5초 카운트!";
             }
 
             var editText = missionEditText.Text.Replace(" ", "");
@@ -139,7 +140,12 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
-                ShowAlertSuccessOfFailed();
+                HideAllViewExceptForCountText();
+
+                SetCountDown();
+                _soundService.PlayCountAudio();
+
+                //ShowAlertSuccessOfFailed();
             }
             else
             {
@@ -166,18 +172,24 @@ namespace Five_Seconds.Droid
             alert.Show();
         }
 
-        private void ShowAlertSuccessOfFailed()
+        //private void ShowAlertSuccessOfFailed()
+        //{
+        //    Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        //    AlertDialog alert = dialog.Create();
+        //    alert.SetTitle("미션 성공");
+        //    alert.SetMessage("미션 성공했습니다~~");
+        //    alert.SetButton("확인", (c, ev) =>
+        //    {
+        //        alert.Dispose();
+        //        FinishAndRemoveTask();
+        //    });
+        //    alert.Show();
+        //}
+
+        private void HideAllViewExceptForCountText()
         {
-            Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            AlertDialog alert = dialog.Create();
-            alert.SetTitle("미션 성공");
-            alert.SetMessage("미션 성공했습니다~~");
-            alert.SetButton("확인", (c, ev) =>
-            {
-                alert.Dispose();
-                FinishAndRemoveTask();
-            });
-            alert.Show();
+            missionLayout.Visibility = ViewStates.Invisible;
+            countTextView.Visibility = ViewStates.Visible;
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
@@ -203,7 +215,7 @@ namespace Five_Seconds.Droid
 
         private void SetCountDown()
         {
-            countDown = new CountDown(6000, 10, this);
+            countDown = new CountDown(5200, 10, this);
             countDown.Start();
         }
 
@@ -223,6 +235,8 @@ namespace Five_Seconds.Droid
         private long _millisInFuture;
         private long _countDownInterval;
 
+        IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
+
         public CountDown(long millisInFuture, long countDownInterval, Activity activity) : base(millisInFuture, countDownInterval)
         {
             _activity = activity;
@@ -232,17 +246,47 @@ namespace Five_Seconds.Droid
 
         public override void OnFinish()
         {
-            
+            _activity.FinishAndRemoveTask();
         }
 
         public override void OnTick(long millisUntilFinished)
         {
             var alarmActivity = _activity as AlarmActivity;
-            var timeTextView = alarmActivity.timeTextView;
+            var countTextView = alarmActivity.countTextView;
 
             double count = (double)millisUntilFinished / 1000;
+            //SpeakCount(count);
             var stringFormat = string.Format("{0:f2}", count);
-            timeTextView.Text = stringFormat + "초";
+            countTextView.Text = stringFormat + "초";
+        }
+
+        private void SpeakCount(double count)
+        {
+            if (count < 5)
+            {
+                TextToSpeak("Five");
+            }
+            else if (count < 4)
+            {
+                TextToSpeak("Four");
+            }
+            else if (count == 3)
+            {
+                TextToSpeak("Three");
+            }
+            else if (count == 2)
+            {
+                TextToSpeak("Two");
+            }
+            else if (count == 1)
+            {
+                TextToSpeak("One");
+            }
+        }
+
+        private async void TextToSpeak(string text)
+        {
+            await TextToSpeech.SpeakAsync(text);
         }
     }
 }

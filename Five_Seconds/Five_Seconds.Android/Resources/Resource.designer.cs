@@ -8981,6 +8981,9 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b00b2
 			public const int coordinator = 2131427506;
 			
+			// aapt resource value: 0x7f0b00a2
+			public const int countTextView = 2131427490;
+			
 			// aapt resource value: 0x7f0b0081
 			public const int custom = 2131427457;
 			
@@ -9110,9 +9113,6 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b001d
 			public const int line3 = 2131427357;
 			
-			// aapt resource value: 0x7f0b00a2
-			public const int linearLayout1 = 2131427490;
-			
 			// aapt resource value: 0x7f0b0025
 			public const int listMode = 2131427365;
 			
@@ -9151,6 +9151,9 @@ namespace Five_Seconds.Droid
 			
 			// aapt resource value: 0x7f0b00a6
 			public const int missionEditText = 2131427494;
+			
+			// aapt resource value: 0x7f0b00a3
+			public const int missionLayout = 2131427491;
 			
 			// aapt resource value: 0x7f0b00a5
 			public const int missionTextView = 2131427493;
@@ -9538,9 +9541,6 @@ namespace Five_Seconds.Droid
 			
 			// aapt resource value: 0x7f0b00f7
 			public const int time = 2131427575;
-			
-			// aapt resource value: 0x7f0b00a3
-			public const int timeTextView = 2131427491;
 			
 			// aapt resource value: 0x7f0b0023
 			public const int title = 2131427363;

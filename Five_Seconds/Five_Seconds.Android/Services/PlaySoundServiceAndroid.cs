@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.App;
-using Android.Content;
 using Android.Content.Res;
 using Android.Media;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
-using Xamarin.Forms;
+using Application = Android.App.Application;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PlaySoundServiceAndroid))]
 namespace Five_Seconds.Droid.Services
@@ -27,7 +19,6 @@ namespace Five_Seconds.Droid.Services
 
         MediaPlayer _mediaPlayer = new MediaPlayer();
         AssetFileDescriptor _assetFileDescriptor;
-        Task playSoundTask;
 
         public void PlayAudio(AlarmTone alarmTone, int volume)
         {
@@ -42,7 +33,7 @@ namespace Five_Seconds.Droid.Services
 
             if (isADefaultTone)
             {
-                _assetFileDescriptor = Forms.Context.Assets.OpenFd(alarmTone.Path);
+                _assetFileDescriptor = Application.Context.Assets.OpenFd(alarmTone.Path);
                 _mediaPlayer.SetDataSource(_assetFileDescriptor.FileDescriptor, _assetFileDescriptor.StartOffset, _assetFileDescriptor.Length);
             }
             else
@@ -58,6 +49,18 @@ namespace Five_Seconds.Droid.Services
 
             _mediaPlayer.SetVolume(1 - log1, 1 - log1);
             _mediaPlayer.Looping = isLooping;
+            _mediaPlayer.Prepare();
+            _mediaPlayer.Start();
+        }
+
+        public void PlayCountAudio()
+        {
+            StopAudio();
+
+            _assetFileDescriptor = Application.Context.Assets.OpenFd("rocket_launch.mp3");
+            _mediaPlayer.SetDataSource(_assetFileDescriptor.FileDescriptor, _assetFileDescriptor.StartOffset, _assetFileDescriptor.Length);
+
+            _mediaPlayer.Looping = false;
             _mediaPlayer.Prepare();
             _mediaPlayer.Start();
         }

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class DateStringConverter : IValueConverter
+    public class MissionDateStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

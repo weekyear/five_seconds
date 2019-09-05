@@ -9,6 +9,7 @@ namespace Five_Seconds.Services
     {
         void PlayAudio(AlarmTone alarmTone, int volume);
         void PlayAudio(AlarmTone alarmTone, bool isLooping, int volume);
+        void PlayCountAudio();
         void StopAudio();
     }
 }

@@ -187,7 +187,7 @@ namespace Five_Seconds.ViewModels
             var stringBuilder = new StringBuilder();
 
             var allDays = Alarm.Days.AllDays;
-            var allDaysString = Alarm.Days.AllDaysString;
+            var allDaysString = DaysOfWeek.AllDaysString;
 
             for (int i = 0; i < 7; i++)
             {
@@ -215,12 +215,14 @@ namespace Five_Seconds.ViewModels
 
         private string ConvertDateToString(DateTime date)
         {
+            var allDaysString = DaysOfWeek.AllDaysString;
+
             if (date.Subtract(DateTime.Now).Days == 1)
             {
-                return $"내일-{date.ToShortDateString()},({date.DayOfWeek})";
+                return $"내일-{date.ToShortDateString()}, ({allDaysString[(int)date.DayOfWeek]})";
             }
 
-            var dateTime = $"{date.ToShortDateString()},({date.DayOfWeek})";
+            var dateTime = $"{date.ToShortDateString()}, ({allDaysString[(int)date.DayOfWeek]})";
             return dateTime;
         }
 
@@ -241,6 +243,7 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
+                Mission.IsActive = true;
                 Service.SaveMission(Mission);
                 await ClosePopup();
             }

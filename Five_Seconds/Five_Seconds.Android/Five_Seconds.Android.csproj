@@ -83,6 +83,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomRenderers\ColoredTableViewRenderer.cs" />
+    <Compile Include="Services\AlarmReceiver.cs" />
+    <Compile Include="Services\AlarmService.cs" />
     <Compile Include="Services\SpeechToText_Android.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />
@@ -142,9 +144,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\rocket.m4a" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\sci_fi.mp3" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +196,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_calendar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\rocket_launch.m4a" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\rocket_launch.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

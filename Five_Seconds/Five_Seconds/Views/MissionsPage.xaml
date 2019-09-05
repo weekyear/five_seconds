@@ -12,6 +12,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <conv:MissionDateStringConverter x:Key="MissionDateStringConverter"/>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
@@ -44,7 +45,13 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding Alarm.Date, Converter={StaticResource MissionDateStringConverter}}"
+                                   TextColor="{StaticResource PrimaryTextColor}"
+                                   FontSize="15"
+                                   FontAttributes="Bold"
+                                   Margin="10, 0, 0, 0"
+                                   VerticalOptions="EndAndExpand" />
+                            <StackLayout Grid.Column="1" Orientation="Horizontal">
                                 <Label Text="{Binding Alarm.Time, Converter={StaticResource AmPmStringConverter}}"
                                    TextColor="{StaticResource PrimaryTextColor}"
                                    FontSize="15"
@@ -55,18 +62,11 @@
                                    FontSize="25"
                                    FontAttributes="Bold" />
                             </StackLayout>
-                            <Label Grid.Column="1" 
-                                   Text=""
-                                   TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="15"
-                                   FontAttributes="Bold"
-                                   Margin="10, 0, 0, 0"
-                                   VerticalOptions="EndAndExpand" />
                             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                    TextColor="{StaticResource PrimaryTextColor}"
                                    FontSize="28"
                                    Text="{Binding Name}"
-                                   HorizontalOptions="EndAndExpand"
+                                   HorizontalOptions="CenterAndExpand"
                                    MaxLines="1"
                                    FontAttributes="Bold" />
                             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
