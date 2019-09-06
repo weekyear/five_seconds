@@ -1,8 +1,13 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Android.OS;
 using Android.Util;
+using Five_Seconds.Helpers;
 using Five_Seconds.Models;
+using Five_Seconds.Services;
+using Xamarin.Forms;
+using Application = Android.App.Application;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -15,20 +20,73 @@ namespace Five_Seconds.Droid.Services
             var id = intent.GetIntExtra("id", 0);
 
             var mission = App.MissionsRepo.GetMission(id);
-            mission.Alarm = App.MissionsRepo.GetAlarm(id);
-            mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(id);
-            var diffMillis = CalculateNextAlarmMillis(mission.Alarm);
+            mission.Alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
+            mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(mission.Alarm.DaysId);
+            var diffMillis = CalculateTimeDiff(mission.Alarm);
 
             if (mission.IsActive)
             {
                 SetAlarmByManager(id, diffMillis);
-                StartAlarmActivity(context, id);
+                //StartAlarmActivity(context, id);
             }
 
-            if (diffMillis == 8)
+            if (diffMillis == 0)
             {
                 mission.IsActive = false;
                 App.Service.SaveMissionAtLocal(mission);
+            }
+
+            SetNewNotification();
+        }
+
+        private long CalculateTimeDiff(Alarm alarm)
+        {
+            var dateTimeNow = DateTime.Now;
+
+            var nextAlarmDateTime = alarm.NextAlarmTime;
+
+            var diffTimeSpan = nextAlarmDateTime.Subtract(dateTimeNow);
+
+            if (diffTimeSpan.TotalMilliseconds <= 0)
+            {
+                return 0;
+            }
+            else
+            {
+                ShowNextAlarmToast(diffTimeSpan);
+
+                return Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffTimeSpan.TotalMilliseconds;
+            }
+        }
+
+        private void ShowNextAlarmToast(TimeSpan diff)
+        {
+            var diffString = CreateTimeRemainingString(diff);
+
+            DependencyService.Get<ToastService>().Show(diffString);
+        }
+
+        private string CreateTimeRemainingString(TimeSpan diff)
+        {
+            if (diff.Days > 0)
+            {
+                return $"{diff.Days + 1}일 후에 5초의 법칙을 실행합니다!";
+            }
+            else if (diff.Hours > 0)
+            {
+                return $"{diff.Hours}시간 {diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
+            }
+            else if (diff.Minutes > 0)
+            {
+                return $"{diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
+            }
+            else if (diff.Seconds > 0)
+            {
+                return $"{diff.Seconds}초 후에 5초의 법칙을 실행합니다!";
+            }
+            else
+            {
+                return "이미 지난 시간입니다.";
             }
         }
 
@@ -41,34 +99,15 @@ namespace Five_Seconds.Droid.Services
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
             alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
+            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + 10000, pendingIntent);
         }
-
-        private long CalculateNextAlarmMillis(Alarm alarm)
+        private void SetNewNotification()
         {
-            var allDays = alarm.Days.AllDays;
+            var manager = Application.Context.GetSystemService("notification") as NotificationManager;
 
-            int addingDays = 8;
+            var notification = AlarmNotification.GetNextAlarmNotification(Application.Context);
 
-            for (int i = 0; i < 7; i++)
-            {
-                if (allDays[i])
-                {
-                    var today = (int)DateTime.Now.DayOfWeek;
-                    var diffDays = i - today >= 0 ? i - today : i - today + 7;
-                    if (addingDays > diffDays)
-                    {
-                        addingDays = diffDays;
-                    }
-                }
-            }
-
-            if (addingDays == 8) return 8;
-
-            var diffDaysMillis = new TimeSpan(addingDays, 0, 0, 0).TotalMilliseconds;
-
-            var currentTimeMillis = alarm.TimeOffset.ToUnixTimeMilliseconds();
-
-            return currentTimeMillis + (long)diffDaysMillis;
+            manager.Notify(2, notification);
         }
 
         private void StartAlarmActivity(Context context, int id)

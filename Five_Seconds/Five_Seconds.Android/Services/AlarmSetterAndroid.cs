@@ -12,6 +12,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
+using Five_Seconds.Helpers;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
@@ -25,8 +26,6 @@ namespace Five_Seconds.Droid.Services
     public class AlarmSetterAndroid : IAlarmSetter
     {
         public static string AlarmTag = "Al4rm";
-        public static string nextNameString = "다음 알람 이름";
-        public static string nextTimeString = "목, 오후 5시 30분";
         IAlarmToneRepository _alarmRepo = App.AlarmToneRepo;
 
         public AlarmSetterAndroid()
@@ -57,51 +56,15 @@ namespace Five_Seconds.Droid.Services
         private long CalculateTimeDiff(Alarm alarm)
         {
             var dateTimeNow = DateTime.Now;
-            var nextDate = CalculateNextDate(alarm);
-            var nextTime = alarm.Time;
 
-            var nextAlarmDateTime = new DateTime(nextDate.Year, nextDate.Month, nextDate.Day, nextTime.Hours, nextTime.Minutes, nextTime.Seconds);
+            var nextAlarmDateTime = alarm.NextAlarmTime;
 
             var diffTimeSpan = nextAlarmDateTime.Subtract(dateTimeNow);
 
             ShowNextAlarmToast(diffTimeSpan);
 
             return Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffTimeSpan.TotalMilliseconds;
-        }
-
-        private DateTime CalculateNextDate(Alarm alarm)
-        {
-            if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
-            {
-                return DateTime.Now.Date.AddDays(CalculateAddingDaysWhenHasDaysOfWeek(alarm));
-            }
-            else
-            {
-                return alarm.Date;
-            }
-        }
-
-        private double CalculateAddingDaysWhenHasDaysOfWeek(Alarm alarm)
-        {
-            var allDays = alarm.Days.AllDays;
-
-            int addingDays = 8;
-
-            for (int i = 0; i < 7; i++)
-            {
-                if (allDays[i])
-                {
-                    var today = (int)DateTime.Now.DayOfWeek;
-                    var diffDays = i - today >= 0 ? i - today : i - today + 7;
-                    if (addingDays > diffDays)
-                    {
-                        addingDays = diffDays;
-                    }
-                }
-            }
-
-            return addingDays;
-        }
+        }        
 
         private void ShowNextAlarmToast(TimeSpan diff)
         {

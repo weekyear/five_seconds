@@ -29,6 +29,7 @@ namespace Five_Seconds.Models
         //public int DaysId { get; set; }
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
+        public int DaysId { get; set; }
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
         public bool IsToday { get; set; } = true;
@@ -61,6 +62,11 @@ namespace Five_Seconds.Models
             }
 
             return new DateTimeOffset(dateTime);
+        }
+
+        public DateTime NextAlarmTime
+        {
+            get { return CalculateNextAlarmTime.NextAlarmTime(this); }
         }
 
         public Alarm()

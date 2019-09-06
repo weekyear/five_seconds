@@ -23,7 +23,7 @@ namespace Five_Seconds.Droid.Services
             if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
                 StartMyOwnForeground();
             else
-                StartForeground(1, new Notification());
+                StartForeground(2, new Notification());
 
             base.OnCreate();
         }
@@ -31,6 +31,11 @@ namespace Five_Seconds.Droid.Services
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
             SetAlarmManager(intent);
+
+            var notification = AlarmNotification.GetNextAlarmNotification(this);
+
+            var manager = (NotificationManager)GetSystemService(NotificationService);
+            manager.Notify(2, notification);
 
             return StartCommandResult.Sticky;
         }
@@ -40,19 +45,11 @@ namespace Five_Seconds.Droid.Services
             var NOTIFICATION_CHANNEL_ID = "com.beside.five_seconds";
             var channelName = "my_5seconds_alarm";
             var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
-            var manager = (NotificationManager)GetSystemService(Context.NotificationService);
+            var manager = (NotificationManager)GetSystemService(NotificationService);
 
             manager?.CreateNotificationChannel(chan);
 
-            var notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-            var notification = notificationBuilder.SetOngoing(true)
-                    .SetSmallIcon(Resource.Drawable.ic_icon_notificatioin)
-                    .SetContentTitle(AlarmSetterAndroid.nextNameString)
-                    .SetContentText(AlarmSetterAndroid.nextTimeString)
-                    .SetPriority((int)NotificationImportance.Min)
-                    .SetCategory(Notification.CategoryService)
-                    .SetChannelId(NOTIFICATION_CHANNEL_ID)
-                    .Build();
+            var notification = AlarmNotification.GetNextAlarmNotification(this);
 
             StartForeground(2, notification);
         }
@@ -74,7 +71,7 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", id);
             var pendingIntent = PendingIntent.GetBroadcast(Application.Context, id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
-            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService(AlarmService);
 
             alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
         }

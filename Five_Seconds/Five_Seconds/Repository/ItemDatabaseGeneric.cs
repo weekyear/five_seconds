@@ -53,12 +53,12 @@ namespace Five_Seconds.Repository
                 if (obj.Id != 0)
                 {
                     database.Update(obj);
-                    return obj.Id;
                 }
                 else
                 {
-                    return database.Insert(obj);
+                    database.Insert(obj);
                 }
+                return obj.Id;
             }
         }
         public int DeleteObject<T>(int id) where T : IObject, new()

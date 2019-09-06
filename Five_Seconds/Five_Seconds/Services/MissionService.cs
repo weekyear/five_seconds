@@ -102,7 +102,6 @@ namespace Five_Seconds.Services
 
         public int DeleteMission(Mission mission)
         {
-            // Mission 지우고, Alarm 지우고, Record 지우고, DaysOfWeek 지우고, Local Missions에서 지우고, AlarmManager에 인텐트 지우고
             alarmSetter.DeleteAlarm(mission.Id);
             var id = Repository.DeleteMission(mission.Id);
             Repository.DeleteAlarm(mission.Id);
@@ -121,12 +120,12 @@ namespace Five_Seconds.Services
 
         public int SaveMissionAtLocal(Mission mission)
         {
-            mission.Alarm.Days.Id = Repository.SaveDaysOfWeek(mission.Alarm.Days);
-            mission.Alarm.Id = Repository.SaveAlarm(mission.Alarm);
-            var id = Repository.SaveMission(mission);
+            mission.Alarm.DaysId = Repository.SaveDaysOfWeek(mission.Alarm.Days);
+            mission.AlarmId = Repository.SaveAlarm(mission.Alarm);
+            Repository.SaveMission(mission);
             AddOrModifyMissionToMissions(mission);
             SendMessage("save");
-            return id;
+            return mission.Id;
         }
 
         private void AddOrModifyMissionToMissions(Mission mission)

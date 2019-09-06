@@ -14,6 +14,8 @@ namespace Five_Seconds.Models
 
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
+        public int AlarmId { get; set; }
+
         public string Name { get; set; }
         public double Percentage { get; set; }
         public bool IsActive { get; set; } = true;

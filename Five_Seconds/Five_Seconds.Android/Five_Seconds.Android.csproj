@@ -85,6 +85,7 @@
     <Compile Include="CustomRenderers\ColoredTableViewRenderer.cs" />
     <Compile Include="Services\AlarmReceiver.cs" />
     <Compile Include="Services\AlarmService.cs" />
+    <Compile Include="Services\AlarmNotification.cs" />
     <Compile Include="Services\SpeechToText_Android.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />

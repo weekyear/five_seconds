@@ -51,5 +51,8 @@ namespace Five_Seconds.Repository
         int DeleteRecords(int id);
 
         void DeleteAllRecords();
+
+        // NextAlarmId
+        int GetNextAlarmId();
     }
 }
