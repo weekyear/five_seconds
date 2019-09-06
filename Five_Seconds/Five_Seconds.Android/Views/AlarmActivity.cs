@@ -32,6 +32,8 @@ namespace Five_Seconds.Droid
         private EditText missionEditText;
         private CountDown countDown;
 
+        private Alarm alarm;
+
         int id;
 
         public AlarmActivity()
@@ -49,7 +51,7 @@ namespace Five_Seconds.Droid
             id = (int)bundle.Get("id");
 
             var mission = GetMissionById(id);
-            var alarm = GetAlarmById(id);
+            alarm = GetAlarmById(id);
 
             SetContentView(Resource.Layout.AlarmActivity);
             SetControls(mission);
@@ -143,9 +145,11 @@ namespace Five_Seconds.Droid
                 HideAllViewExceptForCountText();
 
                 SetCountDown();
-                _soundService.PlayCountAudio();
 
-                //ShowAlertSuccessOfFailed();
+                if (alarm.IsCountOn)
+                {
+                    _soundService.PlayCountAudio();
+                }
             }
             else
             {

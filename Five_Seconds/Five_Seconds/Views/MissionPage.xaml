@@ -94,6 +94,17 @@
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
+            <TableSection Title="5초 카운트 옵션" TextColor="DarkBlue">
+                <custom:TableViewCell AllowHighlight="False" Height="60">
+                    <StackLayout Orientation="Horizontal" Margin="10">
+                        <Label Text="카운트음" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                        <Switch IsToggled="{Binding Alarm.IsCountOn}" 
+                                    HorizontalOptions="EndAndExpand"
+                                    OnColor="LightSteelBlue"
+                                    ThumbColor="SkyBlue"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+            </TableSection>
         </TableRoot>
     </custom:ColoredTableView>
 </ContentPage>

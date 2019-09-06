@@ -11,8 +11,7 @@ namespace Five_Seconds.Helpers
         {
             if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
-                return alarm.NextAlarmTime.ToString();
-                //return ConvertDaysOfWeekToString(alarm);
+                return ConvertDaysOfWeekToString(alarm);
             }
 
             return ConvertDateToString(alarm.Date);

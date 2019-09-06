@@ -27,7 +27,7 @@ namespace Five_Seconds.Droid.Services
             if (mission.IsActive)
             {
                 SetAlarmByManager(id, diffMillis);
-                //StartAlarmActivity(context, id);
+                StartAlarmActivity(context, id);
             }
 
             if (diffMillis == 0)
@@ -99,7 +99,6 @@ namespace Five_Seconds.Droid.Services
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
             alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
-            //alarmManager.SetExact(AlarmType.RtcWakeup, Java.Lang.JavaSystem.CurrentTimeMillis() + 10000, pendingIntent);
         }
         private void SetNewNotification()
         {
