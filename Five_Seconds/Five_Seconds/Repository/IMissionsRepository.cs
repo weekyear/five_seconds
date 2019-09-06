@@ -9,10 +9,10 @@ namespace Five_Seconds.Repository
     public interface IMissionsRepository
     {
         // getters
-        List<Mission> MissionsFromDB { get; set; }
-        List<Alarm> AlarmsFromDB { get; set; }
-        List<DaysOfWeek> DaysOfWeeksFromDB { get; set; }
-        List<Record> RecordFromDB { get; set; }
+        List<Mission> MissionsFromDB { get; }
+        List<Alarm> AlarmsFromDB { get; }
+        List<DaysOfWeek> DaysOfWeeksFromDB { get; }
+        List<Record> RecordFromDB { get; }
 
         // methods
         // Mission

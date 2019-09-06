@@ -32,8 +32,6 @@ namespace Five_Seconds.Droid.Services
         {
             SetAlarmManager(intent);
 
-            StopSelf();
-
             return StartCommandResult.Sticky;
         }
 

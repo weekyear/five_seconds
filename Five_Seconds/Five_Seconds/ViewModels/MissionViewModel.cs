@@ -1,4 +1,5 @@
 ﻿using Five_Seconds.CustomControls;
+using Five_Seconds.Helpers;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
@@ -35,8 +36,22 @@ namespace Five_Seconds.ViewModels
         {
             MessagingCenter.Subscribe<DaysOfWeekSelectionView>(this, "dayOfWeek_Clicked", (sender) =>
             {
+                Date = SetMinimumDate();
+                Alarm.IsToday = true;
                 OnPropertyChanged(nameof(DateString));
             });
+        }
+
+        private DateTime SetMinimumDate()
+        {
+            if (Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+            {
+                return DateTime.Now.AddDays(1).Date;
+            }
+            else
+            {
+                return DateTime.Now.Date;
+            }
         }
 
         private void ConstructCommand()
@@ -156,74 +171,24 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        private string dateString;
         public string DateString
         {
             get
             {
-                dateString = DateToString();
-                return dateString;
+                return CreateDateString.DateToString(Alarm);
             }
-            set
-            {
-                if (dateString == value) return;
-                dateString = value;
-                OnPropertyChanged(nameof(DateString));
-            }
-        }
-
-        public string DateToString()
-        {
-            if (DaysOfWeek.GetHasADayBeenSelected(Alarm.Days))
-            {
-                return ConvertDaysOfWeekToString();
-            }
-
-            return ConvertDateToString(Date);
-        }
-
-        private string ConvertDaysOfWeekToString()
-        {
-            var stringBuilder = new StringBuilder();
-
-            var allDays = Alarm.Days.AllDays;
-            var allDaysString = DaysOfWeek.AllDaysString;
-
-            for (int i = 0; i < 7; i++)
-            {
-                if (allDays[i])
-                {
-                    stringBuilder.Append($", {allDaysString[i]}");
-                }
-            }
-            stringBuilder.Remove(0, 2);
-
-            return stringBuilder.ToString();
         }
 
         private void DateToStringWhenTimeChanged()
         {
-            if (Date.Date == DateTime.Now.Date && Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+            if (Alarm.IsToday && Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
             {
-                Date = Date.AddDays(1);
+                Date = DateTime.Now.AddDays(1).Date;
             }
-            else if (Date.Date.Subtract(DateTime.Now.Date).Days == 1 && Time.Subtract(DateTime.Now.TimeOfDay).Ticks > 0)
+            else if (Alarm.IsToday && Time.Subtract(DateTime.Now.TimeOfDay).Ticks > 0)
             {
-                Date = Date.AddDays(-1);
+                Date = DateTime.Now.Date;
             }
-        }
-
-        private string ConvertDateToString(DateTime date)
-        {
-            var allDaysString = DaysOfWeek.AllDaysString;
-
-            if (date.Subtract(DateTime.Now).Days == 1)
-            {
-                return $"내일-{date.ToShortDateString()}, ({allDaysString[(int)date.DayOfWeek]})";
-            }
-
-            var dateTime = $"{date.ToShortDateString()}, ({allDaysString[(int)date.DayOfWeek]})";
-            return dateTime;
         }
 
         // Validation

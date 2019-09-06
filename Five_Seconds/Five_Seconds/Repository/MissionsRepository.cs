@@ -14,19 +14,26 @@ namespace Five_Seconds.Repository
     {
         public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
 
-        public List<Mission> MissionsFromDB { get; set; }
-        public List<Alarm> AlarmsFromDB { get; set; }
-        public List<DaysOfWeek> DaysOfWeeksFromDB { get; set; }
-        public List<Record> RecordFromDB { get; set; }
+        public List<Mission> MissionsFromDB
+        {
+            get { return GetAllMissions() as List<Mission>; }
+        }
+        public List<Alarm> AlarmsFromDB
+        {
+            get { return GetAllAlarms() as List<Alarm>; }
+        }
+        public List<DaysOfWeek> DaysOfWeeksFromDB
+        {
+            get { return GetAllDaysOfWeeks() as List<DaysOfWeek>; }
+        }
+        public List<Record> RecordFromDB
+        {
+            get { return GetAllRecords() as List<Record>; }
+        }
 
         public MissionsRepository()
         {
             if (Device.RuntimePlatform == "Test") return;
-
-            MissionsFromDB = GetAllMissions() as List<Mission>;
-            AlarmsFromDB = GetAllAlarms() as List<Alarm>;
-            DaysOfWeeksFromDB = GetAllDaysOfWeeks() as List<DaysOfWeek>;
-            RecordFromDB = GetAllRecords() as List<Record>;
         }
 
         // Mission

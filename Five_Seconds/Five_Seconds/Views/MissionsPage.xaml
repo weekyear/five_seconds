@@ -12,7 +12,6 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:MissionDateStringConverter x:Key="MissionDateStringConverter"/>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
@@ -27,7 +26,7 @@
         <ListView x:Name="MissionsListView"
                 ItemsSource="{Binding Missions}"
                 Margin="5"
-                RowHeight="100"
+                RowHeight="110"
                 ItemTapped="ShowMenuByItemClicked"
                 ItemSelected="MissionsListView_ItemSelected"
                 VerticalOptions="FillAndExpand"
@@ -45,28 +44,23 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Alarm.Date, Converter={StaticResource MissionDateStringConverter}}"
+                            <Label Text="{Binding Alarm.DateString}"
                                    TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="15"
-                                   FontAttributes="Bold"
-                                   Margin="10, 0, 0, 0"
+                                   FontSize="22"
                                    VerticalOptions="EndAndExpand" />
                             <StackLayout Grid.Column="1" Orientation="Horizontal">
                                 <Label Text="{Binding Alarm.Time, Converter={StaticResource AmPmStringConverter}}"
                                    TextColor="{StaticResource PrimaryTextColor}"
                                    FontSize="15"
-                                   FontAttributes="Bold"
                                    VerticalOptions="EndAndExpand"/>
                                 <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
                                    TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="25"
-                                   FontAttributes="Bold" />
+                                   FontSize="25" />
                             </StackLayout>
                             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                    TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="28"
+                                   FontSize="35"
                                    Text="{Binding Name}"
-                                   HorizontalOptions="CenterAndExpand"
                                    MaxLines="1"
                                    FontAttributes="Bold" />
                             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"

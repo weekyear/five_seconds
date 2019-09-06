@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Five_Seconds.Helpers;
+using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
@@ -30,10 +31,17 @@ namespace Five_Seconds.Models
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
+        public bool IsToday { get; set; } = true;
+
         public DateTime Date
         {
             get { return TimeOffset.LocalDateTime.Date; }
             set { TimeOffset = GetDateTimeOffsetFromDateTime(value); }
+        }
+
+        public string DateString
+        {
+            get { return CreateDateString.DateToString(this); }
         }
 
         public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);
@@ -46,6 +54,12 @@ namespace Five_Seconds.Models
         protected DateTimeOffset GetDateTimeOffsetFromDateTime(DateTime date)
         {
             var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, Time.Seconds);
+
+            if (date.Date == DateTime.Now.Date)
+            {
+                IsToday = true;
+            }
+
             return new DateTimeOffset(dateTime);
         }
 

@@ -35,8 +35,33 @@ namespace Five_Seconds.Views
 
         private void CalendarButton_Clicked(object sender, EventArgs e)
         {
-            datePicker.MinimumDate = DateTime.Now;
+            datePicker.MinimumDate = SetMinimumDate();
+            datePicker.Date = viewModel.Date;
             datePicker.Focus();
+        }
+
+        private DateTime SetMinimumDate()
+        {
+            if (viewModel.Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+            {
+                return DateTime.Now.AddDays(1).Date;
+            }
+            else
+            {
+                return DateTime.Now.Date;
+            }
+        }
+
+        private void DatePicker_DateSelected(object sender, DateChangedEventArgs e)
+        {
+            if (e.NewDate != DateTime.Now.Date)
+            {
+                viewModel.Alarm.IsToday = false;
+            }
+            else
+            {
+                viewModel.Alarm.IsToday = true;
+            }
         }
     }
 }

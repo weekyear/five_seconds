@@ -58,9 +58,9 @@ namespace Five_Seconds.ViewModels
         public async Task ShowMenu(object _mission)
         {
             var mission = _mission as Mission;
-            string[] actionSheetBtns = { "Modify", "Record", "Delete" };
+            string[] actionSheetBtns = { "수정", "삭제" };
 
-            string action = await MessageBoxService.ShowActionSheet("Options", "Cancel", null, actionSheetBtns);
+            string action = await MessageBoxService.ShowActionSheet("알람 옵션", "취소", null, actionSheetBtns);
 
             await ClickMenuAction(action, mission);
         }
@@ -69,13 +69,13 @@ namespace Five_Seconds.ViewModels
         {
             switch (action)
             {
-                case "Modify":
+                case "수정":
                     await ShowModifyMission(mission);
                     break;
                 case "Record":
                     await ShowMissionRecord(mission);
                     break;
-                case "Delete":
+                case "삭제":
                     Service.DeleteMission(mission);
                     break;
             }
