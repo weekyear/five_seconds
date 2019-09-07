@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.MissionsPage"
              Title="{Binding Title}"
@@ -40,9 +41,9 @@
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="45*" />
+                                <ColumnDefinition Width="40*" />
+                                <ColumnDefinition Width="15*" />
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding Alarm.DateString}"
                                    TextColor="{StaticResource PrimaryTextColor}"
@@ -50,12 +51,12 @@
                                    VerticalOptions="EndAndExpand" />
                             <StackLayout Grid.Column="1" Orientation="Horizontal">
                                 <Label Text="{Binding Alarm.Time, Converter={StaticResource AmPmStringConverter}}"
-                                   TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="15"
-                                   VerticalOptions="EndAndExpand"/>
+                                       TextColor="{StaticResource PrimaryTextColor}"
+                                       FontSize="15"
+                                       VerticalOptions="EndAndExpand"/>
                                 <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
-                                   TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="25" />
+                                       TextColor="{StaticResource PrimaryTextColor}"
+                                       FontSize="25" />
                             </StackLayout>
                             <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                    TextColor="{StaticResource PrimaryTextColor}"
@@ -65,7 +66,6 @@
                                    FontAttributes="Bold" />
                             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                     IsToggled="{Binding IsActive}"
-                                    Toggled="Switch_Toggled"
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
                                     ThumbColor="SkyBlue"/>

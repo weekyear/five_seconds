@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="Rg.Plugins.Popup" Version="1.1.5.188" />
     <PackageReference Include="Xam.Plugin.SimpleAppIntro" Version="1.0.19" />
+    <PackageReference Include="Xamarin.Forms.BehaviorsPack" Version="2.1.1" />
     <PackageReference Include="Xamarin.Forms.Mocks" Version="3.5.0.2" />
   </ItemGroup>
 

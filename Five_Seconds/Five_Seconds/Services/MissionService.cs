@@ -14,6 +14,8 @@ namespace Five_Seconds.Services
         public IMissionsRepository Repository { get; }
         public ObservableCollection<Mission> Missions { get; } = new ObservableCollection<Mission>();
 
+        public static int FinalMissionId;
+
         IAlarmSetter alarmSetter = DependencyService.Get<IAlarmSetter>();
 
         public MissionService(IMissionsRepository repository)
@@ -21,6 +23,14 @@ namespace Five_Seconds.Services
             Repository = repository;
 
             Missions = GetAllMissions();
+
+            foreach (var mission in Missions)
+            {
+                if (mission.IsActive)
+                {
+                    FinalMissionId = mission.Id;
+                }
+            }
         }
 
         private ObservableCollection<Mission> GetAllMissions()

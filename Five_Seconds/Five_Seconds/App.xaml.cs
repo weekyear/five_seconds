@@ -16,7 +16,7 @@ namespace Five_Seconds
     public partial class App : Application
     {
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
-        private bool isFirst = Preferences.Get("isFirst", true);
+        private bool isFirstClient = Preferences.Get(nameof(isFirstClient), true);
 
         public App()
         {
@@ -32,7 +32,7 @@ namespace Five_Seconds
 
             MainPage = new MainPage();
 
-            if (isFirst)
+            if (isFirstClient)
             {
                 OpenAppIntro();
             }
@@ -82,7 +82,7 @@ namespace Five_Seconds
 
             MainPage.Navigation.PushModalAsync(welcomePage);
 
-            Preferences.Set("isFirst", false);
+            Preferences.Set(nameof(isFirstClient), false);
         }
 
         private static IMissionsRepository missionsRepo;

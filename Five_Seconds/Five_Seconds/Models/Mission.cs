@@ -1,9 +1,12 @@
-﻿using SQLite;
+﻿using Five_Seconds.Services;
+using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Five_Seconds.Models
 {
@@ -18,12 +21,33 @@ namespace Five_Seconds.Models
 
         public string Name { get; set; }
         public double Percentage { get; set; }
-        public bool IsActive { get; set; } = true;
+
+        private bool isActive;
+        public bool IsActive
+        {
+            get { return isActive; }
+            set
+            {
+                if (isActive == value) return;
+                if (IsIntiated && value)
+                {
+                    App.Service.SaveMission(this);
+                }
+
+                if (!IsIntiated && Id == MissionService.FinalMissionId)
+                {
+                    IsIntiated = true;
+                }
+                isActive = value;
+            }
+        }
+
+        [Ignore]
+        private bool IsIntiated { get; set; }
 
         [OneToMany]
         public List<Record> Records { get; set; } = new List<Record>();
 
-        //public int AlarmId { get; set; }
         [OneToOne]
         public Alarm Alarm { get; set; } = new Alarm();
 
