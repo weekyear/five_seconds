@@ -10,10 +10,13 @@ using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
+using Five_Seconds.Droid.Services;
+using Five_Seconds.Services;
 
+[assembly: Xamarin.Forms.Dependency(typeof(AlarmNotificationAndroid))]
 namespace Five_Seconds.Droid.Services
 {
-    public class AlarmNotification
+    public class AlarmNotificationAndroid : IAlarmNotification
     {
         private static string NOTIFICATION_CHANNEL_ID = "com.beside.five_seconds";
 
@@ -50,6 +53,15 @@ namespace Five_Seconds.Droid.Services
                     .Build();
 
             return notification;
+        }
+
+        public void UpdateNotification()
+        {
+            var manager = Application.Context.GetSystemService("notification") as NotificationManager;
+
+            var notification = GetNextAlarmNotification(Application.Context);
+
+            manager.Notify(2, notification);
         }
     }
 }

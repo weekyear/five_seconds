@@ -14,29 +14,22 @@ namespace Five_Seconds.Droid.Services
     [BroadcastReceiver]
     public class AlarmReceiver : BroadcastReceiver
     {
+        public static Mission AlarmMissionNow;
         public override void OnReceive(Context context, Intent intent)
         {
             Log.Debug(AlarmSetterAndroid.AlarmTag, "OPEN THE THING");
             var id = intent.GetIntExtra("id", 0);
 
-            var mission = App.MissionsRepo.GetMission(id);
-            mission.Alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
-            mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(mission.Alarm.DaysId);
-            var diffMillis = CalculateTimeDiff(mission.Alarm);
+            AlarmMissionNow = App.MissionsRepo.GetMission(id);
+            AlarmMissionNow.Alarm = App.MissionsRepo.GetAlarm(AlarmMissionNow.AlarmId);
+            AlarmMissionNow.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(AlarmMissionNow.Alarm.DaysId);
+            var diffMillis = CalculateTimeDiff(AlarmMissionNow.Alarm);
 
-            if (mission.IsActive)
+            if (AlarmMissionNow.IsActive)
             {
                 SetAlarmByManager(id, diffMillis);
                 StartAlarmActivity(context, id);
             }
-
-            if (diffMillis == 0)
-            {
-                mission.IsActive = false;
-                App.Service.SaveMissionAtLocal(mission);
-            }
-
-            SetNewNotification();
         }
 
         private long CalculateTimeDiff(Alarm alarm)
@@ -92,6 +85,11 @@ namespace Five_Seconds.Droid.Services
 
         private void SetAlarmByManager(int id, long diffMillis)
         {
+            if (diffMillis == 0)
+            {
+                AlarmMissionNow.IsActive = false;
+                return;
+            }
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", id);
@@ -99,14 +97,6 @@ namespace Five_Seconds.Droid.Services
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
             alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
-        }
-        private void SetNewNotification()
-        {
-            var manager = Application.Context.GetSystemService("notification") as NotificationManager;
-
-            var notification = AlarmNotification.GetNextAlarmNotification(Application.Context);
-
-            manager.Notify(2, notification);
         }
 
         private void StartAlarmActivity(Context context, int id)

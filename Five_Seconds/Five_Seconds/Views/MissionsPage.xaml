@@ -66,6 +66,7 @@
                                    FontAttributes="Bold" />
                             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                     IsToggled="{Binding IsActive}"
+                                    Toggled="Switch_Toggled"
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
                                     ThumbColor="SkyBlue"/>

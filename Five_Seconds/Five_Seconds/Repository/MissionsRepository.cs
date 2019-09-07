@@ -152,17 +152,16 @@ namespace Five_Seconds.Repository
         {
             DateTime min = DateTime.MaxValue;
             int id = 0;
-            var listMission = MissionsFromDB;
-            var listAlarm = AlarmsFromDB;
+            var listMission = App.Service.Missions;
 
-            for (int i = 0; i < listAlarm.Count; i++)
+            for (int i = 0; i < listMission.Count; i++)
             {
                 if (listMission[i].IsActive)
                 {
-                    if (min.Subtract(listAlarm[i].NextAlarmTime).TotalMilliseconds > 0)
+                    if (min.Subtract(listMission[i].Alarm.NextAlarmTime).TotalMilliseconds > 0)
                     {
-                        min = listAlarm[i].NextAlarmTime;
-                        id = listAlarm[i].Id;
+                        min = listMission[i].Alarm.NextAlarmTime;
+                        id = listMission[i].Alarm.Id;
                     }
                 }
             }

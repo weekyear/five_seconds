@@ -50,8 +50,8 @@ namespace Five_Seconds.Droid
             Bundle bundle = intent.Extras;
             id = (int)bundle.Get("id");
 
-            var mission = GetMissionById(id);
-            alarm = GetAlarmById(id);
+            var mission = AlarmReceiver.AlarmMissionNow;
+            alarm = mission.Alarm;
 
             SetContentView(Resource.Layout.AlarmActivity);
             SetControls(mission);
@@ -64,6 +64,15 @@ namespace Five_Seconds.Droid
             SetMediaPlayer(alarm);
 
             SetVibrator(alarm);
+
+            if (!mission.IsActive)
+            {
+                App.Service.DeleteMission(mission);
+            }
+            else
+            {
+                DependencyService.Get<IAlarmNotification>().UpdateNotification();
+            }
         }
 
         private Mission GetMissionById(int id)

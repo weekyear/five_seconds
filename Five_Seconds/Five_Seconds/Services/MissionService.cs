@@ -23,14 +23,6 @@ namespace Five_Seconds.Services
             Repository = repository;
 
             Missions = GetAllMissions();
-
-            foreach (var mission in Missions)
-            {
-                if (mission.IsActive)
-                {
-                    FinalMissionId = mission.Id;
-                }
-            }
         }
 
         private ObservableCollection<Mission> GetAllMissions()
@@ -116,8 +108,18 @@ namespace Five_Seconds.Services
             var id = Repository.DeleteMission(mission.Id);
             Repository.DeleteAlarm(mission.Id);
             Repository.DeleteDaysOfWeek(mission.Id);
-            Missions.Remove(mission);
+            
+            foreach(var m in Missions)
+            {
+                if (m.Id == mission.Id)
+                {
+                    Missions.Remove(m);
+                    break;
+                }
+            }
+
             SendMessage("delete");
+            DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
 
@@ -125,6 +127,7 @@ namespace Five_Seconds.Services
         {
             var id = SaveMissionAtLocal(mission);
             alarmSetter.SetAlarm(mission);
+            DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
 

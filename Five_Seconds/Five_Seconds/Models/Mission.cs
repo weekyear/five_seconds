@@ -22,28 +22,9 @@ namespace Five_Seconds.Models
         public string Name { get; set; }
         public double Percentage { get; set; }
 
-        private bool isActive;
-        public bool IsActive
-        {
-            get { return isActive; }
-            set
-            {
-                if (isActive == value) return;
-                if (IsIntiated && value)
-                {
-                    App.Service.SaveMission(this);
-                }
-
-                if (!IsIntiated && Id == MissionService.FinalMissionId)
-                {
-                    IsIntiated = true;
-                }
-                isActive = value;
-            }
-        }
-
+        public bool IsActive { get; set; }
         [Ignore]
-        private bool IsIntiated { get; set; }
+        private bool IsInitiated { get; set; }
 
         [OneToMany]
         public List<Record> Records { get; set; } = new List<Record>();

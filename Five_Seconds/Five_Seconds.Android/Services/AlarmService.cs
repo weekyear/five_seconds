@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Support.V4.App;
 using Android.Util;
-using Android.Views;
-using Android.Widget;
+using Five_Seconds.Services;
+using Xamarin.Forms;
+using Application = Android.App.Application;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -32,11 +26,6 @@ namespace Five_Seconds.Droid.Services
         {
             SetAlarmManager(intent);
 
-            var notification = AlarmNotification.GetNextAlarmNotification(this);
-
-            var manager = (NotificationManager)GetSystemService(NotificationService);
-            manager.Notify(2, notification);
-
             return StartCommandResult.Sticky;
         }
 
@@ -49,7 +38,7 @@ namespace Five_Seconds.Droid.Services
 
             manager?.CreateNotificationChannel(chan);
 
-            var notification = AlarmNotification.GetNextAlarmNotification(this);
+            var notification = AlarmNotificationAndroid.GetNextAlarmNotification(this);
 
             StartForeground(2, notification);
         }

@@ -28,6 +28,7 @@ namespace Five_Seconds.Views
         {
             viewModel.ShowMenuCommand.Execute(e.Item);
         }
+
         private void MissionsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (MissionsListView.SelectedItem != null || e.SelectedItem != null)
@@ -38,18 +39,11 @@ namespace Five_Seconds.Views
 
         private void Switch_Toggled(object sender, ToggledEventArgs e)
         {
-            var activeSwitch = (Switch)sender;
-            var mission = (Mission)activeSwitch.BindingContext;
+            var _switch = sender as Switch;
+            var mission = _switch.BindingContext as Mission;
 
-            //if (IsIntiated && mission.IsActive)
-            //{
-            //    App.Service.SaveMission(mission);
-            //}
-
-            //if (!IsIntiated && mission.Id == MissionService.FinalMissionId)
-            //{
-            //    IsIntiated = true;
-            //}
+            App.Service.SaveMissionAtLocal(mission);
+            DependencyService.Get<IAlarmNotification>().UpdateNotification();
         }
     }
 }

@@ -105,7 +105,7 @@ namespace Five_Seconds.Droid.Services
             alarmIntent.PutExtra("id", id);
 
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.CancelCurrent);
+            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
             alarmManager.Cancel(toDeletePendingIntent);
         }
 
