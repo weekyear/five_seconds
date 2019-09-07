@@ -14,6 +14,8 @@ namespace Five_Seconds.Models
         public string Path { get; set; }
         public bool IsCustomTone { get; set; }
 
+        public bool IsPlaying { get; set; }
+
         public AlarmTone()
         {
             Name = string.Empty;

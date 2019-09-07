@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
 			 Title="벨소리 설정"
              mc:Ignorable="d"
              x:Name="tonePage"
@@ -18,12 +19,14 @@
                                 FontSize="18" 
                                 TextColor="Black" 
                                 Margin="20"/>
-                            <ImageButton
+                            <custom:PlayButton
                                 HorizontalOptions="EndAndExpand"
                                 BackgroundColor="Transparent"
-                                Source="ic_play.png"
+                                IsPlaying="{Binding IsPlaying}"
+                                SourceIsPause="ic_play"
+                                SourceIsPlaying="ic_pause"
                                 Padding="0, 0, 10, 0"
-                                Command="{Binding Source={x:Reference tonePage}, Path=BindingContext.PlayToneCommand}"
+                                Command="{Binding Source={x:Reference tonePage}, Path=BindingContext.ClickPlayCommand}"
                                 CommandParameter="{Binding .}"/>
                         </StackLayout>
                     </ViewCell.View>

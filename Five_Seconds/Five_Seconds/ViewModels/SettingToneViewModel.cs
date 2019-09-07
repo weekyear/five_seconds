@@ -22,14 +22,14 @@ namespace Five_Seconds.ViewModels
 
         private void ConstructCommand()
         {
-            CloseCommand = new Command(async () => await ClosePopup());
             ToneSaveCommand = new Command<AlarmTone>(async (a) => await ToneSave(a));
+            ClickPlayCommand = new Command<AlarmTone>((a) => ClickPlay(a));
             PlayToneCommand = new Command<AlarmTone>((a) => PlayTone(a));
             StopToneCommand = new Command(() => StopTone());
         }
 
-        public Command CloseCommand { get; set; }
         public Command ToneSaveCommand { get; set; }
+        public Command ClickPlayCommand { get; set; }
         public Command PlayToneCommand { get; set; }
         public Command StopToneCommand { get; set; }
 
@@ -52,9 +52,29 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        public bool IsPlaying
+        {
+            get; set;
+        }
+
+        private void ClickPlay(AlarmTone tone)
+        {
+            if (tone.IsPlaying)
+            {
+                StopTone();
+                tone.IsPlaying = false;
+            }
+            else
+            {
+                PauseAllTone();
+                PlayTone(tone);
+            }
+        }
+
         private void PlayTone(AlarmTone tone)
         {
             _soundService.PlayAudio(tone, Mission.Alarm.Volume);
+            tone.IsPlaying = true;
         }
 
         private void StopTone()
@@ -71,6 +91,14 @@ namespace Five_Seconds.ViewModels
         {
             StopTone();
             await Navigation.PopAsync(true);
+        }
+
+        private void PauseAllTone()
+        {
+            foreach (var tone in AllAlarmTones)
+            {
+                tone.IsPlaying = false;
+            }
         }
     }
 }
