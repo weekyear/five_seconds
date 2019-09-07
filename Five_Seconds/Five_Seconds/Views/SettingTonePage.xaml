@@ -23,8 +23,11 @@
                                 HorizontalOptions="EndAndExpand"
                                 BackgroundColor="Transparent"
                                 IsPlaying="{Binding IsPlaying}"
-                                SourceIsPause="ic_play"
-                                SourceIsPlaying="ic_pause"
+                                IsPlayingChanged="PlayButton_IsPlayingChanged"
+                                Clicked="PlayButton_IsPlayingChanged"
+                                ImageSource="ic_play"
+                                ImageSourcePlay="ic_play"
+                                ImageSourcePause="ic_pause"
                                 Padding="0, 0, 10, 0"
                                 Command="{Binding Source={x:Reference tonePage}, Path=BindingContext.ClickPlayCommand}"
                                 CommandParameter="{Binding .}"/>
@@ -52,7 +55,7 @@
             </StackLayout>
             <ListView x:Name="ToneListView" 
 				  ItemTemplate="{StaticResource DefaultTemplate}"
-				  ItemsSource="{Binding AllAlarmTones, Mode=OneWay}" 
+				  ItemsSource="{Binding AllAlarmTones, Mode=TwoWay}" 
 				  SelectedItem="{Binding SelectedTone, Mode=TwoWay}"
                       ItemSelected="ToneListView_ItemSelected"
 				  HasUnevenRows="true">

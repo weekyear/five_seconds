@@ -1,4 +1,5 @@
-﻿using Five_Seconds.Models;
+﻿using Five_Seconds.CustomControls;
+using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Five_Seconds.ViewModels;
@@ -38,6 +39,21 @@ namespace Five_Seconds.Views
             var selectedTone = e.SelectedItem as AlarmTone;
             ToneListView.SelectedItem = e.SelectedItem;
             viewModel.ToneSaveCommand.Execute(selectedTone);
+        }
+
+        private void PlayButton_IsPlayingChanged(object sender, EventArgs e)
+        {
+            var button = sender as PlayButton;
+            var tone = button.BindingContext as AlarmTone;
+
+            if (tone.IsPlaying)
+            {
+                button.ImageSource = button.ImageSourcePause;
+            }
+            else
+            {
+                button.ImageSource = button.ImageSourcePlay;
+            }
         }
     }
 }

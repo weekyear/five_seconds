@@ -27,28 +27,28 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        public static readonly BindableProperty SourceIsPlayingOnProperty =
-            BindableProperty.Create(nameof(SourceIsPlaying),
+        public static readonly BindableProperty ImageSourcePlayOnProperty =
+            BindableProperty.Create(nameof(ImageSourcePlay),
                 typeof(string),
                 typeof(PlayButton),
                 "");
 
-        public string SourceIsPlaying
+        public string ImageSourcePlay
         {
-            get { return (string)GetValue(SourceIsPlayingOnProperty); }
-            set { SetValue(SourceIsPlayingOnProperty, value); }
+            get { return (string)GetValue(ImageSourcePlayOnProperty); }
+            set { SetValue(ImageSourcePlayOnProperty, value); }
         }
 
-        public static readonly BindableProperty SourceIsPauseProperty =
-            BindableProperty.Create(nameof(SourceIsPause),
+        public static readonly BindableProperty ImageSourcePauseProperty =
+            BindableProperty.Create(nameof(ImageSourcePause),
                 typeof(string),
                 typeof(PlayButton),
                 "");
 
-        public string SourceIsPause
+        public string ImageSourcePause
         {
-            get { return (string)GetValue(SourceIsPauseProperty); }
-            set { SetValue(SourceIsPauseProperty, value); }
+            get { return (string)GetValue(ImageSourcePauseProperty); }
+            set { SetValue(ImageSourcePauseProperty, value); }
         }
 
         public event EventHandler IsPlayingChanged;

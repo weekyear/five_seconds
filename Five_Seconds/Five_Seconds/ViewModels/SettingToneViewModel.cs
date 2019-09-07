@@ -66,15 +66,14 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
-                PauseAllTone();
                 PlayTone(tone);
+                PauseAllToneExceptSeletedTone(tone);
             }
         }
 
         private void PlayTone(AlarmTone tone)
         {
-            _soundService.PlayAudio(tone, Mission.Alarm.Volume);
-            tone.IsPlaying = true;
+            _soundService.PlayAudio(tone, true, Mission.Alarm.Volume);
         }
 
         private void StopTone()
@@ -93,11 +92,18 @@ namespace Five_Seconds.ViewModels
             await Navigation.PopAsync(true);
         }
 
-        private void PauseAllTone()
+        private void PauseAllToneExceptSeletedTone(AlarmTone selectedTone)
         {
             foreach (var tone in AllAlarmTones)
             {
-                tone.IsPlaying = false;
+                if (tone.Path == selectedTone.Path)
+                {
+                    tone.IsPlaying = true;
+                }
+                else
+                {
+                    tone.IsPlaying = false;
+                }
             }
         }
     }
