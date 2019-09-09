@@ -33,7 +33,22 @@ namespace Five_Seconds.Helpers
             }
             stringBuilder.Remove(0, 2);
 
-            return stringBuilder.ToString();
+            if (stringBuilder.ToString() == "일, 월, 화, 수, 목, 금, 토")
+            {
+                return "매일";
+            }
+            else if (stringBuilder.ToString() == "일, 토")
+            {
+                return "주말";
+            }
+            else if (stringBuilder.ToString() == "월, 화, 수, 목, 금")
+            {
+                return "평일";
+            }
+            else
+            {
+                return stringBuilder.ToString();
+            }
         }
 
         private static string ConvertDateToString(DateTime date)
@@ -42,7 +57,7 @@ namespace Five_Seconds.Helpers
 
             if (date.Date.Subtract(DateTime.Now.Date).TotalDays == 1)
             {
-                return $"내일-{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
+                return $"내일";
             }
 
             var dateTime = $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";

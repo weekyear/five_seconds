@@ -25,6 +25,7 @@ namespace Five_Seconds.ViewModels
         private void ConstructCommand()
         {
             ShowAddMissionCommand = new Command(async () => await ShowAddMission());
+            CancelNotifyCommand = new Command(() => CancelNotify());
             ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
         }
 
@@ -48,11 +49,17 @@ namespace Five_Seconds.ViewModels
         }
 
         public Command ShowAddMissionCommand { get; set; }
+        public Command CancelNotifyCommand { get; set; }
         public Command<object> ShowMenuCommand { get; set; }
 
         public async Task ShowAddMission()
         {
             await Navigation.PushAsync(new MissionPage(Navigation));
+        }
+
+        public void CancelNotify()
+        {
+            DependencyService.Get<IAlarmNotification>().CancelNotification();
         }
 
         public async Task ShowMenu(object _mission)

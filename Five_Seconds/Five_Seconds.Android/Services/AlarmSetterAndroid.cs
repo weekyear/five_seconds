@@ -61,23 +61,25 @@ namespace Five_Seconds.Droid.Services
 
             var diffTimeSpan = nextAlarmDateTime.Subtract(dateTimeNow);
 
-            ShowNextAlarmToast(diffTimeSpan);
+            ShowNextAlarmToast(nextAlarmDateTime);
 
             return Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffTimeSpan.TotalMilliseconds;
         }        
 
-        private void ShowNextAlarmToast(TimeSpan diff)
+        private void ShowNextAlarmToast(DateTime dateTime)
         {
-            var diffString = CreateTimeRemainingString(diff);
+            var diffString = CreateTimeRemainingString(dateTime);
 
             DependencyService.Get<ToastService>().Show(diffString);
         }
 
-        private string CreateTimeRemainingString(TimeSpan diff)
+        private string CreateTimeRemainingString(DateTime dateTime)
         {
+            var diff = dateTime.Subtract(DateTime.Now);
+
             if (diff.Days > 0)
             {
-                return $"{diff.Days + 1}일 후에 5초의 법칙을 실행합니다!";
+                return $"{dateTime.Month}월 {dateTime.Day}일 {dateTime.ToString("tt")} {dateTime.Hour}:{dateTime.Minute}에 5초의 법칙을 실행합니다!";
             }
             else if (diff.Hours > 0)
             {

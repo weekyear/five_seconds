@@ -175,7 +175,7 @@ namespace Five_Seconds.ViewModels
         {
             get
             {
-                return CreateDateString.DateToString(Alarm);
+                return Alarm.DateString;
             }
         }
 

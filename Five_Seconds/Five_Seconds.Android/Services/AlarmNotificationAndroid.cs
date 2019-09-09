@@ -19,6 +19,18 @@ namespace Five_Seconds.Droid.Services
     public class AlarmNotificationAndroid : IAlarmNotification
     {
         private static string NOTIFICATION_CHANNEL_ID = "com.beside.five_seconds";
+        private static string channelName = "알람";
+
+        public static NotificationManager SetNotificationManager()
+        {
+            var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
+
+            var manager = Application.Context.GetSystemService("notification") as NotificationManager;
+
+            manager?.CreateNotificationChannel(chan);
+
+            return manager;
+        }
 
         public static Notification GetNextAlarmNotification(Context context)
         {
@@ -47,9 +59,8 @@ namespace Five_Seconds.Droid.Services
                     .SetSmallIcon(Resource.Drawable.ic_icon_notificatioin)
                     .SetContentTitle(nextNameString)
                     .SetContentText(nextTimeString)
-                    .SetPriority((int)NotificationImportance.Min)
-                    .SetCategory(Notification.CategoryService)
-                    .SetChannelId(NOTIFICATION_CHANNEL_ID)
+                    .SetPriority((int)NotificationImportance.Low)
+                    .SetVisibility(NotificationCompat.VisibilitySecret)
                     .Build();
 
             return notification;
@@ -62,6 +73,12 @@ namespace Five_Seconds.Droid.Services
             var notification = GetNextAlarmNotification(Application.Context);
 
             manager.Notify(2, notification);
+        }
+
+        public void CancelNotification()
+        {
+            var notificationManager = Application.Context.GetSystemService("notification") as NotificationManager;
+            notificationManager.CancelAll();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Five_Seconds.Helpers
                 if (allDays[i])
                 {
                     var today = (int)DateTime.Now.DayOfWeek;
-                    var diffDays = i - today > 0 ? i - today : i - today + 7;
+                    var diffDays = i - today >= 0 ? i - today : i - today + 7;
                     if (addingDays > diffDays)
                     {
                         addingDays = diffDays;
@@ -48,9 +48,9 @@ namespace Five_Seconds.Helpers
                 }
             }
 
-            if (addingDays == 7 && alarm.Time.Subtract(DateTime.Now.TimeOfDay).Ticks > 0)
+            if (addingDays == 0 && alarm.Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
             {
-                return 0;
+                return 7;
             }
 
             return addingDays;

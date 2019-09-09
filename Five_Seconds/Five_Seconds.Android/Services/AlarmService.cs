@@ -31,12 +31,7 @@ namespace Five_Seconds.Droid.Services
 
         private void StartMyOwnForeground()
         {
-            var NOTIFICATION_CHANNEL_ID = "com.beside.five_seconds";
-            var channelName = "my_5seconds_alarm";
-            var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
-            var manager = (NotificationManager)GetSystemService(NotificationService);
-
-            manager?.CreateNotificationChannel(chan);
+            AlarmNotificationAndroid.SetNotificationManager();
 
             var notification = AlarmNotificationAndroid.GetNextAlarmNotification(this);
 
