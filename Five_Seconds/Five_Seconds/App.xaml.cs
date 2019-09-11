@@ -20,6 +20,7 @@ namespace Five_Seconds
 
         public App()
         {
+            Console.WriteLine("App");
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
             DependencyService.Register<INavigation>();

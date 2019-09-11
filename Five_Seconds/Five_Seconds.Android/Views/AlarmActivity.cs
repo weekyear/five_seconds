@@ -12,7 +12,9 @@ using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
+using Five_Seconds.Repository;
 using Five_Seconds.Services;
+using Plugin.CurrentActivity;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
@@ -22,7 +24,7 @@ namespace Five_Seconds.Droid
     [Activity(Label = "AlarmActivity", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : Activity
     {
-        IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
+        IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
         private LinearLayout missionLayout;
@@ -43,15 +45,28 @@ namespace Five_Seconds.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "OnCreate");
+            Console.WriteLine("OnCreate_AlarmActivity");
             base.OnCreate(savedInstanceState);
 
-            Intent intent = Intent;
-            Bundle bundle = intent.Extras;
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
+
+            Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
 
-            var mission = AlarmReceiver.AlarmMissionNow;
+            AlarmController.SetNextAlarm(id);
+            Console.WriteLine("AlarmController_AlarmActivity");
+
+            var mission = AlarmController.AlarmMissionNow;
+            Console.WriteLine(mission.Name);
+
             alarm = mission.Alarm;
+            Console.WriteLine(alarm.Time);
+
+            SetMediaPlayer(alarm);
+            Console.WriteLine("SetMediaPlayer_AlarmActivity");
+            SetVibrator(alarm);
+            Console.WriteLine("SetVibrator_AlarmActivity");
 
             SetContentView(Resource.Layout.AlarmActivity);
             SetControls(mission);
@@ -61,32 +76,16 @@ namespace Five_Seconds.Droid
             if (bundle == null) return;
 
 
-            SetMediaPlayer(alarm);
-
-            SetVibrator(alarm);
-
             if (!mission.IsActive)
             {
                 App.Service.DeleteMission(mission);
+                Console.WriteLine("App.DeleteMission_AlarmActivity");
             }
             else
             {
-                DependencyService.Get<IAlarmNotification>().UpdateNotification();
+                var AlarmNotification = new AlarmNotificationAndroid();
+                AlarmNotification.UpdateNotification();
             }
-        }
-
-        private Mission GetMissionById(int id)
-        {
-            var mission = App.MissionsRepo.GetMission(id);
-
-            return mission;
-        }
-
-        private Alarm GetAlarmById(int id)
-        {
-            var alarm = App.MissionsRepo.GetAlarm(id);
-
-            return alarm;
         }
 
         private void SetControls(Mission mission)
@@ -113,31 +112,11 @@ namespace Five_Seconds.Droid
             Window.AddFlags(WindowManagerFlags.TurnScreenOn);
         }
 
-        private void SetMediaPlayer(Alarm alarm)
-        {
-            if (alarm.IsAlarmOn)
-            {
-                AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == alarm.Tone);
-                _soundService.PlayAudio(alarmTone, true, alarm.Volume);
-            }
-        }
-
-        private void SetVibrator(Alarm alarm)
-        {
-            if (alarm.IsVibrateOn)
-            {
-                _vibrator = Vibrator.FromContext(this);
-                long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
-                VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
-                _vibrator.Vibrate(effect);
-                Log.Debug(AlarmSetterAndroid.AlarmTag, "Done Create");
-            }
-        }
+        
 
         async void TellmeButton_Click(object sender, EventArgs e)
         {
             _soundService?.StopAudio();
-            _vibrator?.Cancel();
 
             if (!missionEditText.Enabled)
             {
@@ -151,6 +130,8 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
+                _vibrator?.Cancel();
+
                 HideAllViewExceptForCountText();
 
                 SetCountDown();
@@ -168,13 +149,13 @@ namespace Five_Seconds.Droid
 
         async Task<string> WaitForSpeechToText()
         {
-            var stt = DependencyService.Get<ISpeechToText>();
+            var stt = new SpeechToText_Android();
             return await stt.SpeechToTextAsync();
         }
 
         private void ShowAlertDoNotMatchText()
         {
-            Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             AlertDialog alert = dialog.Create();
             alert.SetTitle("미션 내용 불일치");
             alert.SetMessage("미션 내용을 정확히 기입하여주세요");
@@ -185,19 +166,25 @@ namespace Five_Seconds.Droid
             alert.Show();
         }
 
-        //private void ShowAlertSuccessOfFailed()
-        //{
-        //    Android.App.AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        //    AlertDialog alert = dialog.Create();
-        //    alert.SetTitle("미션 성공");
-        //    alert.SetMessage("미션 성공했습니다~~");
-        //    alert.SetButton("확인", (c, ev) =>
-        //    {
-        //        alert.Dispose();
-        //        FinishAndRemoveTask();
-        //    });
-        //    alert.Show();
-        //}
+        private void SetMediaPlayer(Alarm alarm)
+        {
+            if (alarm.IsAlarmOn)
+            {
+                AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == alarm.Tone);
+                _soundService.PlayAudio(alarmTone, true, alarm.Volume);
+            }
+        }
+
+        private void SetVibrator(Alarm alarm)
+        {
+            if (alarm.IsVibrateOn)
+            {
+                _vibrator = Vibrator.FromContext(this);
+                long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
+                VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
+                _vibrator.Vibrate(effect);
+            }
+        }
 
         private void HideAllViewExceptForCountText()
         {
@@ -228,13 +215,8 @@ namespace Five_Seconds.Droid
 
         private void SetCountDown()
         {
-            countDown = new CountDown(5200, 10, this);
+            countDown = new CountDown(5300, 10, this);
             countDown.Start();
-        }
-
-        private void StopCountDown()
-        {
-            countDown.Cancel();
         }
 
         public override void OnBackPressed()
@@ -244,62 +226,30 @@ namespace Five_Seconds.Droid
 
     public class CountDown : CountDownTimer
     {
-        private Activity _activity;
-        private long _millisInFuture;
-        private long _countDownInterval;
-
-        IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
+        public long CountDownInterval { get; }
+        public long MillisInFuture { get; }
+        public Activity Activity { get; set; }
 
         public CountDown(long millisInFuture, long countDownInterval, Activity activity) : base(millisInFuture, countDownInterval)
         {
-            _activity = activity;
-            _millisInFuture = millisInFuture;
-            _countDownInterval = countDownInterval;
+            Activity = activity;
+            MillisInFuture = millisInFuture;
+            CountDownInterval = countDownInterval;
         }
 
         public override void OnFinish()
         {
-            _activity.FinishAndRemoveTask();
+            Activity.FinishAndRemoveTask();
         }
 
         public override void OnTick(long millisUntilFinished)
         {
-            var alarmActivity = _activity as AlarmActivity;
+            var alarmActivity = Activity as AlarmActivity;
             var countTextView = alarmActivity.countTextView;
 
             double count = (double)millisUntilFinished / 1000;
-            //SpeakCount(count);
             var stringFormat = string.Format("{0:f2}", count);
             countTextView.Text = stringFormat + "초";
-        }
-
-        private void SpeakCount(double count)
-        {
-            if (count < 5)
-            {
-                TextToSpeak("Five");
-            }
-            else if (count < 4)
-            {
-                TextToSpeak("Four");
-            }
-            else if (count == 3)
-            {
-                TextToSpeak("Three");
-            }
-            else if (count == 2)
-            {
-                TextToSpeak("Two");
-            }
-            else if (count == 1)
-            {
-                TextToSpeak("One");
-            }
-        }
-
-        private async void TextToSpeak(string text)
-        {
-            await TextToSpeech.SpeakAsync(text);
         }
     }
 }

@@ -38,21 +38,41 @@ namespace Five_Seconds.Droid.Services
             var alarm = mission.Alarm;
             var diffMillis = CalculateTimeDiff(alarm);
 
-            var serviceIntent = new Intent(Application.Context, typeof(AlarmService));
-            serviceIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            serviceIntent.PutExtra("id", mission.Id);
-            serviceIntent.PutExtra("diffMillis", diffMillis);
-            serviceIntent.SetAction("ActionStartService");
+            //var serviceIntent = new Intent(Application.Context, typeof(AlarmService));
+            //serviceIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            //serviceIntent.PutExtra("id", mission.Id);
+            //serviceIntent.PutExtra("diffMillis", diffMillis);
+            //serviceIntent.SetAction("ActionStartService");
 
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
-            {
-                Application.Context.StartForegroundService(serviceIntent);
-            }
-            else
-            {
-                Application.Context.StartService(serviceIntent);
-            }
+            //if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            //{
+            //    Application.Context.StartForegroundService(serviceIntent);
+            //}
+            //else
+            //{
+            //    Application.Context.StartService(serviceIntent);
+            //}
+
+            SetAlarmByManager(mission.Id, diffMillis);
         }
+
+        private void SetAlarmByManager(int id, long diffMillis)
+        {
+            if (diffMillis == 0) return;
+            var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            _alarmIntent.PutExtra("id", id);
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
+
+            Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
+            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, 0, showIntent, PendingIntentFlags.UpdateCurrent);
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(diffMillis, showOperation);
+            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+
+            //alarmManager.SetExact(AlarmType.RtcWakeup, diffMillis, pendingIntent);
+        }
+
         private long CalculateTimeDiff(Alarm alarm)
         {
             var dateTimeNow = DateTime.Now;

@@ -19,6 +19,7 @@ namespace Five_Seconds.Droid
         const int VOICE = 10;
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Console.WriteLine("OnCreate_MainActivity");
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -28,7 +29,9 @@ namespace Five_Seconds.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Console.WriteLine("LoadApplication OnCreate_MainActivity");
             LoadApplication(new App());
+            Console.WriteLine("Finish OnCreate_MainActivity");
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
