@@ -85,9 +85,8 @@
     <Compile Include="CustomRenderers\ColoredTableViewRenderer.cs" />
     <Compile Include="Services\AlarmController.cs" />
     <Compile Include="Services\AlarmReceiver.cs" />
-    <Compile Include="Services\AlarmService.cs" />
     <Compile Include="Services\AlarmNotificationAndroid.cs" />
-    <Compile Include="Services\Alarm_Service.cs" />
+    <Compile Include="Services\CountDownAndroid.cs" />
     <Compile Include="Services\SpeechToText_Android.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />
@@ -210,7 +209,7 @@
     <AndroidResource Include="Resources\drawable\ic_pause.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_five_count.png" />
+    <AndroidResource Include="Resources\drawable\ic_count_five.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

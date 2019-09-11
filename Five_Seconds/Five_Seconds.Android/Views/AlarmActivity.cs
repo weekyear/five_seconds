@@ -10,10 +10,12 @@ using Android.Speech;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Five_Seconds.Droid;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
+using Five_Seconds.ViewModels;
 using Plugin.CurrentActivity;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -45,17 +47,24 @@ namespace Five_Seconds.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Console.WriteLine("OnCreate_AlarmActivity");
             base.OnCreate(savedInstanceState);
-
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
-            Forms.Init(this, savedInstanceState);
 
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
 
+            if (id == -1)
+            {
+                SetContentView(Resource.Layout.AlarmActivity);
+                SetControlsForCountActivity();
+                ShowCountActivity();
+                return;
+            }
+
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
+
+
             AlarmController.SetNextAlarm(id);
-            Console.WriteLine("AlarmController_AlarmActivity");
 
             var mission = AlarmController.AlarmMissionNow;
             Console.WriteLine(mission.Name);
@@ -64,9 +73,7 @@ namespace Five_Seconds.Droid
             Console.WriteLine(alarm.Time);
 
             SetMediaPlayer(alarm);
-            Console.WriteLine("SetMediaPlayer_AlarmActivity");
             SetVibrator(alarm);
-            Console.WriteLine("SetVibrator_AlarmActivity");
 
             SetContentView(Resource.Layout.AlarmActivity);
             SetControls(mission);
@@ -79,7 +86,6 @@ namespace Five_Seconds.Droid
             if (!mission.IsActive)
             {
                 App.Service.DeleteMission(mission);
-                Console.WriteLine("App.DeleteMission_AlarmActivity");
             }
             else
             {
@@ -101,6 +107,17 @@ namespace Five_Seconds.Droid
             missionTextView.Text = mission.Name;
 
             missionEditText.Enabled = false;
+        }
+
+        private void SetControlsForCountActivity()
+        {
+            missionLayout = FindViewById<LinearLayout>(Resource.Id.missionLayout);
+            tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
+            countTextView = FindViewById<TextView>(Resource.Id.countTextView);
+            missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
+            missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
+
+            countTextView.Text = "5.00 초";
         }
 
         private void AddWindowManagerFlags()
@@ -130,21 +147,24 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
-                _vibrator?.Cancel();
-
-                HideAllViewExceptForCountText();
-
-                SetCountDown();
-
-                if (alarm.IsCountOn)
-                {
-                    _soundService.PlayCountAudio();
-                }
+                ShowCountActivity();
             }
             else
             {
                 ShowAlertDoNotMatchText();
             }
+        }
+
+        private void ShowCountActivity()
+        {
+            _vibrator?.Cancel();
+
+            HideAllViewExceptForCountText();
+
+            _soundService.PlayCountAudio();
+
+            SetCountDown();
+
         }
 
         async Task<string> WaitForSpeechToText()
@@ -213,43 +233,46 @@ namespace Five_Seconds.Droid
             }
         }
 
-        private void SetCountDown()
+        private async void SetCountDown()
         {
-            countDown = new CountDown(5300, 10, this);
+            await Task.Delay(330);
+            countDown = new CountDown(5000, 10, this);
             countDown.Start();
         }
 
         public override void OnBackPressed()
         {
         }
+
+        private class CountDown : CountDownTimer
+        {
+            public long CountDownInterval { get; }
+            public long MillisInFuture { get; }
+            public Activity Activity { get; set; }
+
+            public CountDown(long millisInFuture, long countDownInterval, Activity activity) : base(millisInFuture, countDownInterval)
+            {
+                Activity = activity;
+                MillisInFuture = millisInFuture;
+                CountDownInterval = countDownInterval;
+            }
+
+            public override void OnFinish()
+            {
+                Activity.FinishAndRemoveTask();
+            }
+
+            public override void OnTick(long millisUntilFinished)
+            {
+                var alarmActivity = Activity as AlarmActivity;
+                var countTextView = alarmActivity.countTextView;
+
+                double count = (double)millisUntilFinished / 1000;
+                var stringFormat = string.Format("{0:f2}", count);
+                countTextView.Text = stringFormat + "초";
+            }
+        }
     }
 
-    public class CountDown : CountDownTimer
-    {
-        public long CountDownInterval { get; }
-        public long MillisInFuture { get; }
-        public Activity Activity { get; set; }
-
-        public CountDown(long millisInFuture, long countDownInterval, Activity activity) : base(millisInFuture, countDownInterval)
-        {
-            Activity = activity;
-            MillisInFuture = millisInFuture;
-            CountDownInterval = countDownInterval;
-        }
-
-        public override void OnFinish()
-        {
-            Activity.FinishAndRemoveTask();
-        }
-
-        public override void OnTick(long millisUntilFinished)
-        {
-            var alarmActivity = Activity as AlarmActivity;
-            var countTextView = alarmActivity.countTextView;
-
-            double count = (double)millisUntilFinished / 1000;
-            var stringFormat = string.Format("{0:f2}", count);
-            countTextView.Text = stringFormat + "초";
-        }
-    }
+    
 }

@@ -11,6 +11,7 @@ namespace Five_Seconds.ViewModels
     public class MissionsViewModel : BaseViewModel
     {
         private readonly IMessageBoxService MessageBoxService;
+
         public MissionsViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
             Title = "5초의 알람";
@@ -25,6 +26,7 @@ namespace Five_Seconds.ViewModels
         private void ConstructCommand()
         {
             ShowAddMissionCommand = new Command(async () => await ShowAddMission());
+            ShowCountDownCommand = new Command(() => ShowCountDown());
             CancelNotifyCommand = new Command(() => CancelNotify());
             ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
         }
@@ -49,12 +51,19 @@ namespace Five_Seconds.ViewModels
         }
 
         public Command ShowAddMissionCommand { get; set; }
+        public Command ShowCountDownCommand { get; set; }
         public Command CancelNotifyCommand { get; set; }
         public Command<object> ShowMenuCommand { get; set; }
 
         public async Task ShowAddMission()
         {
             await Navigation.PushAsync(new MissionPage(Navigation));
+        }
+
+        public void ShowCountDown()
+        {
+            Action action = () => DependencyService.Get<ICountDown>().ShowCountDown();
+            MessageBoxService.ShowConfirm("5초 카운트", "5초 카운트를 시작하시겠습니까?", null, action);
         }
 
         public void CancelNotify()

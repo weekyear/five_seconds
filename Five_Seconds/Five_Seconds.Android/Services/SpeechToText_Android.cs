@@ -1,23 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Speech;
-using Android.Views;
-using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
-using Application = Android.App.Application;
 
-[assembly: Xamarin.Forms.Dependency(typeof(SpeechToText_Android))]
+[assembly: Dependency(typeof(SpeechToText_Android))]
 namespace Five_Seconds.Droid.Services
 {
     public class SpeechToText_Android : ISpeechToText

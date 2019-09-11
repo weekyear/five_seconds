@@ -20,6 +20,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Icon="ic_count_five.png" Text="ShowCountDown" Command="{Binding ShowCountDownCommand}"/>
         <ToolbarItem Icon="ic_plus.png" Text="AddMission" Command="{Binding ShowAddMissionCommand}"/>
     </ContentPage.ToolbarItems>
 
