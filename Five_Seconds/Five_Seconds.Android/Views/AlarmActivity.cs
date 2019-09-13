@@ -147,6 +147,9 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
+                var toastService = new ToastServiceAndroid();
+
+                toastService.Show("이제 5초를 셉니다!");
                 ShowCountActivity();
             }
             else

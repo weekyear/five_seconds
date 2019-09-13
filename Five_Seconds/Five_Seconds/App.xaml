@@ -9,10 +9,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <!--Global Styles-->
-            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <Color x:Key="NavigationPrimary">#f4f4f4</Color>
+            <Color x:Key="NavigationPrimaryTextColor">#263238</Color>
             <Style TargetType="NavigationPage">
                 <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
-                <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BarTextColor" Value="{StaticResource NavigationPrimaryTextColor}" />
             </Style>
 
             <!--Custom Styles-->
@@ -25,6 +26,7 @@
             <Color x:Key="LightTextColor">#ffffff</Color>
             <Color x:Key="PrimaryTextColor">#263238</Color>
             <Color x:Key="SecondaryTextColor">#455a64</Color>
+            <Color x:Key="BackgroundColor">#f4f4f4</Color>
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="TextColor" Value="{StaticResource LightTextColor}" />

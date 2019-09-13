@@ -7,7 +7,7 @@ namespace Five_Seconds.Helpers
 {
     public class CreateDateString
     {
-        public static string DateToString(Alarm alarm)
+        public static string CreateDateToString(Alarm alarm)
         {
             if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
@@ -62,6 +62,33 @@ namespace Five_Seconds.Helpers
 
             var dateTime = $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
             return dateTime;
+        }
+
+        public static string CreateNextDateTimeString(Alarm alarm)
+        {
+            var nextTime = alarm.NextAlarmTime;
+
+            var diffDays = nextTime.Date.Subtract(DateTime.Now.Date);
+            string dateTimeString;
+
+            switch (diffDays.Days)
+            {
+                case 0:
+                    dateTimeString = $"오늘 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}에";
+                    break;
+                case 1:
+                    dateTimeString = $"내일 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}에";
+                    break;
+                case 2:
+                    dateTimeString = $"모레 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}에";
+                    break;
+                default:
+                    dateTimeString = $"{diffDays.Days}일 후 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}에";
+                    break;
+
+            }
+
+            return dateTimeString;
         }
     }
 }

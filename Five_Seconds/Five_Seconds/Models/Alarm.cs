@@ -43,7 +43,7 @@ namespace Five_Seconds.Models
 
         public string DateString
         {
-            get { return CreateDateString.DateToString(this); }
+            get { return CreateDateString.CreateDateToString(this); }
         }
 
         public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);

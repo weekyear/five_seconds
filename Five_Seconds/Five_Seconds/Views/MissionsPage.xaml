@@ -9,6 +9,7 @@
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.MissionsPage"
              Title="{Binding Title}"
+             NavigationPage.HasNavigationBar="False"
              x:Name="BrowseItemsPage">
 
     <ContentPage.Resources>
@@ -24,10 +25,47 @@
         <ToolbarItem Icon="ic_plus.png" Text="AddMission" Command="{Binding ShowAddMissionCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <StackLayout BackgroundColor="White">
+    <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.ColumnSpan="3" 
+                   Text="{Binding NextAlarmString}"
+                   FontSize="30"
+                   HorizontalOptions="CenterAndExpand"/>
+            <Label Grid.Row="1" Grid.ColumnSpan="3" 
+                   Text="5초의 법칙 실행!"
+                   FontAttributes="Bold"
+                   FontSize="40"
+                   HorizontalOptions="CenterAndExpand"/>
+            <Button Grid.Row="2" Grid.Column="0"
+                    ImageSource="ic_count_five" 
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding ShowCountDownCommand}"
+                    HeightRequest="20" WidthRequest="20"/>
+            <Button Grid.Row="2" Grid.Column="2"
+                    ImageSource="ic_plus" 
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding ShowAddMissionCommand}"
+                    HeightRequest="20" WidthRequest="20"/>
+            <Button Grid.Row="2" Grid.Column="2"
+                    ImageSource="ic_three_dots" 
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="EndAndExpand"
+                    Command="{Binding ShowCountDownCommand}"
+                    HeightRequest="20" WidthRequest="20"/>
+        </Grid>
         <ListView x:Name="MissionsListView"
                 ItemsSource="{Binding Missions}"
-                Margin="5"
                 RowHeight="110"
                 ItemTapped="ShowMenuByItemClicked"
                 ItemSelected="MissionsListView_ItemSelected"
@@ -36,7 +74,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <custom:CustomViewCell SelectedBackgroundColor="White">
-                        <Grid Padding="10">
+                        <Grid Padding="10" Margin="0, 10, 0, 0" BackgroundColor="White">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />

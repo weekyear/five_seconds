@@ -5,6 +5,7 @@ using Five_Seconds.Models;
 using Five_Seconds.Views;
 using Five_Seconds.Services;
 using System;
+using Five_Seconds.Helpers;
 
 namespace Five_Seconds.ViewModels
 {
@@ -45,15 +46,44 @@ namespace Five_Seconds.ViewModels
         }
 
         // Property
-        public ObservableCollection<Mission> Missions
-        {
-            get => Service.Missions;
-        }
 
         public Command ShowAddMissionCommand { get; set; }
         public Command ShowCountDownCommand { get; set; }
         public Command CancelNotifyCommand { get; set; }
         public Command<object> ShowMenuCommand { get; set; }
+        public ObservableCollection<Mission> Missions
+        {
+            get => Service.Missions;
+        }
+
+        public string NextAlarmString
+        {
+            get => CreateDateString.CreateNextDateTimeString(App.MissionsRepo.GetNextAlarm());
+        }
+
+        private string CreateNextAlarmString()
+        {
+            var alarmId = App.MissionsRepo.GetNextAlarmId();
+
+            string nextNameString;
+            string nextTimeString;
+
+            if (alarmId != 0)
+            {
+                var mission = App.MissionsRepo.GetMission(alarmId);
+                var alarm = App.MissionsRepo.GetAlarm(alarmId);
+
+                nextNameString = mission.Name;
+                nextTimeString = alarm.NextAlarmTime.ToString();
+            }
+            else
+            {
+                nextNameString = "다음 알람이 없습니다.";
+                nextTimeString = string.Empty;
+            }
+
+            return nextNameString + nextTimeString;
+        }
 
         public async Task ShowAddMission()
         {

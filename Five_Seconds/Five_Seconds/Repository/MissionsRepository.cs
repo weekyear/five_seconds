@@ -168,5 +168,10 @@ namespace Five_Seconds.Repository
 
             return id;
         }
+
+        public Alarm GetNextAlarm()
+        {
+            return GetAlarm(GetNextAlarmId());
+        }
     }
 }
