@@ -8,7 +8,6 @@
              xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.MissionsPage"
-             Title="{Binding Title}"
              NavigationPage.HasNavigationBar="False"
              x:Name="BrowseItemsPage">
 

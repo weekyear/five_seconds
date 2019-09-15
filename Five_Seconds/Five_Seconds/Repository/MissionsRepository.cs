@@ -154,6 +154,8 @@ namespace Five_Seconds.Repository
             int id = 0;
             var listMission = App.Service.Missions;
 
+            if (listMission.Count == 0) return 0;
+
             for (int i = 0; i < listMission.Count; i++)
             {
                 if (listMission[i].IsActive)
@@ -171,7 +173,11 @@ namespace Five_Seconds.Repository
 
         public Alarm GetNextAlarm()
         {
-            return GetAlarm(GetNextAlarmId());
+            var nextAlarmId = GetNextAlarmId();
+
+            if (nextAlarmId == 0) return null;
+
+            return GetAlarm(nextAlarmId);
         }
     }
 }

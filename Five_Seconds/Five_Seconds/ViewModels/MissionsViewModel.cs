@@ -15,8 +15,6 @@ namespace Five_Seconds.ViewModels
 
         public MissionsViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
-            Title = "5초의 알람";
-
             MessageBoxService = messageBoxService;
 
             ConstructCommand();
