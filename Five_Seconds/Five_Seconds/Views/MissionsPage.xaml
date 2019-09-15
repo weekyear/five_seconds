@@ -26,43 +26,45 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid>
+        <Grid Margin="10, 10, 10, 0" HorizontalOptions="CenterAndExpand">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="75*" />
+                <ColumnDefinition Width="12*" />
+                <ColumnDefinition Width="13*" />
             </Grid.ColumnDefinitions>
             <Label Grid.ColumnSpan="3" 
-                   Text="{Binding NextAlarmString}"
-                   FontSize="30"
+                   Text="5초의 알람"
+                   FontSize="25"
                    HorizontalOptions="CenterAndExpand"/>
             <Label Grid.Row="1" Grid.ColumnSpan="3" 
-                   Text="5초의 법칙 실행!"
+                   Text="{Binding NextAlarmString}"
                    FontAttributes="Bold"
-                   FontSize="40"
+                   FontSize="25"
+                   Margin="0, 0, 0, 10"
                    HorizontalOptions="CenterAndExpand"/>
-            <Button Grid.Row="2" Grid.Column="0"
-                    ImageSource="ic_count_five" 
-                    BackgroundColor="Transparent"
-                    HorizontalOptions="EndAndExpand"
-                    Command="{Binding ShowCountDownCommand}"
-                    HeightRequest="20" WidthRequest="20"/>
-            <Button Grid.Row="2" Grid.Column="2"
-                    ImageSource="ic_plus" 
-                    BackgroundColor="Transparent"
-                    HorizontalOptions="EndAndExpand"
-                    Command="{Binding ShowAddMissionCommand}"
-                    HeightRequest="20" WidthRequest="20"/>
-            <Button Grid.Row="2" Grid.Column="2"
-                    ImageSource="ic_three_dots" 
-                    BackgroundColor="Transparent"
-                    HorizontalOptions="EndAndExpand"
-                    Command="{Binding ShowCountDownCommand}"
-                    HeightRequest="20" WidthRequest="20"/>
+            <ImageButton Grid.Row="2" Grid.Column="0"
+                         Source="ic_count_five_blue.png"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="StartAndExpand"
+                         VerticalOptions="CenterAndExpand"
+                         Command="{Binding ShowCountDownCommand}"/>
+            <ImageButton Grid.Row="2" Grid.Column="1"
+                         Source="ic_plus_blue.png"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand"
+                         Command="{Binding ShowAddMissionCommand}"/>
+            <ImageButton Grid.Row="2" Grid.Column="2"
+                         Source="ic_three_dots_blue.png"
+                         BackgroundColor="Transparent"
+                         HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand"
+                         Command="{Binding ShowCountDownCommand}"/>
         </Grid>
         <ListView x:Name="MissionsListView"
                 ItemsSource="{Binding Missions}"
