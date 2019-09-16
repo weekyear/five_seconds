@@ -223,5 +223,8 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_five_seconds_mini.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_menu_vertical.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

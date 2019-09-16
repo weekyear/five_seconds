@@ -41,7 +41,7 @@ namespace Five_Seconds.Droid.CustomRenderers
                 Control.SetAllCaps(false);
 
                 // set background and drawables
-                Control.SetCompoundDrawablesRelativeWithIntrinsicBounds(ResourcesCompat.GetDrawable(Resources, Resource.Drawable.ic_plus, null), null, null, null);
+                //Control.SetCompoundDrawablesRelativeWithIntrinsicBounds(ResourcesCompat.GetDrawable(Resources, Resource.Drawable.ic_plus, null), null, null, null);
                 Control.SetPaddingRelative(PaddingStart + 80, PaddingTop, PaddingEnd, PaddingBottom);
 
                 // remove state list shadow

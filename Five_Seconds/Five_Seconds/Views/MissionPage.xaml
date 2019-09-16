@@ -7,7 +7,8 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
 			 Title="알람 설정"
              mc:Ignorable="d"
-             x:Class="Five_Seconds.Views.MissionPage">
+             x:Class="Five_Seconds.Views.MissionPage"
+             BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
@@ -49,7 +50,7 @@
                             <Button ImageSource="ic_calendar" 
                                     Margin="10"
                                     HorizontalOptions="EndAndExpand"
-                                    BackgroundColor="Transparent" 
+                                    BackgroundColor="White" 
                                     Clicked="CalendarButton_Clicked"
                                     HeightRequest="30" WidthRequest="30"/>
                             <DatePicker x:Name="datePicker" TextColor="Transparent" 

@@ -19,13 +19,8 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="ic_count_five.png" Text="ShowCountDown" Command="{Binding ShowCountDownCommand}"/>
-        <ToolbarItem Icon="ic_plus.png" Text="AddMission" Command="{Binding ShowAddMissionCommand}"/>
-    </ContentPage.ToolbarItems>
-
     <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid Margin="10, 20, 10, 10" HorizontalOptions="CenterAndExpand">
+        <Grid Margin="0, 20, 0, 10" HorizontalOptions="CenterAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -43,27 +38,31 @@
             <Label Grid.Row="1" Grid.ColumnSpan="3" 
                    Text="{Binding NextAlarmString}"
                    FontAttributes="Bold"
-                   FontSize="25"
+                   FontSize="22"
                    Margin="0, 0, 0, 20"
                    HorizontalOptions="CenterAndExpand"/>
             <ImageButton Grid.Row="2" Grid.Column="0"
+                         Margin="10, 0"
                          Source="ic_five_seconds_mini.png"
-                         BackgroundColor="Transparent"
+                         BackgroundColor="{StaticResource BackgroundColor}"
+                         WidthRequest="30" HeightRequest="30"
                          HorizontalOptions="StartAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowCountDownCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="1"
                          Source="ic_plus.png"
-                         BackgroundColor="Transparent"
+                         BackgroundColor="{StaticResource BackgroundColor}"
+                         WidthRequest="30" HeightRequest="30"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowAddMissionCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="2"
-                         Source="ic_menu.png"
-                         BackgroundColor="Transparent"
+                         Source="ic_menu_vertical.png"
+                         BackgroundColor="{StaticResource BackgroundColor}"
+                         WidthRequest="30" HeightRequest="30"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
-                         Command="{Binding ShowCountDownCommand}"/>
+                         Command="{Binding ShowMainMenuCommand}"/>
         </Grid>
         <ListView x:Name="MissionsListView"
                 ItemsSource="{Binding Missions}"

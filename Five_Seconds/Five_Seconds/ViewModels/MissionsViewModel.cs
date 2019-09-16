@@ -27,19 +27,16 @@ namespace Five_Seconds.ViewModels
             ShowAddMissionCommand = new Command(async () => await ShowAddMission());
             ShowCountDownCommand = new Command(() => ShowCountDown());
             CancelNotifyCommand = new Command(() => CancelNotify());
-            ShowMenuCommand = new Command<object>(async (m) => await ShowMenu(m));
+            ShowMissionMenuCommand = new Command<object>(async (m) => await ShowMissionMenu(m));
+            ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
         }
 
         private void SubscribeMessage()
         {
-           MessagingCenter.Subscribe<MissionService>(this, "save", (sender) =>
+           MessagingCenter.Subscribe<MissionService>(this, "changeMissions", (sender) =>
            {
                OnPropertyChanged(nameof(Missions));
-           });
-
-           MessagingCenter.Subscribe<MissionService>(this, "delete", (sender) =>
-           {
-               OnPropertyChanged(nameof(Missions));
+               OnPropertyChanged(nameof(NextAlarmString));
            });
         }
 
@@ -48,7 +45,8 @@ namespace Five_Seconds.ViewModels
         public Command ShowAddMissionCommand { get; set; }
         public Command ShowCountDownCommand { get; set; }
         public Command CancelNotifyCommand { get; set; }
-        public Command<object> ShowMenuCommand { get; set; }
+        public Command<object> ShowMissionMenuCommand { get; set; }
+        public Command ShowMainMenuCommand { get; set; }
         public ObservableCollection<Mission> Missions
         {
             get => Service.Missions;
@@ -57,30 +55,6 @@ namespace Five_Seconds.ViewModels
         public string NextAlarmString
         {
             get => CreateDateString.CreateNextDateTimeString(App.MissionsRepo.GetNextAlarm());
-        }
-
-        private string CreateNextAlarmString()
-        {
-            var alarmId = App.MissionsRepo.GetNextAlarmId();
-
-            string nextNameString;
-            string nextTimeString;
-
-            if (alarmId != 0)
-            {
-                var mission = App.MissionsRepo.GetMission(alarmId);
-                var alarm = App.MissionsRepo.GetAlarm(alarmId);
-
-                nextNameString = mission.Name;
-                nextTimeString = alarm.NextAlarmTime.ToString();
-            }
-            else
-            {
-                nextNameString = "다음 알람이 없습니다.";
-                nextTimeString = string.Empty;
-            }
-
-            return nextNameString + nextTimeString;
         }
 
         public async Task ShowAddMission()
@@ -99,17 +73,17 @@ namespace Five_Seconds.ViewModels
             DependencyService.Get<IAlarmNotification>().CancelNotification();
         }
 
-        public async Task ShowMenu(object _mission)
+        public async Task ShowMissionMenu(object _mission)
         {
             var mission = _mission as Mission;
             string[] actionSheetBtns = { "수정", "삭제" };
 
             string action = await MessageBoxService.ShowActionSheet("알람 옵션", "취소", null, actionSheetBtns);
 
-            await ClickMenuAction(action, mission);
+            await ClickMissionMenuAction(action, mission);
         }
 
-        private async Task ClickMenuAction(string action, Mission mission)
+        private async Task ClickMissionMenuAction(string action, Mission mission)
         {
             switch (action)
             {
@@ -121,6 +95,29 @@ namespace Five_Seconds.ViewModels
                     break;
                 case "삭제":
                     Service.DeleteMission(mission);
+                    break;
+            }
+        }
+
+        public async Task ShowMainMenu()
+        {
+            string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법" };
+
+            string action = await MessageBoxService.ShowActionSheet("메뉴", "취소", null, actionSheetBtns);
+
+            await ClickMenuAction(action);
+        }
+
+        private async Task ClickMenuAction(string action)
+        {
+            switch (action)
+            {
+                case "5초의 법칙이란":
+                    await Navigation.PushAsync(new AboutPage());
+                    break;
+                case "5초의 알람 간단 사용법":
+                    var welcomePage = AppIntro.CreateAppIntro();
+                    await Navigation.PushModalAsync(welcomePage);
                     break;
             }
         }

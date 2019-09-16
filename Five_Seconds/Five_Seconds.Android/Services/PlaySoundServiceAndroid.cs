@@ -73,6 +73,18 @@ namespace Five_Seconds.Droid.Services
             _assetFileDescriptor = Application.Context.Assets.OpenFd("rocket_launch.mp3");
             _mediaPlayer.SetDataSource(_assetFileDescriptor.FileDescriptor, _assetFileDescriptor.StartOffset, _assetFileDescriptor.Length);
 
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+                _mediaPlayer.SetAudioAttributes(new AudioAttributes.Builder()
+                    .SetUsage(AudioUsageKind.Alarm)
+                    .SetContentType(AudioContentType.Sonification)
+                    .Build());
+            }
+            else
+            {
+                _mediaPlayer.SetAudioStreamType(Stream.Alarm);
+            }
+
             _mediaPlayer.Looping = false;
             _mediaPlayer.Prepare();
             _mediaPlayer.Start();

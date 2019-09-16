@@ -89,6 +89,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
+                App.Service.SendChangeMissionsMessage();
                 var AlarmNotification = new AlarmNotificationAndroid();
                 AlarmNotification.UpdateNotification();
             }

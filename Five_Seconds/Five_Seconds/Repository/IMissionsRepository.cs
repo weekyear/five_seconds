@@ -53,7 +53,6 @@ namespace Five_Seconds.Repository
         void DeleteAllRecords();
 
         // NextAlarmId
-        int GetNextAlarmId();
 
         Alarm GetNextAlarm();
     }

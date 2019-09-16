@@ -148,36 +148,29 @@ namespace Five_Seconds.Repository
             ItemDatabase.DeleteAllObjects<Record>();
         }
 
-        public int GetNextAlarmId()
+        public Alarm GetNextAlarm()
         {
             DateTime min = DateTime.MaxValue;
-            int id = 0;
             var listMission = App.Service.Missions;
 
-            if (listMission.Count == 0) return 0;
+            if (listMission.Count == 0) return null;
+
+            var nextAlarm = listMission[0].Alarm;
 
             for (int i = 0; i < listMission.Count; i++)
             {
+                var alarmNextTime = listMission[i].Alarm.NextAlarmTime;
                 if (listMission[i].IsActive)
                 {
-                    if (min.Subtract(listMission[i].Alarm.NextAlarmTime).TotalMilliseconds > 0)
+                    if (min.Subtract(alarmNextTime).TotalMilliseconds > 0)
                     {
-                        min = listMission[i].Alarm.NextAlarmTime;
-                        id = listMission[i].Alarm.Id;
+                        min = alarmNextTime;
+                        nextAlarm = listMission[i].Alarm;
                     }
                 }
             }
 
-            return id;
-        }
-
-        public Alarm GetNextAlarm()
-        {
-            var nextAlarmId = GetNextAlarmId();
-
-            if (nextAlarmId == 0) return null;
-
-            return GetAlarm(nextAlarmId);
+            return nextAlarm;
         }
     }
 }

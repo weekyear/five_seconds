@@ -118,7 +118,7 @@ namespace Five_Seconds.Services
                 }
             }
 
-            SendMessage("delete");
+            SendChangeMissionsMessage();
             DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
@@ -137,7 +137,7 @@ namespace Five_Seconds.Services
             mission.AlarmId = Repository.SaveAlarm(mission.Alarm);
             Repository.SaveMission(mission);
             AddOrModifyMissionToMissions(mission);
-            SendMessage("save");
+            SendChangeMissionsMessage();
             return mission.Id;
         }
 
@@ -162,10 +162,9 @@ namespace Five_Seconds.Services
             }
         }
 
-        private void SendMessage(string type)
+        public void SendChangeMissionsMessage()
         {
-            var messageType = type;
-            MessagingCenter.Send(this, messageType);
+            MessagingCenter.Send(this, "changeMissions");
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Five_Seconds.Views
 
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
         {
-            viewModel.ShowMenuCommand.Execute(e.Item);
+            viewModel.ShowMissionMenuCommand.Execute(e.Item);
         }
 
         private void MissionsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)

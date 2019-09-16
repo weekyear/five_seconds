@@ -13,5 +13,6 @@ namespace Five_Seconds.Services
         int SaveMission(Mission mission);
         int SaveMissionAtLocal(Mission mission);
         void DeleteAllMissions();
+        void SendChangeMissionsMessage();
     }
 }
