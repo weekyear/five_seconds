@@ -25,16 +25,16 @@
     </ContentPage.ToolbarItems>
 
     <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid Margin="10, 10, 10, 0" HorizontalOptions="CenterAndExpand">
+        <Grid Margin="10, 20, 10, 10" HorizontalOptions="CenterAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75*" />
-                <ColumnDefinition Width="12*" />
-                <ColumnDefinition Width="13*" />
+                <ColumnDefinition Width="80*" />
+                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="10*" />
             </Grid.ColumnDefinitions>
             <Label Grid.ColumnSpan="3" 
                    Text="5초의 알람"
@@ -44,22 +44,22 @@
                    Text="{Binding NextAlarmString}"
                    FontAttributes="Bold"
                    FontSize="25"
-                   Margin="0, 0, 0, 10"
+                   Margin="0, 0, 0, 20"
                    HorizontalOptions="CenterAndExpand"/>
             <ImageButton Grid.Row="2" Grid.Column="0"
-                         Source="ic_count_five_blue.png"
+                         Source="ic_five_seconds_mini.png"
                          BackgroundColor="Transparent"
                          HorizontalOptions="StartAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowCountDownCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="1"
-                         Source="ic_plus_blue.png"
+                         Source="ic_plus.png"
                          BackgroundColor="Transparent"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowAddMissionCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="2"
-                         Source="ic_three_dots_blue.png"
+                         Source="ic_menu.png"
                          BackgroundColor="Transparent"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"

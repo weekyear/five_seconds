@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Android.Content.Res;
 using Android.Media;
+using Android.OS;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
@@ -42,6 +43,18 @@ namespace Five_Seconds.Droid.Services
                 string[] split = alarmTone.Path.Split(':');
                 alarmTonePath = split[1];
                 _mediaPlayer.SetDataSource(alarmTonePath);
+            }
+
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+            {
+                _mediaPlayer.SetAudioAttributes(new AudioAttributes.Builder()
+                    .SetUsage(AudioUsageKind.Alarm)
+                    .SetContentType(AudioContentType.Sonification)
+                    .Build());
+            }
+            else
+            {
+                _mediaPlayer.SetAudioStreamType(Stream.Alarm);
             }
 
             var maxVolume = 10;
