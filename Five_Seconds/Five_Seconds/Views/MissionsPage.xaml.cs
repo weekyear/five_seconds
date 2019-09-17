@@ -16,8 +16,6 @@ namespace Five_Seconds.Views
     {
         MissionsViewModel viewModel;
 
-        public static bool IsInitFinished;
-
         public MissionsPage()
         {
             InitializeComponent();
@@ -25,8 +23,6 @@ namespace Five_Seconds.Views
             viewModel = new MissionsViewModel(Navigation, new MessageBoxService());
 
             BindingContext = viewModel;
-
-            IsInitFinished = true;
         }
 
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)

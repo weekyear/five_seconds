@@ -38,19 +38,39 @@ namespace Five_Seconds.Models
         //    }
         //}
 
-        public bool IsActive { get; set; } = true;
+        public bool IsActive { get; set; }
 
-        //public void OnIsActiveChanged()
-        //{
-        //    if (IsActive)
-        //    {
-        //        var IsInit = MissionsPage.IsInitFinished;
-        //    }
-        //    else
-        //    {
-        //        var IsInit = MissionsPage.IsInitFinished;
-        //    }
-        //}
+        public void OnIsActiveChanged()
+        {
+            if (App.IsInitFinished)
+            {
+                if (!DaysOfWeek.GetHasADayBeenSelected(Alarm.Days) && IsActive && Alarm.TimeOffset.Subtract(DateTimeOffset.Now).Ticks < 0)
+                {
+                    if (Alarm.Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+                    {
+                        Alarm.Date = DateTime.Now.Date.AddDays(1);
+                    }
+                    else
+                    {
+                        Alarm.Date = DateTime.Now.Date;
+                    }
+
+                    App.Service.SaveMission(this);
+                }
+                else
+                {
+                    App.Service.SaveMissionAtLocal(this);
+                }
+
+                if (IsActive)
+                {
+                    var diffString = CreateDateString.CreateTimeRemainingString(Alarm.NextAlarmTime);
+                    DependencyService.Get<IToastService>().Show(diffString);
+                }
+
+                //DependencyService.Get<IAlarmNotification>().UpdateNotification();
+            }
+        }
 
         [OneToMany]
         public List<Record> Records { get; set; } = new List<Record>();

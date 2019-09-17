@@ -19,6 +19,7 @@ namespace Five_Seconds
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
         private bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
 
+        public static bool IsInitFinished;
         public App()
         {
             AdMaiora.RealXaml.Client.AppManager.Init(this);
@@ -40,6 +41,7 @@ namespace Five_Seconds
                 Preferences.Set(nameof(isNotFirst), true);
             }
 
+            IsInitFinished = true;
         }
 
         protected override void OnStart()
