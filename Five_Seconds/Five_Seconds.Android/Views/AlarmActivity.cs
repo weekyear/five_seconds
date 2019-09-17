@@ -77,8 +77,8 @@ namespace Five_Seconds.Droid
             }
 
             App.Service.SendChangeMissionsMessage();
-            var AlarmNotification = new AlarmNotificationAndroid();
-            AlarmNotification.UpdateNotification();
+            //var AlarmNotification = new AlarmNotificationAndroid();
+            //AlarmNotification.UpdateNotification();
         }
 
         private void SetControls(Mission mission)
