@@ -38,7 +38,7 @@ namespace Five_Seconds.Models
         //    }
         //}
 
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public void OnIsActiveChanged()
         {
@@ -67,8 +67,6 @@ namespace Five_Seconds.Models
                     var diffString = CreateDateString.CreateTimeRemainingString(Alarm.NextAlarmTime);
                     DependencyService.Get<IToastService>().Show(diffString);
                 }
-
-                //DependencyService.Get<IAlarmNotification>().UpdateNotification();
             }
         }
 

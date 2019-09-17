@@ -119,7 +119,7 @@ namespace Five_Seconds.Services
             }
 
             SendChangeMissionsMessage();
-            DependencyService.Get<IAlarmNotification>().UpdateNotification();
+            //DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
 
@@ -127,7 +127,7 @@ namespace Five_Seconds.Services
         {
             var id = SaveMissionAtLocal(mission);
             alarmSetter.SetAlarm(mission);
-            DependencyService.Get<IAlarmNotification>().UpdateNotification();
+            //DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
 
