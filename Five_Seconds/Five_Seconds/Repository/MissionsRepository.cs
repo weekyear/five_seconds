@@ -155,13 +155,14 @@ namespace Five_Seconds.Repository
 
             if (listMission.Count == 0) return null;
 
-            var nextAlarm = listMission[0].Alarm;
+            var nextAlarm = new Alarm() { Date = DateTime.MaxValue.Date };
 
             for (int i = 0; i < listMission.Count; i++)
             {
-                var alarmNextTime = listMission[i].Alarm.NextAlarmTime;
                 if (listMission[i].IsActive)
                 {
+                    var alarmNextTime = listMission[i].Alarm.NextAlarmTime;
+
                     if (min.Subtract(alarmNextTime).TotalMilliseconds > 0)
                     {
                         min = alarmNextTime;
@@ -170,6 +171,10 @@ namespace Five_Seconds.Repository
                 }
             }
 
+            if (nextAlarm.Date == DateTime.MaxValue.Date)
+            {
+                return null;
+            }
             return nextAlarm;
         }
     }

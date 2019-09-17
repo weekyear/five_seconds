@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Five_Seconds.Services
 {
-    public interface ToastService
+    public interface IToastService
     {
         void Show(string message);
     }

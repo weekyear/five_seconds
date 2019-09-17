@@ -5,6 +5,7 @@ using Five_Seconds.CustomControls;
 using Five_Seconds.Models;
 using System;
 using System.Runtime.CompilerServices;
+using Five_Seconds.Helpers;
 
 namespace Five_Seconds.Views
 {
@@ -15,6 +16,8 @@ namespace Five_Seconds.Views
     {
         MissionsViewModel viewModel;
 
+        public static bool IsInitFinished;
+
         public MissionsPage()
         {
             InitializeComponent();
@@ -22,6 +25,8 @@ namespace Five_Seconds.Views
             viewModel = new MissionsViewModel(Navigation, new MessageBoxService());
 
             BindingContext = viewModel;
+
+            IsInitFinished = true;
         }
 
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
@@ -35,15 +40,6 @@ namespace Five_Seconds.Views
             {
                 ((ListView)sender).SelectedItem = null;
             }
-        }
-
-        private void Switch_Toggled(object sender, ToggledEventArgs e)
-        {
-            var _switch = sender as Switch;
-            var mission = _switch.BindingContext as Mission;
-
-            App.Service.SaveMissionAtLocal(mission);
-            DependencyService.Get<IAlarmNotification>().UpdateNotification();
         }
     }
 }

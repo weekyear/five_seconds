@@ -41,47 +41,23 @@ namespace Five_Seconds.Models
         {
         }
 
+        public DaysOfWeek(DaysOfWeek original)
+        {
+            Id = original.Id;
+            Sunday = original.Sunday;
+            Monday = original.Monday;
+            Tuesday = original.Tuesday;
+            Wednesday = original.Wednesday;
+            Thursday = original.Thursday;
+            Friday = original.Friday;
+            Saturday = original.Saturday;
+        }
+
 
         public static bool GetHasADayBeenSelected(DaysOfWeek days)
         {
             if (days == null) return false;
             return days.AllDays.Contains(true);
         }
-
-        //public override bool Equals(object obj)
-        //{
-        //    if (obj is DayOfWeek)
-        //    {
-        //        //cast enum to int (sunday = 0, Saturday = 6)
-        //        var dayOfWeek = (int)obj;
-        //        if (dayOfWeek == 0)
-        //        {
-        //            if (Sunday)
-        //                return true;
-        //            else
-        //                return false;
-        //        }
-        //        else
-        //        {
-        //            var day = AllDays[dayOfWeek - 1];
-        //            if (day)
-        //                return true;
-        //            else
-        //                return false;
-        //        }
-        //    }
-
-        //    if (obj is DaysOfWeek)
-        //    {
-        //        var daysOfWeek = (DaysOfWeek)obj;
-        //        if (this.AllDays == daysOfWeek.AllDays)
-        //        {
-        //            return true;
-        //        }
-        //        return false;
-        //    }
-
-        //    return false;
-        //}
     }
 }

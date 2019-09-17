@@ -33,7 +33,20 @@ namespace Five_Seconds.Models
         public int DaysId { get; set; }
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
-        public bool IsToday { get; set; } = true;
+        public bool IsToday
+        {
+            get
+            {
+                if (Date.Subtract(DateTime.Now.Date).Days == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         public DateTime Date
         {
@@ -57,11 +70,6 @@ namespace Five_Seconds.Models
         {
             var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, Time.Seconds);
 
-            if (date.Date == DateTime.Now.Date)
-            {
-                IsToday = true;
-            }
-
             return new DateTimeOffset(dateTime);
         }
 
@@ -80,9 +88,15 @@ namespace Five_Seconds.Models
 
         public Alarm(Alarm original)
         {
-            TimeOffset = original.TimeOffset;
+            Id = original.Id;
+            IsAlarmOn = original.IsAlarmOn;
+            Volume = original.Volume;
             IsVibrateOn = original.IsVibrateOn;
-            Days = original.Days;
+            IsCountOn = original.IsCountOn;
+            TimeOffset = original.TimeOffset;
+            
+            Days = new DaysOfWeek(original.Days);
+            DaysId = original.DaysId;
             Tone = original.Tone;
         }
     }

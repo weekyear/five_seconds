@@ -10,7 +10,7 @@ using UIKit;
 [assembly: Xamarin.Forms.Dependency(typeof(ToastServiceIos))]
 namespace Five_Seconds.iOS.Services
 {
-    public class ToastServiceIos : ToastService
+    public class ToastServiceIos : IToastService
     {
         const double LONG_DELAY = 3.5;
 

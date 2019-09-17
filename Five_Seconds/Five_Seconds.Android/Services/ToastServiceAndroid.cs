@@ -6,7 +6,7 @@ using Five_Seconds.Services;
 [assembly: Xamarin.Forms.Dependency(typeof(ToastServiceAndroid))]
 namespace Five_Seconds.Droid.Services
 {
-    public class ToastServiceAndroid : ToastService
+    public class ToastServiceAndroid : IToastService
     {
         public void Show(string message)
         {

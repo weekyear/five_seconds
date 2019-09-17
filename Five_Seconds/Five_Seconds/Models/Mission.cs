@@ -1,4 +1,6 @@
-﻿using Five_Seconds.Services;
+﻿using Five_Seconds.Helpers;
+using Five_Seconds.Services;
+using Five_Seconds.Views;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
@@ -17,20 +19,45 @@ namespace Five_Seconds.Models
 
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
-        public int AlarmId { get; set; }
 
         public string Name { get; set; }
         public double Percentage { get; set; }
 
-        public bool IsActive { get; set; }
-        [Ignore]
-        private bool IsInitiated { get; set; }
+        //private bool isActive = true;
+        //public bool IsActive
+        //{
+        //    get
+        //    {
+        //        return isActive;
+        //    }
+        //    set
+        //    {
+        //        if (isActive == value) return;
+        //        isActive = value;
+        //        App.Service.SaveMissionAtLocal(this);
+        //    }
+        //}
+
+        public bool IsActive { get; set; } = true;
+
+        //public void OnIsActiveChanged()
+        //{
+        //    if (IsActive)
+        //    {
+        //        var IsInit = MissionsPage.IsInitFinished;
+        //    }
+        //    else
+        //    {
+        //        var IsInit = MissionsPage.IsInitFinished;
+        //    }
+        //}
 
         [OneToMany]
         public List<Record> Records { get; set; } = new List<Record>();
 
         [OneToOne]
         public Alarm Alarm { get; set; } = new Alarm();
+        public int AlarmId { get; set; }
 
         public Mission() { }
 
@@ -38,9 +65,10 @@ namespace Five_Seconds.Models
         {
             Id = original.Id;
             Name = original.Name;
-            Alarm = original.Alarm;
             Percentage = original.Percentage;
             IsActive = original.IsActive;
+            Alarm = new Alarm(original.Alarm);
+            AlarmId = original.AlarmId;
         }
     }
 }

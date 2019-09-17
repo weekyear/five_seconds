@@ -55,8 +55,7 @@
                                     HeightRequest="30" WidthRequest="30"/>
                             <DatePicker x:Name="datePicker" TextColor="Transparent" 
                                         WidthRequest="1" HeightRequest="1" 
-                                        Date="{Binding Date}"
-                                        DateSelected="DatePicker_DateSelected"/>
+                                        Date="{Binding Date}"/>
                         </StackLayout>
                         <ScrollView Orientation="Horizontal">
                             <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>

@@ -37,12 +37,11 @@ namespace Five_Seconds.ViewModels
             MessagingCenter.Subscribe<DaysOfWeekSelectionView>(this, "dayOfWeek_Clicked", (sender) =>
             {
                 Date = SetMinimumDate();
-                Alarm.IsToday = true;
                 OnPropertyChanged(nameof(DateString));
             });
         }
 
-        private DateTime SetMinimumDate()
+        public DateTime SetMinimumDate()
         {
             if (Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
             {
@@ -67,6 +66,7 @@ namespace Five_Seconds.ViewModels
         public Command ShowSettingToneCommand { get; set; }
 
         // Property
+
         public Mission Mission
         {
             get; set;
@@ -200,19 +200,19 @@ namespace Five_Seconds.ViewModels
         {
             await Navigation.PopAsync(true);
         }
+
         private async Task Save()
         {
             if (string.IsNullOrEmpty(Name))
             {
                 await Application.Current.MainPage.DisplayAlert("", "미션 이름을 깜빡하셨어요!", "확인");
             }
-            else if (CalculateNextAlarmTime.NextAlarmTime(Alarm).Subtract(DateTime.Now).Ticks < 0)
+            else if (Alarm.TimeOffset.Subtract(DateTime.Now).Ticks < 0)
             {
                 await Application.Current.MainPage.DisplayAlert("", "이미 지난 시간으로 설정하셨어요!", "확인");
             }
             else
             {
-                Mission.IsActive = true;
                 Service.SaveMission(Mission);
                 await ClosePopup();
             }

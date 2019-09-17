@@ -3,21 +3,15 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Content.Res;
-using Android.Media;
 using Android.OS;
 using Android.Speech;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Five_Seconds.Droid;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
-using Five_Seconds.Repository;
 using Five_Seconds.Services;
-using Five_Seconds.ViewModels;
 using Plugin.CurrentActivity;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
 
@@ -42,7 +36,6 @@ namespace Five_Seconds.Droid
 
         public AlarmActivity()
         {
-            Log.Debug(AlarmSetterAndroid.AlarmTag, "Constructor");
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -63,14 +56,9 @@ namespace Five_Seconds.Droid
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
 
-
-            AlarmController.SetNextAlarm(id);
-
-            var mission = AlarmController.AlarmMissionNow;
-            Console.WriteLine(mission.Name);
+            var mission = AlarmReceiver.mission;
 
             alarm = mission.Alarm;
-            Console.WriteLine(alarm.Time);
 
             SetMediaPlayer(alarm);
             SetVibrator(alarm);
@@ -82,17 +70,15 @@ namespace Five_Seconds.Droid
 
             if (bundle == null) return;
 
+            if (!DaysOfWeek.GetHasADayBeenSelected(mission.Alarm.Days))
+            {
+                mission.IsActive = false;
+                App.Service.SaveMissionAtLocal(mission);
+            }
 
-            if (!mission.IsActive)
-            {
-                App.Service.DeleteMission(mission);
-            }
-            else
-            {
-                App.Service.SendChangeMissionsMessage();
-                var AlarmNotification = new AlarmNotificationAndroid();
-                AlarmNotification.UpdateNotification();
-            }
+            App.Service.SendChangeMissionsMessage();
+            var AlarmNotification = new AlarmNotificationAndroid();
+            AlarmNotification.UpdateNotification();
         }
 
         private void SetControls(Mission mission)
@@ -165,7 +151,10 @@ namespace Five_Seconds.Droid
 
             HideAllViewExceptForCountText();
 
-            _soundService.PlayCountAudio();
+            if (alarm.IsCountOn)
+            {
+                _soundService.PlayCountAudio();
+            }
 
             SetCountDown();
 

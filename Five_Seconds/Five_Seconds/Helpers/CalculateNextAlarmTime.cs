@@ -25,7 +25,14 @@ namespace Five_Seconds.Helpers
             }
             else
             {
-                return alarm.Date;
+                if (alarm.Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0 && alarm.Date == DateTime.Now.Date)
+                {
+                    return alarm.Date.AddDays(1);
+                }
+                else
+                {
+                    return alarm.Date;
+                }
             }
         }
 
