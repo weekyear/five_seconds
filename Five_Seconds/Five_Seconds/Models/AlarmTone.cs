@@ -12,7 +12,7 @@ namespace Five_Seconds.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
-        public bool IsCustomTone { get; set; }
+        public bool IsCustomTone { get; set; } = false;
 
         public bool IsPlaying { get; set; }
 

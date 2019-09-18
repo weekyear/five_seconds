@@ -23,21 +23,6 @@ namespace Five_Seconds.Models
         public string Name { get; set; }
         public double Percentage { get; set; }
 
-        //private bool isActive = true;
-        //public bool IsActive
-        //{
-        //    get
-        //    {
-        //        return isActive;
-        //    }
-        //    set
-        //    {
-        //        if (isActive == value) return;
-        //        isActive = value;
-        //        App.Service.SaveMissionAtLocal(this);
-        //    }
-        //}
-
         public bool IsActive { get; set; } = true;
 
         public void OnIsActiveChanged()
