@@ -11,53 +11,40 @@ namespace Five_Seconds.Droid.Services
     [BroadcastReceiver]
     public class AlarmReceiver : BroadcastReceiver
     {
-        public static Mission mission;
+        private int id;
+        private string name;
+        private bool isAlarmOn;
+        private bool isVibrateOn;
+        private bool isCountOn;
+        private bool isRepeating;
+        private string toneName;
+        private int alarmVolume;
         public override void OnReceive(Context context, Intent intent)
         {
-            Console.WriteLine("OnReceive_AlarmReceiver");
-            var id = intent.GetIntExtra("id", 0);
-            var deviceStorage = new DeviceStorageAndroid();
-            var itemDatabase = new ItemDatabaseGeneric(new SQLiteConnection(deviceStorage.GetFilePath("MissionsSQLite.db3")));
-            var missionsRepo = new MissionsRepository(itemDatabase);
+            id = intent.GetIntExtra("id", 0);
+            name = intent.GetStringExtra("name");
+            isAlarmOn = intent.GetBooleanExtra("isAlarmOn", false);
+            isVibrateOn = intent.GetBooleanExtra("isVibrateOn", false);
+            isCountOn = intent.GetBooleanExtra("isCountOn", false);
+            isRepeating = intent.GetBooleanExtra("isRepeating", false);
+            toneName = intent.GetStringExtra("toneName");
+            alarmVolume = intent.GetIntExtra("alarmVolume", 0);
 
-            Console.WriteLine("After CreateDB_AlarmReceiver");
-            Console.WriteLine($"deviceStorage is Null ? : {deviceStorage == null}");
-            Console.WriteLine($"itemDatabase is Null ? : {itemDatabase == null}");
-            Console.WriteLine($"{missionsRepo}");
-            Console.WriteLine($"missionsRepo is Null ? : {missionsRepo == null}");
-
-            if (missionsRepo != null)
-            {
-                Console.WriteLine(id);
-                mission = missionsRepo.GetMission(id);
-                Console.WriteLine(mission.AlarmId);
-                mission.Alarm = missionsRepo.GetAlarm(mission.AlarmId);
-                Console.WriteLine(mission.Alarm.DaysId);
-                mission.Alarm.Days = missionsRepo.GetDaysOfWeek(mission.Alarm.DaysId);
-
-                Console.WriteLine("After FindMission_AlarmReceiver");
-            }
-            else
-            {
-
-                Console.WriteLine("return");
-                return;
-            }
-
-            if (mission.IsActive)
-            {
-                AlarmController.SetNextAlarm(mission);
-                Console.WriteLine("After SetNextAlarm_AlarmReceiver");
-                StartAlarmActivity(context, id);
-
-                Console.WriteLine("After StartAlarmActivity_AlarmReceiver");
-            }
+            StartAlarmActivity(context);
         }
 
-        private void StartAlarmActivity(Context context, int id)
+        private void StartAlarmActivity(Context context)
         {
             var disIntent = new Intent(context, typeof(AlarmActivity));
             disIntent.PutExtra("id", id);
+            disIntent.PutExtra("name", name);
+            disIntent.PutExtra("isAlarmOn", isAlarmOn);
+            disIntent.PutExtra("isVibrateOn", isVibrateOn);
+            disIntent.PutExtra("isCountOn", isCountOn);
+            disIntent.PutExtra("isRepeating", isRepeating);
+            disIntent.PutExtra("toneName", toneName);
+            disIntent.PutExtra("alarmVolume", alarmVolume);
+
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);
         }

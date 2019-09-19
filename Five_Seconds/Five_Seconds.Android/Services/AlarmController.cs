@@ -61,6 +61,14 @@ namespace Five_Seconds.Droid.Services
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", mission.Id);
+            _alarmIntent.PutExtra("name", mission.Name);
+            _alarmIntent.PutExtra("isAlarmOn", mission.Alarm.IsAlarmOn);
+            _alarmIntent.PutExtra("isVibrateOn", mission.Alarm.IsVibrateOn);
+            _alarmIntent.PutExtra("isCountOn", mission.Alarm.IsCountOn);
+            _alarmIntent.PutExtra("isRepeating", DaysOfWeek.GetHasADayBeenSelected(mission.Alarm.Days));
+            _alarmIntent.PutExtra("toneName", mission.Alarm.Tone);
+            _alarmIntent.PutExtra("alarmVolume", mission.Alarm.Volume);
+
             var pendingIntent = PendingIntent.GetBroadcast(Application.Context, mission.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
 

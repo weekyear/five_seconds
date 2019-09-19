@@ -19,20 +19,6 @@ namespace Five_Seconds.Repository
             Console.WriteLine("Constructor_ItemDatabaseGeneric");
             this.connection = connection;
             Console.WriteLine($"connection is null? : {connection == null}");
-            Console.WriteLine("After_DBConnect");
-            connection.CreateTable<Mission>();
-            connection.CreateTable<Alarm>();
-            connection.CreateTable<Record>();
-            connection.CreateTable<DaysOfWeek>();
-            connection.CreateTable<AlarmTone>();
-            Console.WriteLine("After_CreateTable");
-        }
-
-        public ItemDatabaseGeneric(string path)
-        {
-            Console.WriteLine("Constructor_ItemDatabaseGeneric");
-            connection = new SQLiteConnection(path);
-            Console.WriteLine($"connection is null? : {connection == null}");
             Console.WriteLine($"connection is null? : {connection.DatabasePath}");
             Console.WriteLine("After_DBConnect");
             var resultMissions = connection.CreateTable<Mission>();

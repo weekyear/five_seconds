@@ -30,9 +30,14 @@ namespace Five_Seconds.Droid
         private EditText missionEditText;
         private CountDown countDown;
 
-        private Alarm alarm;
-
-        int id;
+        private int id;
+        private string name;
+        private string toneName;
+        private bool isAlarmOn;
+        private bool isVibrateOn;
+        private bool isCountOn;
+        private bool isRepeating;
+        private int alarmVolume;
 
         public AlarmActivity()
         {
@@ -44,6 +49,13 @@ namespace Five_Seconds.Droid
 
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
+            name = (string)bundle.Get("name");
+            toneName = (string)bundle.Get("toneName");
+            isAlarmOn = (bool)bundle.Get("isAlarmOn");
+            isVibrateOn = (bool)bundle.Get("isVibrateOn");
+            isCountOn = (bool)bundle.Get("isCountOn");
+            isRepeating = (bool)bundle.Get("isRepeating");
+            alarmVolume = (int)bundle.Get("alarmVolume");
 
             Console.WriteLine("OnCreate_AlarmActivity");
 
@@ -58,34 +70,41 @@ namespace Five_Seconds.Droid
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
 
-            var mission = AlarmReceiver.mission;
-
-            alarm = mission.Alarm;
-
-            SetMediaPlayer(alarm);
-            SetVibrator(alarm);
+            SetMediaPlayer();
+            SetVibrator();
 
             SetContentView(Resource.Layout.AlarmActivity);
-            SetControls(mission);
+            SetControls();
 
             AddWindowManagerFlags();
 
-            if (bundle == null) return;
+            Mission mission;
 
-            if (!DaysOfWeek.GetHasADayBeenSelected(mission.Alarm.Days))
+            var missionsRepo = App.MissionsRepo;
+
+            if (missionsRepo != null)
             {
-                mission.IsActive = false;
-                App.Service.SaveMissionAtLocal(mission);
+                mission = App.MissionsRepo.GetMission(id);
+                mission.Alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
+                mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(mission.Alarm.DaysId);
+
+                if (!isRepeating)
+                {
+                    mission.IsActive = false;
+                    App.Service.SaveMissionAtLocal(mission);
+                }
+                else
+                {
+                    AlarmController.SetNextAlarm(mission);
+                }
+
+                App.Service.SendChangeMissionsMessage();
             }
 
-            App.Service.SendChangeMissionsMessage();
-
-            Console.WriteLine("After OnCreate_AlarmActivity");
-            //var AlarmNotification = new AlarmNotificationAndroid();
-            //AlarmNotification.UpdateNotification();
+            if (bundle == null) return;
         }
 
-        private void SetControls(Mission mission)
+        private void SetControls()
         {
             missionLayout = FindViewById<LinearLayout>(Resource.Id.missionLayout);
             tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
@@ -95,7 +114,7 @@ namespace Five_Seconds.Droid
 
             tellmeButton.Click += TellmeButton_Click;
             countTextView.Text = "5.00 초";
-            missionTextView.Text = mission.Name;
+            missionTextView.Text = name;
 
             missionEditText.Enabled = false;
         }
@@ -141,7 +160,9 @@ namespace Five_Seconds.Droid
                 var toastService = new ToastServiceAndroid();
 
                 toastService.Show("이제 5초를 셉니다!");
+
                 ShowCountActivity();
+
             }
             else
             {
@@ -155,13 +176,12 @@ namespace Five_Seconds.Droid
 
             HideAllViewExceptForCountText();
 
-            if (alarm.IsCountOn)
+            if (isCountOn)
             {
                 _soundService.PlayCountAudio();
             }
 
             SetCountDown();
-
         }
 
         async Task<string> WaitForSpeechToText()
@@ -183,18 +203,18 @@ namespace Five_Seconds.Droid
             alert.Show();
         }
 
-        private void SetMediaPlayer(Alarm alarm)
+        private void SetMediaPlayer()
         {
-            if (alarm.IsAlarmOn)
+            if (isAlarmOn)
             {
-                AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == alarm.Tone);
-                _soundService.PlayAudio(alarmTone, true, alarm.Volume);
+                AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == toneName);
+                _soundService.PlayAudio(alarmTone, true, alarmVolume);
             }
         }
 
-        private void SetVibrator(Alarm alarm)
+        private void SetVibrator()
         {
-            if (alarm.IsVibrateOn)
+            if (isVibrateOn)
             {
                 _vibrator = Vibrator.FromContext(this);
                 long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
