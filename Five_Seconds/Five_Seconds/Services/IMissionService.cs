@@ -14,5 +14,7 @@ namespace Five_Seconds.Services
         int SaveMissionAtLocal(Mission mission);
         void DeleteAllMissions();
         void SendChangeMissionsMessage();
+        ObservableCollection<Mission> GetAllMissions();
+        Alarm GetNextAlarm();
     }
 }

@@ -8,7 +8,9 @@ using Android.OS;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
+using Java.IO;
 using Application = Android.App.Application;
+using Environment = Android.OS.Environment;
 
 [assembly: Xamarin.Forms.Dependency(typeof(PlaySoundServiceAndroid))]
 namespace Five_Seconds.Droid.Services
@@ -30,19 +32,16 @@ namespace Five_Seconds.Droid.Services
         {
             StopAudio();
 
-            var isADefaultTone = AlarmTone.Tones.FirstOrDefault(x => x.Path == alarmTone.Path) != default(AlarmTone);
-
-            if (isADefaultTone)
+            if (!alarmTone.IsCustomTone)
             {
                 _assetFileDescriptor = Application.Context.Assets.OpenFd(alarmTone.Path);
                 _mediaPlayer.SetDataSource(_assetFileDescriptor.FileDescriptor, _assetFileDescriptor.StartOffset, _assetFileDescriptor.Length);
             }
             else
             {
-                string alarmTonePath;
-                string[] split = alarmTone.Path.Split(':');
-                alarmTonePath = split[1];
-                _mediaPlayer.SetDataSource(alarmTonePath);
+                FileInputStream fis = new FileInputStream(alarmTone.Path);
+                FileDescriptor fd = fis.FD;
+                _mediaPlayer.SetDataSource(fd);
             }
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)

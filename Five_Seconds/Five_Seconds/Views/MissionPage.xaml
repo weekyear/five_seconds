@@ -65,24 +65,36 @@
             </TableSection>
             <TableSection Title="알람 옵션" TextColor="DarkBlue">
                 <custom:TableViewCell AllowHighlight="False" Height="60">
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label Text="알람음" 
+                    <Grid HorizontalOptions="FillAndExpand"
+                          VerticalOptions="CenterAndExpand"
+                          Margin="10, 0, 10, 0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="알람음"
+                               WidthRequest="50"
                                FontSize="20"
                                VerticalOptions="CenterAndExpand"
                                Margin="10, 0"/>
-                        <custom:MusicSelectionButton 
-                            Text="{Binding Alarm.Tone}" 
-                            BackgroundColor="Transparent" 
-                            IsEnabled="{Binding Alarm.IsAlarmOn}"
-                            FontSize="20"
-                            TextColor="DarkBlue"
-                            HorizontalOptions="FillAndExpand"
-                            Command="{Binding ShowSettingToneCommand}"/>
-                        <Switch IsToggled="{Binding Alarm.IsAlarmOn}" 
-                                    HorizontalOptions="EndAndExpand"
-                                    OnColor="LightSteelBlue"
-                                    ThumbColor="SkyBlue"/>
-                    </StackLayout>
+                        <custom:MusicSelectionButton Grid.Column="1" 
+                                                     Text="{Binding Alarm.Tone}" 
+                                                     BackgroundColor="Transparent"
+                                                     IsEnabled="{Binding Alarm.IsAlarmOn}"
+                                                     FontSize="20"
+                                                     TextColor="DarkBlue"
+                                                     HorizontalOptions="FillAndExpand"
+                                                     Command="{Binding ShowSettingToneCommand}"/>
+                        <Switch Grid.Column="2" 
+                                IsToggled="{Binding Alarm.IsAlarmOn}" 
+                                HorizontalOptions="EndAndExpand"
+                                OnColor="LightSteelBlue"
+                                ThumbColor="SkyBlue"/>
+                    </Grid>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False" Height="60">
                     <StackLayout Orientation="Horizontal" Margin="10">

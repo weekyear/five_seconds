@@ -27,25 +27,31 @@ namespace Five_Seconds.Repository
             return ItemDatabase.DeleteObject<AlarmTone>(alarmTone.Id);
         }
 
-        public void SetDefaultTones()
-        {
-            var tones = AlarmTone.Tones;
-
-            foreach (AlarmTone tone in tones)
-            {
-                ItemDatabase.SaveObject(tone);
-            }
-        }
-
         public AlarmTone GetTone(int id)
         {
             return ItemDatabase.GetObject<AlarmTone>(id);
         }
 
-        //public List<Alarm> GetTodaysAlarms()
-        //{
-        //    var all = ItemDatabase.GetObjects<Alarm>() as List<Alarm>;
-        //    return all.Where(x => x.OccursToday == true).ToList();
-        //}
+        public List<AlarmTone> GetAllAlarmTones()
+        {
+            var defaultTones = new List<AlarmTone>()
+            {
+                new AlarmTone("Buzz", "buzz.mp3"),
+                new AlarmTone("Synth", "synth.mp3"),
+                new AlarmTone("Xylophone", "xylophone.mp3"),
+                new AlarmTone("Shooting Stars", "shooting_stars.mp3"),
+                new AlarmTone("Sixteen Bit", "sixteen_bit.mp3"),
+                new AlarmTone("Sci-fi", "sci_fi.mp3")
+            };
+
+            var allTones = GetAllTones();
+
+            foreach (var alarmTone in allTones)
+            {
+                defaultTones.Add(alarmTone);
+            }
+
+            return defaultTones;
+        }
     }
 }

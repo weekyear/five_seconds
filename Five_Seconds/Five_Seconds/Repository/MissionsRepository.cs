@@ -1,18 +1,19 @@
 ﻿using Five_Seconds.Models;
-using Five_Seconds.Repository;
-using Five_Seconds.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using Xamarin.Forms;
 
 namespace Five_Seconds.Repository
 {
     public class MissionsRepository : IMissionsRepository
     {
-        public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
+        public ItemDatabaseGeneric ItemDatabase { get; }
+
+        public MissionsRepository(ItemDatabaseGeneric itemDatabase)
+        {
+            //if (Device.RuntimePlatform == "Test") return;
+            Console.WriteLine("Constructor_MissionsRepository");
+            ItemDatabase = itemDatabase;
+        }
 
         public List<Mission> MissionsFromDB
         {
@@ -31,16 +32,21 @@ namespace Five_Seconds.Repository
             get { return GetAllRecords() as List<Record>; }
         }
 
-        public MissionsRepository()
-        {
-            if (Device.RuntimePlatform == "Test") return;
-        }
-
         // Mission
 
         public Mission GetMission(int id)
         {
-            return ItemDatabase.GetObject<Mission>(id);
+            Console.WriteLine("GetMission");
+            var mission = ItemDatabase.GetObject<Mission>(id);
+            if (mission != null)
+            {
+                Console.WriteLine(mission.Name);
+            }
+            else
+            {
+                Console.WriteLine("mission is null");
+            }
+            return mission;
         }
 
         public IEnumerable<Mission> GetFirstMissions()
@@ -146,36 +152,6 @@ namespace Five_Seconds.Repository
         public void DeleteAllRecords()
         {
             ItemDatabase.DeleteAllObjects<Record>();
-        }
-
-        public Alarm GetNextAlarm()
-        {
-            DateTime min = DateTime.MaxValue;
-            var listMission = App.Service.Missions;
-
-            if (listMission.Count == 0) return null;
-
-            var nextAlarm = new Alarm() { Date = DateTime.MaxValue.Date };
-
-            for (int i = 0; i < listMission.Count; i++)
-            {
-                if (listMission[i].IsActive)
-                {
-                    var alarmNextTime = listMission[i].Alarm.NextAlarmTime;
-
-                    if (min.Subtract(alarmNextTime).TotalMilliseconds > 0)
-                    {
-                        min = alarmNextTime;
-                        nextAlarm = listMission[i].Alarm;
-                    }
-                }
-            }
-
-            if (nextAlarm.Date == DateTime.MaxValue.Date)
-            {
-                return null;
-            }
-            return nextAlarm;
         }
     }
 }

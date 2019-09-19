@@ -16,8 +16,6 @@ namespace Five_Seconds.Services
 
         public static int FinalMissionId;
 
-        IAlarmSetter alarmSetter = DependencyService.Get<IAlarmSetter>();
-
         public MissionService(IMissionsRepository repository)
         {
             Repository = repository;
@@ -25,19 +23,25 @@ namespace Five_Seconds.Services
             Missions = GetAllMissions();
         }
 
-        private ObservableCollection<Mission> GetAllMissions()
+        public ObservableCollection<Mission> GetAllMissions()
         {
+            Console.WriteLine("GetAllMissions_MissionService");
             var alarms = AssignDaysToAlarms();
+            Console.WriteLine("After AssignDaysToAlarms_MissionService");
             var missions = AssignAlarmToMission(alarms);
+            Console.WriteLine("After AssignAlarmToMission_MissionService");
             missions = AssignRecordToMission(missions);
+            Console.WriteLine("After AssignRecordToMission_MissionService");
             return ConvertListToObservableCollection(missions);
         }
 
         private List<Alarm> AssignDaysToAlarms()
         {
-            var alarms = App.MissionsRepo.AlarmsFromDB;
+            Console.WriteLine("In AssignDaysToAlarms_MissionService");
+            var alarms = Repository.AlarmsFromDB;
 
-            foreach (var days in App.MissionsRepo.DaysOfWeeksFromDB)
+            Console.WriteLine("Get AlarmsFromDB_MissionService");
+            foreach (var days in Repository.DaysOfWeeksFromDB)
             {
                 for (int i = 0; i < alarms.Count; i++)
                 {
@@ -53,7 +57,7 @@ namespace Five_Seconds.Services
 
         private List<Mission> AssignAlarmToMission(List<Alarm> alarms)
         {
-            var missions = App.MissionsRepo.MissionsFromDB;
+            var missions = Repository.MissionsFromDB;
 
             foreach (var alarm in alarms)
             {
@@ -71,7 +75,7 @@ namespace Five_Seconds.Services
 
         private List<Mission> AssignRecordToMission(List<Mission> missions)
         {
-            var records = App.MissionsRepo.RecordFromDB;
+            var records = Repository.RecordFromDB;
 
             foreach (var record in records)
             {
@@ -104,7 +108,7 @@ namespace Five_Seconds.Services
 
         public int DeleteMission(Mission mission)
         {
-            alarmSetter.DeleteAlarm(mission.Id);
+            DependencyService.Get<IAlarmSetter>().DeleteAlarm(mission.Id);
             var id = Repository.DeleteMission(mission.Id);
             Repository.DeleteAlarm(mission.Id);
             Repository.DeleteDaysOfWeek(mission.Id);
@@ -126,7 +130,7 @@ namespace Five_Seconds.Services
         public int SaveMission(Mission mission)
         {
             var id = SaveMissionAtLocal(mission);
-            alarmSetter.SetAlarm(mission);
+            DependencyService.Get<IAlarmSetter>().SetAlarm(mission);
             //DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
@@ -160,6 +164,38 @@ namespace Five_Seconds.Services
             {
                 DeleteMission(mission);
             }
+        }
+
+
+
+        public Alarm GetNextAlarm()
+        {
+            DateTime min = DateTime.MaxValue;
+            var listMission = Missions;
+
+            if (listMission.Count == 0) return null;
+
+            var nextAlarm = new Alarm() { Date = DateTime.MaxValue.Date };
+
+            for (int i = 0; i < listMission.Count; i++)
+            {
+                if (listMission[i].IsActive)
+                {
+                    var alarmNextTime = listMission[i].Alarm.NextAlarmTime;
+
+                    if (min.Subtract(alarmNextTime).TotalMilliseconds > 0)
+                    {
+                        min = alarmNextTime;
+                        nextAlarm = listMission[i].Alarm;
+                    }
+                }
+            }
+
+            if (nextAlarm.Date == DateTime.MaxValue.Date)
+            {
+                return null;
+            }
+            return nextAlarm;
         }
 
         public void SendChangeMissionsMessage()

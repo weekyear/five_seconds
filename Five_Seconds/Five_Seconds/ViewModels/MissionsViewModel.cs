@@ -54,7 +54,7 @@ namespace Five_Seconds.ViewModels
 
         public string NextAlarmString
         {
-            get => CreateDateString.CreateNextDateTimeString(App.MissionsRepo.GetNextAlarm());
+            get => CreateDateString.CreateNextDateTimeString(App.Service.GetNextAlarm());
         }
 
         public async Task ShowAddMission()

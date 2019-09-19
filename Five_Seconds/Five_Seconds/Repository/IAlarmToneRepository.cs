@@ -11,10 +11,10 @@ namespace Five_Seconds.Repository
         ItemDatabaseGeneric ItemDatabase { get; }
 
         //Settings GetSettings();
-        void SetDefaultTones();
         IEnumerable<AlarmTone> GetAllTones();
         int AddTone(AlarmTone alarmTone);
         int DeleteTone(AlarmTone alarmTone);
         AlarmTone GetTone(int id);
+        List<AlarmTone> GetAllAlarmTones();
     }
 }

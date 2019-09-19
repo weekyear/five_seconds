@@ -38,20 +38,27 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="벨소리 추가" Command="{Binding AddToneCommand}"/>
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
             <StackLayout HorizontalOptions="FillAndExpand"
-                                 Margin="10">
+                         Margin="10">
                 <Label Text="벨소리 볼륨" VerticalOptions="CenterAndExpand"/>
-                <Slider x:Name="VolumeSlider" 
-                                WidthRequest="500"
-                                MinimumTrackColor="LightSkyBlue"
-                                MaximumTrackColor="LightSkyBlue"
-                                ThumbColor="DeepSkyBlue"
-                                Maximum="10" Minimum="1" 
-                                Margin="5"
-                                Value="{Binding Volume}"
-                                VerticalOptions="CenterAndExpand"/>
+                <StackLayout Orientation="Horizontal">
+                    <Slider x:Name="VolumeSlider"
+                            HorizontalOptions="FillAndExpand"
+                            MinimumTrackColor="LightSkyBlue"
+                            MaximumTrackColor="LightSkyBlue"
+                            ThumbColor="DeepSkyBlue"
+                            Maximum="10" Minimum="1" 
+                            Margin="5"
+                            Value="{Binding Volume}"
+                            VerticalOptions="CenterAndExpand"/>
+                </StackLayout>
+                
             </StackLayout>
             <ListView x:Name="ToneListView" 
 				  ItemTemplate="{StaticResource DefaultTemplate}"

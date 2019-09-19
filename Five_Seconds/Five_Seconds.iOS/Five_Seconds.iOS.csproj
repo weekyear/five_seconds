@@ -71,6 +71,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\DeviceStorageIos.cs" />
+    <Compile Include="Services\PlaySoundServiceIos.cs" />
     <Compile Include="Services\ToastServiceIos.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />

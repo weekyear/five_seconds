@@ -2,9 +2,8 @@
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -13,6 +12,7 @@ namespace Five_Seconds.ViewModels
     public class SettingToneViewModel : BaseViewModel
     {
         IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
+        IFileLocator _fileLocator = DependencyService.Get<IFileLocator>();
 
         public SettingToneViewModel(INavigation navigation, Mission mission) : base(navigation)
         {
@@ -26,12 +26,14 @@ namespace Five_Seconds.ViewModels
             ClickPlayCommand = new Command<AlarmTone>((a) => ClickPlay(a));
             PlayToneCommand = new Command<AlarmTone>((a) => PlayTone(a));
             StopToneCommand = new Command(() => StopTone());
+            AddToneCommand = new Command(() => AddTone());
         }
 
         public Command ToneSaveCommand { get; set; }
         public Command ClickPlayCommand { get; set; }
         public Command PlayToneCommand { get; set; }
         public Command StopToneCommand { get; set; }
+        public Command AddToneCommand { get; set; }
 
 
         public ObservableCollection<AlarmTone> AllAlarmTones { get; set; } = new ObservableCollection<AlarmTone>(AlarmTone.Tones);
@@ -81,11 +83,35 @@ namespace Five_Seconds.ViewModels
             _soundService.StopAudio();
         }
 
+        private void AddTone()
+        {
+            _fileLocator.FileChosen += ToneFileChosen;
+            _fileLocator.OpenFileLocator();
+        }
+
         private async Task ToneSave(AlarmTone tone)
         {
             Mission.Alarm.Tone = tone.Name;
             await ClosePopup();
         }
+
+        void ToneFileChosen(string path)
+        {
+            var filename = Path.GetFileNameWithoutExtension(path);
+
+            var newTone = new AlarmTone
+            {
+                Name = filename,
+                Path = path,
+                IsCustomTone = true
+            };
+            AllAlarmTones.Add(newTone);
+            AlarmTone.Tones.Add(newTone);
+            App.AlarmToneRepo.AddTone(newTone);
+
+            _fileLocator.FileChosen -= ToneFileChosen;
+        }
+
         private async Task ClosePopup()
         {
             StopTone();

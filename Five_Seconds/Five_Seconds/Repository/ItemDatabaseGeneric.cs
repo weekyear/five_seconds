@@ -12,30 +12,56 @@ namespace Five_Seconds.Repository
     public class ItemDatabaseGeneric
     {
         static object locker = new object();
+        SQLiteConnection connection;
 
-        SQLiteConnection database;
-
-        public ItemDatabaseGeneric()
+        public ItemDatabaseGeneric(SQLiteConnection connection)
         {
-            database = DependencyService.Get<IDatabase>().DBConnect();
-            database.CreateTable<Mission>();
-            database.CreateTable<Alarm>();
-            database.CreateTable<Record>();
-            database.CreateTable<DaysOfWeek>();
-            database.CreateTable<AlarmTone>();
+            Console.WriteLine("Constructor_ItemDatabaseGeneric");
+            this.connection = connection;
+            Console.WriteLine($"connection is null? : {connection == null}");
+            Console.WriteLine("After_DBConnect");
+            connection.CreateTable<Mission>();
+            connection.CreateTable<Alarm>();
+            connection.CreateTable<Record>();
+            connection.CreateTable<DaysOfWeek>();
+            connection.CreateTable<AlarmTone>();
+            Console.WriteLine("After_CreateTable");
         }
+
+        public ItemDatabaseGeneric(string path)
+        {
+            Console.WriteLine("Constructor_ItemDatabaseGeneric");
+            connection = new SQLiteConnection(path);
+            Console.WriteLine($"connection is null? : {connection == null}");
+            Console.WriteLine($"connection is null? : {connection.DatabasePath}");
+            Console.WriteLine("After_DBConnect");
+            var resultMissions = connection.CreateTable<Mission>();
+            Console.WriteLine($"Mission Table is null? : {resultMissions.ToString()}");
+            var resultAlarms = connection.CreateTable<Alarm>();
+            Console.WriteLine($"Alarm Table is null? : {resultAlarms.ToString()}");
+            var resultRecords = connection.CreateTable<Record>();
+            Console.WriteLine($"Record Table is null? : {resultRecords.ToString()}");
+            var resultDaysOfWeeks = connection.CreateTable<DaysOfWeek>();
+            Console.WriteLine($"DaysOfWeek Table is null? : {resultDaysOfWeeks.ToString()}");
+            var resultAlarmTones = connection.CreateTable<AlarmTone>();
+            Console.WriteLine($"AlarmTone Table is null? : {resultAlarmTones.ToString()}");
+
+            Console.WriteLine("After_CreateTable");
+        }
+
+
         public IEnumerable<T> GetObjects<T>() where T : IObject, new()
         {
             lock (locker)
             {
-                return (from i in database.Table<T>() select i).ToList();
+                return (from i in connection.Table<T>() select i).ToList();
             }
         }
         public IEnumerable<T> GetFirstObjects<T>() where T : IObject, new()
         {
             lock (locker)
             {
-                return database.Query<T>($"SELECT * FROM {nameof(T)} WHERE Name = 'First'");
+                return connection.Query<T>($"SELECT * FROM {nameof(T)} WHERE Name = 'First'");
             }
         }
 
@@ -43,7 +69,10 @@ namespace Five_Seconds.Repository
         {
             lock (locker)
             {
-                return database.Table<T>().FirstOrDefault(x => x.Id == id);
+                Console.WriteLine("GetObject");
+                var mission = connection.Table<T>().Where(x => x.Id == id).FirstOrDefault();
+                Console.WriteLine($"mission is null? : {mission == null}");
+                return mission;
             }
         }
         public int SaveObject<T>(T obj) where T : IObject
@@ -52,11 +81,11 @@ namespace Five_Seconds.Repository
             {
                 if (obj.Id != 0)
                 {
-                    database.Update(obj);
+                    connection.Update(obj);
                 }
                 else
                 {
-                    database.Insert(obj);
+                    connection.Insert(obj);
                 }
                 return obj.Id;
             }
@@ -65,15 +94,15 @@ namespace Five_Seconds.Repository
         {
             lock (locker)
             {
-                return database.Delete<T>(id);
+                return connection.Delete<T>(id);
             }
         }
         public void DeleteAllObjects<T>()
         {
             lock (locker)
             {
-                database.DropTable<T>();
-                database.CreateTable<T>();
+                connection.DropTable<T>();
+                connection.CreateTable<T>();
             }
         }
     }

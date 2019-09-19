@@ -16,7 +16,7 @@ namespace Five_Seconds
 {
     public partial class App : Application
     {
-        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric();
+        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(DependencyService.Get<IDatabase>().DBConnect());
         private bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
 
         public static bool IsInitFinished;
@@ -65,10 +65,13 @@ namespace Five_Seconds
         {
             get
             {
+                Console.WriteLine("Get MissionsRepo_App");
                 if (missionsRepo == null)
                 {
-                    missionsRepo = new MissionsRepository();
+                    Console.WriteLine("Get MissionsRepo_App 1");
+                    missionsRepo = new MissionsRepository(ItemDatabase);
                 }
+                Console.WriteLine("Get MissionsRepo_App 2");
                 return missionsRepo;
             }
         }
@@ -78,10 +81,14 @@ namespace Five_Seconds
         {
             get
             {
+                Console.WriteLine("Get Service_App");
                 if (service == null)
                 {
-                    service = new MissionService(App.MissionsRepo);
+                    Console.WriteLine("Get Service_App 1");
+                    service = new MissionService(MissionsRepo);
                 }
+
+                Console.WriteLine("Get Service_App 2");
                 return service;
             }
         }

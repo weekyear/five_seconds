@@ -45,6 +45,8 @@ namespace Five_Seconds.Droid
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
 
+            Console.WriteLine("OnCreate_AlarmActivity");
+
             if (id == -1)
             {
                 SetContentView(Resource.Layout.AlarmActivity);
@@ -77,6 +79,8 @@ namespace Five_Seconds.Droid
             }
 
             App.Service.SendChangeMissionsMessage();
+
+            Console.WriteLine("After OnCreate_AlarmActivity");
             //var AlarmNotification = new AlarmNotificationAndroid();
             //AlarmNotification.UpdateNotification();
         }

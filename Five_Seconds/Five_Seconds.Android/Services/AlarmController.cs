@@ -3,6 +3,9 @@ using Android.App;
 using Android.Content;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;
+using Five_Seconds.Repository;
+using Five_Seconds.Services;
+using SQLite;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -65,6 +68,22 @@ namespace Five_Seconds.Droid.Services
             PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, 0, showIntent, PendingIntentFlags.UpdateCurrent);
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+            Console.WriteLine(mission.Name + "is Set Alarmed");
+        }
+
+        public static void SetAllAlarmWhenRestart()
+        {
+            Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
+            var deviceStorage = new DeviceStorageAndroid();
+            var itemDatabase = new ItemDatabaseGeneric(new SQLiteConnection(deviceStorage.GetFilePath("MissionsSQLite.db3")));
+            var missionsRepo = new MissionsRepository(itemDatabase);
+            var service = new MissionService(missionsRepo);
+            var missions = service.GetAllMissions();
+
+            foreach (var mission in missions)
+            {
+                SetFirstAlarm(mission);
+            }
         }
     }
 }

@@ -213,6 +213,12 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
+                if (!Mission.IsActive)
+                {
+                    App.IsInitFinished = false;
+                    Mission.IsActive = true;
+                    App.IsInitFinished = true;
+                }
                 Service.SaveMission(Mission);
                 await ClosePopup();
             }

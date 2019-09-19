@@ -54,6 +54,5 @@ namespace Five_Seconds.Repository
 
         // NextAlarmId
 
-        Alarm GetNextAlarm();
     }
 }
