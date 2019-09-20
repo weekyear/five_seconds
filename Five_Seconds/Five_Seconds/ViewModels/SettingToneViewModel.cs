@@ -14,9 +14,9 @@ namespace Five_Seconds.ViewModels
         IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
         IFileLocator _fileLocator = DependencyService.Get<IFileLocator>();
 
-        public SettingToneViewModel(INavigation navigation, Mission mission) : base(navigation)
+        public SettingToneViewModel(INavigation navigation, Alarm alarm) : base(navigation)
         {
-            Mission = mission;
+            Alarm = alarm;
             ConstructCommand();
         }
 
@@ -38,18 +38,18 @@ namespace Five_Seconds.ViewModels
 
         public ObservableCollection<AlarmTone> AllAlarmTones { get; set; } = new ObservableCollection<AlarmTone>(AlarmTone.Tones);
 
-        public Mission Mission
+        public Alarm Alarm
         {
             get; set;
         }
 
         public int Volume
         {
-            get { return Mission.Alarm.Volume; }
+            get { return Alarm.Volume; }
             set
             {
-                if (Mission.Alarm.Volume == value) return;
-                Mission.Alarm.Volume = value;
+                if (Alarm.Volume == value) return;
+                Alarm.Volume = value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
@@ -75,7 +75,7 @@ namespace Five_Seconds.ViewModels
 
         private void PlayTone(AlarmTone tone)
         {
-            _soundService.PlayAudio(tone, true, Mission.Alarm.Volume);
+            _soundService.PlayAudio(tone, true, Alarm.Volume);
         }
 
         private void StopTone()
@@ -91,7 +91,7 @@ namespace Five_Seconds.ViewModels
 
         private async Task ToneSave(AlarmTone tone)
         {
-            Mission.Alarm.Tone = tone.Name;
+            Alarm.Tone = tone.Name;
             await ClosePopup();
         }
 

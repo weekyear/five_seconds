@@ -7,10 +7,10 @@ namespace Five_Seconds.Services
 {
     public interface IAlarmSetter
     {
-        void SetAlarm(Mission mission);
+        void SetAlarm(Alarm alarm);
 
         void DeleteAlarm(int id);
 
-        void DeleteAllAlarms(List<Mission> missions);
+        void DeleteAllAlarms(List<Alarm> alarms);
     }
 }

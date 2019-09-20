@@ -12,8 +12,8 @@ namespace Five_Seconds.Models
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
 
-        [ForeignKey(typeof(Mission))]
-        public int MissionId { get; set; }
+        [ForeignKey(typeof(Alarm))]
+        public int AlarmId { get; set; }
 
         public DateTime Date { get; set; }
         public int RecordTime { get; set; }

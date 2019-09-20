@@ -9,11 +9,11 @@ using Five_Seconds.Helpers;
 
 namespace Five_Seconds.ViewModels
 {
-    public class MissionsViewModel : BaseViewModel
+    public class AlarmsViewModel : BaseViewModel
     {
         private readonly IMessageBoxService MessageBoxService;
 
-        public MissionsViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
+        public AlarmsViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
             MessageBoxService = messageBoxService;
 
@@ -24,32 +24,32 @@ namespace Five_Seconds.ViewModels
 
         private void ConstructCommand()
         {
-            ShowAddMissionCommand = new Command(async () => await ShowAddMission());
+            ShowAddAlarmCommand = new Command(async () => await ShowAddAlarm());
             ShowCountDownCommand = new Command(() => ShowCountDown());
             CancelNotifyCommand = new Command(() => CancelNotify());
-            ShowMissionMenuCommand = new Command<object>(async (m) => await ShowMissionMenu(m));
+            ShowAlarmMenuCommand = new Command<object>(async (m) => await ShowAlarmMenu(m));
             ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
         }
 
         private void SubscribeMessage()
         {
-           MessagingCenter.Subscribe<MissionService>(this, "changeMissions", (sender) =>
+           MessagingCenter.Subscribe<AlarmService>(this, "changeAlarms", (sender) =>
            {
-               OnPropertyChanged(nameof(Missions));
+               OnPropertyChanged(nameof(Alarms));
                OnPropertyChanged(nameof(NextAlarmString));
            });
         }
 
         // Property
 
-        public Command ShowAddMissionCommand { get; set; }
+        public Command ShowAddAlarmCommand { get; set; }
         public Command ShowCountDownCommand { get; set; }
         public Command CancelNotifyCommand { get; set; }
-        public Command<object> ShowMissionMenuCommand { get; set; }
+        public Command<object> ShowAlarmMenuCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
-        public ObservableCollection<Mission> Missions
+        public ObservableCollection<Alarm> Alarms
         {
-            get => Service.Missions;
+            get => Service.Alarms;
         }
 
         public string NextAlarmString
@@ -57,9 +57,9 @@ namespace Five_Seconds.ViewModels
             get => CreateDateString.CreateNextDateTimeString(App.Service.GetNextAlarm());
         }
 
-        public async Task ShowAddMission()
+        public async Task ShowAddAlarm()
         {
-            await Navigation.PushAsync(new MissionPage(Navigation));
+            await Navigation.PushAsync(new AlarmPage(Navigation));
         }
 
         public void ShowCountDown()
@@ -73,28 +73,28 @@ namespace Five_Seconds.ViewModels
             DependencyService.Get<IAlarmNotification>().CancelNotification();
         }
 
-        public async Task ShowMissionMenu(object _mission)
+        public async Task ShowAlarmMenu(object _alarm)
         {
-            var mission = _mission as Mission;
+            var alarm = _alarm as Alarm;
             string[] actionSheetBtns = { "수정", "삭제" };
 
             string action = await MessageBoxService.ShowActionSheet("알람 옵션", "취소", null, actionSheetBtns);
 
-            await ClickMissionMenuAction(action, mission);
+            await ClickAlarmMenuAction(action, alarm);
         }
 
-        private async Task ClickMissionMenuAction(string action, Mission mission)
+        private async Task ClickAlarmMenuAction(string action, Alarm alarm)
         {
             switch (action)
             {
                 case "수정":
-                    await ShowModifyMission(mission);
+                    await ShowModifyAlarm(alarm);
                     break;
                 case "Record":
-                    await ShowMissionRecord(mission);
+                    await ShowAlarmRecord(alarm);
                     break;
                 case "삭제":
-                    Service.DeleteMission(mission);
+                    Service.DeleteAlarm(alarm);
                     break;
             }
         }
@@ -122,14 +122,14 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public async Task ShowModifyMission(Mission mission)
+        public async Task ShowModifyAlarm(Alarm alarm)
         {
-            await Navigation.PushAsync(new MissionPage(Navigation, mission));
+            await Navigation.PushAsync(new AlarmPage(Navigation, alarm));
         }
 
-        private async Task ShowMissionRecord(Mission mission)
+        private async Task ShowAlarmRecord(Alarm alarm)
         {
-            await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, mission)));
+            await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, alarm)));
         }
     }
 }

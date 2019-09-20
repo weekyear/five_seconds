@@ -11,22 +11,22 @@ using Xamarin.Forms.Xaml;
 namespace Five_Seconds.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MissionPage : ContentPage
+    public partial class AlarmPage : ContentPage
     {
-        MissionViewModel viewModel;
+        AlarmViewModel viewModel;
 
-        public MissionPage(INavigation navigation)
+        public AlarmPage(INavigation navigation)
         {
-            viewModel = new MissionViewModel(navigation);
+            viewModel = new AlarmViewModel(navigation);
 
             BindingContext = viewModel;
 
             InitializeComponent();
         }
 
-        public MissionPage(INavigation navigation, Mission mission)
+        public AlarmPage(INavigation navigation, Alarm alarm)
         {
-            viewModel = new MissionViewModel(navigation, mission);
+            viewModel = new AlarmViewModel(navigation, alarm);
 
             BindingContext = viewModel;
 

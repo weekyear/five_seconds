@@ -41,9 +41,7 @@ namespace Five_Seconds.Droid.Services
 
             if (alarm != null)
             {
-                var mission = App.MissionsRepo.GetMission(alarm.Id);
-
-                nextNameString = mission.Name;
+                nextNameString = alarm.Name;
                 nextTimeString = alarm.NextAlarmTime.ToString();
             }
             else

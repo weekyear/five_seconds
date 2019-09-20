@@ -16,11 +16,11 @@ using Xamarin.Forms.Mocks;
 
 namespace Five_Seconds.Core.Tests.ViewModels
 {
-    public class MissionsViewModelTest
+    public class AlarmsViewModelTest
     {
-        private MissionsViewModel missionsViewModel;
+        private AlarmsViewModel alarmsViewModel;
         private Mock<INavigation> navigation;
-        private Mock<IMissionsRepository> localData;
+        private Mock<IAlarmsRepository> localData;
         private Mock<IPopupNavigation> popupNavigation;
         private Mock<IMessageBoxService> messageBoxService;
 
@@ -30,21 +30,21 @@ namespace Five_Seconds.Core.Tests.ViewModels
             MockForms.Init();
 
             navigation = new Mock<INavigation>();
-            localData = new Mock<IMissionsRepository>();
+            localData = new Mock<IAlarmsRepository>();
             messageBoxService = new Mock<IMessageBoxService>();
             popupNavigation = new Mock<IPopupNavigation>();
 
-            missionsViewModel = new MissionsViewModel(navigation.Object, messageBoxService.Object);
+            alarmsViewModel = new AlarmsViewModel(navigation.Object, messageBoxService.Object);
         }
 
         [Test]
-        public void AddMissionCommand()
+        public void ShowAddAlarmCommand()
         {
             // Arrange
             // Act
-            missionsViewModel.ShowAddMissionCommand.Execute(null);
+            alarmsViewModel.ShowAddAlarmCommand.Execute(null);
             // Assert
-            navigation.Verify(n => n.PushAsync(It.IsAny<MissionPage>(), true), Times.Once());
+            navigation.Verify(n => n.PushAsync(It.IsAny<AlarmPage>(), true), Times.Once());
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             // Arrange
             string[] actionSheetBtns = { "Modify", "Record", "Delete" };
             // Act
-            missionsViewModel.ShowMissionMenuCommand.Execute(null);
+            alarmsViewModel.ShowAlarmMenuCommand.Execute(null);
             // Assert
             messageBoxService.Verify(m => m.ShowActionSheet("Options", "Cancel", null, actionSheetBtns), Times.Once());
         }
@@ -62,28 +62,28 @@ namespace Five_Seconds.Core.Tests.ViewModels
         public async Task ClickMenuAction_Modify()
         {
             // Arrange
-            var mission = new Mission();
-            MethodInfo methodInfo = typeof(MissionsViewModel).GetMethod("ClickMenuAction", BindingFlags.NonPublic | BindingFlags.Instance);
-            object[] parameters = { "Modify", mission };
+            var alarm = new Alarm();
+            MethodInfo methodInfo = typeof(AlarmsViewModel).GetMethod("ClickMenuAction", BindingFlags.NonPublic | BindingFlags.Instance);
+            object[] parameters = { "Modify", alarm };
 
             // Act //
-            var methodAsync = (Task)methodInfo.Invoke(missionsViewModel, parameters);
+            var methodAsync = (Task)methodInfo.Invoke(alarmsViewModel, parameters);
             await methodAsync;
 
             // Assert
-            navigation.Verify(n => n.PushAsync(It.IsAny<MissionPage>(), true), Times.Once());
+            navigation.Verify(n => n.PushAsync(It.IsAny<AlarmPage>(), true), Times.Once());
         }
 
         [Test]
         public async Task ClickMenuAction_Record()
         {
             // Arrange
-            var mission = new Mission();
-            MethodInfo methodInfo = typeof(MissionsViewModel).GetMethod("ClickMenuAction", BindingFlags.NonPublic | BindingFlags.Instance);
-            object[] parameters = { "Record", mission };
+            var alarm = new Alarm();
+            MethodInfo methodInfo = typeof(AlarmsViewModel).GetMethod("ClickMenuAction", BindingFlags.NonPublic | BindingFlags.Instance);
+            object[] parameters = { "Record", alarm };
 
             // Act //
-            var methodAsync = (Task)methodInfo.Invoke(missionsViewModel, parameters);
+            var methodAsync = (Task)methodInfo.Invoke(alarmsViewModel, parameters);
             await methodAsync;
 
             // Assert
@@ -94,16 +94,16 @@ namespace Five_Seconds.Core.Tests.ViewModels
         public async Task ShowMenuCommand_Delete()
         {
             // Arrange
-            var mission = new Mission();
-            MethodInfo methodInfo = typeof(MissionsViewModel).GetMethod("ClickMenuAction", BindingFlags.NonPublic | BindingFlags.Instance);
-            object[] parameters = { "Delete", mission };
+            var alarm = new Alarm();
+            MethodInfo methodInfo = typeof(AlarmsViewModel).GetMethod("ClickMenuAction", BindingFlags.NonPublic | BindingFlags.Instance);
+            object[] parameters = { "Delete", alarm };
 
             // Act //
-            var methodAsync = (Task)methodInfo.Invoke(missionsViewModel, parameters);
+            var methodAsync = (Task)methodInfo.Invoke(alarmsViewModel, parameters);
             await methodAsync;
 
             // Assert
-            localData.Verify(l => l.DeleteMission(It.IsAny<int>()));
+            localData.Verify(l => l.DeleteAlarm(It.IsAny<int>()));
         }
     }
 }

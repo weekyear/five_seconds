@@ -8915,6 +8915,15 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7f0b002f
 			public const int add = 2131427375;
 			
+			// aapt resource value: 0x7f0b00a6
+			public const int alarmEditText = 2131427494;
+			
+			// aapt resource value: 0x7f0b00a3
+			public const int alarmLayout = 2131427491;
+			
+			// aapt resource value: 0x7f0b00a5
+			public const int alarmTextView = 2131427493;
+			
 			// aapt resource value: 0x7f0b0084
 			public const int alertTitle = 2131427460;
 			
@@ -9169,15 +9178,6 @@ namespace Five_Seconds.Droid
 			
 			// aapt resource value: 0x7f0b005a
 			public const int mini = 2131427418;
-			
-			// aapt resource value: 0x7f0b00a6
-			public const int missionEditText = 2131427494;
-			
-			// aapt resource value: 0x7f0b00a3
-			public const int missionLayout = 2131427491;
-			
-			// aapt resource value: 0x7f0b00a5
-			public const int missionTextView = 2131427493;
 			
 			// aapt resource value: 0x7f0b00d9
 			public const int mr_art = 2131427545;

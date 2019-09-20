@@ -30,8 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\MissionsPage.xaml.cs">
-      <DependentUpon>MissionsPage.xaml</DependentUpon>
+    <Compile Update="Views\AlarmPage.xaml.cs">
+      <DependentUpon>AlarmPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AlarmsPage.xaml.cs">
+      <DependentUpon>AlarmsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -39,7 +42,7 @@
     <EmbeddedResource Update="CustomControls\Days&#xD;&#xA;                      SelectionView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\MissionPage.xaml">
+    <EmbeddedResource Update="Views\AlarmPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\RecordPage.xaml">

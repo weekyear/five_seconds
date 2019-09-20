@@ -11,10 +11,8 @@ namespace Five_Seconds.Droid.Services
     {
         public override void OnReceive(Context context, Intent intent)
         {
-            Console.WriteLine("OnReceive_BootReceiver");
             if (intent.Action.Equals("android.intent.action.BOOT_COMPLETED"))
             {
-                Console.WriteLine("Start_SetAllAlarmWhenRestart");
                 AlarmController.SetAllAlarmWhenRestart();
             }
         }

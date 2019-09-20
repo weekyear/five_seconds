@@ -23,11 +23,11 @@ namespace Five_Seconds.Droid
         IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
-        private LinearLayout missionLayout;
+        private LinearLayout alarmLayout;
         private Button tellmeButton;
         public TextView countTextView;
-        private TextView missionTextView;
-        private EditText missionEditText;
+        private TextView alarmTextView;
+        private EditText alarmEditText;
         private CountDown countDown;
 
         private int id;
@@ -57,8 +57,6 @@ namespace Five_Seconds.Droid
             isRepeating = (bool)bundle.Get("isRepeating");
             alarmVolume = (int)bundle.Get("alarmVolume");
 
-            Console.WriteLine("OnCreate_AlarmActivity");
-
             if (id == -1)
             {
                 SetContentView(Resource.Layout.AlarmActivity);
@@ -78,27 +76,26 @@ namespace Five_Seconds.Droid
 
             AddWindowManagerFlags();
 
-            Mission mission;
+            Alarm alarm;
 
-            var missionsRepo = App.MissionsRepo;
+            var alarmsRepo = App.AlarmsRepo;
 
-            if (missionsRepo != null)
+            if (alarmsRepo != null)
             {
-                mission = App.MissionsRepo.GetMission(id);
-                mission.Alarm = App.MissionsRepo.GetAlarm(mission.AlarmId);
-                mission.Alarm.Days = App.MissionsRepo.GetDaysOfWeek(mission.Alarm.DaysId);
+                alarm = App.AlarmsRepo.GetAlarm(id);
+                alarm.Days = App.AlarmsRepo.GetDaysOfWeek(alarm.DaysId);
 
                 if (!isRepeating)
                 {
-                    mission.IsActive = false;
-                    App.Service.SaveMissionAtLocal(mission);
+                    alarm.IsActive = false;
+                    App.Service.SaveAlarmAtLocal(alarm);
                 }
                 else
                 {
-                    AlarmController.SetNextAlarm(mission);
+                    AlarmController.SetNextAlarm(alarm);
                 }
 
-                App.Service.SendChangeMissionsMessage();
+                App.Service.SendChangeAlarmsMessage();
             }
 
             if (bundle == null) return;
@@ -106,26 +103,26 @@ namespace Five_Seconds.Droid
 
         private void SetControls()
         {
-            missionLayout = FindViewById<LinearLayout>(Resource.Id.missionLayout);
+            alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
-            missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
-            missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
+            alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
+            alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
 
             tellmeButton.Click += TellmeButton_Click;
             countTextView.Text = "5.00 초";
-            missionTextView.Text = name;
+            alarmTextView.Text = name;
 
-            missionEditText.Enabled = false;
+            alarmEditText.Enabled = false;
         }
 
         private void SetControlsForCountActivity()
         {
-            missionLayout = FindViewById<LinearLayout>(Resource.Id.missionLayout);
+            alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
-            missionTextView = FindViewById<TextView>(Resource.Id.missionTextView);
-            missionEditText = FindViewById<EditText>(Resource.Id.missionEditText);
+            alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
+            alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
 
             countTextView.Text = "5.00 초";
         }
@@ -145,15 +142,15 @@ namespace Five_Seconds.Droid
         {
             _soundService?.StopAudio();
 
-            if (!missionEditText.Enabled)
+            if (!alarmEditText.Enabled)
             {
-                missionEditText.Text = await WaitForSpeechToText();
-                missionEditText.Enabled = true;
+                alarmEditText.Text = await WaitForSpeechToText();
+                alarmEditText.Enabled = true;
                 tellmeButton.Text = "5초 카운트!";
             }
 
-            var editText = missionEditText.Text.Replace(" ", "");
-            var textView = missionTextView.Text.Replace(" ", "");
+            var editText = alarmEditText.Text.Replace(" ", "");
+            var textView = alarmTextView.Text.Replace(" ", "");
 
             if (editText == textView)
             {
@@ -225,7 +222,7 @@ namespace Five_Seconds.Droid
 
         private void HideAllViewExceptForCountText()
         {
-            missionLayout.Visibility = ViewStates.Invisible;
+            alarmLayout.Visibility = ViewStates.Invisible;
             countTextView.Visibility = ViewStates.Visible;
         }
 

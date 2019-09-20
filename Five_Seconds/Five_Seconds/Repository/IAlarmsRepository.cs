@@ -6,29 +6,18 @@ using System.Text;
 
 namespace Five_Seconds.Repository
 {
-    public interface IMissionsRepository
+    public interface IAlarmsRepository
     {
         // getters
-        List<Mission> MissionsFromDB { get; }
         List<Alarm> AlarmsFromDB { get; }
         List<DaysOfWeek> DaysOfWeeksFromDB { get; }
         List<Record> RecordFromDB { get; }
 
-        // methods
-        // Mission
-
-        Mission GetMission(int id);
-        IEnumerable<Mission> GetAllMissions();
-        int SaveMission(Mission mission);
-
-        int DeleteMission(int id);
-
-        void DeleteAllMissions();
-
         // Alarm
+
         Alarm GetAlarm(int id);
-        IEnumerable<Alarm> GetAllAlarms();
         int SaveAlarm(Alarm alarm);
+        IEnumerable<Alarm> GetAllAlarms();
 
         int DeleteAlarm(int id);
 

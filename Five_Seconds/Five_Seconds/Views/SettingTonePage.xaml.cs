@@ -19,9 +19,9 @@ namespace Five_Seconds.Views
     {
         private SettingToneViewModel viewModel;
 
-        public SettingTonePage(INavigation navigation, Mission mission)
+        public SettingTonePage(INavigation navigation, Alarm alarm)
         {
-            viewModel = new SettingToneViewModel(navigation, mission);
+            viewModel = new SettingToneViewModel(navigation, alarm);
 
             BindingContext = viewModel;
 

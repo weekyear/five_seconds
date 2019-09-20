@@ -25,14 +25,14 @@ namespace Five_Seconds
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
             DependencyService.Register<INavigation>();
-            DependencyService.Register<IMissionsRepository>();
-            DependencyService.Register<IMissionService>();
+            DependencyService.Register<IAlarmsRepository>();
+            DependencyService.Register<IAlarmService>();
             DependencyService.Register<IMessageBoxService>();
             DependencyService.Register<ISpeechToText>();
 
             InitializeComponent();
 
-            MainPage = new NavigationPage(new MissionsPage());
+            MainPage = new NavigationPage(new AlarmsPage());
 
             if (!isNotFirst)
             {
@@ -60,35 +60,29 @@ namespace Five_Seconds
         }
         
 
-        private static IMissionsRepository missionsRepo;
-        public static IMissionsRepository MissionsRepo
+        private static IAlarmsRepository alarmsRepo;
+        public static IAlarmsRepository AlarmsRepo
         {
             get
             {
-                Console.WriteLine("Get MissionsRepo_App");
-                if (missionsRepo == null)
+                if (alarmsRepo == null)
                 {
-                    Console.WriteLine("Get MissionsRepo_App 1");
-                    missionsRepo = new MissionsRepository(ItemDatabase);
+                    alarmsRepo = new AlarmsRepository(ItemDatabase);
                 }
-                Console.WriteLine("Get MissionsRepo_App 2");
-                return missionsRepo;
+                return alarmsRepo;
             }
         }
 
-        private static IMissionService service;
-        public static IMissionService Service
+        private static IAlarmService service;
+        public static IAlarmService Service
         {
             get
             {
-                Console.WriteLine("Get Service_App");
                 if (service == null)
                 {
-                    Console.WriteLine("Get Service_App 1");
-                    service = new MissionService(MissionsRepo);
+                    service = new AlarmService(AlarmsRepo);
                 }
 
-                Console.WriteLine("Get Service_App 2");
                 return service;
             }
         }

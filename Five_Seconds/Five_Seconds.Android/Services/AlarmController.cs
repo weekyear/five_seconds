@@ -11,26 +11,25 @@ namespace Five_Seconds.Droid.Services
 {
     public class AlarmController
     {
-        public static void SetFirstAlarm(Mission mission)
+        public static void SetFirstAlarm(Alarm alarm)
         {
-            var alarm = mission.Alarm;
             var diffMillis = CalculateTimeDiff(alarm);
 
-            SetAlarmByManager(mission, diffMillis);
+            SetAlarmByManager(alarm, diffMillis);
         }
 
-        public static void SetNextAlarm(Mission mission)
+        public static void SetNextAlarm(Alarm alarm)
         {
             long diffMillis = 0;
 
-            if (DaysOfWeek.GetHasADayBeenSelected(mission.Alarm.Days))
+            if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
-                diffMillis = CalculateTimeDiff(mission.Alarm);
+                diffMillis = CalculateTimeDiff(alarm);
             }
 
             if (diffMillis != 0)
             {
-                SetAlarmByManager(mission, diffMillis);
+                SetAlarmByManager(alarm, diffMillis);
             }
         }
 
@@ -56,41 +55,39 @@ namespace Five_Seconds.Droid.Services
             toastService.Show(diffString);
         }
 
-        private static void SetAlarmByManager(Mission mission, long diffMillis)
+        private static void SetAlarmByManager(Alarm alarm, long diffMillis)
         {
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            _alarmIntent.PutExtra("id", mission.Id);
-            _alarmIntent.PutExtra("name", mission.Name);
-            _alarmIntent.PutExtra("isAlarmOn", mission.Alarm.IsAlarmOn);
-            _alarmIntent.PutExtra("isVibrateOn", mission.Alarm.IsVibrateOn);
-            _alarmIntent.PutExtra("isCountOn", mission.Alarm.IsCountOn);
-            _alarmIntent.PutExtra("isRepeating", DaysOfWeek.GetHasADayBeenSelected(mission.Alarm.Days));
-            _alarmIntent.PutExtra("toneName", mission.Alarm.Tone);
-            _alarmIntent.PutExtra("alarmVolume", mission.Alarm.Volume);
+            _alarmIntent.PutExtra("id", alarm.Id);
+            _alarmIntent.PutExtra("name", alarm.Name);
+            _alarmIntent.PutExtra("isAlarmOn", alarm.IsAlarmOn);
+            _alarmIntent.PutExtra("isVibrateOn", alarm.IsVibrateOn);
+            _alarmIntent.PutExtra("isCountOn", alarm.IsCountOn);
+            _alarmIntent.PutExtra("isRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
+            _alarmIntent.PutExtra("toneName", alarm.Tone);
+            _alarmIntent.PutExtra("alarmVolume", alarm.Volume);
 
-            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, mission.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
 
             Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
             PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, 0, showIntent, PendingIntentFlags.UpdateCurrent);
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
-            Console.WriteLine(mission.Name + "is Set Alarmed");
         }
 
         public static void SetAllAlarmWhenRestart()
         {
-            Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
             var deviceStorage = new DeviceStorageAndroid();
-            var itemDatabase = new ItemDatabaseGeneric(new SQLiteConnection(deviceStorage.GetFilePath("MissionsSQLite.db3")));
-            var missionsRepo = new MissionsRepository(itemDatabase);
-            var service = new MissionService(missionsRepo);
-            var missions = service.GetAllMissions();
+            var itemDatabase = new ItemDatabaseGeneric(new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3")));
+            var alarmsRepo = new AlarmsRepository(itemDatabase);
+            var service = new AlarmService(alarmsRepo);
+            var alarms = service.GetAllAlarms();
 
-            foreach (var mission in missions)
+            foreach (var alarm in alarms)
             {
-                SetFirstAlarm(mission);
+                SetFirstAlarm(alarm);
             }
         }
     }

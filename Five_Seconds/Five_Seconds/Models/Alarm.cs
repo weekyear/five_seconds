@@ -1,100 +1,73 @@
 ﻿using Five_Seconds.Helpers;
+using Five_Seconds.Services;
+using Five_Seconds.Views;
 using SQLite;
 using SQLiteNetExtensions.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text;
+using System.Windows.Input;
+using Xamarin.Forms;
 
 namespace Five_Seconds.Models
 {
-    [Table("Alarm")]
-    public class Alarm : INotifyPropertyChanged, IObject
+    public partial class Alarm : INotifyPropertyChanged, IObject
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
-        public TimeSpan Time
+
+        public string Name { get; set; }
+        public double Percentage { get; set; }
+
+        public bool IsActive { get; set; } = true;
+
+        public void OnIsActiveChanged()
         {
-            get { return TimeOffset.LocalDateTime.TimeOfDay; }
-            set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
-        }
-        public bool IsAlarmOn { get; set; } = true;
-        public int Volume { get; set; } = 5;
-
-        public bool OccursToday { get { return Days.Equals(DateTime.Now.DayOfWeek); } }
-        public bool IsVibrateOn { get; set; } = true;
-        public bool IsCountOn { get; set; } = true;
-
-        //public int DaysId { get; set; }
-        [OneToOne]
-        public DaysOfWeek Days { get; set; } = new DaysOfWeek();
-        public int DaysId { get; set; }
-        public string Tone { get; set; } = AlarmTone.Tones[0].Name;
-
-        public bool IsToday
-        {
-            get
+            if (App.IsInitFinished)
             {
-                if (Date.Subtract(DateTime.Now.Date).Days == 0)
+                if (IsActive)
                 {
-                    return true;
+                    if (!DaysOfWeek.GetHasADayBeenSelected(Days) && TimeOffset.Subtract(DateTimeOffset.Now).Ticks < 0)
+                    {
+                        if (Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+                        {
+                            Date = DateTime.Now.Date.AddDays(1);
+                        }
+                        else
+                        {
+                            Date = DateTime.Now.Date;
+                        }
+
+                    }
+
+                    App.Service.SaveAlarm(this);
+                    var diffString = CreateDateString.CreateTimeRemainingString(NextAlarmTime);
+                    DependencyService.Get<IToastService>().Show(diffString);
                 }
                 else
                 {
-                    return false;
+                    DependencyService.Get<IAlarmSetter>().DeleteAlarm(Id);
                 }
             }
         }
 
-        public DateTime Date
-        {
-            get { return TimeOffset.LocalDateTime.Date; }
-            set { TimeOffset = GetDateTimeOffsetFromDateTime(value); }
-        }
-
-        public string DateString
-        {
-            get { return CreateDateString.CreateDateToString(this); }
-        }
-
-        public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);
-        protected DateTimeOffset GetDateTimeOffsetFromTimeSpan(TimeSpan time)
-        {
-            var dateTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hours, time.Minutes, time.Seconds);
-            return new DateTimeOffset(dateTime);
-        }
-
-        protected DateTimeOffset GetDateTimeOffsetFromDateTime(DateTime date)
-        {
-            var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, Time.Seconds);
-
-            return new DateTimeOffset(dateTime);
-        }
-
-        public DateTime NextAlarmTime
-        {
-            get { return CalculateNextAlarmTime.NextAlarmTime(this); }
-        }
-
-        public Alarm()
-        {
-        }
-        public Alarm(TimeSpan timeSpan)
-        {
-            Time = timeSpan;
-        }
+        public Alarm() { }
 
         public Alarm(Alarm original)
         {
             Id = original.Id;
+            Name = original.Name;
+            Percentage = original.Percentage;
+            IsActive = original.IsActive;
             IsAlarmOn = original.IsAlarmOn;
             Volume = original.Volume;
             IsVibrateOn = original.IsVibrateOn;
             IsCountOn = original.IsCountOn;
             TimeOffset = original.TimeOffset;
-            
+
             Days = new DaysOfWeek(original.Days);
             DaysId = original.DaysId;
             Tone = original.Tone;

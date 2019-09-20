@@ -23,7 +23,7 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/missionLayout"
+        android:id="@+id/alarmLayout"
         android:gravity="center"
         android:layout_gravity="center">
         <TextView
@@ -36,17 +36,17 @@
             android:textAlignment="center"
             android:layout_gravity="center_horizontal" />
         <TextView
-            android:text="Mission Text"
+            android:text="Alarm Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/missionTextView"
+            android:id="@+id/alarmTextView"
             android:gravity="center"
             android:textColor="#ffffffff"
             android:phoneNumber="true"
             android:textSize="45dp" />
         <EditText
-            android:id="@+id/missionEditText"
+            android:id="@+id/alarmEditText"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_margin="20dp"

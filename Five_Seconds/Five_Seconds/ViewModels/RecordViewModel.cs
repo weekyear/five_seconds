@@ -11,21 +11,16 @@ namespace Five_Seconds.ViewModels
 {
     public class RecordViewModel : BaseViewModel
     {
-        public RecordViewModel(INavigation navigation, Mission mission = null) : base(navigation)
+        public RecordViewModel(INavigation navigation, Alarm alarm = null) : base(navigation)
         {
-            Title = mission?.Name;
-            Mission = mission;
+            Title = alarm?.Name;
+            Alarm = alarm;
         }
 
-        public Mission Mission
+        public Alarm Alarm
         {
             get;
             set;
-        }
-
-        public List<Record> Records
-        {
-            get { return Mission.Records; }
         }
     }
 }

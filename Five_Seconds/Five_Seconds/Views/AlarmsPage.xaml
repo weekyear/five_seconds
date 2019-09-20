@@ -7,7 +7,7 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
              mc:Ignorable="d"
-             x:Class="Five_Seconds.Views.MissionsPage"
+             x:Class="Five_Seconds.Views.AlarmsPage"
              NavigationPage.HasNavigationBar="False"
              x:Name="BrowseItemsPage">
 
@@ -55,7 +55,7 @@
                          WidthRequest="30" HeightRequest="30"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
-                         Command="{Binding ShowAddMissionCommand}"/>
+                         Command="{Binding ShowAddAlarmCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="2"
                          Source="ic_menu_vertical.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
@@ -64,11 +64,11 @@
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowMainMenuCommand}"/>
         </Grid>
-        <ListView x:Name="MissionsListView"
-                ItemsSource="{Binding Missions}"
+        <ListView x:Name="AlarmsListView"
+                ItemsSource="{Binding Alarms}"
                 RowHeight="110"
                 ItemTapped="ShowMenuByItemClicked"
-                ItemSelected="MissionsListView_ItemSelected"
+                ItemSelected="AlarmsListView_ItemSelected"
                 VerticalOptions="FillAndExpand"
                 CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
@@ -84,16 +84,16 @@
                                 <ColumnDefinition Width="40*" />
                                 <ColumnDefinition Width="15*" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Alarm.DateString}"
+                            <Label Text="{Binding DateString}"
                                    TextColor="{StaticResource PrimaryTextColor}"
                                    FontSize="22"
                                    VerticalOptions="EndAndExpand" />
                             <StackLayout Grid.Column="1" Orientation="Horizontal">
-                                <Label Text="{Binding Alarm.Time, Converter={StaticResource AmPmStringConverter}}"
+                                <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
                                        TextColor="{StaticResource PrimaryTextColor}"
                                        FontSize="15"
                                        VerticalOptions="EndAndExpand"/>
-                                <Label Text="{Binding Alarm.Time, Converter={StaticResource TimeStringConverter}}"
+                                <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                        TextColor="{StaticResource PrimaryTextColor}"
                                        FontSize="25" />
                             </StackLayout>

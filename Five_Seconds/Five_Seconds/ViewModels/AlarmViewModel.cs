@@ -12,20 +12,20 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.ViewModels
 {
-    public class MissionViewModel : BaseViewModel
+    public class AlarmViewModel : BaseViewModel
     {
-        public MissionViewModel(INavigation navigation) : base(navigation)
+        public AlarmViewModel(INavigation navigation) : base(navigation)
         {
-            Mission = new Mission();
+            Alarm = new Alarm();
 
             SubscribeMessage();
 
             ConstructCommand();
         }
 
-        public MissionViewModel(INavigation navigation, Mission mission) : base(navigation)
+        public AlarmViewModel(INavigation navigation, Alarm alarm) : base(navigation)
         {
-            Mission = new Mission(mission);
+            Alarm = new Alarm(alarm);
 
             SubscribeMessage();
 
@@ -67,30 +67,19 @@ namespace Five_Seconds.ViewModels
 
         // Property
 
-        public Mission Mission
+        public Alarm Alarm
         {
             get; set;
         }
 
         public string Name
         {
-            get { return Mission.Name; }
+            get { return Alarm.Name; }
             set
             {
-                if (Mission.Name == value) return;
-                Mission.Name = value;
+                if (Alarm.Name == value) return;
+                Alarm.Name = value;
                 OnPropertyChanged(nameof(Name));
-            }
-        }
-
-        public Alarm Alarm
-        {
-            get { return Mission.Alarm; }
-            set
-            {
-                if (Mission.Alarm == value) return;
-                Mission.Alarm = value;
-                OnPropertyChanged(nameof(Alarm));
             }
         }
 
@@ -113,16 +102,16 @@ namespace Five_Seconds.ViewModels
         {
             get
             {
-                if (Mission.Alarm.Time == TimeSpan.Zero)
+                if (Alarm.Time == TimeSpan.Zero)
                 {
-                    Mission.Alarm.Time = DateTime.Now.TimeOfDay;
+                    Alarm.Time = DateTime.Now.TimeOfDay;
                 }
-                return Mission.Alarm.Time;
+                return Alarm.Time;
             }
             set
             {
-                if (Mission.Alarm.Time == value) return;
-                Mission.Alarm.Time = value;
+                if (Alarm.Time == value) return;
+                Alarm.Time = value;
                 DateToStringWhenTimeChanged();
                 OnPropertyChanged(nameof(Time));
             }
@@ -140,33 +129,33 @@ namespace Five_Seconds.ViewModels
 
         public bool IsAlarmOn
         {
-            get { return Mission.Alarm.IsAlarmOn; }
+            get { return Alarm.IsAlarmOn; }
             set
             {
-                if (Mission.Alarm.IsAlarmOn == value) return;
-                Mission.Alarm.IsAlarmOn = value;
+                if (Alarm.IsAlarmOn == value) return;
+                Alarm.IsAlarmOn = value;
                 OnPropertyChanged(nameof(IsAlarmOn));
             }
         }
 
         public int Volume
         {
-            get { return Mission.Alarm.Volume; }
+            get { return Alarm.Volume; }
             set
             {
-                if (Mission.Alarm.Volume == value) return;
-                Mission.Alarm.Volume = value;
+                if (Alarm.Volume == value) return;
+                Alarm.Volume = value;
                 OnPropertyChanged(nameof(Volume));
             }
         }
 
         public bool IsVibrateOn
         {
-            get { return Mission.Alarm.IsVibrateOn; }
+            get { return Alarm.IsVibrateOn; }
             set
             {
-                if (Mission.Alarm.IsVibrateOn == value) return;
-                Mission.Alarm.IsVibrateOn = value;
+                if (Alarm.IsVibrateOn == value) return;
+                Alarm.IsVibrateOn = value;
                 OnPropertyChanged(nameof(IsVibrateOn));
             }
         }
@@ -213,20 +202,20 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
-                if (!Mission.IsActive)
+                if (!Alarm.IsActive)
                 {
                     App.IsInitFinished = false;
-                    Mission.IsActive = true;
+                    Alarm.IsActive = true;
                     App.IsInitFinished = true;
                 }
-                Service.SaveMission(Mission);
+                Service.SaveAlarm(Alarm);
                 await ClosePopup();
             }
         }
 
         private async Task ShowSettingTone()
         {
-            await Navigation.PushAsync(new SettingTonePage(Navigation, Mission));
+            await Navigation.PushAsync(new SettingTonePage(Navigation, Alarm));
         }
     }
 }

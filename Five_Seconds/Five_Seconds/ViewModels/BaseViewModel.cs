@@ -14,7 +14,7 @@ namespace Five_Seconds.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         protected readonly INavigation Navigation;
-        protected readonly IMissionService Service;
+        protected readonly IAlarmService Service;
 
         public BaseViewModel(INavigation navigation)
         {

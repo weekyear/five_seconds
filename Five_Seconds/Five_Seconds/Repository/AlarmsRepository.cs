@@ -4,21 +4,16 @@ using System.Collections.Generic;
 
 namespace Five_Seconds.Repository
 {
-    public class MissionsRepository : IMissionsRepository
+    public class AlarmsRepository : IAlarmsRepository
     {
         public ItemDatabaseGeneric ItemDatabase { get; }
 
-        public MissionsRepository(ItemDatabaseGeneric itemDatabase)
+        public AlarmsRepository(ItemDatabaseGeneric itemDatabase)
         {
             //if (Device.RuntimePlatform == "Test") return;
-            Console.WriteLine("Constructor_MissionsRepository");
             ItemDatabase = itemDatabase;
         }
 
-        public List<Mission> MissionsFromDB
-        {
-            get { return GetAllMissions() as List<Mission>; }
-        }
         public List<Alarm> AlarmsFromDB
         {
             get { return GetAllAlarms() as List<Alarm>; }
@@ -30,48 +25,6 @@ namespace Five_Seconds.Repository
         public List<Record> RecordFromDB
         {
             get { return GetAllRecords() as List<Record>; }
-        }
-
-        // Mission
-
-        public Mission GetMission(int id)
-        {
-            Console.WriteLine("GetMission");
-            var mission = ItemDatabase.GetObject<Mission>(id);
-            if (mission != null)
-            {
-                Console.WriteLine(mission.Name);
-            }
-            else
-            {
-                Console.WriteLine("mission is null");
-            }
-            return mission;
-        }
-
-        public IEnumerable<Mission> GetFirstMissions()
-        {
-            return ItemDatabase.GetObjects<Mission>();
-        }
-
-        public IEnumerable<Mission> GetAllMissions()
-        {
-            return ItemDatabase.GetObjects<Mission>();
-        }
-
-        public int SaveMission(Mission mission)
-        {
-            return ItemDatabase.SaveObject(mission);
-        }
-
-        public int DeleteMission(int id)
-        {
-            return ItemDatabase.DeleteObject<Mission>(id);
-        }
-
-        public void DeleteAllMissions()
-        {
-            ItemDatabase.DeleteAllObjects<Mission>();
         }
 
         // Alarm

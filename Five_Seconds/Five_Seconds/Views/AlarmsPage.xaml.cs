@@ -12,27 +12,27 @@ namespace Five_Seconds.Views
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [AdMaiora.RealXaml.Client.RootPage]
-    public partial class MissionsPage : ContentPage
+    public partial class AlarmsPage : ContentPage
     {
-        MissionsViewModel viewModel;
+        AlarmsViewModel viewModel;
 
-        public MissionsPage()
+        public AlarmsPage()
         {
             InitializeComponent();
 
-            viewModel = new MissionsViewModel(Navigation, new MessageBoxService());
+            viewModel = new AlarmsViewModel(Navigation, new MessageBoxService());
 
             BindingContext = viewModel;
         }
 
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
         {
-            viewModel.ShowMissionMenuCommand.Execute(e.Item);
+            viewModel.ShowAlarmMenuCommand.Execute(e.Item);
         }
 
-        private void MissionsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private void AlarmsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if (MissionsListView.SelectedItem != null || e.SelectedItem != null)
+            if (AlarmsListView.SelectedItem != null || e.SelectedItem != null)
             {
                 ((ListView)sender).SelectedItem = null;
             }

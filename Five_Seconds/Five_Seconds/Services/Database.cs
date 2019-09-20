@@ -15,7 +15,7 @@ namespace Five_Seconds.Services
         {
             if (Device.RuntimePlatform != "Test")
             {
-                string path = DependencyService.Get<IDeviceStorageService>().GetFilePath("MissionsSQLite.db3");
+                string path = DependencyService.Get<IDeviceStorageService>().GetFilePath("AlarmsSQLite.db3");
                 return CreateConnection(path);
             }
             else

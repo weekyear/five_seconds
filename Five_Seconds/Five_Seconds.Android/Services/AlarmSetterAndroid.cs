@@ -25,17 +25,14 @@ namespace Five_Seconds.Droid.Services
 {
     public class AlarmSetterAndroid : IAlarmSetter
     {
-        public static string AlarmTag = "Al4rm";
-        IAlarmToneRepository _alarmRepo = App.AlarmToneRepo;
-
         public AlarmSetterAndroid()
         {
 
         }
 
-        public void SetAlarm(Mission mission)
+        public void SetAlarm(Alarm alarm)
         {
-            AlarmController.SetFirstAlarm(mission);
+            AlarmController.SetFirstAlarm(alarm);
         }
 
         public void DeleteAlarm(int id)
@@ -49,11 +46,11 @@ namespace Five_Seconds.Droid.Services
             alarmManager.Cancel(toDeletePendingIntent);
         }
 
-        public void DeleteAllAlarms(List<Mission> missions)
+        public void DeleteAllAlarms(List<Alarm> alarms)
         {
-            foreach (Mission mission in missions)
+            foreach (Alarm alarm in alarms)
             {
-                DeleteAlarm(mission.Id);
+                DeleteAlarm(alarm.Id);
             }
         }
     }

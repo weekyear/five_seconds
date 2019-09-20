@@ -7,7 +7,7 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
 			 Title="알람 설정"
              mc:Ignorable="d"
-             x:Class="Five_Seconds.Views.MissionPage"
+             x:Class="Five_Seconds.Views.AlarmPage"
              BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -24,7 +24,7 @@
             <TableSection>
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Padding="12,0" Orientation="Horizontal">
-                        <Entry x:Name="Mission_Name"
+                        <Entry x:Name="Alarm_Name"
                                Margin="10"
                                HorizontalOptions="FillAndExpand"
                                FontSize="20"
@@ -44,6 +44,7 @@
                     <StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <Label Text="{Binding DateString}"
+                                   HorizontalOptions="StartAndExpand"
                                    Margin="10"
                                    TextColor="DarkBlue"
                                    FontSize="16"/>

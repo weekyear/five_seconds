@@ -16,23 +16,11 @@ namespace Five_Seconds.Repository
 
         public ItemDatabaseGeneric(SQLiteConnection connection)
         {
-            Console.WriteLine("Constructor_ItemDatabaseGeneric");
             this.connection = connection;
-            Console.WriteLine($"connection is null? : {connection == null}");
-            Console.WriteLine($"connection is null? : {connection.DatabasePath}");
-            Console.WriteLine("After_DBConnect");
-            var resultMissions = connection.CreateTable<Mission>();
-            Console.WriteLine($"Mission Table is null? : {resultMissions.ToString()}");
-            var resultAlarms = connection.CreateTable<Alarm>();
-            Console.WriteLine($"Alarm Table is null? : {resultAlarms.ToString()}");
-            var resultRecords = connection.CreateTable<Record>();
-            Console.WriteLine($"Record Table is null? : {resultRecords.ToString()}");
-            var resultDaysOfWeeks = connection.CreateTable<DaysOfWeek>();
-            Console.WriteLine($"DaysOfWeek Table is null? : {resultDaysOfWeeks.ToString()}");
-            var resultAlarmTones = connection.CreateTable<AlarmTone>();
-            Console.WriteLine($"AlarmTone Table is null? : {resultAlarmTones.ToString()}");
-
-            Console.WriteLine("After_CreateTable");
+            connection.CreateTable<Alarm>();
+            connection.CreateTable<Record>();
+            connection.CreateTable<DaysOfWeek>();
+            connection.CreateTable<AlarmTone>();
         }
 
 
@@ -55,10 +43,7 @@ namespace Five_Seconds.Repository
         {
             lock (locker)
             {
-                Console.WriteLine("GetObject");
-                var mission = connection.Table<T>().Where(x => x.Id == id).FirstOrDefault();
-                Console.WriteLine($"mission is null? : {mission == null}");
-                return mission;
+                return connection.Table<T>().Where(x => x.Id == id).FirstOrDefault();
             }
         }
         public int SaveObject<T>(T obj) where T : IObject

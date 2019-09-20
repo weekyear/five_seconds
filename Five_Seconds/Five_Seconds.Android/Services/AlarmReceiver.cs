@@ -21,6 +21,7 @@ namespace Five_Seconds.Droid.Services
         private int alarmVolume;
         public override void OnReceive(Context context, Intent intent)
         {
+            Console.WriteLine("OnReceive_AlarmReceiver");
             id = intent.GetIntExtra("id", 0);
             name = intent.GetStringExtra("name");
             isAlarmOn = intent.GetBooleanExtra("isAlarmOn", false);
