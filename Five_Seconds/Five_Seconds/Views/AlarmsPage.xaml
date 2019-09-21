@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
-             xmlns:behaviorsPack="clr-namespace:Xamarin.Forms.BehaviorsPack;assembly=Xamarin.Forms.BehaviorsPack"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmsPage"
              NavigationPage.HasNavigationBar="False"
@@ -33,12 +32,12 @@
             </Grid.ColumnDefinitions>
             <Label Grid.ColumnSpan="3" 
                    Text="5초의 알람"
-                   FontSize="25"
+                   FontSize="22"
                    HorizontalOptions="CenterAndExpand"/>
             <Label Grid.Row="1" Grid.ColumnSpan="3" 
                    Text="{Binding NextAlarmString}"
                    FontAttributes="Bold"
-                   FontSize="22"
+                   FontSize="28"
                    Margin="0, 0, 0, 20"
                    HorizontalOptions="CenterAndExpand"/>
             <ImageButton Grid.Row="2" Grid.Column="0"
@@ -84,27 +83,36 @@
                                 <ColumnDefinition Width="40*" />
                                 <ColumnDefinition Width="15*" />
                             </Grid.ColumnDefinitions>
-                            <Label Text="{Binding DateString}"
-                                   TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="22"
-                                   VerticalOptions="EndAndExpand" />
+                            <custom:ListItemLabel IsActive="{Binding IsActive}" 
+                                                  IsActiveChanged="ListItemLabel_IsActiveChanged"
+                                                  Text="{Binding DateString}"
+                                                  TextColor="{StaticResource PrimaryTextColor}"
+                                                  FontSize="22"
+                                                  VerticalOptions="EndAndExpand" />
                             <StackLayout Grid.Column="1" Orientation="Horizontal">
-                                <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
-                                       TextColor="{StaticResource PrimaryTextColor}"
-                                       FontSize="15"
-                                       VerticalOptions="EndAndExpand"/>
-                                <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
-                                       TextColor="{StaticResource PrimaryTextColor}"
-                                       FontSize="25" />
+                                <custom:ListItemLabel IsActive="{Binding IsActive}" 
+                                                      IsActiveChanged="ListItemLabel_IsActiveChanged" 
+                                                      Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
+                                                      TextColor="{StaticResource PrimaryTextColor}"
+                                                      FontSize="15"
+                                                      VerticalOptions="EndAndExpand"/>
+                                <custom:ListItemLabel IsActive="{Binding IsActive}" 
+                                                      IsActiveChanged="ListItemLabel_IsActiveChanged" 
+                                                      Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                                      TextColor="{StaticResource PrimaryTextColor}"
+                                                      FontSize="25" />
                             </StackLayout>
-                            <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                   TextColor="{StaticResource PrimaryTextColor}"
-                                   FontSize="35"
-                                   Text="{Binding Name}"
-                                   MaxLines="1"
-                                   FontAttributes="Bold" />
+                            <custom:ListItemLabel IsActive="{Binding IsActive}" 
+                                                  IsActiveChanged="ListItemLabel_IsActiveChanged" 
+                                                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                  TextColor="{StaticResource PrimaryTextColor}"
+                                                  FontSize="35"
+                                                  Text="{Binding Name}"
+                                                  MaxLines="1"
+                                                  FontAttributes="Bold" />
                             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                     IsToggled="{Binding IsActive}"
+                                    Toggled="Switch_Toggled"
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
                                     ThumbColor="SkyBlue"/>

@@ -17,7 +17,7 @@ using Button = Android.Widget.Button;
 
 namespace Five_Seconds.Droid
 {
-    [Activity(Label = "AlarmActivity", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "5초의 알람", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : Activity
     {
         IPlaySoundService _soundService = new PlaySoundServiceAndroid();
@@ -35,7 +35,7 @@ namespace Five_Seconds.Droid
         private string toneName;
         private bool isAlarmOn;
         private bool isVibrateOn;
-        private bool isCountOn;
+        private bool isCountOn = true;
         private bool isRepeating;
         private int alarmVolume;
 
@@ -49,13 +49,7 @@ namespace Five_Seconds.Droid
 
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
-            name = (string)bundle.Get("name");
-            toneName = (string)bundle.Get("toneName");
-            isAlarmOn = (bool)bundle.Get("isAlarmOn");
-            isVibrateOn = (bool)bundle.Get("isVibrateOn");
             isCountOn = (bool)bundle.Get("isCountOn");
-            isRepeating = (bool)bundle.Get("isRepeating");
-            alarmVolume = (int)bundle.Get("alarmVolume");
 
             if (id == -1)
             {
@@ -64,6 +58,13 @@ namespace Five_Seconds.Droid
                 ShowCountActivity();
                 return;
             }
+
+            name = (string)bundle.Get("name");
+            toneName = (string)bundle.Get("toneName");
+            isAlarmOn = (bool)bundle.Get("isAlarmOn");
+            isVibrateOn = (bool)bundle.Get("isVibrateOn");
+            isRepeating = (bool)bundle.Get("isRepeating");
+            alarmVolume = (int)bundle.Get("alarmVolume");
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);

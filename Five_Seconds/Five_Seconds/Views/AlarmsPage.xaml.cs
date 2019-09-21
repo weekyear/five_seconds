@@ -6,18 +6,22 @@ using Five_Seconds.Models;
 using System;
 using System.Runtime.CompilerServices;
 using Five_Seconds.Helpers;
+using Xamarin.Forms.Xaml;
 
 namespace Five_Seconds.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
     [AdMaiora.RealXaml.Client.RootPage]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmsPage : ContentPage
     {
         AlarmsViewModel viewModel;
 
         public AlarmsPage()
         {
+            AdMaiora.RealXaml.Client.AppManager.Init(this);
+
             InitializeComponent();
 
             viewModel = new AlarmsViewModel(Navigation, new MessageBoxService());
@@ -35,6 +39,32 @@ namespace Five_Seconds.Views
             if (AlarmsListView.SelectedItem != null || e.SelectedItem != null)
             {
                 ((ListView)sender).SelectedItem = null;
+            }
+        }
+
+        private void ListItemLabel_IsActiveChanged(object sender, EventArgs e)
+        {
+            var label = sender as ListItemLabel;
+            if (label.IsActive)
+            {
+                label.TextColor = Color.Black;
+            }
+            else
+            {
+                label.TextColor = Color.LightGray;
+            }
+        }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            var _switch = sender as Switch;
+            if (_switch.IsToggled)
+            {
+                _switch.ThumbColor = Color.SkyBlue;
+            }
+            else
+            {
+                _switch.ThumbColor = Color.LightGray;
             }
         }
     }

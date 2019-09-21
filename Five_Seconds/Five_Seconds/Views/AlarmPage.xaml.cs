@@ -10,6 +10,7 @@ using Xamarin.Forms.Xaml;
 
 namespace Five_Seconds.Views
 {
+    [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmPage : ContentPage
     {
@@ -38,6 +39,19 @@ namespace Five_Seconds.Views
             datePicker.MinimumDate = viewModel.SetMinimumDate();
             datePicker.Date = viewModel.Date;
             datePicker.Focus();
+        }
+
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            var _switch = sender as Switch;
+            if (_switch.IsToggled)
+            {
+                _switch.ThumbColor = Color.SkyBlue;
+            }
+            else
+            {
+                _switch.ThumbColor = Color.LightGray;
+            }
         }
     }
 }

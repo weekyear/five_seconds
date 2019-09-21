@@ -5,6 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             xmlns:ios="clr-namespace:UIKit;assembly=Xamarin.iOS;targetPlatform=iOS"
+             xmlns:droid="clr-namespace:Android.Widget;assembly=Mono.Android;targetPlatform=Android"
+             xmlns:formsdroid="clr-namespace:Xamarin.Forms;assembly=Xamarin.Forms.Platform.Android;targetPlatform=Android"
 			 Title="알람 설정"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmPage"
@@ -34,10 +37,11 @@
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False">
                     <StackLayout Orientation="Horizontal" Padding="13, 0">
+                        <droid:EditText Text="Android EditText" x:Arguments="{x:Static formsdroid:Forms.Context}"/>
                         <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
-                        Time="{Binding Time}" Margin="20"
-                        Format="t"
-                        FontSize="40"/>
+                                                     Time="{Binding Time}" Margin="20"
+                                                     Format="t"
+                                                     FontSize="40"/>
                     </StackLayout>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False">
@@ -78,7 +82,7 @@
                             <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
                         <Label Text="알람음"
-                               WidthRequest="50"
+                               TextColor="Black"
                                FontSize="20"
                                VerticalOptions="CenterAndExpand"
                                Margin="10, 0"/>
@@ -92,6 +96,7 @@
                                                      Command="{Binding ShowSettingToneCommand}"/>
                         <Switch Grid.Column="2" 
                                 IsToggled="{Binding Alarm.IsAlarmOn}" 
+                                Toggled="Switch_Toggled"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
                                 ThumbColor="SkyBlue"/>
@@ -99,22 +104,24 @@
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False" Height="60">
                     <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label Text="진동" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                        <Label TextColor="Black" Text="진동" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
                         <Switch IsToggled="{Binding Alarm.IsVibrateOn}" 
-                                    HorizontalOptions="EndAndExpand"
-                                    OnColor="LightSteelBlue"
-                                    ThumbColor="SkyBlue"/>
+                                Toggled="Switch_Toggled"
+                                HorizontalOptions="EndAndExpand"
+                                OnColor="LightSteelBlue"
+                                ThumbColor="SkyBlue"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
             <TableSection Title="5초 카운트 옵션" TextColor="DarkBlue">
                 <custom:TableViewCell AllowHighlight="False" Height="60">
                     <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label Text="카운트음" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                        <Label Text="카운트음" TextColor="Black"  Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
                         <Switch IsToggled="{Binding Alarm.IsCountOn}" 
-                                    HorizontalOptions="EndAndExpand"
-                                    OnColor="LightSteelBlue"
-                                    ThumbColor="SkyBlue"/>
+                                Toggled="Switch_Toggled"
+                                HorizontalOptions="EndAndExpand"
+                                OnColor="LightSteelBlue"
+                                ThumbColor="SkyBlue"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
