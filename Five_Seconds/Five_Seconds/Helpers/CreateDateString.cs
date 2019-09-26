@@ -66,9 +66,19 @@ namespace Five_Seconds.Helpers
 
         public static string CreateNextDateTimeString(Alarm alarm)
         {
-            if (alarm == null) return "다음 울릴 알람이 없습니다.";
+            DateTime nextTime;
 
-            var nextTime = alarm.NextAlarmTime;
+            if (alarm != null)
+            {
+                nextTime = alarm.NextAlarmTime;
+                bool isPastTime = nextTime.Subtract(DateTime.Now).Ticks < 0;
+
+                if (isPastTime) return "다음 알람이 없습니다.";
+            }
+            else
+            {
+                return "다음 알람이 없습니다.";
+            }
 
             var diffDays = nextTime.Date.Subtract(DateTime.Now.Date);
             string dateTimeString;

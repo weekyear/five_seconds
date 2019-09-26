@@ -196,7 +196,7 @@ namespace Five_Seconds.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("", "미션 이름을 깜빡하셨어요!", "확인");
             }
-            else if (Alarm.TimeOffset.Subtract(DateTime.Now).Ticks < 0)
+            else if (Alarm.TimeOffset.Subtract(DateTime.Now).Ticks < 0 && !DaysOfWeek.GetHasADayBeenSelected(Alarm.Days))
             {
                 await Application.Current.MainPage.DisplayAlert("", "이미 지난 시간으로 설정하셨어요!", "확인");
             }

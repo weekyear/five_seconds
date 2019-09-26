@@ -41,23 +41,30 @@ namespace Five_Seconds.Helpers
             var allDays = alarm.Days.AllDays;
 
             int addingDays = 8;
+            int diffDays;
+
+            bool isPastTime = alarm.Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0;
 
             for (int i = 0; i < 7; i++)
             {
                 if (allDays[i])
                 {
                     var today = (int)DateTime.Now.DayOfWeek;
-                    var diffDays = i - today >= 0 ? i - today : i - today + 7;
+
+                    if (isPastTime)
+                    {
+                        diffDays = i - today > 0 ? i - today : i - today + 7;
+                    }
+                    else
+                    {
+                        diffDays = i - today >= 0 ? i - today : i - today + 7;
+                    }
+                        
                     if (addingDays > diffDays)
                     {
                         addingDays = diffDays;
                     }
                 }
-            }
-
-            if (addingDays == 0 && alarm.Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
-            {
-                return 7;
             }
 
             return addingDays;
