@@ -15,6 +15,8 @@
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
+            <conv:BooleanSwitchColorConverter x:Key="BooleanSwitchColorConverter"/>
+            <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -83,39 +85,30 @@
                                 <ColumnDefinition Width="40*" />
                                 <ColumnDefinition Width="15*" />
                             </Grid.ColumnDefinitions>
-                            <custom:ListItemLabel IsActive="{Binding IsActive}" 
-                                                  IsActiveChanged="ListItemLabel_IsActiveChanged"
-                                                  Text="{Binding DateString}"
-                                                  TextColor="{StaticResource PrimaryTextColor}"
+                            <custom:ListItemLabel Text="{Binding DateString}"
+                                                  TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                                   FontSize="22"
                                                   VerticalOptions="EndAndExpand" />
                             <StackLayout Grid.Column="1" Orientation="Horizontal">
-                                <custom:ListItemLabel IsActive="{Binding IsActive}" 
-                                                      IsActiveChanged="ListItemLabel_IsActiveChanged" 
-                                                      Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
-                                                      TextColor="{StaticResource PrimaryTextColor}"
+                                <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
+                                                      TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                                       FontSize="15"
                                                       VerticalOptions="EndAndExpand"/>
-                                <custom:ListItemLabel IsActive="{Binding IsActive}" 
-                                                      IsActiveChanged="ListItemLabel_IsActiveChanged" 
-                                                      Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
-                                                      TextColor="{StaticResource PrimaryTextColor}"
+                                <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                                      TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                                       FontSize="25" />
                             </StackLayout>
-                            <custom:ListItemLabel IsActive="{Binding IsActive}" 
-                                                  IsActiveChanged="ListItemLabel_IsActiveChanged" 
-                                                  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                                  TextColor="{StaticResource PrimaryTextColor}"
+                            <custom:ListItemLabel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                                  TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                                   FontSize="35"
                                                   Text="{Binding Name}"
                                                   MaxLines="1"
                                                   FontAttributes="Bold" />
                             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                                     IsToggled="{Binding IsActive}"
-                                    Toggled="Switch_Toggled"
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
-                                    ThumbColor="SkyBlue"/>
+                                    ThumbColor="{Binding IsActive, Converter={StaticResource BooleanSwitchColorConverter}}"/>
                         </Grid>
                     </custom:CustomViewCell>
                 </DataTemplate>

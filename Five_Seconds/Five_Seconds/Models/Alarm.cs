@@ -1,13 +1,8 @@
 ﻿using Five_Seconds.Helpers;
 using Five_Seconds.Services;
-using Five_Seconds.Views;
 using SQLite;
-using SQLiteNetExtensions.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Five_Seconds.Models
@@ -49,7 +44,7 @@ namespace Five_Seconds.Models
                 }
                 else
                 {
-                    DependencyService.Get<IAlarmSetter>().DeleteAlarm(Id);
+                    App.Service.TurnOffAlarm(this);
                 }
             }
         }

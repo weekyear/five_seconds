@@ -13,6 +13,7 @@ namespace Five_Seconds.Services
         int SaveAlarm(Alarm alarm);
         int SaveAlarmAtLocal(Alarm alarm);
         void DeleteAllAlarms();
+        int TurnOffAlarm(Alarm alarm);
         void SendChangeAlarmsMessage();
         ObservableCollection<Alarm> GetAllAlarms();
         Alarm GetNextAlarm();

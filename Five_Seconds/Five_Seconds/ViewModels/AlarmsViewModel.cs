@@ -124,7 +124,9 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowModifyAlarm(Alarm alarm)
         {
+            App.IsInitFinished = false;
             await Navigation.PushAsync(new AlarmPage(Navigation, alarm));
+            App.IsInitFinished = true;
         }
 
         private async Task ShowAlarmRecord(Alarm alarm)

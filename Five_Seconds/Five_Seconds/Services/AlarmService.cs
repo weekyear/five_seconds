@@ -66,15 +66,19 @@ namespace Five_Seconds.Services
             }
 
             SendChangeAlarmsMessage();
-            //DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
+        }
+
+        public int TurnOffAlarm(Alarm alarm)
+        {
+            DependencyService.Get<IAlarmSetter>().DeleteAlarm(alarm.Id);
+            return SaveAlarmAtLocal(alarm);
         }
 
         public int SaveAlarm(Alarm alarm)
         {
             var id = SaveAlarmAtLocal(alarm);
             DependencyService.Get<IAlarmSetter>().SetAlarm(alarm);
-            //DependencyService.Get<IAlarmNotification>().UpdateNotification();
             return id;
         }
 
@@ -83,14 +87,15 @@ namespace Five_Seconds.Services
             alarm.DaysId = Repository.SaveDaysOfWeek(alarm.Days);
             Repository.SaveAlarm(alarm);
             UpdateAlarms();
-            //AddOrModifyAlarmToAlarms(alarm);
             SendChangeAlarmsMessage();
             return alarm.Id;
         }
 
         private void UpdateAlarms()
         {
+            App.IsInitFinished = false;
             Alarms = GetAllAlarms();
+            App.IsInitFinished = true;
         }
 
         public void DeleteAllAlarms()
