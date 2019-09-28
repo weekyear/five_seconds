@@ -89,7 +89,6 @@
     <Compile Include="Services\BootReceiver.cs" />
     <Compile Include="Services\CountDownAndroid.cs" />
     <Compile Include="Services\FileLocatorAndroid.cs" />
-    <Compile Include="Services\SpeechToText_Android.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />
@@ -212,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_add_alarm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_microphone.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

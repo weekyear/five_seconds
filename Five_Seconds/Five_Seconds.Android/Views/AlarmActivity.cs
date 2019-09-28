@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Runtime;
 using Android.Speech;
+using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
+using Java.Lang;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
@@ -18,15 +23,22 @@ using Button = Android.Widget.Button;
 namespace Five_Seconds.Droid
 {
     [Activity(Label = "5초의 알람", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class AlarmActivity : Activity
+    public class AlarmActivity : Activity, IRecognitionListener
     {
         IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
+        private SpeechRecognizer mSpeechRecognizer;
+        private Intent mSpeechRecognizerIntent;
+        const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
+        static readonly int RECORD_AUDIO_CODE = 43;
+
         private LinearLayout alarmLayout;
+        private LinearLayout recordingLayout;
         private Button tellmeButton;
         public TextView countTextView;
         private TextView alarmTextView;
+        private TextView pleaseRecordView;
         private EditText alarmEditText;
         private CountDown countDown;
 
@@ -48,23 +60,14 @@ namespace Five_Seconds.Droid
             base.OnCreate(savedInstanceState);
 
             Bundle bundle = Intent.Extras;
-            id = (int)bundle.Get("id");
-            isCountOn = (bool)bundle.Get("isCountOn");
+
+            GetDataFromBundle(bundle);
 
             if (id == -1)
             {
-                SetContentView(Resource.Layout.AlarmActivity);
-                SetControlsForCountActivity();
-                ShowCountActivity();
+                OnlyCountDown();
                 return;
             }
-
-            name = (string)bundle.Get("name");
-            toneName = (string)bundle.Get("toneName");
-            isAlarmOn = (bool)bundle.Get("isAlarmOn");
-            isVibrateOn = (bool)bundle.Get("isVibrateOn");
-            isRepeating = (bool)bundle.Get("isRepeating");
-            alarmVolume = (int)bundle.Get("alarmVolume");
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
@@ -77,6 +80,34 @@ namespace Five_Seconds.Droid
 
             AddWindowManagerFlags();
 
+            HandleAlarmAfterCalled();
+
+            CreateSpeechRecognizer();
+
+            if (bundle == null) return;
+        }
+
+        private void SetIsFailedCountDown()
+        {
+            Handler handler = new Handler();
+
+            handler.PostDelayed(() => SetIsFailedCountDown(), 600000);
+        }
+
+        private void SetIsSuccessFalse()
+        {
+
+        }
+
+        private void OnlyCountDown()
+        {
+            SetContentView(Resource.Layout.AlarmActivity);
+            SetControlsForCountActivity();
+            ShowCountActivity();
+        }
+
+        private void HandleAlarmAfterCalled()
+        {
             Alarm alarm;
 
             var alarmsRepo = App.AlarmsRepo;
@@ -98,21 +129,35 @@ namespace Five_Seconds.Droid
 
                 App.Service.SendChangeAlarmsMessage();
             }
+        }
 
-            if (bundle == null) return;
+        private void GetDataFromBundle(Bundle bundle)
+        {
+            id = (int)bundle.Get("id");
+            isCountOn = (bool)bundle.Get("isCountOn");
+            name = (string)bundle.Get("name");
+            toneName = (string)bundle.Get("toneName");
+            isAlarmOn = (bool)bundle.Get("isAlarmOn");
+            isVibrateOn = (bool)bundle.Get("isVibrateOn");
+            isRepeating = (bool)bundle.Get("isRepeating");
+            alarmVolume = (int)bundle.Get("alarmVolume");
         }
 
         private void SetControls()
         {
             alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
+            recordingLayout = FindViewById<LinearLayout>(Resource.Id.recordingLayout);
             tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
+            pleaseRecordView = FindViewById<TextView>(Resource.Id.pleaseRecordView);
             alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
 
-            tellmeButton.Click += TellmeButton_Click;
+            //tellmeButton.Click += TellmeButton_Click;
             countTextView.Text = "5.00 초";
             alarmTextView.Text = name;
+
+            tellmeButton.Click += StartListening_Click;
 
             alarmEditText.Enabled = false;
         }
@@ -137,18 +182,41 @@ namespace Five_Seconds.Droid
             Window.AddFlags(WindowManagerFlags.TurnScreenOn);
         }
 
-        
-
-        async void TellmeButton_Click(object sender, EventArgs e)
+        private void CreateSpeechRecognizer()
         {
-            _soundService?.StopAudio();
+            mSpeechRecognizer = SpeechRecognizer.CreateSpeechRecognizer(this);
+            mSpeechRecognizerIntent = new Intent(RecognizerIntent.ActionRecognizeSpeech);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraCallingPackage, Application.PackageName);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Speak now");
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
 
+            mSpeechRecognizer.SetRecognitionListener(this);
+        }
+
+        private void StartListening_Click(object sender, EventArgs e)
+        {
             if (!alarmEditText.Enabled)
             {
-                alarmEditText.Text = await WaitForSpeechToText();
-                alarmEditText.Enabled = true;
-                tellmeButton.Text = "5초 카운트!";
+                RequestRecordAudioPermission();
             }
+            else
+            {
+                HandleVoiceRecognitionResult();
+            }
+        }
+
+        private void HandleVoiceRecognitionResult()
+        {
+            mSpeechRecognizer?.StopListening();
+            recordingLayout.Visibility = ViewStates.Invisible;
+
+            alarmEditText.Enabled = true;
+            tellmeButton.Text = "5초 카운트!";
 
             var editText = alarmEditText.Text.Replace(" ", "");
             var textView = alarmTextView.Text.Replace(" ", "");
@@ -180,12 +248,6 @@ namespace Five_Seconds.Droid
             }
 
             SetCountDown();
-        }
-
-        async Task<string> WaitForSpeechToText()
-        {
-            var stt = new SpeechToText_Android();
-            return await stt.SpeechToTextAsync();
         }
 
         private void ShowAlertDoNotMatchText()
@@ -227,27 +289,6 @@ namespace Five_Seconds.Droid
             countTextView.Visibility = ViewStates.Visible;
         }
 
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            var VOICE = 10;
-            base.OnActivityResult(requestCode, resultCode, data);
-            if (requestCode == VOICE)
-            {
-                if (resultCode == Result.Ok)
-                {
-                    var matches = data.GetStringArrayListExtra(RecognizerIntent.ExtraResults);
-                    if (matches.Count != 0)
-                    {
-                        var textInput = matches[0];
-                        if (textInput.Length > 500)
-                            textInput = textInput.Substring(0, 500);
-                        SpeechToText_Android.SpeechText = textInput;
-                    }
-                }
-                SpeechToText_Android.autoEvent.Set();
-            }
-        }
-
         private async void SetCountDown()
         {
             await Task.Delay(330);
@@ -257,6 +298,150 @@ namespace Five_Seconds.Droid
 
         public override void OnBackPressed()
         {
+        }
+
+        public void OnBeginningOfSpeech()
+        {
+        }
+
+        public void OnBufferReceived(byte[] buffer)
+        {
+        }
+
+        public void OnEndOfSpeech()
+        {
+        }
+
+        public void OnError(SpeechRecognizerError error)
+        {
+            var err = error;
+            var intErr = (int)err;
+            string message = string.Empty;
+
+            switch (error)
+            {
+
+                case SpeechRecognizerError.Audio:
+                    message = "오디오 에러입니다.";
+                    break;
+
+                case SpeechRecognizerError.Client:
+                    message = "클라이언트 에러입니다.";
+                    break;
+
+                case SpeechRecognizerError.InsufficientPermissions:
+                    message = "오디오 녹음 권한을 허용해주세요";
+                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    break;
+
+                case SpeechRecognizerError.Network:
+                    message = "네트워크 에러입니다. 네트워크 연결 확인을 해주세요.";
+                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    break;
+
+                case SpeechRecognizerError.NetworkTimeout:
+                    message = "네트워크 시간초과입니다.";
+                    break;
+
+                case SpeechRecognizerError.NoMatch:
+                    message = "해당 음성 녹음 결과가 없습니다."; ;
+                    break;
+
+                case SpeechRecognizerError.RecognizerBusy:
+                    message = "다시 시도해주세요.";
+                    break;
+
+                case SpeechRecognizerError.Server:
+                    message = "서버에 문제가 있습니다. 텍스트 창에 해야할 일을 적어주세요."; ;
+                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    break;
+
+                case SpeechRecognizerError.SpeechTimeout:
+                    message = "음성 녹음 시간이 초과되었습니다. 텍스트 창에 해야할 일을 적어주세요";
+                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    break;
+
+                default:
+                    message = "알수없음";
+                    break;
+            }
+        }
+
+        public void OnEvent(int eventType, Bundle @params)
+        {
+        }
+
+        public void OnPartialResults(Bundle partialResults)
+        {
+            IList<string> matches = partialResults.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
+            pleaseRecordView.Text = matches[0];
+            pleaseRecordView.SetTextColor(Android.Graphics.Color.ParseColor("#263238"));
+        }
+
+        public void OnReadyForSpeech(Bundle @params)
+        {
+        }
+
+        public void OnResults(Bundle results)
+        {
+            IList<string> matches = results.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
+            alarmEditText.Text = matches[0];
+            HandleVoiceRecognitionResult();
+        }
+
+        public void OnRmsChanged(float rmsdB)
+        {
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            if (requestCode == MY_PERMISSIONS_RECORD_AUDIO)
+            {
+                if (grantResults[0] != Permission.Granted)
+                {
+                    Toast.MakeText(ApplicationContext,
+                            "Application will not have audio on record", ToastLength.Short).Show();
+                }
+                else
+                {
+                    StartVoiceRecognition();
+                }
+            }
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public void RequestRecordAudioPermission()
+        {
+            if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
+            {
+                // Should we show an explanation?
+                if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
+                {
+                    // Explain to the user why we need to read the contacts
+                    Toast.MakeText(this, "This app needs to record audio through the microphone....", ToastLength.Long).Show();
+                }
+
+                RequestPermissions(new string[] { Manifest.Permission.RecordAudio }, MY_PERMISSIONS_RECORD_AUDIO);
+
+                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                // app-defined int constant that should be quite unique
+
+                return;
+            }
+            else if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) == Permission.Granted)
+            {
+                StartVoiceRecognition();
+            }
+        }
+
+        private void StartVoiceRecognition()
+        {
+            _soundService?.StopAudio();
+            recordingLayout.Visibility = ViewStates.Visible;
+            mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
         }
 
         private class CountDown : CountDownTimer

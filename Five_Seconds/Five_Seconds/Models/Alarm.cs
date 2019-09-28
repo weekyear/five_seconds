@@ -18,6 +18,7 @@ namespace Five_Seconds.Models
         public double Percentage { get; set; }
 
         public bool IsActive { get; set; } = true;
+        public bool IsSuccess { get; set; } = false;
 
         public void OnIsActiveChanged()
         {
