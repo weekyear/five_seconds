@@ -48,10 +48,7 @@ namespace Five_Seconds.Droid.Services
 
         public void DeleteAllAlarms(List<Alarm> alarms)
         {
-            foreach (Alarm alarm in alarms)
-            {
-                DeleteAlarm(alarm.Id);
-            }
+            alarms.ForEach((alarm) => DeleteAlarm(alarm.Id));
         }
     }
 }

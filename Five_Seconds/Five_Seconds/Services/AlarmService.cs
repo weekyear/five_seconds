@@ -30,8 +30,9 @@ namespace Five_Seconds.Services
         private List<Alarm> AssignDaysToAlarms()
         {
             var alarms = Repository.AlarmsFromDB;
+            var daysOfWeeks = Repository.DaysOfWeeksFromDB;
 
-            foreach (var days in Repository.DaysOfWeeksFromDB)
+            foreach (var days in daysOfWeeks)
             {
                 for (int i = 0; i < alarms.Count; i++)
                 {
@@ -143,10 +144,9 @@ namespace Five_Seconds.Services
         private ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
         {
             var collection = new ObservableCollection<T>();
-            foreach (var item in list)
-            {
-                collection.Add(item);
-            }
+
+            list.ForEach((item) => collection.Add(item));
+
             return collection;
         }
     }

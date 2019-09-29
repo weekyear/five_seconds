@@ -44,12 +44,9 @@ namespace Five_Seconds.Repository
                 new AlarmTone("Sci-fi", "sci_fi.mp3")
             };
 
-            var allTones = GetAllTones();
+            var allTones = GetAllTones() as List<AlarmTone>;
 
-            foreach (var alarmTone in allTones)
-            {
-                defaultTones.Add(alarmTone);
-            }
+            allTones.ForEach((tone) => defaultTones.Add(tone));
 
             return defaultTones;
         }
