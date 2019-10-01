@@ -31,6 +31,8 @@ namespace Five_Seconds.Models
 
         public bool IsSuccess { get; set; }
 
+        public Record() { }
+
         public Record(Alarm alarm, bool isSuccess)
         {
             AlarmId = alarm.Id;

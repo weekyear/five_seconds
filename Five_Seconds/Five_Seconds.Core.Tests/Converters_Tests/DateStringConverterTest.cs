@@ -8,12 +8,12 @@ namespace Five_Seconds.Core.Tests.Converters_Tests
     [TestFixture]
     public class RecordDateStringConverterTest
     {
-        private RecordDateStringConverter recordDateStringConverter;
+        private SelectedMonthStringConverter recordDateStringConverter;
 
         [SetUp]
         public void Setup()
         {
-            recordDateStringConverter = new RecordDateStringConverter();
+            recordDateStringConverter = new SelectedMonthStringConverter();
         }
         
         [Test]
@@ -43,7 +43,7 @@ namespace Five_Seconds.Core.Tests.Converters_Tests
         {
             // Arrange
             object date = new DateTime(1994, 2, 12, 13, 20, 0);
-            MethodInfo methodInfo = typeof(RecordDateStringConverter).GetMethod("DateToString", BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo methodInfo = typeof(SelectedMonthStringConverter).GetMethod("DateToString", BindingFlags.NonPublic | BindingFlags.Instance);
             object[] parameters = { date };
 
             // Act //

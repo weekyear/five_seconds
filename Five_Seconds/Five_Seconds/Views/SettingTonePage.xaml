@@ -7,7 +7,8 @@
 			 Title="벨소리 설정"
              mc:Ignorable="d"
              x:Name="tonePage"
-             x:Class="Five_Seconds.Views.SettingTonePage">
+             x:Class="Five_Seconds.Views.SettingTonePage"
+             BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
             <DataTemplate x:Key="DefaultTemplate">
@@ -21,9 +22,8 @@
                                 Margin="20"/>
                             <custom:PlayButton
                                 HorizontalOptions="EndAndExpand"
-                                BackgroundColor="Transparent"
+                                BackgroundColor="White"
                                 IsPlaying="{Binding IsPlaying}"
-                                IsPlayingChanged="PlayButton_IsPlayingChanged"
                                 Clicked="PlayButton_IsPlayingChanged"
                                 ImageSource="ic_play"
                                 ImageSourcePlay="ic_play"

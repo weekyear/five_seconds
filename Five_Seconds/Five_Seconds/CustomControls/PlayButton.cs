@@ -57,7 +57,17 @@ namespace Five_Seconds.CustomControls
         {
             // Property changed implementation goes here
             var button = (PlayButton)bindable;
-            button.IsPlayingChanged?.Invoke(button, null);
+
+            if (button.IsPlaying)
+            {
+                button.ImageSource = button.ImageSourcePause;
+            }
+            else
+            {
+                button.ImageSource = button.ImageSourcePlay;
+            }
+
+            //button.IsPlayingChanged?.Invoke(button, null);
         }
     }
 }

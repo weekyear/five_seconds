@@ -31,7 +31,17 @@ namespace Five_Seconds.CustomControls
         {
             // Property changed implementation goes here
             var label = (ListItemLabel)bindable;
-            label.IsActiveChanged?.Invoke(label, null);
+
+            if (label.IsActive)
+            {
+                label.TextColor = Color.Black;
+            }
+            else
+            {
+                label.TextColor = Color.GhostWhite;
+            }
+            
+            //label.IsActiveChanged?.Invoke(label, null);
         }
     }
 }

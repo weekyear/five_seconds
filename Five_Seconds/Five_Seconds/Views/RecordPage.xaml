@@ -7,27 +7,52 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              x:Class="Five_Seconds.Views.RecordPage"
              mc:Ignorable="d"
-             Title="Alarm Record">
+             Title="알람 기록">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:RecordDateStringConverter x:Key="RecordDateStringConverter"/>
-            <conv:RecordStringConverter x:Key="RecordStringConverter"/>
-            <conv:SuccessStringConverter x:Key="SuccessStringConverter"/>
+            <conv:SelectedMonthStringConverter x:Key="SelectedMonthStringConverter"/>
+            <conv:StartDateOfWeekStringConverter x:Key="StartDateOfWeekStringConverter"/>
+            <conv:PercentStringConverter x:Key="PercentStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <StackLayout BackgroundColor="White">
-            <ListView x:Name="CollectionList" 
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Orientation="Vertical">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0, 10">
+                <ImageButton Source="ic_left.png"
+                             Margin="10, 0"
+                             BackgroundColor="{StaticResource BackgroundColor}"
+                             WidthRequest="30" HeightRequest="30"
+                             HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand"
+                             Command="{Binding PreviousMonthCommand}"/>
+                <Label Text="{Binding SelectedMonth, Converter={StaticResource SelectedMonthStringConverter}}"
+                       TextColor="Black"
+                       FontSize="25" />
+                <ImageButton Source="ic_right.png"
+                             Margin="10, 0"
+                             BackgroundColor="{StaticResource BackgroundColor}"
+                             WidthRequest="30" HeightRequest="30"
+                             HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand"
+                             Command="{Binding NextMonthCommand}"/>
+            </StackLayout>
+            <ListView x:Name="ListWeekRecords" 
                       Margin="10" 
-                      RowHeight="60" 
-                      ItemsSource="{Binding Records}">
+                      RowHeight="100"
+                      HasUnevenRows="False"
+                      ItemsSource="{Binding WeekRecords}"
+                      ItemTapped="WeekRecords_ItemTapped"
+                      ItemSelected="WeekRecords_ItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <custom:CustomViewCell 
-                            SelectedBackgroundColor="#ADF3BE">
+                            SelectedBackgroundColor="#ADF3BE"
+                            IsEnabled="{Binding HasRecord}">
                             <Grid Padding="10"
                                   VerticalOptions="CenterAndExpand">
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -35,21 +60,28 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Date, Converter={StaticResource RecordDateStringConverter}}"
-                                       TextColor="Black"
-                                       FontSize="25"
-                                       FontAttributes="Bold" />
-                                <Label Grid.Column="1"
-                                       HorizontalTextAlignment="Center"
-                                       TextColor="Black"
-                                       FontSize="25"
-                                       Text="{Binding RecordTime, Converter={StaticResource RecordStringConverter}}" />
-                                <Label Grid.Column="2"
-                                       TextColor="Blue"
-                                       FontSize="25"
-                                       FontAttributes="Bold"
-                                       HorizontalTextAlignment="Center"
-                                       Text="{Binding IsSuccess, Converter={StaticResource SuccessStringConverter}}"/>
+                                <custom:ListItemLabel 
+                                    IsActive="{Binding HasRecord}"
+                                    Text="{Binding StartDateOfWeek, Converter={StaticResource StartDateOfWeekStringConverter}}"
+                                    TextColor="LightSlateGray"
+                                    FontSize="25"
+                                    FontAttributes="Bold" />
+                                <custom:ListItemLabel 
+                                    Grid.Row="1"
+                                    IsActive="{Binding HasRecord}"
+                                    Text="{Binding NumOfDayRecords}"
+                                    TextColor="LightSlateGray"
+                                    FontSize="22" />
+                                <custom:PercentLabel  
+                                    Grid.Column="2"
+                                    Grid.RowSpan="2"
+                                    Percent="{Binding SuccessRate}"
+                                    FontAttributes="Bold"
+                                    HorizontalTextAlignment="Center"
+                                    VerticalOptions="CenterAndExpand"
+                                    FontSize="28"
+                                    TextColor="LightSlateGray"
+                                    Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                             </Grid>
                         </custom:CustomViewCell>
                     </DataTemplate>

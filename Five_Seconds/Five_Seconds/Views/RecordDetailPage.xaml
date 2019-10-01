@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             mc:Ignorable="d"
+             Title="{Binding StartDateOfWeek, Converter={StaticResource StartDateOfWeekStringConverter}}"
+             x:Class="Five_Seconds.Views.RecordDetailPage">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:StartDateOfWeekStringConverter x:Key="StartDateOfWeekStringConverter"/>
+            <conv:PercentStringConverter x:Key="PercentStringConverter"/>
+            <conv:SuccessStringConverter x:Key="SuccessStringConverter"/>
+            <conv:TimeStringConverter x:Key="TimeStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Orientation="Vertical">
+            <ListView x:Name="DayRecords" 
+                      Margin="10" 
+                      RowHeight="60" 
+                      ItemsSource="{Binding WeekRecords}"
+                      VerticalOptions="CenterAndExpand"
+                      IsGroupingEnabled="True">
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <custom:CustomViewCell>
+                            <Grid HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="CenterAndExpand"
+                                  Margin="10, 0, 10, 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <custom:ListItemLabel 
+                                    IsActive="{Binding HasRecord}"
+                                    Text="{Binding DayOfWeek}"
+                                    TextColor="LightSlateGray"
+                                    FontSize="25"
+                                    VerticalOptions="CenterAndExpand"
+                                    FontAttributes="Bold"
+                                    Margin="10, 0"/>
+                                <custom:PercentLabel 
+                                    Grid.Column="2" 
+                                    Percent="{Binding SuccessRate}"
+                                    Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"
+                                    TextColor="LightSlateGray"
+                                    FontSize="25"
+                                    FontAttributes="Bold"
+                                    VerticalOptions="CenterAndExpand"
+                                    Margin="10, 0"/>
+                            </Grid>
+                        </custom:CustomViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <custom:CustomViewCell>
+                            <Grid HorizontalOptions="FillAndExpand"
+                                  VerticalOptions="CenterAndExpand"
+                                  Margin="10, 0, 10, 0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="90"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                       TextColor="Black"
+                                       FontSize="20"
+                                       VerticalOptions="CenterAndExpand"
+                                       Margin="10, 0"/>
+                                <Label Grid.Column="1" 
+                                       Text="{Binding Name}"
+                                       TextColor="Black"
+                                       FontSize="20"
+                                       VerticalOptions="CenterAndExpand"
+                                       Margin="10, 0"/>
+                                <custom:SuccessLabel 
+                                    Grid.Column="2" 
+                                    IsSuccess="{Binding IsSuccess}"
+                                    Text="{Binding IsSuccess, Converter={StaticResource SuccessStringConverter}}"
+                                    TextColor="DarkRed"
+                                    FontSize="20"
+                                    VerticalOptions="CenterAndExpand"
+                                    Margin="10, 0"/>
+                            </Grid>
+                        </custom:CustomViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

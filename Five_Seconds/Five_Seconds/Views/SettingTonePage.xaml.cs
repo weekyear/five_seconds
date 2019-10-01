@@ -46,14 +46,9 @@ namespace Five_Seconds.Views
             var button = sender as PlayButton;
             var tone = button.BindingContext as AlarmTone;
 
-            if (tone.IsPlaying)
-            {
-                button.ImageSource = button.ImageSourcePause;
-            }
-            else
-            {
-                button.ImageSource = button.ImageSourcePlay;
-            }
+            tone.IsPlaying = !tone.IsPlaying;
+
+            //button.IsPlaying = !button.IsPlaying;
         }
     }
 }

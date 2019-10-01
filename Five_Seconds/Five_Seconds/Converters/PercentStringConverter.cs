@@ -25,7 +25,11 @@ namespace Five_Seconds.Converters
         }
         private object PercentToString(object value)
         {
-            var strPercent = $"{((double)value * 100).ToString()}%";
+            var doublePercent = (double)value;
+
+            if (doublePercent == -1) return "- %";
+
+            var strPercent = $"{string.Format("{0:0.##}", doublePercent * 100)}%";
             return strPercent;
         }
     }

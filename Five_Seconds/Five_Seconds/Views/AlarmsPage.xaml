@@ -21,16 +21,16 @@
     </ContentPage.Resources>
 
     <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid Margin="0, 20, 0, 10" HorizontalOptions="CenterAndExpand">
+        <Grid Margin="10, 20, 10, 10" HorizontalOptions="CenterAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80*" />
-                <ColumnDefinition Width="10*" />
-                <ColumnDefinition Width="10*" />
+                <ColumnDefinition Width="76*" />
+                <ColumnDefinition Width="12*" />
+                <ColumnDefinition Width="12*" />
             </Grid.ColumnDefinitions>
             <Label Grid.ColumnSpan="3" 
                    Text="5초의 알람"
@@ -46,21 +46,21 @@
                          Margin="10, 0"
                          Source="ic_five_seconds_mini.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
-                         WidthRequest="30" HeightRequest="30"
+                         WidthRequest="32" HeightRequest="32"
                          HorizontalOptions="StartAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowCountDownCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="1"
                          Source="ic_plus.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
-                         WidthRequest="30" HeightRequest="30"
+                         WidthRequest="32" HeightRequest="32"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowAddAlarmCommand}"/>
             <ImageButton Grid.Row="2" Grid.Column="2"
                          Source="ic_menu_vertical.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
-                         WidthRequest="30" HeightRequest="30"
+                         WidthRequest="32" HeightRequest="32"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowMainMenuCommand}"/>

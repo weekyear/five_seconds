@@ -90,9 +90,6 @@ namespace Five_Seconds.ViewModels
                 case "수정":
                     await ShowModifyAlarm(alarm);
                     break;
-                case "Record":
-                    await ShowAlarmRecord(alarm);
-                    break;
                 case "삭제":
                     Service.DeleteAlarm(alarm);
                     break;
@@ -101,7 +98,7 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowMainMenu()
         {
-            string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법" };
+            string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법", "알람 기록" };
 
             string action = await MessageBoxService.ShowActionSheet("메뉴", "취소", null, actionSheetBtns);
 
@@ -119,6 +116,9 @@ namespace Five_Seconds.ViewModels
                     var welcomePage = AppIntro.CreateAppIntro();
                     await Navigation.PushModalAsync(welcomePage);
                     break;
+                case "알람 기록":
+                    await Navigation.PushAsync(new RecordPage(Navigation));
+                    break;
             }
         }
 
@@ -127,11 +127,6 @@ namespace Five_Seconds.ViewModels
             App.IsInitFinished = false;
             await Navigation.PushAsync(new AlarmPage(Navigation, alarm));
             App.IsInitFinished = true;
-        }
-
-        private async Task ShowAlarmRecord(Alarm alarm)
-        {
-            await Navigation.PushAsync(new RecordPage(new RecordViewModel(base.Navigation, alarm)));
         }
     }
 }

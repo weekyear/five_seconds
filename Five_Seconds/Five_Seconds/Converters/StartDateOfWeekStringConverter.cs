@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class RecordDateStringConverter : IValueConverter
+    public class StartDateOfWeekStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,12 +19,17 @@ namespace Five_Seconds.Converters
         }
         private object DateToString(object value)
         {
-            if ((DateTime)value == DateTime.MinValue)
+            var startDate = (DateTime)value;
+
+            if (startDate == DateTime.MinValue)
             {
                 return "없음";
             }
-            var dateTime = string.Format(((DateTime)value).ToShortDateString());
-            return dateTime;
+
+            var endDate = startDate.AddDays(6);
+
+            var dateOfWeekString = $"{startDate.Month}.{startDate.Day} ~ {endDate.Month}.{endDate.Day}";
+            return dateOfWeekString;
         }
     }
 }
