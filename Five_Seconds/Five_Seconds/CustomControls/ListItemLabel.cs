@@ -38,7 +38,7 @@ namespace Five_Seconds.CustomControls
             }
             else
             {
-                label.TextColor = Color.GhostWhite;
+                label.TextColor = Color.LightSlateGray;
             }
             
             //label.IsActiveChanged?.Invoke(label, null);

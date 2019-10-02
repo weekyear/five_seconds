@@ -13,9 +13,11 @@ namespace Five_Seconds.ViewModels
 {
     public class RecordDetailViewModel : BaseViewModel
     {
-        public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord) : base(navigation)
+        public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords) : base(navigation)
         {
             ConstructCommand();
+
+            Records = allRecords;
 
             WeekRecord = weekRecord;
 
@@ -26,41 +28,101 @@ namespace Five_Seconds.ViewModels
         private void ConstructCommand()
         {
             CloseCommand = new Command(async () => await ClosePopup());
+            PreviousWeekCommand = new Command(() => PreviousWeek());
+            NextWeekCommand = new Command(() => NextWeek());
         }
 
         // Command
         public Command CloseCommand { get; set; }
-        public Command PreviousMonthCommand { get; set; }
-        public Command NextMonthCommand { get; set; }
+        public Command PreviousWeekCommand { get; set; }
+        public Command NextWeekCommand { get; set; }
 
         // Property
+
+        public List<Record> Records { get; set; }
 
         public WeekRecord WeekRecord
         {
             get; set;
         }
 
-        public DateTime StartDateOfWeek
+        public DateTime SelectedWeek
         {
             get { return WeekRecord.StartDateOfWeek; }
+            set
+            {
+                if (WeekRecord.StartDateOfWeek.Day == value.Day) return;
+                WeekRecord.StartDateOfWeek = value;
+                UpdateWeekRecord(value);
+                OnPropertyChanged(nameof(SelectedWeek));
+                OnPropertyChanged(nameof(WeekRecord));
+            }
         }
 
         public ObservableCollection<DayRecordList> WeekRecords { get; set; } = new ObservableCollection<DayRecordList>();
+        public double WeekSuccessRate
+        {
+            get
+            {
+                var dayRecords = WeekRecord.DayRecords;
+
+                if (dayRecords.Count == 0) return -1;
+                var successList = dayRecords.FindAll((r) => r.IsSuccess == true);
+                return (double)successList.Count / dayRecords.Count;
+            }
+        }
 
         private async Task ClosePopup()
         {
             await Navigation.PopAsync(true);
         }
 
+        private void PreviousWeek()
+        {
+            SelectedWeek = SelectedWeek.AddDays(-7);
+
+            SetDayRecords();
+        }
+
+        private void NextWeek()
+        {
+            SelectedWeek = SelectedWeek.AddDays(7);
+
+            SetDayRecords();
+        }
+
+        private void UpdateWeekRecord(DateTime selectedWeek)
+        {
+            var weekRecords = new ObservableCollection<WeekRecord>();
+            var startDateOfSelectedWeek = selectedWeek;
+            var startDateOfWeek = new DateTime(startDateOfSelectedWeek.Year, startDateOfSelectedWeek.Month, startDateOfSelectedWeek.Day, 0, 0, 0);
+
+            while (startDateOfWeek.Date.DayOfWeek != DayOfWeek.Monday) startDateOfWeek = startDateOfWeek.AddDays(-1);
+
+            var startDateOfMonth = startDateOfWeek;
+
+            var RecordsOfWeek = Records.FindAll((r) => r.TimeOffset.DateTime.Ticks > startDateOfWeek.Ticks && r.TimeOffset.DateTime.Ticks <= startDateOfWeek.AddDays(7).Ticks);
+
+            var weekRecord = new WeekRecord()
+            {
+                StartDateOfWeek = startDateOfWeek,
+                DayRecords = RecordsOfWeek
+            };
+
+            WeekRecord = weekRecord;
+        }
+
         private void SetDayRecords()
         {
-            var monList = new DayRecordList() { DayOfWeek = "월요일" };
-            var tueList = new DayRecordList() { DayOfWeek = "화요일" };
-            var wedList = new DayRecordList() { DayOfWeek = "수요일" };
-            var thuList = new DayRecordList() { DayOfWeek = "목요일" };
-            var friList = new DayRecordList() { DayOfWeek = "금요일" };
-            var satList = new DayRecordList() { DayOfWeek = "토요일" };
-            var sunList = new DayRecordList() { DayOfWeek = "일요일" };
+            var startDateOfSelectedWeek = SelectedWeek;
+
+            var monList = new DayRecordList() { DayOfWeek = "월", Date = startDateOfSelectedWeek };
+            var tueList = new DayRecordList() { DayOfWeek = "화", Date = startDateOfSelectedWeek.AddDays(1) };
+            var wedList = new DayRecordList() { DayOfWeek = "수", Date = startDateOfSelectedWeek.AddDays(2) };
+            var thuList = new DayRecordList() { DayOfWeek = "목", Date = startDateOfSelectedWeek.AddDays(3) };
+            var friList = new DayRecordList() { DayOfWeek = "금", Date = startDateOfSelectedWeek.AddDays(4) };
+            var satList = new DayRecordList() { DayOfWeek = "토", Date = startDateOfSelectedWeek.AddDays(5) };
+            var sunList = new DayRecordList() { DayOfWeek = "일", Date = startDateOfSelectedWeek.AddDays(6) };
 
             foreach (var record in WeekRecord.DayRecords)
             {
@@ -90,10 +152,20 @@ namespace Five_Seconds.ViewModels
                 }
             }
 
-            WeekRecords = new ObservableCollection<DayRecordList>
+            var dayRecordList = new ObservableCollection<DayRecordList>
             {
                 monList, tueList, wedList, thuList, friList, satList, sunList
             };
+
+            WeekRecords.Clear();
+
+            foreach (var dayList in dayRecordList)
+            {
+                if (dayList.Count != 0)
+                {
+                    WeekRecords.Add(dayList);
+                }
+            }
         }
 
         public class DayRecordList : List<Record>
@@ -104,6 +176,8 @@ namespace Five_Seconds.ViewModels
             {
                 get { return $"{DayRecords.Count} 개"; }
             }
+
+            public DateTime Date { get; set; }
 
             public bool HasRecord
             {

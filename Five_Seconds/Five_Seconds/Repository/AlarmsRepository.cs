@@ -82,7 +82,7 @@ namespace Five_Seconds.Repository
 
         // Record
 
-        private Record GetRecord(int id)
+        public Record GetRecord(int id)
         {
             return ItemDatabase.GetObject<Record>(id);
         }
@@ -92,12 +92,12 @@ namespace Five_Seconds.Repository
             return ItemDatabase.GetObjects<Record>();
         }
 
-        public int SaveRecords(Record record)
+        public int SaveRecord(Record record)
         {
             return ItemDatabase.SaveObject(record);
         }
 
-        public int DeleteRecords(int id)
+        public int DeleteRecord(int id)
         {
             return ItemDatabase.DeleteObject<Record>(id);
         }

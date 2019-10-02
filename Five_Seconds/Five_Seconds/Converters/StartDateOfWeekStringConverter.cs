@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class StartDateOfWeekStringConverter : IValueConverter
+    public class SelectedWeekStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

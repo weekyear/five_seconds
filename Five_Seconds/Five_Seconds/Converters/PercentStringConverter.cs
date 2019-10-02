@@ -29,7 +29,7 @@ namespace Five_Seconds.Converters
 
             if (doublePercent == -1) return "- %";
 
-            var strPercent = $"{string.Format("{0:0.##}", doublePercent * 100)}%";
+            var strPercent = $"{string.Format("{0:0.##}", Math.Round(doublePercent * 100))}%";
             return strPercent;
         }
     }

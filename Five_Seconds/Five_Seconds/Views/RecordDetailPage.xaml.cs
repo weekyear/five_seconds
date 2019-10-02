@@ -1,4 +1,5 @@
 ﻿using Five_Seconds.CustomControls;
+using Five_Seconds.Models;
 using Five_Seconds.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,9 +19,9 @@ namespace Five_Seconds.Views
     public partial class RecordDetailPage : ContentPage
     {
         RecordDetailViewModel viewModel;
-        public RecordDetailPage(INavigation navigation, WeekRecord weekRecord)
+        public RecordDetailPage(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords)
         {
-            viewModel = new RecordDetailViewModel(navigation, weekRecord);
+            viewModel = new RecordDetailViewModel(navigation, weekRecord, allRecords);
 
             InitializeComponent();
 

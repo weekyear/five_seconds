@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
+using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Java.Lang;
 using Plugin.CurrentActivity;
@@ -51,6 +52,9 @@ namespace Five_Seconds.Droid
         private bool isRepeating;
         private int alarmVolume;
 
+        Alarm alarm;
+        IAlarmsRepository alarmsRepo;
+
         public AlarmActivity()
         {
         }
@@ -84,6 +88,8 @@ namespace Five_Seconds.Droid
 
             CreateSpeechRecognizer();
 
+            SetIsFailedCountDown();
+
             if (bundle == null) return;
         }
 
@@ -91,12 +97,22 @@ namespace Five_Seconds.Droid
         {
             Handler handler = new Handler();
 
-            handler.PostDelayed(() => SetIsFailedCountDown(), 600000);
+            // 10분 경과
+            //handler.PostDelayed(() => SetIsFailedCountDown(), 600000);
+            // 1분 경과
+            handler.PostDelayed(() => SetIsSuccessFalse(), 60000);
         }
 
         private void SetIsSuccessFalse()
         {
+            var record = new Record(alarm, false);
+            alarmsRepo.SaveRecord(record);
+        }
 
+        private void SetIsSuccessTrue()
+        {
+            var record = new Record(alarm, true);
+            alarmsRepo.SaveRecord(record);
         }
 
         private void OnlyCountDown()
@@ -108,9 +124,8 @@ namespace Five_Seconds.Droid
 
         private void HandleAlarmAfterCalled()
         {
-            Alarm alarm;
 
-            var alarmsRepo = App.AlarmsRepo;
+            alarmsRepo = App.AlarmsRepo;
 
             if (alarmsRepo != null)
             {
@@ -229,6 +244,7 @@ namespace Five_Seconds.Droid
 
                 ShowCountActivity();
 
+                SetIsSuccessTrue();
             }
             else
             {

@@ -34,11 +34,9 @@ namespace Five_Seconds.Repository
         void DeleteAllDaysOfWeeks();
 
         // Record
-
-        int SaveRecords(Record record);
-
-        int DeleteRecords(int id);
-
+        Record GetRecord(int id);
+        int SaveRecord(Record record);
+        int DeleteRecord(int id);
         void DeleteAllRecords();
 
         // NextAlarmId

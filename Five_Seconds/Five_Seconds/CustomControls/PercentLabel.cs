@@ -40,11 +40,11 @@ namespace Five_Seconds.CustomControls
             }
             else if (successRate > 0.5)
             {
-                label.TextColor = Color.Yellow;
+                label.TextColor = Color.DarkOrange;
             }
             else if (successRate == -1)
             {
-                label.TextColor = Color.GhostWhite;
+                label.TextColor = Color.LightSlateGray;
             }
             else
             {

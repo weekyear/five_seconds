@@ -6,6 +6,7 @@ using Five_Seconds.Views;
 using Five_Seconds.Services;
 using System;
 using Five_Seconds.Helpers;
+using System.Collections.Generic;
 
 namespace Five_Seconds.ViewModels
 {
@@ -49,7 +50,7 @@ namespace Five_Seconds.ViewModels
         public Command ShowMainMenuCommand { get; set; }
         public ObservableCollection<Alarm> Alarms
         {
-            get => Service.Alarms;
+            get => ConvertListToObservableCollection(Service.Alarms);
         }
 
         public string NextAlarmString
@@ -127,6 +128,15 @@ namespace Five_Seconds.ViewModels
             App.IsInitFinished = false;
             await Navigation.PushAsync(new AlarmPage(Navigation, alarm));
             App.IsInitFinished = true;
+        }
+
+        private ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
+        {
+            var collection = new ObservableCollection<T>();
+
+            list.ForEach((item) => collection.Add(item));
+
+            return collection;
         }
     }
 }

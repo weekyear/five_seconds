@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class SelectedMonthStringConverter : IValueConverter
+    public class DateStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -15,7 +13,9 @@ namespace Five_Seconds.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DateTime.Parse(value.ToString());
+            var timeValue = value as string;
+            DateTime _time = DateTime.Parse(timeValue);
+            return _time;
         }
         private object DateToString(object value)
         {
@@ -23,12 +23,10 @@ namespace Five_Seconds.Converters
 
             if (dateTime == DateTime.MinValue)
             {
-                return "없음";
+                return "날짜 없음";
             }
-
-
-            var monthString = $"{dateTime.Year}년 {dateTime.Month}월 알람";
-            return monthString;
+            var dateString = $"{dateTime.Month}월 {dateTime.Day}일";
+            return dateString;
         }
     }
 }

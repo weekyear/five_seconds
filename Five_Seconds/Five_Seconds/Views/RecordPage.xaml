@@ -11,34 +11,57 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:SelectedMonthStringConverter x:Key="SelectedMonthStringConverter"/>
-            <conv:StartDateOfWeekStringConverter x:Key="StartDateOfWeekStringConverter"/>
+            <conv:SelectedWeekStringConverter x:Key="SelectedWeekStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     
     <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Orientation="Vertical">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="0, 10">
-                <ImageButton Source="ic_left.png"
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" 
+                     Orientation="Vertical">
+            <Grid VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ImageButton Grid.RowSpan="2" Source="ic_left.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
-                             WidthRequest="30" HeightRequest="30"
+                             WidthRequest="40" HeightRequest="40"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding PreviousMonthCommand}"/>
-                <Label Text="{Binding SelectedMonth, Converter={StaticResource SelectedMonthStringConverter}}"
+                <Label Grid.Column="1" 
+                       Text="{Binding SelectedMonth, Converter={StaticResource SelectedMonthStringConverter}}"
                        TextColor="Black"
-                       FontSize="25" />
-                <ImageButton Source="ic_right.png"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"
+                       FontSize="28" />
+                <custom:PercentLabel  
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Percent="{Binding MonthSuccessRate}"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    VerticalOptions="CenterAndExpand"
+                    FontSize="32"
+                    TextColor="LightSlateGray"
+                    Text="{Binding MonthSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
+                <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
-                             WidthRequest="30" HeightRequest="30"
+                             WidthRequest="40" HeightRequest="40"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextMonthCommand}"/>
-            </StackLayout>
+            </Grid>
             <ListView x:Name="ListWeekRecords" 
-                      Margin="10" 
+                      Margin="5, 0" 
                       RowHeight="100"
                       HasUnevenRows="False"
                       ItemsSource="{Binding WeekRecords}"
@@ -62,16 +85,16 @@
                                 </Grid.ColumnDefinitions>
                                 <custom:ListItemLabel 
                                     IsActive="{Binding HasRecord}"
-                                    Text="{Binding StartDateOfWeek, Converter={StaticResource StartDateOfWeekStringConverter}}"
+                                    Text="{Binding StartDateOfWeek, Converter={StaticResource SelectedWeekStringConverter}}"
                                     TextColor="LightSlateGray"
-                                    FontSize="25"
+                                    FontSize="28"
                                     FontAttributes="Bold" />
                                 <custom:ListItemLabel 
                                     Grid.Row="1"
                                     IsActive="{Binding HasRecord}"
                                     Text="{Binding NumOfDayRecords}"
                                     TextColor="LightSlateGray"
-                                    FontSize="22" />
+                                    FontSize="18" />
                                 <custom:PercentLabel  
                                     Grid.Column="2"
                                     Grid.RowSpan="2"
@@ -79,7 +102,7 @@
                                     FontAttributes="Bold"
                                     HorizontalTextAlignment="Center"
                                     VerticalOptions="CenterAndExpand"
-                                    FontSize="28"
+                                    FontSize="32"
                                     TextColor="LightSlateGray"
                                     Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                             </Grid>

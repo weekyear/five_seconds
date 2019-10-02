@@ -70,12 +70,24 @@ namespace Five_Seconds.ViewModels
             new Record(new Alarm() { Id = 18, Name = "일하자5", TimeOffset = new DateTimeOffset(new DateTime(2019, 09, 28, 5, 30, 00))}, false),
         };
 
+        //public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB;
+
         public List<Record> MonthRecords
         {
             get
             {
                 var selectedMonth = SelectedMonth;
                 return Records.FindAll((r) => r.Date.Year == selectedMonth.Year && r.Date.Month == selectedMonth.Month);
+            }
+        }
+
+        public double MonthSuccessRate
+        {
+            get
+            {
+                if (MonthRecords.Count == 0) return -1;
+                var successList = MonthRecords.FindAll((r) => r.IsSuccess == true);
+                return (double)successList.Count / MonthRecords.Count;
             }
         }
 
@@ -103,7 +115,7 @@ namespace Five_Seconds.ViewModels
         private async Task ShowRecordDetail(object weekRecord)
         {
             var wR = weekRecord as WeekRecord;
-            await Navigation.PushAsync(new RecordDetailPage(Navigation, wR));
+            await Navigation.PushAsync(new RecordDetailPage(Navigation, wR, Records));
         }
 
         private void SetWeekRecords()

@@ -12,7 +12,7 @@ namespace Five_Seconds.Services
     public class AlarmService : IAlarmService
     {
         public IAlarmsRepository Repository { get; }
-        public ObservableCollection<Alarm> Alarms { get; set; } = new ObservableCollection<Alarm>();
+        public List<Alarm> Alarms { get; set; } = new List<Alarm>();
 
         public AlarmService(IAlarmsRepository repository)
         {
@@ -21,10 +21,9 @@ namespace Five_Seconds.Services
             Alarms = GetAllAlarms();
         }
 
-        public ObservableCollection<Alarm> GetAllAlarms()
+        public List<Alarm> GetAllAlarms()
         {
-            var alarms = AssignDaysToAlarms();
-            return ConvertListToObservableCollection(alarms);
+            return AssignDaysToAlarms();
         }
 
         private List<Alarm> AssignDaysToAlarms()
@@ -139,15 +138,6 @@ namespace Five_Seconds.Services
         public void SendChangeAlarmsMessage()
         {
             MessagingCenter.Send(this, "changeAlarms");
-        }
-
-        private ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
-        {
-            var collection = new ObservableCollection<T>();
-
-            list.ForEach((item) => collection.Add(item));
-
-            return collection;
         }
     }
 }

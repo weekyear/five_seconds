@@ -18,9 +18,9 @@ namespace Five_Seconds.Repository
         {
             this.connection = connection;
             connection.CreateTable<Alarm>();
-            connection.CreateTable<Record>();
             connection.CreateTable<DaysOfWeek>();
             connection.CreateTable<AlarmTone>();
+            connection.CreateTable<Record>();
         }
 
 
@@ -46,6 +46,7 @@ namespace Five_Seconds.Repository
                 return connection.Table<T>().Where(x => x.Id == id).FirstOrDefault();
             }
         }
+
         public int SaveObject<T>(T obj) where T : IObject
         {
             lock (locker)
