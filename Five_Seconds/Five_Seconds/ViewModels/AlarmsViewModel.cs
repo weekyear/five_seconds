@@ -27,6 +27,7 @@ namespace Five_Seconds.ViewModels
         {
             ShowAddAlarmCommand = new Command(async () => await ShowAddAlarm());
             ShowCountDownCommand = new Command(() => ShowCountDown());
+            ShowRecordCommand = new Command(async() => await ShowRecord());
             CancelNotifyCommand = new Command(() => CancelNotify());
             ShowAlarmMenuCommand = new Command<object>(async (m) => await ShowAlarmMenu(m));
             ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
@@ -45,6 +46,7 @@ namespace Five_Seconds.ViewModels
 
         public Command ShowAddAlarmCommand { get; set; }
         public Command ShowCountDownCommand { get; set; }
+        public Command ShowRecordCommand { get; set; }
         public Command CancelNotifyCommand { get; set; }
         public Command<object> ShowAlarmMenuCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
@@ -99,7 +101,7 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowMainMenu()
         {
-            string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법", "알람 기록" };
+            string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법" };
 
             string action = await MessageBoxService.ShowActionSheet("메뉴", "취소", null, actionSheetBtns);
 
@@ -117,10 +119,12 @@ namespace Five_Seconds.ViewModels
                     var welcomePage = AppIntro.CreateAppIntro();
                     await Navigation.PushModalAsync(welcomePage);
                     break;
-                case "알람 기록":
-                    await Navigation.PushAsync(new RecordPage(Navigation));
-                    break;
             }
+        }
+
+        private async Task ShowRecord()
+        {
+            await Navigation.PushAsync(new RecordPage(Navigation));
         }
 
         public async Task ShowModifyAlarm(Alarm alarm)

@@ -7,7 +7,7 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              x:Class="Five_Seconds.Views.RecordPage"
              mc:Ignorable="d"
-             Title="알람 기록">
+             Title="알람 기록 (월별)">
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:SelectedMonthStringConverter x:Key="SelectedMonthStringConverter"/>

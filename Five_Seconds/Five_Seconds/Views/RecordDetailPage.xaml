@@ -6,7 +6,7 @@
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              mc:Ignorable="d"
-             Title="알람 기록(주별)"
+             Title="알람 기록 (주별)"
              x:Class="Five_Seconds.Views.RecordDetailPage">
     
     <ContentPage.Resources>
@@ -126,7 +126,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="60*"/>
                                     <ColumnDefinition Width="20*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
