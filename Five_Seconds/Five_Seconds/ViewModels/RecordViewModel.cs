@@ -1,11 +1,9 @@
 ﻿using Five_Seconds.Models;
-using Five_Seconds.Repository;
-using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -17,11 +15,59 @@ namespace Five_Seconds.ViewModels
         {
             ConstructCommand();
             SetWeekRecords();
+            ReloadTags();
+        }
+
+        public void ReloadTags()
+        {
+            var tags = new ObservableCollection<TagItem>(){
+                new TagItem() { Name = "#TagExample" },
+                new TagItem() { Name = "#Xamarin" },
+                new TagItem() { Name = "#DanielLuberda" },
+                new TagItem() { Name = "#Test" },
+                new TagItem() { Name = "#XamarinForms" },
+                new TagItem() { Name = "#TagEntryView" },
+                new TagItem() { Name = "#TapMe!" },
+                new TagItem() { Name = "#itsworking!" },
+            };
+
+            Items = tags;
+        }
+
+        public void RemoveTag(TagItem tagItem)
+        {
+            if (tagItem == null)
+                return;
+
+            Items.Remove(tagItem);
+        }
+
+        public TagItem ValidateAndReturn(string tag)
+        {
+            if (string.IsNullOrWhiteSpace(tag))
+                return null;
+
+            var tagString = tag.StartsWith("#") ? tag : "#" + tag;
+
+            if (Items.Any(v => v.Name.Equals(tagString, StringComparison.OrdinalIgnoreCase)))
+                return null;
+
+            return new TagItem()
+            {
+                Name = tagString.ToLower()
+            };
+        }
+
+        public ObservableCollection<TagItem> Items { get; set; } = new ObservableCollection<TagItem>();
+        public class TagItem
+        {
+            public string Name { get; set; }
         }
 
 
         private void ConstructCommand()
         {
+            RemoveTagCommand = new Command<TagItem>((t) => RemoveTag(t));
             CloseCommand = new Command(async () => await ClosePopup());
             PreviousMonthCommand = new Command(() => PreviousMonth());
             NextMonthCommand = new Command(() => NextMonth());
@@ -29,10 +75,12 @@ namespace Five_Seconds.ViewModels
         }
 
         // Command
+        public Command<TagItem> RemoveTagCommand { get; set; }
         public Command CloseCommand { get; set; }
         public Command PreviousMonthCommand { get; set; }
         public Command NextMonthCommand { get; set; }
         public Command<object> ShowRecordDetailCommand { get; set; }
+        public Func<string, object> TagValidatorFactory { get; set; }
 
         // Property
 

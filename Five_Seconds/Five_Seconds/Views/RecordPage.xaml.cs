@@ -17,11 +17,22 @@ namespace Five_Seconds.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecordPage : ContentPage
     {
-        RecordViewModel viewModel;
+        readonly RecordViewModel viewModel;
 
         public RecordPage(INavigation navigation)
         {
             viewModel = new RecordViewModel(navigation);
+
+            Resources = new ResourceDictionary
+            {
+                {
+                    "TagValidatorFactory",
+                    new Func<string, object>((arg) => (BindingContext as RecordViewModel)?.ValidateAndReturn(arg))
+                }
+            };
+
+
+            Application.Current.Resources.Add(Resources);
 
             InitializeComponent();
 

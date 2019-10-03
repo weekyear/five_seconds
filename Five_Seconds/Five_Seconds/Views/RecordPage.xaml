@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             xmlns:dltag="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.TagEntryView"
              x:Class="Five_Seconds.Views.RecordPage"
              mc:Ignorable="d"
              Title="알람 기록 (월별)">
@@ -19,6 +20,16 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource BackgroundColor}" 
                      Orientation="Vertical">
+            <dltag:TagEntryView TagItems="{Binding Items}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true">
+                <dltag:TagEntryView.TagItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="#2196F3" OutlineColor="Transparent" Padding="10" HasShadow="false">
+                            <Label Text="{Binding Name}"/>
+                        </Frame>
+                    </DataTemplate>
+                </dltag:TagEntryView.TagItemTemplate>
+                <dltag:TagEntry Placeholder="태그 or 이름 입력 "></dltag:TagEntry>
+            </dltag:TagEntryView>
             <Grid VerticalOptions="CenterAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />

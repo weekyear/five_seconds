@@ -19,7 +19,6 @@ namespace Five_Seconds.Droid
     [Activity(Label = "5초의 알람", Icon = "@drawable/ic_five_seconds", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        const int VOICE = 10;
         const int MY_PERMISSIONS_REQUEST_READ_MEDIA = 2356;
         static readonly int READ_REQUEST_CODE = 42;
         protected override void OnCreate(Bundle savedInstanceState)
@@ -102,12 +101,10 @@ namespace Five_Seconds.Droid
             if (requestCode == 42 && resultCode == Result.Ok)
             {
                 if (data == null) return;
-
-                Uri uri = null;
                 var _uri = data.Data;
                 var realPath = GetRealPathFromURI(_uri);
                 var stringUri = data.ToUri(IntentUriType.None);
-                uri = new Uri(stringUri);
+                Uri uri = new Uri(stringUri);
 
                 FileChosen?.Invoke(realPath);
             }
