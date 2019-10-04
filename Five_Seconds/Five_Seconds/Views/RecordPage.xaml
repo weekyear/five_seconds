@@ -63,7 +63,6 @@
             </Grid>
             <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true"
                                  Margin="10, 0">
-                <dltag:TagEntry Placeholder="ddddddddddd"></dltag:TagEntry>
                 <dltag:TagEntryView.TagItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">

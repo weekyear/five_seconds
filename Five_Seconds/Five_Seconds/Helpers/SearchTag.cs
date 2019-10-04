@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Five_Seconds.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -6,32 +7,36 @@ using System.Text;
 
 namespace Five_Seconds.Helpers
 {
-    public class SearchTag
+    public static class SearchTag
     {
 
         // Tag
-        public ObservableCollection<TagItem> TagItems { get; set; } = new ObservableCollection<TagItem>();
+        public static List<TagItem> StaticTagItems { get; set; } = new List<TagItem>();
 
-        public void RemoveTag(TagItem tagItem)
+        public static void RemoveTag(TagItem tagItem)
         {
             if (tagItem == null)
                 return;
 
-            TagItems.Remove(tagItem);
+            StaticTagItems.Remove(tagItem);
         }
 
-        public TagItem ValidateAndReturn(string tag)
+        public static TagItem ValidateAndReturn(string tag)
         {
             if (string.IsNullOrWhiteSpace(tag))
                 return null;
 
-            if (TagItems.Any(v => v.Name.Equals(tag, StringComparison.OrdinalIgnoreCase)))
+            if (StaticTagItems.Any(v => v.Name.Equals(tag, StringComparison.OrdinalIgnoreCase)))
                 return null;
 
-            return new TagItem()
+            var _tagItem = new TagItem()
             {
                 Name = tag.ToLower()
             };
+
+            StaticTagItems.Add(_tagItem);
+
+            return _tagItem;
         }
 
         public class TagItem

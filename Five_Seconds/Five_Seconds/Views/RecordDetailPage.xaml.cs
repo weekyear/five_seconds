@@ -23,6 +23,17 @@ namespace Five_Seconds.Views
         {
             viewModel = new RecordDetailViewModel(navigation, weekRecord, allRecords);
 
+            Resources = new ResourceDictionary
+            {
+                {
+                    "TagValidatorFactory",
+                    new Func<string, object>((arg) => (BindingContext as RecordDetailViewModel)?.ValidateAndReturn(arg))
+                }
+            };
+
+
+            Application.Current.Resources.Add(Resources);
+
             InitializeComponent();
 
             BindingContext = viewModel;

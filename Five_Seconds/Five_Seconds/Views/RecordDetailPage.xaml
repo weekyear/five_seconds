@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             xmlns:dltag="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.TagEntryView"
              mc:Ignorable="d"
              Title="알람 기록 (주별)"
              x:Class="Five_Seconds.Views.RecordDetailPage">
@@ -64,9 +65,20 @@
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextWeekCommand}"/>
             </Grid>
+            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true"
+                                 Margin="10, 0">
+                <dltag:TagEntryView.TagItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
+                            <Label Text="{Binding Name}"
+                                   TextColor="{StaticResource PrimaryTextColor}"/>
+                        </Frame>
+                    </DataTemplate>
+                </dltag:TagEntryView.TagItemTemplate>
+            </dltag:TagEntryView>
             <ListView x:Name="DayRecords" 
                       Margin="10" 
-                      ItemsSource="{Binding WeekRecords}"
+                      ItemsSource="{Binding DayRecords}"
                       VerticalOptions="CenterAndExpand"
                       IsGroupingEnabled="True">
                 <ListView.GroupHeaderTemplate>
