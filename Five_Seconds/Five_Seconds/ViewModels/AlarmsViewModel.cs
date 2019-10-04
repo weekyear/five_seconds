@@ -67,7 +67,7 @@ namespace Five_Seconds.ViewModels
 
         public void ShowCountDown()
         {
-            Action action = () => DependencyService.Get<ICountDown>().ShowCountDown();
+            void action() => DependencyService.Get<ICountDown>().ShowCountDown();
             MessageBoxService.ShowConfirm("5초 카운트", "5초 카운트를 시작하시겠습니까?", null, action);
         }
 
