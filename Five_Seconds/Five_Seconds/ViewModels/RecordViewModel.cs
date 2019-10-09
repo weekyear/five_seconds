@@ -172,7 +172,7 @@ namespace Five_Seconds.ViewModels
 
             while (startDateOfMonth.Ticks <= startDateOfSelectedMonth.Ticks)
             {
-                var RecordsOfWeek = MonthRecordsByTag.FindAll((r) => r.TimeOffset.DateTime.Ticks > startDateOfWeek.Ticks && r.TimeOffset.DateTime.Ticks <= startDateOfWeek.AddDays(7).Ticks);
+                var RecordsOfWeek = MonthRecordsByTag.FindAll((r) => r.DateTime.Ticks > startDateOfWeek.Ticks && r.DateTime.Ticks <= startDateOfWeek.AddDays(7).Ticks);
 
                 var weekRecord = new WeekRecord()
                 {

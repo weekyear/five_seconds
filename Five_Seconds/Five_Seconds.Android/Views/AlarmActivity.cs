@@ -8,15 +8,12 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Speech;
-using Android.Support.V4.App;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
-using Java.Lang;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
@@ -26,14 +23,14 @@ namespace Five_Seconds.Droid
     [Activity(Label = "5초의 알람", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : Activity, IRecognitionListener
     {
-        IPlaySoundService _soundService = new PlaySoundServiceAndroid();
+        readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
+
+        Action DelayedAction;
 
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
-        static readonly int RECORD_AUDIO_CODE = 43;
-
         private LinearLayout alarmLayout;
         private LinearLayout recordingLayout;
         private Button tellmeButton;
@@ -54,6 +51,8 @@ namespace Five_Seconds.Droid
 
         Alarm alarm;
         IAlarmsRepository alarmsRepo;
+
+        public Handler Handler => new Handler();
 
         public AlarmActivity()
         {
@@ -95,18 +94,18 @@ namespace Five_Seconds.Droid
 
         private void SetIsFailedCountDown()
         {
-            Handler handler = new Handler();
-
             // 10분 경과
-            //handler.PostDelayed(() => SetIsFailedCountDown(), 600000);
+            DelayedAction = () => SetIsSuccessFalse();
+            //Handler.PostDelayed(DelayedAction, 600000);
             // 1분 경과
-            handler.PostDelayed(() => SetIsSuccessFalse(), 60000);
+            Handler.PostDelayed(DelayedAction, 10000);
         }
 
         private void SetIsSuccessFalse()
         {
             var record = new Record(alarm, false);
             alarmsRepo.SaveRecord(record);
+            FinishAndRemoveTask();
         }
 
         private void SetIsSuccessTrue()
@@ -215,6 +214,8 @@ namespace Five_Seconds.Droid
 
         private void StartListening_Click(object sender, EventArgs e)
         {
+            Handler.RemoveCallbacks(DelayedAction);
+
             if (!alarmEditText.Enabled)
             {
                 RequestRecordAudioPermission();
@@ -277,6 +278,8 @@ namespace Five_Seconds.Droid
                 alert.Dispose();
             });
             alert.Show();
+
+            dialog.Dispose();
         }
 
         private void SetMediaPlayer()
@@ -330,57 +333,51 @@ namespace Five_Seconds.Droid
 
         public void OnError(SpeechRecognizerError error)
         {
-            var err = error;
-            var intErr = (int)err;
-            string message = string.Empty;
-
+            //string message;
             switch (error)
             {
 
                 case SpeechRecognizerError.Audio:
-                    message = "오디오 에러입니다.";
+                    //message = "오디오 에러입니다.";
                     break;
 
                 case SpeechRecognizerError.Client:
-                    message = "클라이언트 에러입니다.";
+                    //message = "클라이언트 에러입니다.";
                     break;
 
                 case SpeechRecognizerError.InsufficientPermissions:
-                    message = "오디오 녹음 권한을 허용해주세요";
-                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, "오디오 녹음 권한을 허용해주세요", ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.Network:
-                    message = "네트워크 에러입니다. 네트워크 연결 확인을 해주세요.";
-                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, "네트워크 에러입니다. 네트워크 연결 확인을 해주세요.", ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.NetworkTimeout:
-                    message = "네트워크 시간초과입니다.";
+                    //message = "네트워크 시간초과입니다.";
                     break;
 
                 case SpeechRecognizerError.NoMatch:
-                    message = "해당 음성 녹음 결과가 없습니다."; ;
+                    //message = "해당 음성 녹음 결과가 없습니다."; ;
                     break;
 
                 case SpeechRecognizerError.RecognizerBusy:
-                    message = "다시 시도해주세요.";
+                    //message = "다시 시도해주세요.";
                     break;
 
                 case SpeechRecognizerError.Server:
-                    message = "서버에 문제가 있습니다. 텍스트 창에 해야할 일을 적어주세요."; ;
-                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, "서버에 문제가 있습니다. 텍스트 창에 해야할 일을 적어주세요.", ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.SpeechTimeout:
-                    message = "음성 녹음 시간이 초과되었습니다. 텍스트 창에 해야할 일을 적어주세요";
-                    Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, "음성 녹음 시간이 초과되었습니다. 텍스트 창에 해야할 일을 적어주세요", ToastLength.Long).Show();
                     break;
 
                 default:
-                    message = "알수없음";
+                    //message = "알수없음";
                     break;
             }
+
         }
 
         public void OnEvent(int eventType, Bundle @params)

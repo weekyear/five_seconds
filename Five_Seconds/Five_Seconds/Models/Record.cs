@@ -21,15 +21,15 @@ namespace Five_Seconds.Models
 
         public TimeSpan Time
         {
-            get { return TimeOffset.LocalDateTime.TimeOfDay; }
+            get { return DateTime.TimeOfDay; }
         }
 
         public DateTime Date
         {
-            get { return TimeOffset.LocalDateTime.Date; }
+            get { return DateTime.Date; }
         }
 
-        public DateTimeOffset TimeOffset { get; set; }
+        public DateTime DateTime { get; set; }
 
         public bool IsSuccess { get; set; }
 
@@ -39,7 +39,7 @@ namespace Five_Seconds.Models
         {
             AlarmId = alarm.Id;
             Name = alarm.Name;
-            TimeOffset = alarm.TimeOffset;
+            DateTime = DateTime.Now;
             IsSuccess = isSuccess;
         }
     }
