@@ -96,9 +96,9 @@ namespace Five_Seconds.Droid
         {
             // 10분 경과
             DelayedAction = () => SetIsSuccessFalse();
-            //Handler.PostDelayed(DelayedAction, 600000);
+            Handler.PostDelayed(DelayedAction, 600000);
             // 1분 경과
-            Handler.PostDelayed(DelayedAction, 10000);
+            //Handler.PostDelayed(DelayedAction, 10000);
         }
 
         private void SetIsSuccessFalse()

@@ -23,6 +23,10 @@
 
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Orientation="Vertical">
+            <StackLayout.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
+                <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
+            </StackLayout.GestureRecognizers>
             <Grid VerticalOptions="CenterAndExpand"
                   Margin="5, 10, 5, 0">
                 <Grid.RowDefinitions>
@@ -81,6 +85,10 @@
                       ItemsSource="{Binding DayRecords}"
                       VerticalOptions="CenterAndExpand"
                       IsGroupingEnabled="True">
+                <ListView.GestureRecognizers>
+                    <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
+                    <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
+                </ListView.GestureRecognizers>
                 <ListView.GroupHeaderTemplate>
                     <DataTemplate>
                         <custom:CustomViewCell>

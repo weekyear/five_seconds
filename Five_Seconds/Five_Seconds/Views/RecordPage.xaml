@@ -20,6 +20,10 @@
     <ContentPage.Content>
         <StackLayout BackgroundColor="{StaticResource BackgroundColor}" 
                      Orientation="Vertical">
+            <StackLayout.GestureRecognizers>
+                <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}"/>
+                <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}"/>
+            </StackLayout.GestureRecognizers>
             <Grid VerticalOptions="CenterAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -79,6 +83,10 @@
                       ItemsSource="{Binding WeekRecords}"
                       ItemTapped="WeekRecords_ItemTapped"
                       ItemSelected="WeekRecords_ItemSelected">
+                <ListView.GestureRecognizers>
+                    <SwipeGestureRecognizer Direction="Left" Command="{Binding PreviousMonthCommand}"/>
+                    <SwipeGestureRecognizer Direction="Right" Command="{Binding NextMonthCommand}"/>
+                </ListView.GestureRecognizers>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <custom:CustomViewCell 
@@ -86,6 +94,10 @@
                             IsEnabled="{Binding HasRecord}">
                             <Grid Padding="10"
                                   VerticalOptions="CenterAndExpand">
+                                <Grid.GestureRecognizers>
+                                    <SwipeGestureRecognizer Direction="Left" Command="{Binding PreviousMonthCommand}"/>
+                                    <SwipeGestureRecognizer Direction="Right" Command="{Binding NextMonthCommand}"/>
+                                </Grid.GestureRecognizers>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
