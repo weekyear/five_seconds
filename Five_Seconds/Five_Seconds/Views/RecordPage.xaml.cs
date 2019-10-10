@@ -51,5 +51,20 @@ namespace Five_Seconds.Views
                 ((ListView)sender).SelectedItem = null;
             }
         }
+
+        private void ListWeekRecords_SwipeLeft(object sender, EventArgs e)
+        {
+            viewModel.NextMonthCommand.Execute(null);
+        }
+
+        private void ListWeekRecords_SwipeRight(object sender, EventArgs e)
+        {
+            viewModel.PreviousMonthCommand.Execute(null);
+        }
+
+        private void TagEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

@@ -131,6 +131,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomRenderers\ColoredTableViewRenderer.cs" />
+    <Compile Include="CustomRenderers\CustomGestureListener.cs" />
+    <Compile Include="CustomRenderers\GestureListViewRenderer.cs" />
     <Compile Include="Services\AlarmController.cs" />
     <Compile Include="Services\AlarmReceiver.cs" />
     <Compile Include="Services\AlarmNotificationAndroid.cs" />

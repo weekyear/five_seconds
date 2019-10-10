@@ -95,6 +95,31 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        public bool HasNoRecord
+        {
+            get
+            {
+                if (DayRecords.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool HasRecord
+        {
+            get
+            {
+                return !HasNoRecord;
+            }
+        }
+
+        // Method
+
         private async Task ClosePopup()
         {
             await Navigation.PopAsync(true);
@@ -137,7 +162,11 @@ namespace Five_Seconds.ViewModels
             WeekRecord = weekRecord;
 
             SetDayRecords();
+
+            OnPropertyChanged(nameof(HasRecord));
+            OnPropertyChanged(nameof(HasNoRecord));
         }
+
         private void UpdateRecordsByTag(TagItem tagItem)
         {
             var recordsByTag = new List<Record>();
@@ -251,9 +280,11 @@ namespace Five_Seconds.ViewModels
         {
             var _tagItem = SearchTag.ValidateAndReturn(tag);
 
-            UpdateWeekRecord(_tagItem);
-
-            SendMessageOfTag("addTag", _tagItem);
+            if (_tagItem != null)
+            {
+                UpdateWeekRecord(_tagItem);
+                SendMessageOfTag("addTag", _tagItem);
+            }
 
             return _tagItem;
         }
@@ -269,7 +300,11 @@ namespace Five_Seconds.ViewModels
             public List<Record> DayRecords => this;
             public string NumOfDayRecords
             {
-                get { return $"{DayRecords.Count} 개"; }
+                get
+                {
+                    if (DayRecords.Count == 0) { return "기록 없음"; }
+                    return $"{DayRecords.Count} 개";
+                }
             }
 
             public DateTime Date { get; set; }

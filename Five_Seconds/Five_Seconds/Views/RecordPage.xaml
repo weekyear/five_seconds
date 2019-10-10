@@ -66,7 +66,7 @@
                              Command="{Binding NextMonthCommand}"/>
             </Grid>
             <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true"
-                                 Margin="10, 0">
+                                 Margin="10, 0, 10, 40">
                 <dltag:TagEntryView.TagItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
@@ -76,28 +76,22 @@
                     </DataTemplate>
                 </dltag:TagEntryView.TagItemTemplate>
             </dltag:TagEntryView>
-            <ListView x:Name="ListWeekRecords" 
-                      Margin="5, 0" 
-                      RowHeight="100"
-                      HasUnevenRows="False"
-                      ItemsSource="{Binding WeekRecords}"
-                      ItemTapped="WeekRecords_ItemTapped"
-                      ItemSelected="WeekRecords_ItemSelected">
-                <ListView.GestureRecognizers>
-                    <SwipeGestureRecognizer Direction="Left" Command="{Binding PreviousMonthCommand}"/>
-                    <SwipeGestureRecognizer Direction="Right" Command="{Binding NextMonthCommand}"/>
-                </ListView.GestureRecognizers>
-                <ListView.ItemTemplate>
+            <custom:GestureListView x:Name="ListWeekRecords" 
+                                    Margin="5, 0" 
+                                    RowHeight="100"
+                                    HasUnevenRows="False"
+                                    ItemsSource="{Binding WeekRecords}"
+                                    ItemTapped="WeekRecords_ItemTapped"
+                                    ItemSelected="WeekRecords_ItemSelected"
+                                    SwipeLeft="ListWeekRecords_SwipeLeft"
+                                    SwipeRight="ListWeekRecords_SwipeRight">
+                <custom:GestureListView.ItemTemplate>
                     <DataTemplate>
                         <custom:CustomViewCell 
                             SelectedBackgroundColor="#ADF3BE"
                             IsEnabled="{Binding HasRecord}">
                             <Grid Padding="10"
                                   VerticalOptions="CenterAndExpand">
-                                <Grid.GestureRecognizers>
-                                    <SwipeGestureRecognizer Direction="Left" Command="{Binding PreviousMonthCommand}"/>
-                                    <SwipeGestureRecognizer Direction="Right" Command="{Binding NextMonthCommand}"/>
-                                </Grid.GestureRecognizers>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
@@ -132,8 +126,8 @@
                             </Grid>
                         </custom:CustomViewCell>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </custom:GestureListView.ItemTemplate>
+            </custom:GestureListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

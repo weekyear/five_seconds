@@ -27,7 +27,7 @@
                 <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
                 <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
             </StackLayout.GestureRecognizers>
-            <Grid VerticalOptions="CenterAndExpand"
+            <Grid VerticalOptions="Start"
                   Margin="5, 10, 5, 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -70,7 +70,7 @@
                              Command="{Binding NextWeekCommand}"/>
             </Grid>
             <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true"
-                                 Margin="10, 0">
+                                 VerticalOptions="Start" Margin="10, 0, 10, 40">
                 <dltag:TagEntryView.TagItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
@@ -80,18 +80,29 @@
                     </DataTemplate>
                 </dltag:TagEntryView.TagItemTemplate>
             </dltag:TagEntryView>
-            <ListView x:Name="DayRecords" 
-                      Margin="10" 
-                      ItemsSource="{Binding DayRecords}"
-                      VerticalOptions="CenterAndExpand"
-                      IsGroupingEnabled="True">
-                <ListView.GestureRecognizers>
+            <Label Text="기록이 없습니다"
+                   FontSize="30"
+                   IsVisible="{Binding HasNoRecord}"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="FillAndExpand"
+                   VerticalTextAlignment="Center"/>
+            <custom:GestureListView x:Name="DayRecords" 
+                                    Margin="10" 
+                                    ItemsSource="{Binding DayRecords}"
+                                    VerticalOptions="CenterAndExpand"
+                                    IsGroupingEnabled="True"
+                                    ItemSelected="DayRecords_ItemSelected"
+                                    SwipeLeft="DayRecords_SwipeLeft"
+                                    SwipeRight="DayRecords_SwipeRight" 
+                                    IsVisible="{Binding HasRecord}">
+                <custom:GestureListView.GestureRecognizers>
                     <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
                     <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
-                </ListView.GestureRecognizers>
-                <ListView.GroupHeaderTemplate>
+                </custom:GestureListView.GestureRecognizers>
+                <custom:GestureListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell>
+                        <custom:CustomViewCell
+                            SelectedBackgroundColor="{StaticResource BackgroundColor}">
                             <Grid HorizontalOptions="FillAndExpand"
                                   VerticalOptions="CenterAndExpand"
                                   Margin="10, 0, 10, 0">
@@ -132,9 +143,9 @@
                             </Grid>
                         </custom:CustomViewCell>
                     </DataTemplate>
-                </ListView.GroupHeaderTemplate>
-                
-                <ListView.ItemTemplate>
+                </custom:GestureListView.GroupHeaderTemplate>
+
+                <custom:GestureListView.ItemTemplate>
                     <DataTemplate>
                         <custom:CustomViewCell>
                             <Grid HorizontalOptions="FillAndExpand"
@@ -178,8 +189,8 @@
                             </Grid>
                         </custom:CustomViewCell>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </custom:GestureListView.ItemTemplate>
+            </custom:GestureListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -38,5 +38,23 @@ namespace Five_Seconds.Views
 
             BindingContext = viewModel;
         }
+
+        private void DayRecords_SwipeLeft(object sender, EventArgs e)
+        {
+            viewModel.NextWeekCommand.Execute(null);
+        }
+
+        private void DayRecords_SwipeRight(object sender, EventArgs e)
+        {
+            viewModel.PreviousWeekCommand.Execute(null);
+        }
+
+        private void DayRecords_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (DayRecords.SelectedItem != null || e.SelectedItem != null)
+            {
+                ((ListView)sender).SelectedItem = null;
+            }
+        }
     }
 }
