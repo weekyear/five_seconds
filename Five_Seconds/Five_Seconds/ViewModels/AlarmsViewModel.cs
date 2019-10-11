@@ -124,7 +124,7 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowRecord()
         {
-            await Navigation.PushAsync(new RecordPage(Navigation));
+            await Navigation.PushAsync(new RecordPage(Navigation, MessageBoxService));
         }
 
         public async Task ShowModifyAlarm(Alarm alarm)

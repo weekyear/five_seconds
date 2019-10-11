@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.Helpers;
 using Five_Seconds.Models;
+using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,13 @@ namespace Five_Seconds.ViewModels
 {
     public class RecordViewModel : BaseViewModel
     {
-        public RecordViewModel(INavigation navigation) : base(navigation)
+        private readonly IMessageBoxService MessageBoxService;
+
+        public RecordViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
             ConstructCommand();
+
+            MessageBoxService = messageBoxService;
 
             CreateTagItems();
 
@@ -156,7 +161,7 @@ namespace Five_Seconds.ViewModels
         private async Task ShowRecordDetail(object weekRecord)
         {
             var wR = weekRecord as WeekRecord;
-            await Navigation.PushAsync(new RecordDetailPage(Navigation, wR, Records));
+            await Navigation.PushAsync(new RecordDetailPage(Navigation, wR, Records, MessageBoxService));
         }
 
         private void UpdateWeekRecords(TagItem tagItem)
@@ -258,6 +263,12 @@ namespace Five_Seconds.ViewModels
 
         private void Search(string tag)
         {
+            if (TagItems.Count > 7)
+            {
+                MessageBoxService.ShowAlert("검색어 개수 초과", "검색어 수는 7개까지만 허용됩니다.");
+                return;
+            }
+
             var _tagItem = SearchTag.ValidateAndReturn(tag);
 
             UpdateWeekRecords(_tagItem);

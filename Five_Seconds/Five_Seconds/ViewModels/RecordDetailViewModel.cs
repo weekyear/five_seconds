@@ -16,9 +16,13 @@ namespace Five_Seconds.ViewModels
 {
     public class RecordDetailViewModel : BaseViewModel
     {
-        public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords) : base(navigation)
+        private readonly IMessageBoxService MessageBoxService;
+
+        public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords, IMessageBoxService messageBoxService) : base(navigation)
         {
             ConstructCommand();
+
+            MessageBoxService = messageBoxService;
 
             Records = allRecords;
 
@@ -32,6 +36,7 @@ namespace Five_Seconds.ViewModels
 
         private void ConstructCommand()
         {
+            SearchCommand = new Command<string>((t) => Search(t));
             RemoveTagCommand = new Command<TagItem>((t) => RemoveTag(t));
             CloseCommand = new Command(async () => await ClosePopup());
             PreviousWeekCommand = new Command(() => PreviousWeek());
@@ -39,6 +44,8 @@ namespace Five_Seconds.ViewModels
         }
 
         // Command
+
+        public Command<string> SearchCommand { get; set; }
         public Command<TagItem> RemoveTagCommand { get; set; }
         public Command CloseCommand { get; set; }
         public Command PreviousWeekCommand { get; set; }
@@ -292,6 +299,25 @@ namespace Five_Seconds.ViewModels
         private void SendMessageOfTag(string type, TagItem tagItem)
         {
             MessagingCenter.Send(this, type, tagItem);
+        }
+
+        private void Search(string tag)
+        {
+            if (TagItems.Count > 7)
+            {
+                MessageBoxService.ShowAlert("검색어 개수 초과", "검색어 수는 7개까지만 허용됩니다.");
+                return;
+            }
+
+            var _tagItem = SearchTag.ValidateAndReturn(tag);
+
+            if (_tagItem != null)
+            {
+                UpdateWeekRecord(_tagItem);
+                SendMessageOfTag("addTag", _tagItem);
+            }
+
+            TagItems.Add(_tagItem);
         }
 
         public class DayRecord : List<Record>

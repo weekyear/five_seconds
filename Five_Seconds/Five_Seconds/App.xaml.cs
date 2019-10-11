@@ -11,13 +11,17 @@ using Xamarin.Essentials;
 using SQLite;
 using System.ComponentModel;
 using Five_Seconds.Helpers;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
+using Application = Xamarin.Forms.Application;
+using NavigationPage = Xamarin.Forms.NavigationPage;
 
 namespace Five_Seconds
 {
     public partial class App : Application
     {
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(DependencyService.Get<IDatabase>().DBConnect());
-        private bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
+        private readonly bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
 
         public static bool IsInitFinished;
         public App()
@@ -32,7 +36,11 @@ namespace Five_Seconds
 
             InitializeComponent();
 
-            MainPage = new NavigationPage(new AlarmsPage());
+            var navigationPage = new NavigationPage(new AlarmsPage());
+
+            navigationPage.On<iOS>().SetPrefersLargeTitles(true);
+
+            MainPage = navigationPage;
 
             if (!isNotFirst)
             {

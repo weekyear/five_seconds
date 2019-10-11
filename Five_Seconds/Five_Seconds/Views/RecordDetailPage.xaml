@@ -27,6 +27,19 @@
                 <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
                 <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
             </StackLayout.GestureRecognizers>
+            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
+                                 ShowEntryBox="False" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
+                                 AllowKeyboardReturnToAddNewTag="True"
+                                 VerticalOptions="Start" Margin="10, 10">
+                <dltag:TagEntryView.TagItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
+                            <Label Text="{Binding Name}"
+                                   TextColor="{StaticResource PrimaryTextColor}"/>
+                        </Frame>
+                    </DataTemplate>
+                </dltag:TagEntryView.TagItemTemplate>
+            </dltag:TagEntryView>
             <Grid VerticalOptions="Start"
                   Margin="5, 10, 5, 0">
                 <Grid.RowDefinitions>
@@ -69,19 +82,6 @@
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextWeekCommand}"/>
             </Grid>
-            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
-                                 ShowEntryBox="True" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
-                                 AllowKeyboardReturnToAddNewTag="True"
-                                 VerticalOptions="Start" Margin="10, 0">
-                <dltag:TagEntryView.TagItemTemplate>
-                    <DataTemplate>
-                        <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
-                            <Label Text="{Binding Name}"
-                                   TextColor="{StaticResource PrimaryTextColor}"/>
-                        </Frame>
-                    </DataTemplate>
-                </dltag:TagEntryView.TagItemTemplate>
-            </dltag:TagEntryView>
             <Label Text="기록이 없습니다"
                    FontSize="30"
                    IsVisible="{Binding HasNoRecord}"

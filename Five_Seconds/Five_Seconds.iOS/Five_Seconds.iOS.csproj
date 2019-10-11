@@ -68,6 +68,7 @@
     <Compile Include="CustomRenderers\ColoredTableViewRenderer.cs" />
     <Compile Include="CustomRenderers\CustomViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\DayOfWeekButtonRenderer.cs" />
+    <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\DeviceStorageIos.cs" />

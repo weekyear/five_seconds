@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.CustomControls;
 using Five_Seconds.Models;
+using Five_Seconds.Services;
 using Five_Seconds.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,12 @@ namespace Five_Seconds.Views
 {
     [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecordDetailPage : ContentPage
+    public partial class RecordDetailPage : ContentPage, ISearchPage
     {
-        RecordDetailViewModel viewModel;
-        public RecordDetailPage(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords)
+        readonly RecordDetailViewModel viewModel;
+        public RecordDetailPage(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords, IMessageBoxService messageBoxService)
         {
-            viewModel = new RecordDetailViewModel(navigation, weekRecord, allRecords);
+            viewModel = new RecordDetailViewModel(navigation, weekRecord, allRecords, messageBoxService);
 
             Resources = new ResourceDictionary
             {
@@ -34,9 +35,20 @@ namespace Five_Seconds.Views
 
             Application.Current.Resources.Add(Resources);
 
+            SearchBarTextSubmited += HandleSearchBarTextSubmited;
+
             InitializeComponent();
 
             BindingContext = viewModel;
+        }
+
+        public event EventHandler<string> SearchBarTextSubmited;
+
+        public void OnSearchBarTextSubmited(string text) => SearchBarTextSubmited?.Invoke(this, text);
+
+        void HandleSearchBarTextSubmited(object sender, string searchBarText)
+        {
+            viewModel.SearchCommand.Execute(searchBarText);
         }
 
         private void DayRecords_SwipeLeft(object sender, EventArgs e)

@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.CustomControls;
 using Five_Seconds.Models;
+using Five_Seconds.Services;
 using Five_Seconds.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,13 @@ namespace Five_Seconds.Views
 {
     [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RecordPage : ContentPage
+    public partial class RecordPage : ContentPage, ISearchPage
     {
         readonly RecordViewModel viewModel;
 
-        public RecordPage(INavigation navigation)
+        public RecordPage(INavigation navigation, IMessageBoxService messageBoxService)
         {
-            viewModel = new RecordViewModel(navigation);
+            viewModel = new RecordViewModel(navigation, messageBoxService);
 
             Resources = new ResourceDictionary
             {
@@ -34,9 +35,20 @@ namespace Five_Seconds.Views
 
             Application.Current.Resources.Add(Resources);
 
+            SearchBarTextSubmited += HandleSearchBarTextSubmited;
+
             InitializeComponent();
 
             BindingContext = viewModel;
+        }
+
+        public event EventHandler<string> SearchBarTextSubmited;
+
+        public void OnSearchBarTextSubmited(string text) => SearchBarTextSubmited?.Invoke(this, text);
+        
+        void HandleSearchBarTextSubmited(object sender, string searchBarText)
+        {
+            viewModel.SearchCommand.Execute(searchBarText);
         }
 
         private void WeekRecords_ItemTapped(object sender, ItemTappedEventArgs e)
