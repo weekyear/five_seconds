@@ -24,6 +24,9 @@
                 <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}"/>
                 <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}"/>
             </StackLayout.GestureRecognizers>
+            <SearchBar x:Name="SearchBar" 
+                       SearchCommand="{Binding SearchCommand}" 
+                       SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}" />
             <Grid VerticalOptions="CenterAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -65,8 +68,10 @@
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextMonthCommand}"/>
             </Grid>
-            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true"
-                                 Margin="10, 0, 10, 40">
+            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
+                                 ShowEntryBox="False" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
+                                 AllowKeyboardReturnToAddNewTag="True"
+                                 Margin="10, 0">
                 <dltag:TagEntryView.TagItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">

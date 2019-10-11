@@ -27,6 +27,7 @@ namespace Five_Seconds.ViewModels
 
         private void ConstructCommand()
         {
+            SearchCommand = new Command<string>((t) => Search(t));
             RemoveTagCommand = new Command<TagItem>((t) => RemoveTag(t));
             CloseCommand = new Command(async () => await ClosePopup());
             PreviousMonthCommand = new Command(() => PreviousMonth());
@@ -50,12 +51,12 @@ namespace Five_Seconds.ViewModels
         }
 
         // Command
+        public Command<string> SearchCommand { get; set; }
         public Command<TagItem> RemoveTagCommand { get; set; }
         public Command CloseCommand { get; set; }
         public Command PreviousMonthCommand { get; set; }
         public Command NextMonthCommand { get; set; }
         public Command<object> ShowRecordDetailCommand { get; set; }
-        public Func<string, object> TagValidatorFactory { get; set; }
 
         // Property
 
@@ -253,6 +254,15 @@ namespace Five_Seconds.ViewModels
             {
                 TagItems.Add(item);
             }
+        }
+
+        private void Search(string tag)
+        {
+            var _tagItem = SearchTag.ValidateAndReturn(tag);
+
+            UpdateWeekRecords(_tagItem);
+
+            TagItems.Add(_tagItem);
         }
 
         public class WeekRecord

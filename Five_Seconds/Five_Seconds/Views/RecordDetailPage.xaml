@@ -69,8 +69,10 @@
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextWeekCommand}"/>
             </Grid>
-            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" ShowEntryBox="true" TagValidatorFactory="{StaticResource TagValidatorFactory}" AllowKeyboardReturnToAddNewTag="true"
-                                 VerticalOptions="Start" Margin="10, 0, 10, 40">
+            <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
+                                 ShowEntryBox="True" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
+                                 AllowKeyboardReturnToAddNewTag="True"
+                                 VerticalOptions="Start" Margin="10, 0">
                 <dltag:TagEntryView.TagItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
