@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="launcher_background">#FFFFFF</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+  <color name="launcher_background">#FFFFFF</color>
+  <color name="colorPrimary">#3F51B5</color>
+  <color name="colorPrimaryDark">#303F9F</color>
+  <color name="colorAccent">#FF4081</color>
+  <color name="alarmTextColor">#FFFFFF</color>
+  <color name="alarmPrimaryColor">#0069c0</color>
+  <color name="alarmPrimaryDarkColor">#005cb2</color>
+  <color name="alarmSecondaryColor">#e8eaf6</color>
 </resources>

@@ -33,10 +33,13 @@ namespace Five_Seconds.Droid
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
         private LinearLayout alarmLayout;
         private LinearLayout recordingLayout;
-        private Button tellmeButton;
+        private Button startButton;
+        private ImageView tellmeView;
         public TextView countTextView;
+        private TextView timeTextView;
         private TextView alarmTextView;
         private TextView pleaseRecordView;
+        private TextView pleaseSayText;
         private EditText alarmEditText;
         private CountDown countDown;
 
@@ -161,30 +164,29 @@ namespace Five_Seconds.Droid
         {
             alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             recordingLayout = FindViewById<LinearLayout>(Resource.Id.recordingLayout);
-            tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
+            startButton = FindViewById<Button>(Resource.Id.startButton);
+            tellmeView = FindViewById<ImageView>(Resource.Id.tellmeView);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
+            timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
             alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
             pleaseRecordView = FindViewById<TextView>(Resource.Id.pleaseRecordView);
+            pleaseSayText = FindViewById<TextView>(Resource.Id.pleaseSayText);
             alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
 
             //tellmeButton.Click += TellmeButton_Click;
-            countTextView.Text = "5.00 초";
+            countTextView.Text = "5.00";
             alarmTextView.Text = name;
+            timeTextView.Text = DateTime.Now.ToShortTimeString();
 
-            tellmeButton.Click += StartListening_Click;
-
-            alarmEditText.Enabled = false;
+            tellmeView.Click += StartListening_Click;
+            startButton.Click += StartButton_Click;
         }
 
         private void SetControlsForCountActivity()
         {
-            alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
-            tellmeButton = FindViewById<Button>(Resource.Id.tellmeButton);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
-            alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
-            alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
 
-            countTextView.Text = "5.00 초";
+            countTextView.Text = "5.00";
         }
 
         private void AddWindowManagerFlags()
@@ -214,16 +216,12 @@ namespace Five_Seconds.Droid
 
         private void StartListening_Click(object sender, EventArgs e)
         {
-            Handler.RemoveCallbacks(DelayedAction);
+            RequestRecordAudioPermission();
+        }
 
-            if (!alarmEditText.Enabled)
-            {
-                RequestRecordAudioPermission();
-            }
-            else
-            {
-                HandleVoiceRecognitionResult();
-            }
+        private void StartButton_Click(object sender, EventArgs e)
+        {
+            HandleVoiceRecognitionResult();
         }
 
         private void HandleVoiceRecognitionResult()
@@ -231,8 +229,7 @@ namespace Five_Seconds.Droid
             mSpeechRecognizer?.StopListening();
             recordingLayout.Visibility = ViewStates.Invisible;
 
-            alarmEditText.Enabled = true;
-            tellmeButton.Text = "5초 카운트!";
+            startButton.Text = "시작!";
 
             var editText = alarmEditText.Text.Replace(" ", "");
             var textView = alarmTextView.Text.Replace(" ", "");
@@ -249,6 +246,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
+                SetVisibilityOfControls();
                 ShowAlertDoNotMatchText();
             }
         }
@@ -265,6 +263,14 @@ namespace Five_Seconds.Droid
             }
 
             SetCountDown();
+        }
+
+        private void SetVisibilityOfControls()
+        {
+            tellmeView.Visibility = ViewStates.Gone;
+            pleaseSayText.Visibility = ViewStates.Gone;
+            alarmEditText.Visibility = ViewStates.Visible;
+            startButton.Visibility = ViewStates.Visible;
         }
 
         private void ShowAlertDoNotMatchText()
@@ -434,7 +440,7 @@ namespace Five_Seconds.Droid
                 if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
                 {
                     // Explain to the user why we need to read the contacts
-                    Toast.MakeText(this, "This app needs to record audio through the microphone....", ToastLength.Long).Show();
+                    Toast.MakeText(this, "이 앱은 음성 녹음 권한이 필요합니다.", ToastLength.Long).Show();
                 }
 
                 RequestPermissions(new string[] { Manifest.Permission.RecordAudio }, MY_PERMISSIONS_RECORD_AUDIO);
@@ -482,7 +488,7 @@ namespace Five_Seconds.Droid
 
                 double count = (double)millisUntilFinished / 1000;
                 var stringFormat = string.Format("{0:f2}", count);
-                countTextView.Text = stringFormat + "초";
+                countTextView.Text = stringFormat;
             }
         }
     }

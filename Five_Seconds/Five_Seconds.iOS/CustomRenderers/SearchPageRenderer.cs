@@ -54,8 +54,8 @@ namespace Five_Seconds.iOS.CustomRenderers
 
         public void UpdateSearchResultsForSearchController(UISearchController searchController)
         {
-            if (Element is ISearchPage searchPage)
-                searchPage.OnSearchBarTextChanged(searchController.SearchBar.Text);
+            //if (Element is ISearchPage searchPage)
+            //    searchPage.OnSearchBarTextChanged(searchController.SearchBar.Text);
         }
     }
 }

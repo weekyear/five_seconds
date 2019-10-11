@@ -55,7 +55,12 @@ namespace Five_Seconds.Models
             get { return CreateDateString.CreateDateToString(this); }
         }
 
-        public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTime.Now);
+        private static DateTime DateTimeNow
+        {
+            get { return new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, DateTime.Now.Hour, DateTime.Now.Minute, 0); }
+        }
+
+        public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTimeNow.AddMinutes(1));
         protected DateTimeOffset GetDateTimeOffsetFromTimeSpan(TimeSpan time)
         {
             var dateTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hours, time.Minutes, time.Seconds);
