@@ -94,6 +94,7 @@
                                     VerticalOptions="CenterAndExpand"
                                     IsGroupingEnabled="True"
                                     ItemSelected="DayRecords_ItemSelected"
+                                    ItemTapped="DayRecords_ItemTapped"
                                     SwipeLeft="DayRecords_SwipeLeft"
                                     SwipeRight="DayRecords_SwipeRight" 
                                     IsVisible="{Binding HasRecord}">

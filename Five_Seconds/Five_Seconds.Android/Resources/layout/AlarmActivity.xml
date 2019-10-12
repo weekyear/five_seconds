@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -84,7 +84,7 @@
             android:text="알람 이름을 말해주세요"
             android:textColor="@color/alarmTextColor"
             android:layout_marginTop="50dp"
-            android:textSize="36dp"
+            android:textSize="28dp"
             android:gravity="center"
             android:background="@color/alarmPrimaryColor"/>
         <EditText

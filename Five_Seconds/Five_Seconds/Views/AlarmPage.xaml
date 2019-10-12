@@ -113,11 +113,25 @@
             <TableSection Title="5초 카운트 옵션" TextColor="DarkBlue">
                 <custom:TableViewCell AllowHighlight="False" Height="60">
                     <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label Text="카운트음" TextColor="Black"  Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                        <Label Text="카운트" TextColor="Black"  Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
                         <Switch IsToggled="{Binding Alarm.IsCountOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsCountOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                                ThumbColor="{Binding Alarm.IsCountSoundOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                    </StackLayout>
+                </custom:TableViewCell>
+                <custom:TableViewCell AllowHighlight="False" Height="60">
+                    <StackLayout Orientation="Horizontal" Margin="10">
+                        <custom:ListItemLabel Text="카운트 소리" 
+                                              TextColor="{Binding Alarm.IsCountOn, Converter={StaticResource BooleanLabelColorConverter}}"
+                                              Margin="10, 0" 
+                                              FontSize="20" 
+                                              VerticalOptions="CenterAndExpand" />
+                        <Switch IsToggled="{Binding Alarm.IsCountSoundOn}"
+                                IsEnabled="{Binding Alarm.IsCountOn}"
+                                HorizontalOptions="EndAndExpand"
+                                OnColor="LightSteelBlue"
+                                ThumbColor="{Binding Alarm.IsCountSoundOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>

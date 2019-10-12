@@ -27,6 +27,8 @@ namespace Five_Seconds.ViewModels
             UpdateWeekRecords(null);
 
             SubscribeMessage();
+
+            SaveTestRecords();
         }
 
 
@@ -53,6 +55,13 @@ namespace Five_Seconds.ViewModels
                 TagItems.Remove(tagItem);
                 UpdateWeekRecords(null);
             });
+            
+            MessagingCenter.Subscribe<RecordDetailViewModel, WeekRecord>(this, "changeWeekRecord", (sender, weekRecord) =>
+            {
+                ChangeWeekRecord(weekRecord);
+                UpdateWeekRecords(null);
+                OnPropertyChanged(nameof(MonthSuccessRate));
+            });
         }
 
         // Command
@@ -77,7 +86,7 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public List<Record> Records { get; set; } = new List<Record>
+        public List<Record> TestRecords { get; set; } = new List<Record>
         {
             new Record(new Alarm() { Id = 1, Name = "일어나자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, false),
             new Record(new Alarm() { Id = 2, Name = "밥묵자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 04, 5, 30, 00))}, true),
@@ -99,7 +108,18 @@ namespace Five_Seconds.ViewModels
             new Record(new Alarm() { Id = 18, Name = "일하자12", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, false),
         };
 
-        //public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB;
+        private void SaveTestRecords()
+        {
+            if (Records.Count == 0)
+            {
+                foreach (var _record in TestRecords)
+                {
+                    App.AlarmsRepo.SaveRecord(_record);
+                }
+            }
+        }
+
+        public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB;
 
         public List<Record> MonthRecords
         {
@@ -138,6 +158,17 @@ namespace Five_Seconds.ViewModels
         }
 
         public ObservableCollection<WeekRecord> WeekRecords { get; set; } = new ObservableCollection<WeekRecord>();
+
+        private void ChangeWeekRecord(WeekRecord weekRecord)
+        {
+            foreach (var _weekRecord in WeekRecords)
+            {
+                if (_weekRecord.StartDateOfWeek.Date == weekRecord.StartDateOfWeek.Date)
+                {
+                    _weekRecord.DayRecords = weekRecord.DayRecords;
+                }
+            }
+        }
 
         private async Task ClosePopup()
         {

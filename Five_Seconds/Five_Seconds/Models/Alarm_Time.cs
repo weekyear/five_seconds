@@ -21,6 +21,7 @@ namespace Five_Seconds.Models
 
         public bool OccursToday { get { return Days.Equals(DateTime.Now.DayOfWeek); } }
         public bool IsVibrateOn { get; set; } = true;
+        public bool IsCountSoundOn { get; set; } = true;
         public bool IsCountOn { get; set; } = true;
 
         //public int DaysId { get; set; }

@@ -41,6 +41,7 @@ namespace Five_Seconds.ViewModels
             CloseCommand = new Command(async () => await ClosePopup());
             PreviousWeekCommand = new Command(() => PreviousWeek());
             NextWeekCommand = new Command(() => NextWeek());
+            ShowRecordMenuCommand = new Command<object>(async (a) => await ShowRecordMenu(a));
         }
 
         // Command
@@ -50,6 +51,7 @@ namespace Five_Seconds.ViewModels
         public Command CloseCommand { get; set; }
         public Command PreviousWeekCommand { get; set; }
         public Command NextWeekCommand { get; set; }
+        public Command<object> ShowRecordMenuCommand { get; set; }
 
         // Property
 
@@ -280,7 +282,7 @@ namespace Five_Seconds.ViewModels
 
             UpdateWeekRecord(null);
 
-            SendMessageOfTag("removeTag", tagItem);
+            SendMessage("removeTag", tagItem);
         }
 
         public TagItem ValidateAndReturn(string tag)
@@ -290,15 +292,15 @@ namespace Five_Seconds.ViewModels
             if (_tagItem != null)
             {
                 UpdateWeekRecord(_tagItem);
-                SendMessageOfTag("addTag", _tagItem);
+                SendMessage("addTag", _tagItem);
             }
 
             return _tagItem;
         }
 
-        private void SendMessageOfTag(string type, TagItem tagItem)
+        private void SendMessage<T>(string type, T item)
         {
-            MessagingCenter.Send(this, type, tagItem);
+            MessagingCenter.Send(this, type, item);
         }
 
         private void Search(string tag)
@@ -314,10 +316,59 @@ namespace Five_Seconds.ViewModels
             if (_tagItem != null)
             {
                 UpdateWeekRecord(_tagItem);
-                SendMessageOfTag("addTag", _tagItem);
+                SendMessage("addTag", _tagItem);
             }
 
             TagItems.Add(_tagItem);
+        }
+
+        public async Task ShowRecordMenu(object _record)
+        {
+            var record = _record as Record;
+            string[] actionSheetBtns = { "성공", "실패" };
+
+            string action = await MessageBoxService.ShowActionSheet("기록 수정", "취소", null, actionSheetBtns);
+
+            ClickRecordMenuAction(action, record);
+
+            SetDayRecords();
+        }
+
+        private void ClickRecordMenuAction(string action, Record record)
+        {
+            //var dayRecord = DayRecords.Where(d => d.Date.DayOfWeek == record.Date.DayOfWeek).FirstOrDefault();
+
+            //var _record = dayRecord.Find(r => r.Id == record.Id);
+
+            foreach (var dayRecord in DayRecords)
+            {
+                foreach (var _record in dayRecord)
+                {
+                    if (_record.Id == record.Id)
+                    {
+                        if (action == "성공" && !_record.IsSuccess)
+                        {
+                            _record.IsSuccess = true;
+                        }
+                        else if (action == "실패" && _record.IsSuccess)
+                        {
+                            _record.IsSuccess = false;
+                        }
+                        else
+                        {
+                            return;
+                        }
+
+                        OnPropertyChanged(nameof(WeekSuccessRate));
+
+                        App.AlarmsRepo.SaveRecord(_record);
+
+                        SendMessage("changeWeekRecord", WeekRecord);
+                    }
+                }
+            }
+            //OnPropertyChanged(nameof(DayRecords));
+            SetDayRecords();
         }
 
         public class DayRecord : List<Record>

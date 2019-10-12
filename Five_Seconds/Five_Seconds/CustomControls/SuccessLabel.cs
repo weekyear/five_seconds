@@ -36,7 +36,7 @@ namespace Five_Seconds.CustomControls
             }
             else
             {
-                label.TextColor = Color.IndianRed;
+                label.TextColor = Color.DarkRed;
             }
         }
     }

@@ -68,5 +68,10 @@ namespace Five_Seconds.Views
                 ((ListView)sender).SelectedItem = null;
             }
         }
+
+        private void DayRecords_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            viewModel.ShowRecordMenuCommand.Execute(e.Item);
+        }
     }
 }
