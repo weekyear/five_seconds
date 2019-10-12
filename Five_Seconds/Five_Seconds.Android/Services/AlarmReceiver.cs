@@ -13,10 +13,11 @@ namespace Five_Seconds.Droid.Services
     {
         private int id;
         private string name;
-        private bool isAlarmOn;
-        private bool isVibrateOn;
-        private bool isCountOn;
-        private bool isRepeating;
+        private bool IsAlarmOn;
+        private bool IsVibrateOn;
+        private bool IsCountOn;
+        private bool IsCountSoundOn;
+        private bool IsRepeating;
         private string toneName;
         private int alarmVolume;
         public override void OnReceive(Context context, Intent intent)
@@ -24,10 +25,11 @@ namespace Five_Seconds.Droid.Services
             Console.WriteLine("OnReceive_AlarmReceiver");
             id = intent.GetIntExtra("id", 0);
             name = intent.GetStringExtra("name");
-            isAlarmOn = intent.GetBooleanExtra("isAlarmOn", false);
-            isVibrateOn = intent.GetBooleanExtra("isVibrateOn", false);
-            isCountOn = intent.GetBooleanExtra("isCountOn", false);
-            isRepeating = intent.GetBooleanExtra("isRepeating", false);
+            IsAlarmOn = intent.GetBooleanExtra("IsAlarmOn", false);
+            IsVibrateOn = intent.GetBooleanExtra("IsVibrateOn", false);
+            IsCountOn = intent.GetBooleanExtra("IsCountOn", false);
+            IsCountSoundOn = intent.GetBooleanExtra("IsCountSoundOn", false);
+            IsRepeating = intent.GetBooleanExtra("IsRepeating", false);
             toneName = intent.GetStringExtra("toneName");
             alarmVolume = intent.GetIntExtra("alarmVolume", 0);
 
@@ -39,10 +41,11 @@ namespace Five_Seconds.Droid.Services
             var disIntent = new Intent(context, typeof(AlarmActivity));
             disIntent.PutExtra("id", id);
             disIntent.PutExtra("name", name);
-            disIntent.PutExtra("isAlarmOn", isAlarmOn);
-            disIntent.PutExtra("isVibrateOn", isVibrateOn);
-            disIntent.PutExtra("isCountOn", isCountOn);
-            disIntent.PutExtra("isRepeating", isRepeating);
+            disIntent.PutExtra("IsAlarmOn", IsAlarmOn);
+            disIntent.PutExtra("IsVibrateOn", IsVibrateOn);
+            disIntent.PutExtra("IsCountOn", IsCountOn);
+            disIntent.PutExtra("IsCountSoundOn", IsCountSoundOn);
+            disIntent.PutExtra("IsRepeating", IsRepeating);
             disIntent.PutExtra("toneName", toneName);
             disIntent.PutExtra("alarmVolume", alarmVolume);
 

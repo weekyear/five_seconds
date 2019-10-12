@@ -127,16 +127,16 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public bool IsAlarmOn
-        {
-            get { return Alarm.IsAlarmOn; }
-            set
-            {
-                if (Alarm.IsAlarmOn == value) return;
-                Alarm.IsAlarmOn = value;
-                OnPropertyChanged(nameof(IsAlarmOn));
-            }
-        }
+        //public bool IsAlarmOn
+        //{
+        //    get { return Alarm.IsAlarmOn; }
+        //    set
+        //    {
+        //        if (Alarm.IsAlarmOn == value) return;
+        //        Alarm.IsAlarmOn = value;
+        //        OnPropertyChanged(nameof(IsAlarmOn));
+        //    }
+        //}
 
         public int Volume
         {
@@ -149,14 +149,37 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public bool IsVibrateOn
+        //public bool IsVibrateOn
+        //{
+        //    get { return Alarm.IsVibrateOn; }
+        //    set
+        //    {
+        //        if (Alarm.IsVibrateOn == value) return;
+        //        Alarm.IsVibrateOn = value;
+        //        OnPropertyChanged(nameof(IsVibrateOn));
+        //    }
+        //}
+
+        public bool IsCountOn
         {
-            get { return Alarm.IsVibrateOn; }
+            get { return Alarm.IsCountOn; }
             set
             {
-                if (Alarm.IsVibrateOn == value) return;
-                Alarm.IsVibrateOn = value;
-                OnPropertyChanged(nameof(IsVibrateOn));
+                if (Alarm.IsCountOn == value) return;
+                Alarm.IsCountOn = value;
+                IsCountSoundOn = value;
+                OnPropertyChanged(nameof(IsCountOn));
+            }
+        }
+
+        public bool IsCountSoundOn
+        {
+            get { return Alarm.IsCountSoundOn; }
+            set
+            {
+                if (Alarm.IsCountSoundOn == value) return;
+                Alarm.IsCountSoundOn = value;
+                OnPropertyChanged(nameof(IsCountSoundOn));
             }
         }
 

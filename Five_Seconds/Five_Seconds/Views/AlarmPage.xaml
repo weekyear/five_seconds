@@ -13,7 +13,9 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
-            <conv:BooleanSwitchColorConverter x:Key="BooleanSwitchColorConverter"/>
+            <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
+            <conv:BooleanCountSoundSwitchConverter x:Key="BooleanCountSoundSwitchConverter"/>
+            <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -97,7 +99,7 @@
                                 IsToggled="{Binding Alarm.IsAlarmOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsAlarmOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                                ThumbColor="{Binding Alarm.IsAlarmOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
                     </Grid>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False" Height="60">
@@ -106,7 +108,7 @@
                         <Switch IsToggled="{Binding Alarm.IsVibrateOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsVibrateOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                                ThumbColor="{Binding Alarm.IsVibrateOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>
@@ -114,10 +116,10 @@
                 <custom:TableViewCell AllowHighlight="False" Height="60">
                     <StackLayout Orientation="Horizontal" Margin="10">
                         <Label Text="카운트" TextColor="Black"  Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
-                        <Switch IsToggled="{Binding Alarm.IsCountOn}"
+                        <Switch IsToggled="{Binding IsCountOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsCountSoundOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                                ThumbColor="{Binding IsCountOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
                     </StackLayout>
                 </custom:TableViewCell>
                 <custom:TableViewCell AllowHighlight="False" Height="60">
@@ -127,11 +129,11 @@
                                               Margin="10, 0" 
                                               FontSize="20" 
                                               VerticalOptions="CenterAndExpand" />
-                        <Switch IsToggled="{Binding Alarm.IsCountSoundOn}"
-                                IsEnabled="{Binding Alarm.IsCountOn}"
+                        <Switch IsToggled="{Binding IsCountSoundOn}"
+                                IsEnabled="{Binding IsCountOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsCountSoundOn, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                                ThumbColor="{Binding IsCountSoundOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>

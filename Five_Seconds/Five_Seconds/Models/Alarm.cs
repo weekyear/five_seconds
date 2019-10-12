@@ -61,6 +61,7 @@ namespace Five_Seconds.Models
             Volume = original.Volume;
             IsVibrateOn = original.IsVibrateOn;
             IsCountSoundOn = original.IsCountSoundOn;
+            IsCountOn = original.IsCountOn;
             TimeOffset = original.TimeOffset;
 
             Days = new DaysOfWeek(original.Days);

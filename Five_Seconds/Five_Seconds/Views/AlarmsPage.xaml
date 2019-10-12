@@ -15,7 +15,7 @@
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
-            <conv:BooleanSwitchColorConverter x:Key="BooleanSwitchColorConverter"/>
+            <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
             <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -116,7 +116,7 @@
                                     IsToggled="{Binding IsActive}"
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"
-                                    ThumbColor="{Binding IsActive, Converter={StaticResource BooleanSwitchColorConverter}}"/>
+                                    ThumbColor="{Binding IsActive, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
                         </Grid>
                     </custom:CustomViewCell>
                 </DataTemplate>

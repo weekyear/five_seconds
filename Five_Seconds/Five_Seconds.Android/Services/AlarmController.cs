@@ -61,10 +61,11 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
             _alarmIntent.PutExtra("id", alarm.Id);
             _alarmIntent.PutExtra("name", alarm.Name);
-            _alarmIntent.PutExtra("isAlarmOn", alarm.IsAlarmOn);
-            _alarmIntent.PutExtra("isVibrateOn", alarm.IsVibrateOn);
-            _alarmIntent.PutExtra("isCountOn", alarm.IsCountSoundOn);
-            _alarmIntent.PutExtra("isRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
+            _alarmIntent.PutExtra("IsAlarmOn", alarm.IsAlarmOn);
+            _alarmIntent.PutExtra("IsVibrateOn", alarm.IsVibrateOn);
+            _alarmIntent.PutExtra("IsCountSoundOn", alarm.IsCountSoundOn);
+            _alarmIntent.PutExtra("IsCountOn", alarm.IsCountOn);
+            _alarmIntent.PutExtra("IsRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);
 

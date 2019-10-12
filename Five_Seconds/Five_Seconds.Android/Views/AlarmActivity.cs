@@ -31,6 +31,7 @@ namespace Five_Seconds.Droid
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
+        private LinearLayout alarmTextLayout;
         private LinearLayout alarmLayout;
         private LinearLayout recordingLayout;
         private Button startButton;
@@ -46,10 +47,11 @@ namespace Five_Seconds.Droid
         private int id;
         private string name;
         private string toneName;
-        private bool isAlarmOn;
-        private bool isVibrateOn;
-        private bool isCountOn = true;
-        private bool isRepeating;
+        private bool IsAlarmOn;
+        private bool IsVibrateOn;
+        private bool IsCountOn = true;
+        private bool IsCountSoundOn = true;
+        private bool IsRepeating;
         private int alarmVolume;
 
         Alarm alarm;
@@ -67,13 +69,15 @@ namespace Five_Seconds.Droid
 
             Bundle bundle = Intent.Extras;
 
-            GetDataFromBundle(bundle);
+            id = (int)bundle.Get("id");
 
             if (id == -1)
             {
                 OnlyCountDown();
                 return;
             }
+
+            GetDataFromBundle(bundle);
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
@@ -134,7 +138,7 @@ namespace Five_Seconds.Droid
                 alarm = App.AlarmsRepo.GetAlarm(id);
                 alarm.Days = App.AlarmsRepo.GetDaysOfWeek(alarm.DaysId);
 
-                if (!isRepeating)
+                if (!IsRepeating)
                 {
                     alarm.IsActive = false;
                     App.Service.SaveAlarmAtLocal(alarm);
@@ -150,18 +154,19 @@ namespace Five_Seconds.Droid
 
         private void GetDataFromBundle(Bundle bundle)
         {
-            id = (int)bundle.Get("id");
-            isCountOn = (bool)bundle.Get("isCountOn");
+            IsCountSoundOn = (bool)bundle.Get("IsCountSoundOn");
+            IsCountOn = (bool)bundle.Get("IsCountOn");
             name = (string)bundle.Get("name");
             toneName = (string)bundle.Get("toneName");
-            isAlarmOn = (bool)bundle.Get("isAlarmOn");
-            isVibrateOn = (bool)bundle.Get("isVibrateOn");
-            isRepeating = (bool)bundle.Get("isRepeating");
+            IsAlarmOn = (bool)bundle.Get("IsAlarmOn");
+            IsVibrateOn = (bool)bundle.Get("IsVibrateOn");
+            IsRepeating = (bool)bundle.Get("IsRepeating");
             alarmVolume = (int)bundle.Get("alarmVolume");
         }
 
         private void SetControls()
         {
+            alarmTextLayout = FindViewById<LinearLayout>(Resource.Id.alarmTextLayout);
             alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             recordingLayout = FindViewById<LinearLayout>(Resource.Id.recordingLayout);
             startButton = FindViewById<Button>(Resource.Id.startButton);
@@ -184,6 +189,8 @@ namespace Five_Seconds.Droid
 
         private void SetControlsForCountActivity()
         {
+            alarmTextLayout = FindViewById<LinearLayout>(Resource.Id.alarmTextLayout);
+            alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
 
             countTextView.Text = "5.00";
@@ -236,9 +243,7 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
-                var toastService = new ToastServiceAndroid();
-
-                toastService.Show("이제 5초를 셉니다!");
+                _vibrator?.Cancel();
 
                 ShowCountActivity();
 
@@ -253,16 +258,25 @@ namespace Five_Seconds.Droid
 
         private void ShowCountActivity()
         {
-            _vibrator?.Cancel();
-
-            HideAllViewExceptForCountText();
-
-            if (isCountOn)
+            if (IsCountOn)
             {
-                _soundService.PlayCountAudio();
-            }
+                var toastService = new ToastServiceAndroid();
 
-            SetCountDown();
+                toastService.Show("이제 5초를 셉니다!");
+
+                HideAllViewExceptForCountText();
+
+                if (IsCountSoundOn)
+                {
+                    _soundService.PlayCountAudio();
+                }
+
+                SetCountDown();
+            }
+            else
+            {
+                FinishAndRemoveTask();
+            }
         }
 
         private void SetVisibilityOfControls()
@@ -290,7 +304,7 @@ namespace Five_Seconds.Droid
 
         private void SetMediaPlayer()
         {
-            if (isAlarmOn)
+            if (IsAlarmOn)
             {
                 AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == toneName);
                 _soundService.PlayAudio(alarmTone, true, alarmVolume);
@@ -299,7 +313,7 @@ namespace Five_Seconds.Droid
 
         private void SetVibrator()
         {
-            if (isVibrateOn)
+            if (IsVibrateOn)
             {
                 _vibrator = Vibrator.FromContext(this);
                 long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
@@ -310,6 +324,7 @@ namespace Five_Seconds.Droid
 
         private void HideAllViewExceptForCountText()
         {
+            alarmTextLayout.Visibility = ViewStates.Invisible;
             alarmLayout.Visibility = ViewStates.Invisible;
             countTextView.Visibility = ViewStates.Visible;
         }
