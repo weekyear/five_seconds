@@ -17,46 +17,61 @@
             android:textColor="@color/alarmTextColor"
             android:phoneNumber="true"
             android:textSize="100dp" />
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/alarmTextLayout"
         android:layout_marginTop="16dp">
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/topAlarmLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_gravity="center_vertical">
+            android:layout_height="wrap_content">
             <ImageView
+                android:id="@+id/ic_five_seconds"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="12dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_five_seconds_mini"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ic_five_seconds"
                 android:text="5초의 알람"
                 android:textSize="16dp"
+                android:layout_centerVertical="true"
                 android:textColor="@color/alarmTextColor"/>
-        </LinearLayout>
+            <Button
+                android:id="@+id/laterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="16dp"
+                android:textSize="16dp"
+                android:text="나중에 알림"
+                android:background="@android:color/transparent"
+                android:textStyle="bold"
+                android:textColor="@color/alarmTextColor"/>
+        </RelativeLayout>
         <TextView
+            android:id="@+id/timeTextView"
             android:text="오전 6:00"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_below="@id/topAlarmLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="100dp"
             android:layout_gravity="start"
             android:textSize="22dp"
-            android:id="@+id/timeTextView"
             android:textColor="@color/alarmTextColor"/>
         <TextView
             android:text="Alarm Text"
             android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/timeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
@@ -65,14 +80,14 @@
             android:textColor="@color/alarmTextColor"
             android:textStyle="bold"
             android:textSize="48dp" />
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:orientation="vertical"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:layout_marginTop="100dp"
+        android:layout_below="@id/alarmTextLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/alarmLayout"
         android:gravity="center"
         android:layout_gravity="center">
@@ -83,7 +98,6 @@
             android:layout_margin="50dp"
             android:text="알람 이름을 말해주세요"
             android:textColor="@color/alarmTextColor"
-            android:layout_marginTop="50dp"
             android:textSize="28dp"
             android:gravity="center"
             android:background="@color/alarmPrimaryColor"/>
@@ -91,11 +105,12 @@
             android:id="@+id/alarmEditText"
             android:layout_width="match_parent"
             android:layout_height="125dp"
-            android:layout_margin="40dp"
+            android:layout_margin="20dp"
             android:padding="16dp"
             android:textColor="@color/alarmTextColor"
             android:textSize="24dp"
             android:visibility="gone"
+            android:gravity="center"
             android:background="@drawable/border_edittext"/>        
         <ImageView
             android:layout_width="75dp"

@@ -20,6 +20,7 @@ namespace Five_Seconds.Droid.Services
         private bool IsRepeating;
         private string toneName;
         private int alarmVolume;
+        private bool IsLaterAlarm;
         public override void OnReceive(Context context, Intent intent)
         {
             Console.WriteLine("OnReceive_AlarmReceiver");
@@ -32,6 +33,7 @@ namespace Five_Seconds.Droid.Services
             IsRepeating = intent.GetBooleanExtra("IsRepeating", false);
             toneName = intent.GetStringExtra("toneName");
             alarmVolume = intent.GetIntExtra("alarmVolume", 0);
+            IsLaterAlarm = intent.GetBooleanExtra("IsLaterAlarm", false);
 
             StartAlarmActivity(context);
         }
@@ -48,6 +50,7 @@ namespace Five_Seconds.Droid.Services
             disIntent.PutExtra("IsRepeating", IsRepeating);
             disIntent.PutExtra("toneName", toneName);
             disIntent.PutExtra("alarmVolume", alarmVolume);
+            disIntent.PutExtra("IsLaterAlarm", IsLaterAlarm);
 
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);

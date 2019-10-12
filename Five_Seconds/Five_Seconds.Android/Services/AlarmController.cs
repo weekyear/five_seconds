@@ -43,7 +43,7 @@ namespace Five_Seconds.Droid.Services
 
             ShowNextAlarmToast(nextAlarmDateTime);
 
-            return Java.Lang.JavaSystem.CurrentTimeMillis() + (long)diffTimeSpan.TotalMilliseconds;
+            return (long)diffTimeSpan.TotalMilliseconds;
         }
 
         private static void ShowNextAlarmToast(DateTime dateTime)
@@ -68,13 +68,14 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.PutExtra("IsRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);
+            _alarmIntent.PutExtra("IsLaterAlarm", false);
 
             var pendingIntent = PendingIntent.GetBroadcast(Application.Context, alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
 
             Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
             PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, 0, showIntent, PendingIntentFlags.UpdateCurrent);
-            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(diffMillis, showOperation);
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }
 

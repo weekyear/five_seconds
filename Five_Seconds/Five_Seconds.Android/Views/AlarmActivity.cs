@@ -11,12 +11,16 @@ using Android.Speech;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
+using Five_Seconds.Helpers;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
+using static Android.Views.View;
 using Button = Android.Widget.Button;
+using RelativeLayout = Android.Widget.RelativeLayout;
+using View = Android.Views.View;
 
 namespace Five_Seconds.Droid
 {
@@ -31,10 +35,11 @@ namespace Five_Seconds.Droid
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
-        private LinearLayout alarmTextLayout;
+        private RelativeLayout alarmTextLayout;
         private LinearLayout alarmLayout;
         private LinearLayout recordingLayout;
         private Button startButton;
+        private Button laterButton;
         private ImageView tellmeView;
         public TextView countTextView;
         private TextView timeTextView;
@@ -42,6 +47,7 @@ namespace Five_Seconds.Droid
         private TextView pleaseRecordView;
         private TextView pleaseSayText;
         private EditText alarmEditText;
+        private View LaterAlarmDialog;
         private CountDown countDown;
 
         private int id;
@@ -53,6 +59,9 @@ namespace Five_Seconds.Droid
         private bool IsCountSoundOn = true;
         private bool IsRepeating;
         private int alarmVolume;
+        private bool IsLaterAlarm = false;
+
+        private DateTime AlarmTimeNow;
 
         Alarm alarm;
         IAlarmsRepository alarmsRepo;
@@ -66,6 +75,8 @@ namespace Five_Seconds.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            AlarmTimeNow = DateTime.Now;
 
             Bundle bundle = Intent.Extras;
 
@@ -86,11 +97,11 @@ namespace Five_Seconds.Droid
             SetVibrator();
 
             SetContentView(Resource.Layout.AlarmActivity);
-            SetControls();
+            SetAndFindViewById();
 
             AddWindowManagerFlags();
 
-            HandleAlarmAfterCalled();
+            SetAlarmAfterCalled();
 
             CreateSpeechRecognizer();
 
@@ -128,28 +139,30 @@ namespace Five_Seconds.Droid
             ShowCountActivity();
         }
 
-        private void HandleAlarmAfterCalled()
+        private void SetAlarmAfterCalled()
         {
 
             alarmsRepo = App.AlarmsRepo;
 
-            if (alarmsRepo != null)
+            alarm = App.AlarmsRepo?.GetAlarm(id);
+            alarm.Days = App.AlarmsRepo?.GetDaysOfWeek(alarm.DaysId);
+
+            if (IsLaterAlarm)
             {
-                alarm = App.AlarmsRepo.GetAlarm(id);
-                alarm.Days = App.AlarmsRepo.GetDaysOfWeek(alarm.DaysId);
-
-                if (!IsRepeating)
-                {
-                    alarm.IsActive = false;
-                    App.Service.SaveAlarmAtLocal(alarm);
-                }
-                else
-                {
-                    AlarmController.SetNextAlarm(alarm);
-                }
-
-                App.Service.SendChangeAlarmsMessage();
+                return;
             }
+
+            if (!IsRepeating)
+            {
+                alarm.IsActive = false;
+                App.Service.SaveAlarmAtLocal(alarm);
+            }
+            else
+            {
+                AlarmController.SetNextAlarm(alarm);
+            }
+
+            App.Service.SendChangeAlarmsMessage();
         }
 
         private void GetDataFromBundle(Bundle bundle)
@@ -162,14 +175,16 @@ namespace Five_Seconds.Droid
             IsVibrateOn = (bool)bundle.Get("IsVibrateOn");
             IsRepeating = (bool)bundle.Get("IsRepeating");
             alarmVolume = (int)bundle.Get("alarmVolume");
+            IsLaterAlarm = (bool)bundle.Get("IsLaterAlarm");
         }
 
-        private void SetControls()
+        private void SetAndFindViewById()
         {
-            alarmTextLayout = FindViewById<LinearLayout>(Resource.Id.alarmTextLayout);
+            alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
             alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             recordingLayout = FindViewById<LinearLayout>(Resource.Id.recordingLayout);
             startButton = FindViewById<Button>(Resource.Id.startButton);
+            laterButton = FindViewById<Button>(Resource.Id.laterButton);
             tellmeView = FindViewById<ImageView>(Resource.Id.tellmeView);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
@@ -178,18 +193,18 @@ namespace Five_Seconds.Droid
             pleaseSayText = FindViewById<TextView>(Resource.Id.pleaseSayText);
             alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
 
-            //tellmeButton.Click += TellmeButton_Click;
             countTextView.Text = "5.00";
             alarmTextView.Text = name;
-            timeTextView.Text = DateTime.Now.ToShortTimeString();
+            timeTextView.Text = AlarmTimeNow.ToShortTimeString();
 
             tellmeView.Click += StartListening_Click;
             startButton.Click += StartButton_Click;
+            laterButton.Click += ShowLaterDialog;
         }
 
         private void SetControlsForCountActivity()
         {
-            alarmTextLayout = FindViewById<LinearLayout>(Resource.Id.alarmTextLayout);
+            alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
             alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
 
@@ -436,7 +451,7 @@ namespace Five_Seconds.Droid
                 if (grantResults[0] != Permission.Granted)
                 {
                     Toast.MakeText(ApplicationContext,
-                            "Application will not have audio on record", ToastLength.Short).Show();
+                            "이 앱은 음성 녹음 권한이 필요합니다.", ToastLength.Short).Show();
                 }
                 else
                 {
@@ -476,6 +491,79 @@ namespace Five_Seconds.Droid
             _soundService?.StopAudio();
             recordingLayout.Visibility = ViewStates.Visible;
             mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
+        }
+
+        private void ShowLaterDialog(object s, EventArgs e)
+        {
+            _vibrator?.Cancel();
+
+
+            LaterAlarmDialog = LayoutInflater.Inflate(Resource.Layout.LaterAlarmDialog, (ViewGroup)FindViewById(Resource.Id.laterAlarmLayout));
+
+            var numberPicker = LaterAlarmDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
+            numberPicker.MaxValue = 120;
+            numberPicker.MinValue = 1;
+            numberPicker.Value = 5;
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.SetTitle($"{AlarmTimeNow.ToShortTimeString()}에서");
+            dialog.SetView(LaterAlarmDialog);
+            dialog.SetPositiveButton("확인", (c, ev) =>
+            {
+                var numberPicker1 = LaterAlarmDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
+                var number = numberPicker1.Value;
+
+                var dateTimeNow = DateTime.Now;
+                var alarmTime = AlarmTimeNow.AddMinutes(number);
+
+
+                var diffTimeSpan = alarmTime.Subtract(dateTimeNow);
+
+                if (diffTimeSpan.Ticks < 0)
+                {
+                    Toast.MakeText(ApplicationContext, $"이미 지난 시각은 설정할 수 없습니다.", ToastLength.Long).Show();
+                    return;
+                }
+
+                SetAlarmByManager((long)diffTimeSpan.TotalMilliseconds);
+
+                Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
+
+                FinishAndRemoveTask();
+            });
+            dialog.SetNegativeButton("취소", (c, ev) =>
+            {
+            });
+
+            AlertDialog alert = dialog.Create();
+
+            alert.Show();
+
+            dialog.Dispose();
+        }
+
+        private void SetAlarmByManager(long diffMillis)
+        {
+            var _alarmIntent = new Intent(ApplicationContext, typeof(AlarmReceiver));
+            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            _alarmIntent.PutExtra("id", id);
+            _alarmIntent.PutExtra("name", name);
+            _alarmIntent.PutExtra("IsAlarmOn", IsAlarmOn);
+            _alarmIntent.PutExtra("IsVibrateOn", IsVibrateOn);
+            _alarmIntent.PutExtra("IsCountSoundOn", IsCountSoundOn);
+            _alarmIntent.PutExtra("IsCountOn", IsCountOn);
+            _alarmIntent.PutExtra("IsRepeating", IsRepeating);
+            _alarmIntent.PutExtra("toneName", toneName);
+            _alarmIntent.PutExtra("alarmVolume", alarmVolume);
+            _alarmIntent.PutExtra("IsLaterAlarm", true);
+
+            var pendingIntent = PendingIntent.GetBroadcast(ApplicationContext, -alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var alarmManager = (AlarmManager)ApplicationContext.GetSystemService("alarm");
+
+            Intent showIntent = new Intent(ApplicationContext, typeof(MainActivity));
+            PendingIntent showOperation = PendingIntent.GetActivity(ApplicationContext, 0, showIntent, PendingIntentFlags.UpdateCurrent);
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
+            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }
 
         private class CountDown : CountDownTimer

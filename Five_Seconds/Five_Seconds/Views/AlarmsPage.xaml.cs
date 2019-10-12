@@ -16,7 +16,7 @@ namespace Five_Seconds.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmsPage : ContentPage
     {
-        AlarmsViewModel viewModel;
+        readonly AlarmsViewModel viewModel;
 
         public AlarmsPage()
         {
