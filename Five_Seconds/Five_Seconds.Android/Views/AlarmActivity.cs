@@ -62,6 +62,7 @@ namespace Five_Seconds.Droid
         private bool IsLaterAlarm = false;
 
         private DateTime AlarmTimeNow;
+        private bool IsSuccess;
 
         Alarm alarm;
         IAlarmsRepository alarmsRepo;
@@ -114,22 +115,21 @@ namespace Five_Seconds.Droid
         {
             // 10분 경과
             DelayedAction = () => SetIsSuccessFalse();
-            Handler.PostDelayed(DelayedAction, 600000);
+            //Handler.PostDelayed(DelayedAction, 600000);
             // 1분 경과
-            //Handler.PostDelayed(DelayedAction, 10000);
+            var timeSpan = new TimeSpan(0, 0, 20);
+            Handler.PostDelayed(DelayedAction, (long)timeSpan.TotalMilliseconds);
         }
 
         private void SetIsSuccessFalse()
         {
-            var record = new Record(alarm, false);
-            alarmsRepo.SaveRecord(record);
+            IsSuccess = false;
             FinishAndRemoveTask();
         }
 
         private void SetIsSuccessTrue()
         {
-            var record = new Record(alarm, true);
-            alarmsRepo.SaveRecord(record);
+            IsSuccess = true;
         }
 
         private void OnlyCountDown()
@@ -260,9 +260,9 @@ namespace Five_Seconds.Droid
             {
                 _vibrator?.Cancel();
 
-                ShowCountActivity();
-
                 SetIsSuccessTrue();
+
+                ShowCountActivity();
             }
             else
             {
@@ -353,6 +353,16 @@ namespace Five_Seconds.Droid
 
         public override void OnBackPressed()
         {
+        }
+
+        public override void FinishAndRemoveTask()
+        {
+            if (alarm != null)
+            {
+                var record = new Record(alarm, IsSuccess);
+                alarmsRepo.SaveRecord(record);
+            }
+            base.FinishAndRemoveTask();
         }
 
         public void OnBeginningOfSpeech()

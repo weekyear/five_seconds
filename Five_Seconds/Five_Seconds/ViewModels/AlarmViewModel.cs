@@ -1,13 +1,8 @@
 ﻿using Five_Seconds.CustomControls;
-using Five_Seconds.Helpers;
 using Five_Seconds.Models;
-using Five_Seconds.Repository;
-using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Five_Seconds.ViewModels
@@ -36,6 +31,7 @@ namespace Five_Seconds.ViewModels
         {
             MessagingCenter.Subscribe<DaysOfWeekSelectionView>(this, "dayOfWeek_Clicked", (sender) =>
             {
+                IsToday = true;
                 Date = SetMinimumDate();
                 OnPropertyChanged(nameof(DateString));
             });
@@ -127,17 +123,6 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        //public bool IsAlarmOn
-        //{
-        //    get { return Alarm.IsAlarmOn; }
-        //    set
-        //    {
-        //        if (Alarm.IsAlarmOn == value) return;
-        //        Alarm.IsAlarmOn = value;
-        //        OnPropertyChanged(nameof(IsAlarmOn));
-        //    }
-        //}
-
         public int Volume
         {
             get { return Alarm.Volume; }
@@ -148,17 +133,6 @@ namespace Five_Seconds.ViewModels
                 OnPropertyChanged(nameof(Volume));
             }
         }
-
-        //public bool IsVibrateOn
-        //{
-        //    get { return Alarm.IsVibrateOn; }
-        //    set
-        //    {
-        //        if (Alarm.IsVibrateOn == value) return;
-        //        Alarm.IsVibrateOn = value;
-        //        OnPropertyChanged(nameof(IsVibrateOn));
-        //    }
-        //}
 
         public bool IsCountOn
         {
@@ -190,16 +164,24 @@ namespace Five_Seconds.ViewModels
                 return Alarm.DateString;
             }
         }
+        public bool IsToday { get; set; } = true;
 
         private void DateToStringWhenTimeChanged()
         {
-            if (Alarm.IsToday && Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+            if (IsToday)
             {
-                Date = DateTime.Now.AddDays(1).Date;
-            }
-            else if (Alarm.IsToday && Time.Subtract(DateTime.Now.TimeOfDay).Ticks > 0)
-            {
-                Date = DateTime.Now.Date;
+                int changedDay;
+
+                if (Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+                {
+                    changedDay = 1;
+                }
+                else
+                {
+                    changedDay = 0;
+                }
+
+                Date = DateTime.Now.AddDays(changedDay).Date;
             }
         }
 

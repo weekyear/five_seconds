@@ -30,21 +30,6 @@ namespace Five_Seconds.Models
         public int DaysId { get; set; }
         public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
-        public bool IsToday
-        {
-            get
-            {
-                if (Date.Subtract(DateTime.Now.Date).Days == 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-
         public DateTime Date
         {
             get { return TimeOffset.LocalDateTime.Date; }

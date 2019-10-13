@@ -36,9 +36,9 @@ namespace Five_Seconds.Views
 
         private void CalendarButton_Clicked(object sender, EventArgs e)
         {
-            datePicker.MinimumDate = viewModel.SetMinimumDate();
-            datePicker.Date = viewModel.Date;
-            datePicker.Focus();
+            DatePicker.MinimumDate = viewModel.SetMinimumDate();
+            DatePicker.Date = viewModel.Date;
+            DatePicker.Focus();
         }
 
         private void Switch_Toggled(object sender, ToggledEventArgs e)
@@ -51,6 +51,18 @@ namespace Five_Seconds.Views
             else
             {
                 _switch.ThumbColor = Color.LightGray;
+            }
+        }
+
+        private void DatePicker_Unfocused(object sender, FocusEventArgs e)
+        {
+            if (DatePicker.Date.Subtract(DateTime.Now.Date).Days == 0)
+            {
+                viewModel.IsToday = true;
+            }
+            else
+            {
+                viewModel.IsToday = false;
             }
         }
     }

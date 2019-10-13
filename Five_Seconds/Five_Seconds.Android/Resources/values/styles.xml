@@ -23,6 +23,7 @@
 
     <item name="android:datePickerDialogTheme">@style/AppCompatDialogStyle</item>
     <item name="android:timePickerStyle">@style/MyTimePicker</item>
+    <item name="android:windowBackground">@drawable/splash_background</item>
   </style>
 
   <style name="AppCompatDialogStyle" parent="Theme.AppCompat.Light.Dialog">
@@ -34,5 +35,8 @@
     <item name="android:spinnersShown">true</item>
     <item name="android:descendantFocusability">blocksDescendants</item>
   </style>
-
+  
+  <style name="MyTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/splash_background</item>
+  </style>
 </resources>

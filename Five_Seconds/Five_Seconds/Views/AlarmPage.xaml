@@ -59,8 +59,9 @@
                                     BackgroundColor="White" 
                                     Clicked="CalendarButton_Clicked"
                                     HeightRequest="30" WidthRequest="30"/>
-                            <DatePicker x:Name="datePicker" TextColor="Transparent" 
+                            <DatePicker x:Name="DatePicker" TextColor="Transparent" 
                                         WidthRequest="1" HeightRequest="1" 
+                                        Unfocused="DatePicker_Unfocused"
                                         Date="{Binding Date}"/>
                         </StackLayout>
                         <ScrollView Orientation="Horizontal">

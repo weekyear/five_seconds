@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <item>
+    <color android:color="#ffffff"/>”
+  </item>
+  <item android:drawable="@drawable/ic_five_seconds"
+        android:height="65dp"
+        android:width="65dp"
+        android:gravity="center">
+  </item>
+</layer-list>
