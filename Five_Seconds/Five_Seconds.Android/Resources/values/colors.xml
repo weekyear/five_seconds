@@ -8,4 +8,6 @@
   <color name="alarmPrimaryColor">#0069c0</color>
   <color name="alarmPrimaryDarkColor">#005cb2</color>
   <color name="alarmSecondaryColor">#e8eaf6</color>
+  <color name="listViewSelected">#96BCE3</color>
+  <color name="listViewHighlighted">#E39696</color>
 </resources>

@@ -28,7 +28,7 @@ namespace Five_Seconds.Models
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public int DaysId { get; set; }
-        public string Tone { get; set; } = AlarmTone.Tones[0].Name;
+        public string Tone { get; set; } = AlarmTone.Tones[3].Name;
 
         public DateTime Date
         {

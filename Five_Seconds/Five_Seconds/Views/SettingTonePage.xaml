@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             xmlns:conv="clr-namespace:Five_Seconds.Converters"
 			 Title="벨소리 설정"
              mc:Ignorable="d"
              x:Name="tonePage"
@@ -11,44 +12,27 @@
              BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="DefaultTemplate">
-                <ViewCell Height="65">
-                    <ViewCell.View>
-                        <StackLayout Orientation="Horizontal">
-                            <Label 
-                                Text="{Binding Name}" 
-                                FontSize="18" 
-                                TextColor="Black" 
-                                Margin="20"/>
-                            <custom:PlayButton
-                                HorizontalOptions="EndAndExpand"
-                                BackgroundColor="White"
-                                IsPlaying="{Binding IsPlaying}"
-                                Clicked="PlayButton_IsPlayingChanged"
-                                ImageSource="ic_play"
-                                ImageSourcePlay="ic_play"
-                                ImageSourcePause="ic_pause"
-                                Padding="0, 0, 10, 0"
-                                Command="{Binding Source={x:Reference tonePage}, Path=BindingContext.ClickPlayCommand}"
-                                CommandParameter="{Binding .}"/>
-                        </StackLayout>
-                    </ViewCell.View>
-                </ViewCell>
-            </DataTemplate>
+            <conv:BooleanLayoutColorConverter x:Key="BooleanLayoutColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="벨소리 추가" Command="{Binding AddToneCommand}"/>
+        <ToolbarItem IconImageSource="ic_plus_white.png" Text="벨소리 추가" Command="{Binding AddToneCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout HorizontalOptions="FillAndExpand"
-                         Margin="10">
-                <Label Text="벨소리 볼륨" VerticalOptions="CenterAndExpand"/>
-                <StackLayout Orientation="Horizontal">
-                    <Slider x:Name="VolumeSlider"
+            <Grid HorizontalOptions="FillAndExpand"
+                  VerticalOptions="CenterAndExpand"
+                  Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="85*"/>
+                    <ColumnDefinition Width="15*"/>
+                </Grid.ColumnDefinitions>
+                <Slider x:Name="VolumeSlider" 
                             HorizontalOptions="FillAndExpand"
                             MinimumTrackColor="LightSkyBlue"
                             MaximumTrackColor="LightSkyBlue"
@@ -57,15 +41,36 @@
                             Margin="5"
                             Value="{Binding Volume}"
                             VerticalOptions="CenterAndExpand"/>
-                </StackLayout>
-                
-            </StackLayout>
+                <custom:PlayButton HorizontalOptions="EndAndExpand" Grid.Column="1"
+                                   BackgroundColor="White"
+                                   IsPlaying="{Binding IsPlaying}"
+                                   ImageSource="ic_play"
+                                   ImageSourcePlay="ic_play"
+                                   ImageSourcePause="ic_pause"
+                                   Padding="0, 0, 10, 0"
+                                   Command="{Binding ClickPlayCommand}"/>
+            </Grid>
             <ListView x:Name="ToneListView" 
-				  ItemTemplate="{StaticResource DefaultTemplate}"
-				  ItemsSource="{Binding AllAlarmTones, Mode=TwoWay}" 
-				  SelectedItem="{Binding SelectedTone, Mode=TwoWay}"
-                      ItemSelected="ToneListView_ItemSelected"
-				  HasUnevenRows="true">
+                      ItemsSource="{Binding AllAlarmTones, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedTone, Mode=TwoWay}"
+                      ItemTapped="ToneListView_ItemTapped"
+                      HasUnevenRows="true">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell Height="65">
+                            <ViewCell.View>
+                                <StackLayout>
+                                    <Label Text="{Binding AlarmTone.Name}"
+                                           FontSize="18" 
+                                           TextColor="Black"
+                                           VerticalTextAlignment="Center"
+                                           LineBreakMode="TailTruncation"
+                                           Margin="20"/>
+                                </StackLayout>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
         </StackLayout>
     </ContentPage.Content>

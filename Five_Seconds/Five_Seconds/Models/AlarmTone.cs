@@ -1,20 +1,21 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Five_Seconds.Models
 {
     [Table("AlarmTone")]
-    public class AlarmTone : IObject
+    public class AlarmTone : INotifyPropertyChanged, IObject
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Path { get; set; }
         public bool IsCustomTone { get; set; } = false;
-
-        public bool IsPlaying { get; set; }
 
         public AlarmTone()
         {

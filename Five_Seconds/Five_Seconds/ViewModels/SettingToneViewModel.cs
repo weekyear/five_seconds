@@ -3,7 +3,9 @@ using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -11,22 +13,49 @@ namespace Five_Seconds.ViewModels
 {
     public class SettingToneViewModel : BaseViewModel
     {
-        IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
-        IFileLocator _fileLocator = DependencyService.Get<IFileLocator>();
+        readonly IPlaySoundService _soundService = DependencyService.Get<IPlaySoundService>();
+        readonly IFileLocator _fileLocator = DependencyService.Get<IFileLocator>();
 
         public SettingToneViewModel(INavigation navigation, Alarm alarm) : base(navigation)
         {
             Alarm = alarm;
             ConstructCommand();
+            //SetAllAlarmTones();
         }
 
         private void ConstructCommand()
         {
-            ToneSaveCommand = new Command<AlarmTone>(async (a) => await ToneSave(a));
-            ClickPlayCommand = new Command<AlarmTone>((a) => ClickPlay(a));
-            PlayToneCommand = new Command<AlarmTone>((a) => PlayTone(a));
+            ToneSaveCommand = new Command(() => ToneSave());
+            ClickPlayCommand = new Command(() => ClickPlay());
+            PlayToneCommand = new Command(() => PlayTone());
             StopToneCommand = new Command(() => StopTone());
             AddToneCommand = new Command(() => AddTone());
+        }
+
+        public void SetAllAlarmTones()
+        {
+            var AlarmTones = AlarmTone.Tones;
+            foreach (var alarmTone in AlarmTones)
+            {
+                var isSelected = false;
+                if (alarmTone.Name == Alarm.Tone) 
+                { 
+                    isSelected = true;
+                }
+
+                var settingTone = new SettingTone { AlarmTone = alarmTone, IsSelected = isSelected };
+                AllAlarmTones.Add(settingTone);
+            }
+
+            foreach (var settingTone in AllAlarmTones)
+            {
+                if (settingTone.AlarmTone.Name == Alarm.Tone)
+                {
+                    SelectedTone = settingTone;
+                }
+            }
+
+
         }
 
         public Command ToneSaveCommand { get; set; }
@@ -36,7 +65,7 @@ namespace Five_Seconds.ViewModels
         public Command AddToneCommand { get; set; }
 
 
-        public ObservableCollection<AlarmTone> AllAlarmTones { get; set; } = new ObservableCollection<AlarmTone>(AlarmTone.Tones);
+        public ObservableCollection<SettingTone> AllAlarmTones { get; set; } = new ObservableCollection<SettingTone>();
 
         public Alarm Alarm
         {
@@ -59,23 +88,50 @@ namespace Five_Seconds.ViewModels
             get; set;
         }
 
-        private void ClickPlay(AlarmTone tone)
+        private SettingTone selectedTone;
+        public SettingTone SelectedTone
         {
-            if (tone.IsPlaying)
+            get 
             {
-                StopTone();
-                tone.IsPlaying = false;
+                if (selectedTone == null)
+                {
+                    foreach (var tone in AllAlarmTones)
+                    {
+                        if (tone.AlarmTone.Name == Alarm.Tone)
+                        {
+                            selectedTone = tone;
+                        }
+                    }
+                }
+                return selectedTone; 
             }
-            else
+            set
             {
-                PlayTone(tone);
-                PauseAllToneExceptSeletedTone(tone);
+                if (selectedTone != value)
+                {
+                    selectedTone = value;
+                    OnPropertyChanged(nameof(SelectedTone));
+                }
             }
         }
 
-        private void PlayTone(AlarmTone tone)
+        private void ClickPlay()
         {
-            _soundService.PlayAudio(tone, true, Alarm.Volume);
+            if (IsPlaying)
+            {
+                StopTone();
+            }
+            else
+            {
+                PlayTone();
+            }
+
+            IsPlaying = !IsPlaying;
+        }
+
+        private void PlayTone()
+        {
+            _soundService.PlayAudio(SelectedTone.AlarmTone, true, Alarm.Volume);
         }
 
         private void StopTone()
@@ -89,10 +145,9 @@ namespace Five_Seconds.ViewModels
             _fileLocator.OpenFileLocator();
         }
 
-        private async Task ToneSave(AlarmTone tone)
+        private void ToneSave()
         {
-            Alarm.Tone = tone.Name;
-            await ClosePopup();
+            Alarm.Tone = SelectedTone.AlarmTone.Name;
         }
 
         void ToneFileChosen(string path)
@@ -105,9 +160,17 @@ namespace Five_Seconds.ViewModels
                 Path = path,
                 IsCustomTone = true
             };
-            AllAlarmTones.Add(newTone);
+
             AlarmTone.Tones.Add(newTone);
             App.AlarmToneRepo.AddTone(newTone);
+
+            var newSettingTone = new SettingTone
+            {
+                AlarmTone = newTone,
+                IsSelected = true
+            };
+
+            AllAlarmTones.Add(newSettingTone);
 
             _fileLocator.FileChosen -= ToneFileChosen;
         }
@@ -118,17 +181,35 @@ namespace Five_Seconds.ViewModels
             await Navigation.PopAsync(true);
         }
 
-        private void PauseAllToneExceptSeletedTone(AlarmTone selectedTone)
+        public void ChangeIsSelected()
         {
-            foreach (var tone in AllAlarmTones)
+            foreach (var settingTone in AllAlarmTones)
             {
-                if (tone.Path == selectedTone.Path)
+                if (settingTone.AlarmTone.Name == SelectedTone.AlarmTone.Name)
                 {
-                    tone.IsPlaying = true;
+                    settingTone.IsSelected = true;
                 }
                 else
                 {
-                    tone.IsPlaying = false;
+                    settingTone.IsSelected = false;
+                }
+            }
+        }
+
+        public class SettingTone : INotifyPropertyChanged
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public AlarmTone AlarmTone { get; set; }
+
+            private bool isSelected;
+            public bool IsSelected 
+            {
+                get { return isSelected; } 
+                set
+                {
+                    if (isSelected == value) return;
+                    isSelected = value;
                 }
             }
         }

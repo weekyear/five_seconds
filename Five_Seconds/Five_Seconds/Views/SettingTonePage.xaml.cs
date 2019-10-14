@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using static Five_Seconds.ViewModels.SettingToneViewModel;
 
 namespace Five_Seconds.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SettingTonePage : ContentPage
     {
-        private SettingToneViewModel viewModel;
+        private readonly SettingToneViewModel viewModel;
 
         public SettingTonePage(INavigation navigation, Alarm alarm)
         {
@@ -34,21 +35,30 @@ namespace Five_Seconds.Views
             viewModel.StopToneCommand.Execute(null);
         }
 
-        private void ToneListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        protected override bool OnBackButtonPressed()
         {
-            var selectedTone = e.SelectedItem as AlarmTone;
-            ToneListView.SelectedItem = e.SelectedItem;
-            viewModel.ToneSaveCommand.Execute(selectedTone);
+            return base.OnBackButtonPressed();
         }
 
-        private void PlayButton_IsPlayingChanged(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            var button = sender as PlayButton;
-            var tone = button.BindingContext as AlarmTone;
+            base.OnAppearing();
 
-            tone.IsPlaying = !tone.IsPlaying;
+            viewModel.SetAllAlarmTones();
+        }
 
-            //button.IsPlaying = !button.IsPlaying;
+        private void ToneListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            viewModel.SelectedTone = e.SelectedItem as SettingTone;
+
+            viewModel.ToneSaveCommand.Execute(viewModel.SelectedTone);
+        }
+
+        private void ToneListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            viewModel.SelectedTone = e.Item as SettingTone;
+
+            viewModel.ChangeIsSelected();
         }
     }
 }
