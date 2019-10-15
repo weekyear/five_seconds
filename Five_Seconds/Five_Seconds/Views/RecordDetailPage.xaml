@@ -104,8 +104,7 @@
                 </custom:GestureListView.GestureRecognizers>
                 <custom:GestureListView.GroupHeaderTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell
-                            SelectedBackgroundColor="{StaticResource BackgroundColor}">
+                        <ViewCell>
                             <Grid HorizontalOptions="FillAndExpand"
                                   VerticalOptions="CenterAndExpand"
                                   Margin="10, 0, 10, 0">
@@ -144,13 +143,13 @@
                                     HorizontalOptions="EndAndExpand"
                                     VerticalOptions="CenterAndExpand"/>
                             </Grid>
-                        </custom:CustomViewCell>
+                        </ViewCell>
                     </DataTemplate>
                 </custom:GestureListView.GroupHeaderTemplate>
 
                 <custom:GestureListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell>
+                        <ViewCell>
                             <Grid HorizontalOptions="FillAndExpand"
                                   VerticalOptions="CenterAndExpand"
                                   Margin="0, 0, 10, 0">
@@ -190,7 +189,7 @@
                                     VerticalOptions="CenterAndExpand"
                                     Margin="10, 0"/>
                             </Grid>
-                        </custom:CustomViewCell>
+                        </ViewCell>
                     </DataTemplate>
                 </custom:GestureListView.ItemTemplate>
             </custom:GestureListView>

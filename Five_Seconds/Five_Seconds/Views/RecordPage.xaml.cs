@@ -73,10 +73,5 @@ namespace Five_Seconds.Views
         {
             viewModel.PreviousMonthCommand.Execute(null);
         }
-
-        private void TagEntry_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
     }
 }

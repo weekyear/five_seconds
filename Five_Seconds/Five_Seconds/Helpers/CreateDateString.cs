@@ -55,10 +55,10 @@ namespace Five_Seconds.Helpers
         {
             var allDaysString = DaysOfWeek.AllDaysString;
 
-            if (date.Date.Subtract(DateTime.Now.Date).TotalDays == 1)
-            {
-                return $"{string.Format("<내일> {0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
-            }
+            //if (date.Date.Subtract(DateTime.Now.Date).TotalDays == 1)
+            //{
+            //    return $"{string.Format("<내일> {0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
+            //}
 
             var dateTime = $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
             return dateTime;

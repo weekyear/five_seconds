@@ -94,12 +94,6 @@ namespace Five_Seconds.Droid.CustomRenderers
             }
         }
 
-        //void HandleQueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e)
-        //{
-        //    if (Element is ISearchPage searchPage)
-        //        searchPage.OnSearchBarTextChanged(e.NewText);
-        //}
-
         void HandleQueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
         {
             if (Element is ISearchPage searchPage)

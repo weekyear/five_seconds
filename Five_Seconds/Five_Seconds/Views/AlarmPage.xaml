@@ -23,7 +23,7 @@
         <ToolbarItem Text="저장" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <custom:ColoredTableView HasUnevenRows="True" IsTabStop="True" GroupHeaderColor="DarkBlue">
+    <TableView HasUnevenRows="True" IsTabStop="True">
         <TableRoot>
             <TableSection>
                 <custom:TableViewCell AllowHighlight="False">
@@ -139,5 +139,5 @@
                 </custom:TableViewCell>
             </TableSection>
         </TableRoot>
-    </custom:ColoredTableView>
+    </TableView>
 </ContentPage>

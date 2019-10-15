@@ -35,6 +35,12 @@ namespace Five_Seconds.ViewModels
                 Date = SetMinimumDate();
                 OnPropertyChanged(nameof(DateString));
             });
+
+            MessagingCenter.Subscribe<SettingToneViewModel, Alarm>(this, "changeAlarmTone", (sender, alarm) =>
+            {
+                Alarm.Tone = alarm.Tone;
+                Alarm.Volume = alarm.Volume;
+            });
         }
 
         public DateTime SetMinimumDate()

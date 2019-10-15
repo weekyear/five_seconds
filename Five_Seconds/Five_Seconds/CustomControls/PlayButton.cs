@@ -51,8 +51,6 @@ namespace Five_Seconds.CustomControls
             set { SetValue(ImageSourcePauseProperty, value); }
         }
 
-        //public event EventHandler IsPlayingChanged;
-
         static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
@@ -66,8 +64,6 @@ namespace Five_Seconds.CustomControls
             {
                 button.ImageSource = button.ImageSourcePlay;
             }
-
-            //button.IsPlayingChanged?.Invoke(button, null);
         }
     }
 }

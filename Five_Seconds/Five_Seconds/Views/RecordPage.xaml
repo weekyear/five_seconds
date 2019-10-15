@@ -89,9 +89,7 @@
                                     SwipeRight="ListWeekRecords_SwipeRight">
                 <custom:GestureListView.ItemTemplate>
                     <DataTemplate>
-                        <custom:CustomViewCell 
-                            SelectedBackgroundColor="#ADF3BE"
-                            IsEnabled="{Binding HasRecord}">
+                        <ViewCell IsEnabled="{Binding HasRecord}">
                             <Grid Padding="10"
                                   VerticalOptions="CenterAndExpand">
                                 <Grid.RowDefinitions>
@@ -126,7 +124,7 @@
                                     TextColor="LightSlateGray"
                                     Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                             </Grid>
-                        </custom:CustomViewCell>
+                        </ViewCell>
                     </DataTemplate>
                 </custom:GestureListView.ItemTemplate>
             </custom:GestureListView>

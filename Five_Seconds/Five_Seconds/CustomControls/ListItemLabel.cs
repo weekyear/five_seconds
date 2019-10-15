@@ -25,8 +25,6 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        public event EventHandler IsActiveChanged;
-
         static void OnIsActiveChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here

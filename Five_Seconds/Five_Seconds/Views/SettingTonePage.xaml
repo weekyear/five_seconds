@@ -10,11 +10,6 @@
              x:Name="tonePage"
              x:Class="Five_Seconds.Views.SettingTonePage"
              BackgroundColor="White">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <conv:BooleanLayoutColorConverter x:Key="BooleanLayoutColorConverter"/>
-        </ResourceDictionary>
-    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_plus_white.png" Text="벨소리 추가" Command="{Binding AddToneCommand}"/>
@@ -33,14 +28,14 @@
                     <ColumnDefinition Width="15*"/>
                 </Grid.ColumnDefinitions>
                 <Slider x:Name="VolumeSlider" 
-                            HorizontalOptions="FillAndExpand"
-                            MinimumTrackColor="LightSkyBlue"
-                            MaximumTrackColor="LightSkyBlue"
-                            ThumbColor="DeepSkyBlue"
-                            Maximum="10" Minimum="1" 
-                            Margin="5"
-                            Value="{Binding Volume}"
-                            VerticalOptions="CenterAndExpand"/>
+                        HorizontalOptions="FillAndExpand"
+                        MinimumTrackColor="LightSkyBlue"
+                        MaximumTrackColor="LightSkyBlue"
+                        ThumbColor="DeepSkyBlue"
+                        Maximum="10" Minimum="1" 
+                        Margin="5"
+                        Value="{Binding Volume}"
+                        VerticalOptions="CenterAndExpand"/>
                 <custom:PlayButton HorizontalOptions="EndAndExpand" Grid.Column="1"
                                    BackgroundColor="White"
                                    IsPlaying="{Binding IsPlaying}"
@@ -60,7 +55,7 @@
                         <ViewCell Height="65">
                             <ViewCell.View>
                                 <StackLayout>
-                                    <Label Text="{Binding AlarmTone.Name}"
+                                    <Label Text="{Binding Name}"
                                            FontSize="18" 
                                            TextColor="Black"
                                            VerticalTextAlignment="Center"

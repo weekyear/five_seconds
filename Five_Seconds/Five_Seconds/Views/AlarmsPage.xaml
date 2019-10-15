@@ -83,9 +83,9 @@
                 CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <custom:CustomViewCell SelectedBackgroundColor="White">
+                    <ViewCell>
                         <custom:AlarmsGridView x:Name="AlarmsGrid"/>
-                    </custom:CustomViewCell>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

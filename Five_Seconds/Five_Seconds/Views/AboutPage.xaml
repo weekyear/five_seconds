@@ -27,13 +27,14 @@
                 CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <custom:CustomViewCell SelectedBackgroundColor="White">
+                    <ViewCell>
                         <Label Text="{Binding .}"
                                VerticalOptions="CenterAndExpand"
                                TextColor="{StaticResource PrimaryTextColor}"
                                FontSize="20"
-                               FontAttributes="Bold" />
-                    </custom:CustomViewCell>
+                               FontAttributes="Bold"
+                               Margin="5, 0, 0, 0"/>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

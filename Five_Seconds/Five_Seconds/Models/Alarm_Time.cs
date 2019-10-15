@@ -17,7 +17,7 @@ namespace Five_Seconds.Models
             set { TimeOffset = GetDateTimeOffsetFromTimeSpan(value); }
         }
         public bool IsAlarmOn { get; set; } = true;
-        public int Volume { get; set; } = 5;
+        public int Volume { get; set; } = 6;
 
         public bool OccursToday { get { return Days.Equals(DateTime.Now.DayOfWeek); } }
         public bool IsVibrateOn { get; set; } = true;
@@ -28,7 +28,7 @@ namespace Five_Seconds.Models
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
         public int DaysId { get; set; }
-        public string Tone { get; set; } = AlarmTone.Tones[3].Name;
+        public string Tone { get; set; } = AlarmTone.Tones[0].Name;
 
         public DateTime Date
         {

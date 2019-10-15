@@ -7,8 +7,8 @@ namespace Five_Seconds.CustomControls
 {
     public class TableViewCell : ViewCell
     {
-        public static readonly BindableProperty AllowHighlightProperty = 
-            BindableProperty.Create( "AllowHighlight", typeof(bool), typeof(TableViewCell), defaultValue: true);
+        public static readonly BindableProperty AllowHighlightProperty =
+            BindableProperty.Create("AllowHighlight", typeof(bool), typeof(TableViewCell), defaultValue: true);
 
         public bool AllowHighlight
         {
