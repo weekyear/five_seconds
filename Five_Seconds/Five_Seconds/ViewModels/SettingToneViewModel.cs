@@ -20,7 +20,7 @@ namespace Five_Seconds.ViewModels
         {
             Alarm = alarm;
             ConstructCommand();
-            SetAllAlarmTones();
+            SetSelectedTone();
         }
 
         private void ConstructCommand()
@@ -32,7 +32,7 @@ namespace Five_Seconds.ViewModels
             AddToneCommand = new Command(() => AddTone());
         }
 
-        public void SetAllAlarmTones()
+        public void SetSelectedTone()
         {
             for (int i = 0; i < AllAlarmTones.Count; i++)
             {
@@ -79,16 +79,6 @@ namespace Five_Seconds.ViewModels
         {
             get 
             {
-                if (selectedTone == null)
-                {
-                    foreach (var tone in AllAlarmTones)
-                    {
-                        if (tone.Name == Alarm.Tone)
-                        {
-                            selectedTone = tone;
-                        }
-                    }
-                }
                 return selectedTone; 
             }
             set

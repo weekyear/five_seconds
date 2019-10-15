@@ -38,8 +38,12 @@ namespace Five_Seconds.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            ToneListView.SelectedItem = viewModel.SelectedTone;
             //viewModel.SetAllAlarmTones();
+            //AlarmTone m = ToneListView.SelectedItem as AlarmTone;
+            //ToneListView.SelectedItem = null;
+            //ToneListView.SelectedItem = m;
+
+            ToneListView_ItemTapped(ToneListView, new ItemTappedEventArgs(viewModel.AllAlarmTones, viewModel.SelectedTone));
         }
 
         private void ToneListView_ItemTapped(object sender, ItemTappedEventArgs e)
