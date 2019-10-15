@@ -20,7 +20,7 @@ namespace Five_Seconds.ViewModels
         {
             Alarm = alarm;
             ConstructCommand();
-            SetSelectedTone();
+            SetSettingTones();
         }
 
         private void ConstructCommand()
@@ -32,14 +32,19 @@ namespace Five_Seconds.ViewModels
             AddToneCommand = new Command(() => AddTone());
         }
 
-        public void SetSelectedTone()
+        public void SetSettingTones()
         {
-            for (int i = 0; i < AllAlarmTones.Count; i++)
+            AllAlarmTones.Clear();
+
+            var AlarmTones = AlarmTone.Tones;
+            foreach(var alarmTone in AlarmTones)
             {
-                if (AllAlarmTones[i].Name == Alarm.Tone)
+                bool isSelected = false;
+                if (alarmTone.Name == Alarm.Tone)
                 {
-                    SelectedTone = AllAlarmTones[i];
+                    isSelected = true;
                 }
+                AllAlarmTones.Add(new SettingTone(alarmTone.Name, isSelected));
             }
         }
 
@@ -50,7 +55,7 @@ namespace Five_Seconds.ViewModels
         public Command AddToneCommand { get; set; }
 
 
-        public ObservableCollection<AlarmTone> AllAlarmTones { get; set; } = new ObservableCollection<AlarmTone>(AlarmTone.Tones);
+        public ObservableCollection<SettingTone> AllAlarmTones { get; set; } = new ObservableCollection<SettingTone>();
 
         public Alarm Alarm
         {
@@ -69,27 +74,23 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        public string SelectedToneName
+        {
+            get { return Alarm.Name; }
+            set
+            {
+                if (Alarm.Name == value) return;
+                Alarm.Name = value;
+                ToneSave();
+                OnPropertyChanged(nameof(SelectedToneName));
+            }
+        }
+
         public bool IsPlaying
         {
             get; set;
         }
 
-        private AlarmTone selectedTone;
-        public AlarmTone SelectedTone
-        {
-            get 
-            {
-                return selectedTone; 
-            }
-            set
-            {
-                if (selectedTone != value)
-                {
-                    selectedTone = value;
-                    OnPropertyChanged(nameof(SelectedTone));
-                }
-            }
-        }
 
         private void ClickPlay()
         {
@@ -107,7 +108,7 @@ namespace Five_Seconds.ViewModels
 
         private void PlayTone()
         {
-            _soundService.PlayAudio(SelectedTone, true, Alarm.Volume);
+            _soundService.PlayAudio(AlarmTone.Tones.Find(a => a.Name == Alarm.Tone), true, Alarm.Volume);
         }
 
         private void StopTone()
@@ -123,7 +124,6 @@ namespace Five_Seconds.ViewModels
 
         private void ToneSave()
         {
-            Alarm.Tone = SelectedTone.Name;
             MessagingCenter.Send(this, "changeAlarmTone", Alarm);
         }
 
@@ -141,15 +141,37 @@ namespace Five_Seconds.ViewModels
             AlarmTone.Tones.Add(newTone);
             App.AlarmToneRepo.AddTone(newTone);
 
-            AllAlarmTones.Add(newTone);
+            AllAlarmTones.Add(new SettingTone(newTone.Name, false));
 
             _fileLocator.FileChosen -= ToneFileChosen;
         }
 
-        private async Task ClosePopup()
+        public void SetIsSelected(SettingTone selectedTone)
         {
-            StopTone();
-            await Navigation.PopAsync(true);
+            foreach(var settingTone in AllAlarmTones)
+            {
+                if (settingTone.Name == selectedTone.Name)
+                {
+                    settingTone.IsSelected = true;
+                }
+                else
+                {
+                    settingTone.IsSelected = false;
+                }
+            }
+        }
+
+        public class SettingTone : INotifyPropertyChanged
+        {
+            public SettingTone(string name, bool isSelected)
+            {
+                Name = name;
+                IsSelected = isSelected;
+            }
+            public string Name { get; set; }
+            public bool IsSelected { get; set; }
+
+            public event PropertyChangedEventHandler PropertyChanged;
         }
     }
 }

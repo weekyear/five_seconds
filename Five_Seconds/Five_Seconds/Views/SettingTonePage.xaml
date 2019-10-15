@@ -11,6 +11,12 @@
              x:Class="Five_Seconds.Views.SettingTonePage"
              BackgroundColor="White">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <conv:BooleanLayoutColorConverter x:Key="BooleanLayoutColorConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="ic_plus_white.png" Text="벨소리 추가" Command="{Binding AddToneCommand}"/>
     </ContentPage.ToolbarItems>
@@ -47,19 +53,19 @@
             </Grid>
             <ListView x:Name="ToneListView" 
                       ItemsSource="{Binding AllAlarmTones, Mode=TwoWay}"
-                      SelectedItem="{Binding SelectedTone, Mode=TwoWay}"
                       ItemTapped="ToneListView_ItemTapped"
                       HasUnevenRows="true">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell Height="65">
                             <ViewCell.View>
-                                <StackLayout>
+                                <StackLayout BackgroundColor="{Binding IsSelected, Converter={StaticResource BooleanLayoutColorConverter}}">
                                     <Label Text="{Binding Name}"
                                            FontSize="18" 
                                            TextColor="Black"
                                            VerticalTextAlignment="Center"
                                            LineBreakMode="TailTruncation"
+                                           MaxLines="1"
                                            Margin="20"/>
                                 </StackLayout>
                             </ViewCell.View>

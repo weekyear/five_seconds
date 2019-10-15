@@ -35,27 +35,12 @@ namespace Five_Seconds.Views
             viewModel.StopToneCommand.Execute(null);
         }
 
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            //viewModel.SetAllAlarmTones();
-            //AlarmTone m = ToneListView.SelectedItem as AlarmTone;
-            //ToneListView.SelectedItem = null;
-            //ToneListView.SelectedItem = m;
-
-            ToneListView_ItemTapped(ToneListView, new ItemTappedEventArgs(viewModel.AllAlarmTones, viewModel.SelectedTone));
-        }
-
         private void ToneListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            viewModel.SelectedTone = e.Item as AlarmTone;
+            var settingTone = e.Item as SettingTone;
 
-            viewModel.ToneSaveCommand.Execute(null);
-        }
-
-        private void ToneListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            viewModel.SelectedTone = e.SelectedItem as AlarmTone;
+            viewModel.Alarm.Tone = settingTone.Name;
+            viewModel.SetIsSelected(settingTone);
         }
     }
 }
