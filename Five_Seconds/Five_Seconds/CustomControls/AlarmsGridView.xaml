@@ -26,26 +26,29 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45*" />
-                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="25*" />
                 <ColumnDefinition Width="15*" />
             </Grid.ColumnDefinitions>
             <custom:ListItemLabel Text="{Binding DateString}"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                  FontSize="22"
-                                  VerticalOptions="EndAndExpand" />
+                                  FontSize="20"
+                                  VerticalOptions="EndAndExpand"
+                                  LineBreakMode="TailTruncation"/>
             <StackLayout Grid.Column="1" Orientation="Horizontal">
                 <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                      FontSize="15"
+                                      FontSize="12"
+                                      HorizontalOptions="EndAndExpand"
                                       VerticalOptions="EndAndExpand"/>
                 <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                      FontSize="25" />
+                                      HorizontalOptions="EndAndExpand"
+                                      FontSize="20" />
             </StackLayout>
             <custom:ListItemLabel x:Name="AlarmNameLabel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                  FontSize="35"
+                                  FontSize="25"
                                   Text="{Binding Name}"
                                   MaxLines="1" 
                                   LineBreakMode="TailTruncation"

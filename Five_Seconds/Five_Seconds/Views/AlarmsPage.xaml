@@ -40,7 +40,7 @@
                          Margin="5, 0"
                          Source="ic_five_seconds_mini.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
-                         WidthRequest="32" HeightRequest="32"
+                         WidthRequest="30" HeightRequest="30"
                          HorizontalOptions="StartAndExpand"
                          VerticalOptions="StartAndExpand"
                          Command="{Binding ShowCountDownCommand}"/>
@@ -76,7 +76,7 @@
         </Grid>
         <ListView x:Name="AlarmsListView"
                 ItemsSource="{Binding Alarms}"
-                RowHeight="110"
+                RowHeight="100"
                 ItemTapped="ShowMenuByItemClicked"
                 ItemSelected="AlarmsListView_ItemSelected"
                 VerticalOptions="FillAndExpand"
