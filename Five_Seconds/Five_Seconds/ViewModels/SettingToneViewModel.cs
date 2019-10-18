@@ -146,6 +146,19 @@ namespace Five_Seconds.ViewModels
             _fileLocator.FileChosen -= ToneFileChosen;
         }
 
+        public void ClickTone(SettingTone selectedTone)
+        {
+            Alarm.Tone = selectedTone.Name;
+
+            if (IsPlaying)
+            {
+                StopTone();
+                PlayTone();
+            }
+
+            SetIsSelected(selectedTone);
+        }
+
         public void SetIsSelected(SettingTone selectedTone)
         {
             foreach(var settingTone in AllAlarmTones)

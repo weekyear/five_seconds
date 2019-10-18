@@ -39,8 +39,7 @@ namespace Five_Seconds.Views
         {
             var settingTone = e.Item as SettingTone;
 
-            viewModel.Alarm.Tone = settingTone.Name;
-            viewModel.SetIsSelected(settingTone);
+            viewModel.ClickTone(settingTone);
         }
     }
 }

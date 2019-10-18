@@ -21,7 +21,7 @@ namespace Five_Seconds
     public partial class App : Application
     {
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(DependencyService.Get<IDatabase>().DBConnect());
-        private readonly bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
+        private bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
 
         public static bool IsInitFinished;
         public App()
@@ -44,10 +44,6 @@ namespace Five_Seconds
 
             if (!isNotFirst)
             {
-                var welcomePage = AppIntro.CreateAppIntro();
-                MainPage.Navigation.PushModalAsync(welcomePage);
-                Preferences.Set(nameof(isNotFirst), true);
-
                 var everdayBool = new bool[] { true, true, true, true, true, true, true };
 
                 service.SaveAlarm(new Alarm() { Name = "일어나서 이불개자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 0, 0) });
@@ -55,6 +51,11 @@ namespace Five_Seconds
                 service.SaveAlarm(new Alarm() { Name = "점심먹고 짜투리 독서", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(12, 45, 0) });
                 service.SaveAlarm(new Alarm() { Name = "야식은 나의 적", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(21, 0, 0) });
                 service.SaveAlarm(new Alarm() { Name = "일단 침대에 눕자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(23, 30, 0) });
+
+                var welcomePage = AppIntro.CreateAppIntro();
+                MainPage.Navigation.PushModalAsync(welcomePage);
+
+                Preferences.Set(nameof(isNotFirst), true);
             }
 
             IsInitFinished = true;

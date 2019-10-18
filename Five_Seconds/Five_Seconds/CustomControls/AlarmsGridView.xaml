@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60*" />
-                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="35*" />
                 <ColumnDefinition Width="15*" />
             </Grid.ColumnDefinitions>
             <custom:ListItemLabel Text="{Binding DateString}"
@@ -38,11 +38,13 @@
             <StackLayout Grid.Column="1" Orientation="Horizontal">
                 <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                      FontSize="12"
+                                      FontSize="16"
+                                      Margin="0"
                                       HorizontalOptions="EndAndExpand"
                                       VerticalOptions="EndAndExpand"/>
                 <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
+                                      Margin="0"
                                       HorizontalOptions="EndAndExpand"
                                       FontSize="20" />
             </StackLayout>

@@ -36,15 +36,14 @@ namespace Five_Seconds.Droid
         private Intent mSpeechRecognizerIntent;
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
         private RelativeLayout alarmTextLayout;
-        private LinearLayout alarmLayout;
-        private LinearLayout recordingLayout;
+        private LinearLayout tellAlarmLayout;
         private Button startButton;
         private Button laterButton;
         private ImageView tellmeView;
         public TextView countTextView;
         private TextView timeTextView;
+        private TextView timeOutTextView;
         private TextView alarmTextView;
-        private TextView pleaseRecordView;
         private TextView pleaseSayText;
         private EditText alarmEditText;
         private View LaterAlarmDialog;
@@ -115,10 +114,12 @@ namespace Five_Seconds.Droid
         {
             // 10분 경과
             DelayedAction = () => SetIsSuccessFalse();
-            //Handler.PostDelayed(DelayedAction, 600000);
             // 1분 경과
-            var timeSpan = new TimeSpan(0, 0, 20);
+            var timeSpan = new TimeSpan(0, 1, 0);
             Handler.PostDelayed(DelayedAction, (long)timeSpan.TotalMilliseconds);
+
+            countDown = new CountDown(60000, 1000, this, false);
+            countDown.Start();
         }
 
         private void SetIsSuccessFalse()
@@ -181,18 +182,18 @@ namespace Five_Seconds.Droid
         private void SetAndFindViewById()
         {
             alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
-            alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
-            recordingLayout = FindViewById<LinearLayout>(Resource.Id.recordingLayout);
+            tellAlarmLayout = FindViewById<LinearLayout>(Resource.Id.tellAlarmLayout);
             startButton = FindViewById<Button>(Resource.Id.startButton);
             laterButton = FindViewById<Button>(Resource.Id.laterButton);
             tellmeView = FindViewById<ImageView>(Resource.Id.tellmeView);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
             alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
-            pleaseRecordView = FindViewById<TextView>(Resource.Id.pleaseRecordView);
             pleaseSayText = FindViewById<TextView>(Resource.Id.pleaseSayText);
             alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
+            timeOutTextView = FindViewById<TextView>(Resource.Id.timeOutTextView);
 
+            timeOutTextView.Text = "60초 이내";
             countTextView.Text = "5.00";
             alarmTextView.Text = name;
             timeTextView.Text = AlarmTimeNow.ToShortTimeString();
@@ -205,9 +206,8 @@ namespace Five_Seconds.Droid
         private void SetControlsForCountActivity()
         {
             alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
-            alarmLayout = FindViewById<LinearLayout>(Resource.Id.alarmLayout);
+            tellAlarmLayout = FindViewById<LinearLayout>(Resource.Id.tellAlarmLayout);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
-
             countTextView.Text = "5.00";
         }
 
@@ -227,8 +227,8 @@ namespace Five_Seconds.Droid
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraCallingPackage, Application.PackageName);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Speak now");
-            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 1500);
-            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 1500);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 3000);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
@@ -248,9 +248,6 @@ namespace Five_Seconds.Droid
 
         private void HandleVoiceRecognitionResult()
         {
-            mSpeechRecognizer?.StopListening();
-            recordingLayout.Visibility = ViewStates.Invisible;
-
             startButton.Text = "시작!";
 
             var editText = alarmEditText.Text.Replace(" ", "");
@@ -266,6 +263,10 @@ namespace Five_Seconds.Droid
             }
             else
             {
+                alarmEditText.RequestFocus();
+                alarmEditText.Focusable = true;
+                alarmEditText.FocusableInTouchMode = true;
+                pleaseSayText.Text = "라고 적어주세요";
                 SetVisibilityOfControls();
                 ShowAlertDoNotMatchText();
             }
@@ -283,7 +284,7 @@ namespace Five_Seconds.Droid
 
                 if (IsCountSoundOn)
                 {
-                    _soundService.PlayCountAudio();
+                    _soundService?.PlayCountAudio();
                 }
 
                 SetCountDown();
@@ -297,7 +298,6 @@ namespace Five_Seconds.Droid
         private void SetVisibilityOfControls()
         {
             tellmeView.Visibility = ViewStates.Gone;
-            pleaseSayText.Visibility = ViewStates.Gone;
             alarmEditText.Visibility = ViewStates.Visible;
             startButton.Visibility = ViewStates.Visible;
         }
@@ -322,7 +322,7 @@ namespace Five_Seconds.Droid
             if (IsAlarmOn)
             {
                 AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == toneName);
-                _soundService.PlayAudio(alarmTone, true, alarmVolume);
+                _soundService?.PlayAudio(alarmTone, true, alarmVolume);
             }
         }
 
@@ -333,21 +333,21 @@ namespace Five_Seconds.Droid
                 _vibrator = Vibrator.FromContext(this);
                 long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
                 VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
-                _vibrator.Vibrate(effect);
+                _vibrator?.Vibrate(effect);
             }
         }
 
         private void HideAllViewExceptForCountText()
         {
             alarmTextLayout.Visibility = ViewStates.Invisible;
-            alarmLayout.Visibility = ViewStates.Invisible;
+            tellAlarmLayout.Visibility = ViewStates.Invisible;
             countTextView.Visibility = ViewStates.Visible;
         }
 
         private async void SetCountDown()
         {
             await Task.Delay(330);
-            countDown = new CountDown(5000, 10, this);
+            countDown = new CountDown(5000, 10, this, true);
             countDown.Start();
         }
 
@@ -355,14 +355,29 @@ namespace Five_Seconds.Droid
         {
         }
 
+        protected override void OnUserLeaveHint()
+        {
+            //notification으로 알람 울리는 중 표시
+        }
+
         public override void FinishAndRemoveTask()
         {
             if (alarm != null)
             {
+                alarm.Time = new TimeSpan(AlarmTimeNow.Hour, AlarmTimeNow.Minute, 0);
                 var record = new Record(alarm, IsSuccess);
                 alarmsRepo.SaveRecord(record);
             }
+
             base.FinishAndRemoveTask();
+        }
+
+        protected override void OnPause()
+        {
+            _vibrator?.Cancel();
+            _soundService?.StopAudio();
+
+            base.OnPause();
         }
 
         public void OnBeginningOfSpeech()
@@ -375,6 +390,9 @@ namespace Five_Seconds.Droid
 
         public void OnEndOfSpeech()
         {
+            mSpeechRecognizer?.StopListening();
+
+            SetTellmeBtnDefault();
         }
 
         public void OnError(SpeechRecognizerError error)
@@ -392,10 +410,12 @@ namespace Five_Seconds.Droid
                     break;
 
                 case SpeechRecognizerError.InsufficientPermissions:
+                    SetTellmeBtnDefault();
                     Toast.MakeText(ApplicationContext, "오디오 녹음 권한을 허용해주세요", ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.Network:
+                    SetTellmeBtnDefault();
                     Toast.MakeText(ApplicationContext, "네트워크 에러입니다. 네트워크 연결 확인을 해주세요.", ToastLength.Long).Show();
                     break;
 
@@ -412,18 +432,19 @@ namespace Five_Seconds.Droid
                     break;
 
                 case SpeechRecognizerError.Server:
+                    SetTellmeBtnDefault();
                     Toast.MakeText(ApplicationContext, "서버에 문제가 있습니다. 텍스트 창에 해야할 일을 적어주세요.", ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.SpeechTimeout:
-                    Toast.MakeText(ApplicationContext, "음성 녹음 시간이 초과되었습니다. 텍스트 창에 해야할 일을 적어주세요", ToastLength.Long).Show();
+                    SetTellmeBtnDefault();
+                    Toast.MakeText(ApplicationContext, "음성 녹음 시간이 초과되었습니다. 다시 시도해주세요.", ToastLength.Long).Show();
                     break;
 
                 default:
                     //message = "알수없음";
                     break;
             }
-
         }
 
         public void OnEvent(int eventType, Bundle @params)
@@ -432,9 +453,7 @@ namespace Five_Seconds.Droid
 
         public void OnPartialResults(Bundle partialResults)
         {
-            IList<string> matches = partialResults.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
-            pleaseRecordView.Text = matches[0];
-            pleaseRecordView.SetTextColor(Android.Graphics.Color.ParseColor("#263238"));
+            //IList<string> matches = partialResults.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
         }
 
         public void OnReadyForSpeech(Bundle @params)
@@ -499,13 +518,15 @@ namespace Five_Seconds.Droid
         private void StartVoiceRecognition()
         {
             _soundService?.StopAudio();
-            recordingLayout.Visibility = ViewStates.Visible;
+            _vibrator?.Cancel();
+            SetTellmeBtnRecording();
             mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
         }
 
         private void ShowLaterDialog(object s, EventArgs e)
         {
             _vibrator?.Cancel();
+            _soundService?.StopAudio();
 
 
             LaterAlarmDialog = LayoutInflater.Inflate(Resource.Layout.LaterAlarmDialog, (ViewGroup)FindViewById(Resource.Id.laterAlarmLayout));
@@ -539,7 +560,7 @@ namespace Five_Seconds.Droid
 
                 Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
 
-                FinishAndRemoveTask();
+                Finish();
             });
             dialog.SetNegativeButton("취소", (c, ev) =>
             {
@@ -576,17 +597,32 @@ namespace Five_Seconds.Droid
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }
 
+        private void SetTellmeBtnDefault()
+        {
+            tellmeView.SetImageResource(Resource.Drawable.ic_mic);
+            tellmeView.SetBackgroundResource(Resource.Drawable.rounded_button);
+        }
+
+        private void SetTellmeBtnRecording()
+        {
+            tellmeView.SetImageResource(Resource.Drawable.ic_settings_voice);
+            tellmeView.SetBackgroundResource(Resource.Drawable.background_tellmebtn_recording);
+        }
+
         private class CountDown : CountDownTimer
         {
             public long CountDownInterval { get; }
             public long MillisInFuture { get; }
             public Activity Activity { get; set; }
 
-            public CountDown(long millisInFuture, long countDownInterval, Activity activity) : base(millisInFuture, countDownInterval)
+            private bool IsCountDown { get; set; }
+
+            public CountDown(long millisInFuture, long countDownInterval, Activity activity, bool isCountDown) : base(millisInFuture, countDownInterval)
             {
                 Activity = activity;
                 MillisInFuture = millisInFuture;
                 CountDownInterval = countDownInterval;
+                IsCountDown = isCountDown;
             }
 
             public override void OnFinish()
@@ -597,11 +633,23 @@ namespace Five_Seconds.Droid
             public override void OnTick(long millisUntilFinished)
             {
                 var alarmActivity = Activity as AlarmActivity;
-                var countTextView = alarmActivity.countTextView;
-
                 double count = (double)millisUntilFinished / 1000;
-                var stringFormat = string.Format("{0:f2}", count);
-                countTextView.Text = stringFormat;
+
+                if (IsCountDown)
+                {
+                    var countTextView = alarmActivity.countTextView;
+
+                    var stringFormat = string.Format("{0:f2}", count);
+                    countTextView.Text = stringFormat;
+                }
+                else
+                {
+                    var timeOutTextView = alarmActivity.timeOutTextView;
+
+
+                    var stringFormat = $"{count:00}초 이내";
+                    timeOutTextView.Text = stringFormat;
+                }
             }
         }
     }
