@@ -75,17 +75,21 @@
                          Command="{Binding ShowMainMenuCommand}"/>
         </Grid>
         <ListView x:Name="AlarmsListView"
-                ItemsSource="{Binding Alarms}"
-                RowHeight="100"
-                ItemTapped="ShowMenuByItemClicked"
-                ItemSelected="AlarmsListView_ItemSelected"
-                VerticalOptions="FillAndExpand"
-                CachingStrategy="RecycleElement">
+                  ItemsSource="{Binding Alarms}"
+                  RowHeight="100"
+                  HasUnevenRows="True"
+                  ItemTapped="ShowMenuByItemClicked"
+                  ItemSelected="AlarmsListView_ItemSelected"
+                  VerticalOptions="FillAndExpand"
+                  SeparatorVisibility="Default"
+                  CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
-                        <custom:AlarmsGridView x:Name="AlarmsGrid"/>
-                    </ViewCell>
+                    <custom:RoundedViewCell>
+                        <custom:RoundedViewCell.View>
+                            <custom:AlarmsGridView x:Name="AlarmsGrid"/>
+                        </custom:RoundedViewCell.View>
+                    </custom:RoundedViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

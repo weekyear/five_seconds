@@ -132,6 +132,8 @@
   <ItemGroup>
     <Compile Include="CustomRenderers\CustomGestureListener.cs" />
     <Compile Include="CustomRenderers\GestureListViewRenderer.cs" />
+    <Compile Include="CustomRenderers\RoundedFrameRenderer.cs" />
+    <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="Services\AlarmController.cs" />
     <Compile Include="Services\AlarmReceiver.cs" />
@@ -320,6 +322,14 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\background_tellmebtn_recording.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\alarms_viewcell_background.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AlarmsViewCell.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

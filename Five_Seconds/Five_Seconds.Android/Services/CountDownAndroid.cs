@@ -14,7 +14,7 @@ namespace Five_Seconds.Droid.Services
         public void ShowCountDown()
         {
             var disIntent = new Intent(Application.Context, typeof(AlarmActivity));
-            disIntent.PutExtra("id", -1);
+            disIntent.PutExtra("id", -100000);
             disIntent.PutExtra("isCountOn", true);
             disIntent.SetFlags(ActivityFlags.NewTask);
             Application.Context.StartActivity(disIntent);

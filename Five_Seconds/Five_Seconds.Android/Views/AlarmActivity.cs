@@ -37,6 +37,7 @@ namespace Five_Seconds.Droid
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
         private RelativeLayout alarmTextLayout;
         private LinearLayout tellAlarmLayout;
+        private LinearLayout buttonLayout;
         private Button startButton;
         private Button laterButton;
         private ImageView tellmeView;
@@ -63,6 +64,8 @@ namespace Five_Seconds.Droid
         private DateTime AlarmTimeNow;
         private bool IsSuccess;
 
+        private bool IsFinished;
+
         Alarm alarm;
         IAlarmsRepository alarmsRepo;
 
@@ -82,7 +85,7 @@ namespace Five_Seconds.Droid
 
             id = (int)bundle.Get("id");
 
-            if (id == -1)
+            if (id == -100000)
             {
                 OnlyCountDown();
                 return;
@@ -125,12 +128,14 @@ namespace Five_Seconds.Droid
         private void SetIsSuccessFalse()
         {
             IsSuccess = false;
+            IsFinished = true;
             FinishAndRemoveTask();
         }
 
         private void SetIsSuccessTrue()
         {
             IsSuccess = true;
+            IsFinished = true;
         }
 
         private void OnlyCountDown()
@@ -183,6 +188,7 @@ namespace Five_Seconds.Droid
         {
             alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
             tellAlarmLayout = FindViewById<LinearLayout>(Resource.Id.tellAlarmLayout);
+            buttonLayout = FindViewById<LinearLayout>(Resource.Id.buttonLayout);
             startButton = FindViewById<Button>(Resource.Id.startButton);
             laterButton = FindViewById<Button>(Resource.Id.laterButton);
             tellmeView = FindViewById<ImageView>(Resource.Id.tellmeView);
@@ -207,6 +213,7 @@ namespace Five_Seconds.Droid
         {
             alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
             tellAlarmLayout = FindViewById<LinearLayout>(Resource.Id.tellAlarmLayout);
+            buttonLayout = FindViewById<LinearLayout>(Resource.Id.buttonLayout);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             countTextView.Text = "5.00";
         }
@@ -256,6 +263,8 @@ namespace Five_Seconds.Droid
             if (editText == textView)
             {
                 _vibrator?.Cancel();
+
+                buttonLayout.Visibility = ViewStates.Gone;
 
                 SetIsSuccessTrue();
 
@@ -341,6 +350,7 @@ namespace Five_Seconds.Droid
         {
             alarmTextLayout.Visibility = ViewStates.Invisible;
             tellAlarmLayout.Visibility = ViewStates.Invisible;
+            buttonLayout.Visibility = ViewStates.Invisible;
             countTextView.Visibility = ViewStates.Visible;
         }
 
@@ -357,27 +367,25 @@ namespace Five_Seconds.Droid
 
         protected override void OnUserLeaveHint()
         {
+            TurnOffSoundAndVibration();
             //notification으로 알람 울리는 중 표시
         }
 
         public override void FinishAndRemoveTask()
         {
-            if (alarm != null)
+            if (alarm != null && IsSuccess)
             {
-                alarm.Time = new TimeSpan(AlarmTimeNow.Hour, AlarmTimeNow.Minute, 0);
-                var record = new Record(alarm, IsSuccess);
-                alarmsRepo.SaveRecord(record);
+                CreateRecord();
             }
 
             base.FinishAndRemoveTask();
         }
 
-        protected override void OnPause()
+        private void CreateRecord()
         {
-            _vibrator?.Cancel();
-            _soundService?.StopAudio();
-
-            base.OnPause();
+            alarm.Time = new TimeSpan(AlarmTimeNow.Hour, AlarmTimeNow.Minute, 0);
+            var record = new Record(alarm, IsSuccess);
+            alarmsRepo.SaveRecord(record);
         }
 
         public void OnBeginningOfSpeech()
@@ -517,16 +525,14 @@ namespace Five_Seconds.Droid
 
         private void StartVoiceRecognition()
         {
-            _soundService?.StopAudio();
-            _vibrator?.Cancel();
+            TurnOffSoundAndVibration();
             SetTellmeBtnRecording();
             mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
         }
 
         private void ShowLaterDialog(object s, EventArgs e)
         {
-            _vibrator?.Cancel();
-            _soundService?.StopAudio();
+            TurnOffSoundAndVibration();
 
 
             LaterAlarmDialog = LayoutInflater.Inflate(Resource.Layout.LaterAlarmDialog, (ViewGroup)FindViewById(Resource.Id.laterAlarmLayout));
@@ -607,6 +613,12 @@ namespace Five_Seconds.Droid
         {
             tellmeView.SetImageResource(Resource.Drawable.ic_settings_voice);
             tellmeView.SetBackgroundResource(Resource.Drawable.background_tellmebtn_recording);
+        }
+
+        private void TurnOffSoundAndVibration()
+        {
+            _soundService?.StopAudio();
+            _vibrator?.Cancel();
         }
 
         private class CountDown : CountDownTimer

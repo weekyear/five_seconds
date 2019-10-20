@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -56,64 +57,13 @@
         </RelativeLayout>
     </RelativeLayout>
     <LinearLayout
-        android:id="@+id/tellAlarmLayout"
-        android:orientation="vertical"
-        android:layout_below="@id/alarmTextLayout"
-        android:layout_marginTop="40dp"
-        android:padding="50dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
-        <TextView
-            android:id="@+id/timeOutTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="60초 이내"
-            android:layout_marginTop="20dp"
-            android:textSize="32dp"
-            android:textStyle="bold"
-            android:textColor="#e1f5fe"/>
-        <TextView
-            android:id="@+id/alarmTextView"
-            android:text="Alarm Text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_below="@id/timeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/alarmTextColor"
-            android:textStyle="bold"
-            android:textSize="52dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/pleaseSayText"
-            android:layout_margin="10dp"
-            android:text="라고 말해주세요"
-            android:textColor="@color/alarmTextColor"
-            android:textSize="28dp"
-            android:gravity="center"
-            android:background="@color/alarmPrimaryColor"/>
-        <EditText
-            android:id="@+id/alarmEditText"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_margin="25dp"
-            android:padding="16dp"
-            android:textColor="@color/alarmTextColor"
-            android:textSize="24dp"
-            android:visibility="gone"
-            android:gravity="center"
-            android:background="@drawable/border_edittext"/>
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/buttonLayout"
         android:orientation="vertical"
-        android:layout_below="@id/tellAlarmLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal | bottom"
-        android:layout_marginBottom="50dp">        
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true">        
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
@@ -142,5 +92,59 @@
             android:text="@string/realarm"
             android:background="@drawable/rectangle_button"
             android:textColor="@color/alarmTextColor"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/tellAlarmLayout"
+        android:orientation="vertical"
+        android:layout_below="@id/alarmTextLayout"
+        android:layout_above="@id/buttonLayout"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/timeOutTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="60초 이내"
+            android:layout_marginTop="20dp"
+            android:textSize="32dp"
+            android:textStyle="bold"
+            android:textColor="#e1f5fe"/>
+        <TextView
+            android:id="@+id/alarmTextView"
+            android:text="Alarm Text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/timeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:gravity="center"
+            android:textColor="@color/alarmTextColor"
+            android:textStyle="bold"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pleaseSayText"
+            android:layout_margin="10dp"
+            android:text="라고 말해주세요"
+            android:textColor="@color/alarmTextColor"
+            android:textSize="28dp"
+            android:gravity="center"
+            android:background="@color/alarmPrimaryColor"/>
+        <EditText
+            android:id="@+id/alarmEditText"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_margin="20dp"
+            android:padding="16dp"
+            android:textColor="@color/alarmTextColor"
+            android:textSize="24dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:background="@drawable/border_edittext"/>
     </LinearLayout>
 </RelativeLayout>
