@@ -85,11 +85,11 @@
                   CachingStrategy="RecycleElement">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <custom:RoundedViewCell>
-                        <custom:RoundedViewCell.View>
+                    <ViewCell>
+                        <ViewCell.View>
                             <custom:AlarmsGridView x:Name="AlarmsGrid"/>
-                        </custom:RoundedViewCell.View>
-                    </custom:RoundedViewCell>
+                        </ViewCell.View>
+                    </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

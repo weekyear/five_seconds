@@ -20,48 +20,46 @@
     </ContentView.Resources>
 
     <ContentView.Content>
-        <custom:RoundedFrame>
-            <Grid x:Name="AlarmsGrid" BackgroundColor="Transparent">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60*" />
-                    <ColumnDefinition Width="35*" />
-                    <ColumnDefinition Width="15*" />
-                </Grid.ColumnDefinitions>
-                <custom:ListItemLabel Text="{Binding DateString}"
+        <Grid x:Name="AlarmsGrid" BackgroundColor="White" Padding="10" Margin="0, 10, 0, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="35*" />
+                <ColumnDefinition Width="15*" />
+            </Grid.ColumnDefinitions>
+            <custom:ListItemLabel Text="{Binding DateString}"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                   FontSize="20"
                                   VerticalOptions="EndAndExpand"
                                   LineBreakMode="TailTruncation"/>
-                <StackLayout Grid.Column="1" Orientation="Horizontal">
-                    <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
+            <StackLayout Grid.Column="1" Orientation="Horizontal">
+                <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                       FontSize="16"
                                       Margin="0"
                                       HorizontalOptions="EndAndExpand"
                                       VerticalOptions="EndAndExpand"/>
-                    <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                       Margin="0"
                                       HorizontalOptions="EndAndExpand"
                                       FontSize="20" />
-                </StackLayout>
-                <custom:ListItemLabel x:Name="AlarmNameLabel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+            </StackLayout>
+            <custom:ListItemLabel x:Name="AlarmNameLabel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                   FontSize="25"
                                   Text="{Binding Name}"
                                   MaxLines="1" 
                                   LineBreakMode="TailTruncation"
                                   FontAttributes="Bold" />
-                <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
+            <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                     IsToggled="{Binding IsActive}"
                     HorizontalOptions="EndAndExpand"
                     OnColor="LightSteelBlue"
                     ThumbColor="{Binding IsActive, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-            </Grid>
-        </custom:RoundedFrame>
+        </Grid>
     </ContentView.Content>
 </ContentView>
