@@ -138,11 +138,11 @@
         <EditText
             android:id="@+id/alarmEditText"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:padding="16dp"
             android:textColor="@color/alarmTextColor"
-            android:textSize="24dp"
+            android:textSize="30dp"
             android:visibility="gone"
             android:gravity="center"
             android:background="@drawable/border_edittext"/>

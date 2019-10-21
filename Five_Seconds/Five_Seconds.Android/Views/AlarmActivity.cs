@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Speech;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Helpers;
@@ -31,6 +32,8 @@ namespace Five_Seconds.Droid
         Vibrator _vibrator;
 
         Action DelayedAction;
+
+        Dialog dialogForResult;
 
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
@@ -64,6 +67,7 @@ namespace Five_Seconds.Droid
         private DateTime AlarmTimeNow;
         private bool IsSuccess;
 
+        private bool IsPausePassed;
         private bool IsFinished;
 
         Alarm alarm;
@@ -118,7 +122,7 @@ namespace Five_Seconds.Droid
             // 10분 경과
             DelayedAction = () => SetIsSuccessFalse();
             // 1분 경과
-            var timeSpan = new TimeSpan(0, 1, 0);
+            var timeSpan = new TimeSpan(0, 1, 2);
             Handler.PostDelayed(DelayedAction, (long)timeSpan.TotalMilliseconds);
 
             countDown = new CountDown(60000, 1000, this, false);
@@ -127,9 +131,12 @@ namespace Five_Seconds.Droid
 
         private void SetIsSuccessFalse()
         {
-            IsSuccess = false;
-            IsFinished = true;
-            FinishAndRemoveTask();
+            if (!IsSuccess) 
+            {
+                IsSuccess = false;
+                IsFinished = true;
+                ShowAlertForResult();
+            }
         }
 
         private void SetIsSuccessTrue()
@@ -221,10 +228,19 @@ namespace Five_Seconds.Droid
         private void AddWindowManagerFlags()
         {
             // add flags to turn screen on and appear over lock screen
-            Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
-            Window.AddFlags(WindowManagerFlags.DismissKeyguard);
-            Window.AddFlags(WindowManagerFlags.KeepScreenOn);
-            Window.AddFlags(WindowManagerFlags.TurnScreenOn);
+            var pm = GetSystemService(PowerService) as PowerManager;
+
+            if (!pm.IsInteractive)
+            {
+                Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
+                Window.AddFlags(WindowManagerFlags.DismissKeyguard);
+                Window.AddFlags(WindowManagerFlags.KeepScreenOn);
+                Window.AddFlags(WindowManagerFlags.TurnScreenOn);
+            }
+            else
+            {
+                IsPausePassed = true;
+            }
         }
 
         private void CreateSpeechRecognizer()
@@ -262,22 +278,21 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
-                _vibrator?.Cancel();
-
-                buttonLayout.Visibility = ViewStates.Gone;
+                countDown.Cancel();
 
                 SetIsSuccessTrue();
 
-                ShowCountActivity();
+                ShowAlertForResult();
             }
             else
             {
-                alarmEditText.RequestFocus();
-                alarmEditText.Focusable = true;
-                alarmEditText.FocusableInTouchMode = true;
                 pleaseSayText.Text = "라고 적어주세요";
                 SetVisibilityOfControls();
-                ShowAlertDoNotMatchText();
+                alarmEditText.RequestFocus();
+                InputMethodManager imm = GetSystemService(InputMethodService) as InputMethodManager;
+                imm.ShowSoftInput(alarmEditText, ShowFlags.Implicit);
+                alarmEditText.SetSelection(alarmEditText.Text.Length);
+                ShowToastDoNotMatchText();
             }
         }
 
@@ -311,19 +326,75 @@ namespace Five_Seconds.Droid
             startButton.Visibility = ViewStates.Visible;
         }
 
-        private void ShowAlertDoNotMatchText()
+        private void ShowToastDoNotMatchText()
         {
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            AlertDialog alert = dialog.Create();
-            alert.SetTitle("미션 내용 불일치");
-            alert.SetMessage("미션 내용을 정확히 기입하여주세요");
-            alert.SetButton("확인", (c, ev) =>
-            {
-                alert.Dispose();
-            });
-            alert.Show();
+            Toast.MakeText(ApplicationContext, "알람 이름이 일치하지 않습니다. 알람 이름을 정확히 기입해주세요", ToastLength.Long).Show();
+        }
 
-            dialog.Dispose();
+        private void ShowAlertForResult()
+        {
+            var Records = App.AlarmsRepo.RecordFromDB;
+
+            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
+            var successRecords = alarmRecords.FindAll(a => a.IsSuccess == true);
+
+            double successRate;
+
+            dialogForResult = new Dialog(this);
+            dialogForResult.SetContentView(Resource.Layout.FinishAlarmDialog);
+
+            TextView titleText = dialogForResult.FindViewById<TextView>(Resource.Id.titleText);
+            TextView messageText = dialogForResult.FindViewById<TextView>(Resource.Id.messageText);
+            Button confirmBtn = dialogForResult.FindViewById<Button>(Resource.Id.confirmBtn);
+
+
+            if (IsSuccess)
+            {
+                titleText.Text = "알람 성공!";
+                successRate = (double)(successRecords.Count + 1) / (alarmRecords.Count + 1);
+            }
+            else
+            {
+                titleText.Text = "알람 실패ㅠ^ㅠ";
+                successRate = (double)successRecords.Count / (alarmRecords.Count + 1);
+            }
+
+            if (alarmRecords.Count == 0)
+            {
+                messageText.Text = $"이번이 첫 알람이네요!";
+            }
+            else
+            {
+                messageText.Text = $"{alarm.Name} 알람의 전체 성공률은 {successRate:0.##}% 입니다."; 
+            }
+
+
+            if (IsCountOn && IsSuccess)
+            {
+                confirmBtn.Text = "5초 카운트";
+            }
+            else
+            {
+                confirmBtn.Text = "확인";
+            }
+
+            confirmBtn.Click += ConfirmBtn_Click;
+
+            dialogForResult.Show();
+        }
+
+        private void ConfirmBtn_Click(object sender, EventArgs e)
+        {
+            if (IsCountOn)
+            {
+                dialogForResult.Dismiss();
+                ShowCountActivity();
+            }
+            else
+            {
+                dialogForResult.Dismiss();
+                FinishAndRemoveTask();
+            }
         }
 
         private void SetMediaPlayer()
@@ -365,15 +436,15 @@ namespace Five_Seconds.Droid
         {
         }
 
-        protected override void OnUserLeaveHint()
-        {
-            TurnOffSoundAndVibration();
-            //notification으로 알람 울리는 중 표시
-        }
+        //protected override void OnUserLeaveHint()
+        //{
+        //    IsPausePassed = true;
+        //    //notification으로 알람 울리는 중 표시
+        //}
 
         public override void FinishAndRemoveTask()
         {
-            if (alarm != null && IsSuccess)
+            if (alarm != null && IsFinished)
             {
                 CreateRecord();
             }
@@ -619,6 +690,19 @@ namespace Five_Seconds.Droid
         {
             _soundService?.StopAudio();
             _vibrator?.Cancel();
+        }
+
+        protected override void OnPause()
+        {
+            if (IsPausePassed)
+            {
+                TurnOffSoundAndVibration();
+            }
+            else
+            {
+                IsPausePassed = true;
+            }
+            base.OnPause();
         }
 
         private class CountDown : CountDownTimer
