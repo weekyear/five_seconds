@@ -3,4 +3,6 @@
   <string name="realarm">
       <b>다시 알림</b>
   </string>
+  <string name="admob_app_id">ca-app-pub-8413101784746060~4411896846</string>
+  <string name="admob_banner_id">ca-app-pub-8413101784746060/7584855097</string>
 </resources>

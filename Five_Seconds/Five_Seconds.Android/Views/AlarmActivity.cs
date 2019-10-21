@@ -5,6 +5,8 @@ using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Gms.Ads;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Speech;
@@ -33,7 +35,7 @@ namespace Five_Seconds.Droid
 
         Action DelayedAction;
 
-        Dialog dialogForResult;
+        Dialog feedbackDialog;
 
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
@@ -53,6 +55,8 @@ namespace Five_Seconds.Droid
         private View LaterAlarmDialog;
         private CountDown countDown;
 
+        AdView adView;
+
         private int id;
         private string name;
         private string toneName;
@@ -65,7 +69,7 @@ namespace Five_Seconds.Droid
         private bool IsLaterAlarm = false;
 
         private DateTime AlarmTimeNow;
-        private bool IsSuccess;
+        private bool IsSuccess = false;
 
         private bool IsPausePassed;
         private bool IsFinished;
@@ -119,30 +123,8 @@ namespace Five_Seconds.Droid
 
         private void SetIsFailedCountDown()
         {
-            // 10분 경과
-            DelayedAction = () => SetIsSuccessFalse();
-            // 1분 경과
-            var timeSpan = new TimeSpan(0, 1, 2);
-            Handler.PostDelayed(DelayedAction, (long)timeSpan.TotalMilliseconds);
-
             countDown = new CountDown(60000, 1000, this, false);
             countDown.Start();
-        }
-
-        private void SetIsSuccessFalse()
-        {
-            if (!IsSuccess) 
-            {
-                IsSuccess = false;
-                IsFinished = true;
-                ShowAlertForResult();
-            }
-        }
-
-        private void SetIsSuccessTrue()
-        {
-            IsSuccess = true;
-            IsFinished = true;
         }
 
         private void OnlyCountDown()
@@ -191,6 +173,7 @@ namespace Five_Seconds.Droid
             IsLaterAlarm = (bool)bundle.Get("IsLaterAlarm");
         }
 
+
         private void SetAndFindViewById()
         {
             alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
@@ -230,17 +213,15 @@ namespace Five_Seconds.Droid
             // add flags to turn screen on and appear over lock screen
             var pm = GetSystemService(PowerService) as PowerManager;
 
-            if (!pm.IsInteractive)
-            {
-                Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
-                Window.AddFlags(WindowManagerFlags.DismissKeyguard);
-                Window.AddFlags(WindowManagerFlags.KeepScreenOn);
-                Window.AddFlags(WindowManagerFlags.TurnScreenOn);
-            }
-            else
+            if (pm.IsInteractive)
             {
                 IsPausePassed = true;
             }
+
+            Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
+            Window.AddFlags(WindowManagerFlags.DismissKeyguard);
+            Window.AddFlags(WindowManagerFlags.KeepScreenOn);
+            Window.AddFlags(WindowManagerFlags.TurnScreenOn);
         }
 
         private void CreateSpeechRecognizer()
@@ -280,9 +261,9 @@ namespace Five_Seconds.Droid
             {
                 countDown.Cancel();
 
-                SetIsSuccessTrue();
+                IsSuccess = true;
 
-                ShowAlertForResult();
+                ShowFeedbackDialog();
             }
             else
             {
@@ -331,7 +312,7 @@ namespace Five_Seconds.Droid
             Toast.MakeText(ApplicationContext, "알람 이름이 일치하지 않습니다. 알람 이름을 정확히 기입해주세요", ToastLength.Long).Show();
         }
 
-        private void ShowAlertForResult()
+        public void ShowFeedbackDialog()
         {
             var Records = App.AlarmsRepo.RecordFromDB;
 
@@ -340,12 +321,18 @@ namespace Five_Seconds.Droid
 
             double successRate;
 
-            dialogForResult = new Dialog(this);
-            dialogForResult.SetContentView(Resource.Layout.FinishAlarmDialog);
+            feedbackDialog = new Dialog(this);
+            feedbackDialog.SetContentView(Resource.Layout.AlarmFeedbackDialog);
 
-            TextView titleText = dialogForResult.FindViewById<TextView>(Resource.Id.titleText);
-            TextView messageText = dialogForResult.FindViewById<TextView>(Resource.Id.messageText);
-            Button confirmBtn = dialogForResult.FindViewById<Button>(Resource.Id.confirmBtn);
+            feedbackDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
+
+            TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
+            TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
+            Button confirmBtn = feedbackDialog.FindViewById<Button>(Resource.Id.confirmBtn);
+            adView = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
+
+
+            SetAdView();
 
 
             if (IsSuccess)
@@ -355,7 +342,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                titleText.Text = "알람 실패ㅠ^ㅠ";
+                titleText.Text = "알람 실패 ㅠ^ㅠ";
                 successRate = (double)successRecords.Count / (alarmRecords.Count + 1);
             }
 
@@ -365,7 +352,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                messageText.Text = $"{alarm.Name} 알람의 전체 성공률은 {successRate:0.##}% 입니다."; 
+                messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다."; 
             }
 
 
@@ -380,21 +367,34 @@ namespace Five_Seconds.Droid
 
             confirmBtn.Click += ConfirmBtn_Click;
 
-            dialogForResult.Show();
+            feedbackDialog.Show();
         }
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
-            if (IsCountOn)
+            IsFinished = true;
+
+            if (IsCountOn && IsSuccess)
             {
-                dialogForResult.Dismiss();
+                feedbackDialog.Dismiss();
                 ShowCountActivity();
             }
             else
             {
-                dialogForResult.Dismiss();
+                feedbackDialog.Dismiss();
                 FinishAndRemoveTask();
             }
+        }
+        private void SetAdView()
+        {
+            SetMobileAds();
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            adView.AdListener = new AdListener(this);
+            adView.LoadAd(requestbuilder);
+        }
+        private void SetMobileAds()
+        {
+            MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
         }
 
         private void SetMediaPlayer()
@@ -605,7 +605,6 @@ namespace Five_Seconds.Droid
         {
             TurnOffSoundAndVibration();
 
-
             LaterAlarmDialog = LayoutInflater.Inflate(Resource.Layout.LaterAlarmDialog, (ViewGroup)FindViewById(Resource.Id.laterAlarmLayout));
 
             var numberPicker = LaterAlarmDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
@@ -637,7 +636,7 @@ namespace Five_Seconds.Droid
 
                 Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
 
-                Finish();
+                FinishAndRemoveTask();
             });
             dialog.SetNegativeButton("취소", (c, ev) =>
             {
@@ -709,13 +708,13 @@ namespace Five_Seconds.Droid
         {
             public long CountDownInterval { get; }
             public long MillisInFuture { get; }
-            public Activity Activity { get; set; }
+            public AlarmActivity Activity { get; set; }
 
             private bool IsCountDown { get; set; }
 
             public CountDown(long millisInFuture, long countDownInterval, Activity activity, bool isCountDown) : base(millisInFuture, countDownInterval)
             {
-                Activity = activity;
+                Activity = activity as AlarmActivity;
                 MillisInFuture = millisInFuture;
                 CountDownInterval = countDownInterval;
                 IsCountDown = isCountDown;
@@ -723,7 +722,14 @@ namespace Five_Seconds.Droid
 
             public override void OnFinish()
             {
-                Activity.FinishAndRemoveTask();
+                if (IsCountDown)
+                {
+                    Activity.FinishAndRemoveTask();
+                }
+                else
+                {
+                    Activity.ShowFeedbackDialog();
+                }
             }
 
             public override void OnTick(long millisUntilFinished)
@@ -746,6 +752,27 @@ namespace Five_Seconds.Droid
                     var stringFormat = $"{count:00}초 이내";
                     timeOutTextView.Text = stringFormat;
                 }
+            }
+        }
+        private class AdListener : Android.Gms.Ads.AdListener
+        {
+            private AlarmActivity that;
+
+            public AdListener(AlarmActivity t)
+            {
+                that = t;
+            }
+
+            public override void OnAdLoaded()
+            {
+                that.adView.Visibility = ViewStates.Visible;
+                base.OnAdLoaded();
+            }
+
+            public override void OnAdFailedToLoad(int errorCode)
+            {
+                that.adView.Visibility = ViewStates.Gone;
+                base.OnAdFailedToLoad(errorCode);
             }
         }
     }

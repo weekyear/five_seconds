@@ -1,26 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/laterAlarmLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/alarmFeedbackLayout"
     android:layout_width="match_parent"
-    android:layout_height="200dp">
+    android:background="@drawable/dialog_bg"
+    android:layout_height="300dp">
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
         android:text="알람 성공!"
-        android:textSize="24dp"/>
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorPrimaryDark"/>
     <TextView
         android:id="@+id/messageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:layout_margin="15dp"
         android:layout_below="@id/titleText"
         android:layout_centerVertical="true"
+        android:textColor="@color/alarmPrimaryColor"
         android:text="이번이 첫 알람이에요! 앞으로도 팍팍 성공합시다!"
-        android:textSize="16dp"/>
+        android:textSize="18dp"/>
     <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 		android:orientation="horizontal"
@@ -29,10 +36,18 @@
         android:layout_alignParentRight="true">
     <Button
         android:id="@+id/confirmBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="확인"
-        android:background="@android:color/transparent"
-        android:layout_marginRight="5dp"/>
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/ripple_button"/>
     </LinearLayout>
+    <com.google.android.gms.ads.AdView
+		android:id="@+id/adView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+        android:layout_above="@id/buttonLayout"
+		app:adSize="BANNER"
+		app:adUnitId="@string/admob_banner_id" />
 </RelativeLayout>
