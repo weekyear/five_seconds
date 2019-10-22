@@ -16,10 +16,13 @@
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
-    <ContentPage.Content>
-        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" 
-                     Orientation="Vertical">
+
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="0">
             <StackLayout.GestureRecognizers>
                 <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}"/>
                 <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}"/>
@@ -129,5 +132,6 @@
                 </custom:GestureListView.ItemTemplate>
             </custom:GestureListView>
         </StackLayout>
-    </ContentPage.Content>
+        <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+    </Grid>
 </ContentPage>
