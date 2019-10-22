@@ -13,6 +13,7 @@ using Plugin.CurrentActivity;
 using Android.Database;
 using Android.Provider;
 using Android;
+using Android.Gms.Ads;
 
 namespace Five_Seconds.Droid
 {
@@ -23,10 +24,13 @@ namespace Five_Seconds.Droid
         static readonly int READ_REQUEST_CODE = 42;
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Console.WriteLine("OnCreate_MainActivity");
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+
+            SetMobileAds();
 
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
@@ -35,6 +39,12 @@ namespace Five_Seconds.Droid
 
             LoadApplication(new App());
         }
+
+        private void SetMobileAds()
+        {
+            MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
+        }
+
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);

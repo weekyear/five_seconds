@@ -33,8 +33,6 @@ namespace Five_Seconds.Droid
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
-        Action DelayedAction;
-
         Dialog feedbackDialog;
 
         private SpeechRecognizer mSpeechRecognizer;
@@ -242,7 +240,8 @@ namespace Five_Seconds.Droid
 
         private void StartListening_Click(object sender, EventArgs e)
         {
-            RequestRecordAudioPermission();
+            //RequestRecordAudioPermission();
+            SendBroadcast(new Intent(Intent.ActionBootCompleted));
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -756,7 +755,7 @@ namespace Five_Seconds.Droid
         }
         private class AdListener : Android.Gms.Ads.AdListener
         {
-            private AlarmActivity that;
+            private readonly AlarmActivity that;
 
             public AdListener(AlarmActivity t)
             {

@@ -22,6 +22,7 @@ namespace Five_Seconds.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            //Google.MobileAds.MobileAds.SharedInstance.Start("YOUR IOS APP ID HERE");
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
