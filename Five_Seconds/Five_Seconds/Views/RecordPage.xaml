@@ -17,12 +17,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid RowSpacing="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="0">
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
             <StackLayout.GestureRecognizers>
                 <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}"/>
                 <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}"/>
@@ -40,6 +35,8 @@
                     </DataTemplate>
                 </dltag:TagEntryView.TagItemTemplate>
             </dltag:TagEntryView>
+
+            <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
             <Grid VerticalOptions="CenterAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -130,8 +127,7 @@
                         </ViewCell>
                     </DataTemplate>
                 </custom:GestureListView.ItemTemplate>
-            </custom:GestureListView>
-        </StackLayout>
+        </custom:GestureListView>
         <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
-    </Grid>
+    </StackLayout>
 </ContentPage>
