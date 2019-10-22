@@ -191,7 +191,7 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
-                foreach (var tag in TagItems)
+                foreach (var tag in TagItems.ToList())
                 {
                     var records = Records.FindAll((r) => r.Name.Contains(tag.Name));
                     foreach (var record in records)
@@ -251,7 +251,7 @@ namespace Five_Seconds.ViewModels
 
             DayRecords.Clear();
 
-            foreach (var dayList in dayRecordList)
+            foreach (var dayList in dayRecordList.ToList())
             {
                 if (dayList.Count != 0)
                 {
@@ -325,7 +325,7 @@ namespace Five_Seconds.ViewModels
         public async Task ShowRecordMenu(object _record)
         {
             var record = _record as Record;
-            string[] actionSheetBtns = { "성공", "실패" };
+            string[] actionSheetBtns = { "성공", "실패", "삭제" };
 
             string action = await MessageBoxService.ShowActionSheet("기록 수정", "취소", null, actionSheetBtns);
 
@@ -340,34 +340,66 @@ namespace Five_Seconds.ViewModels
 
             //var _record = dayRecord.Find(r => r.Id == record.Id);
 
-            foreach (var dayRecord in DayRecords)
+            foreach (var dayRecord in DayRecords.ToList())
             {
                 foreach (var _record in dayRecord)
                 {
                     if (_record.Id == record.Id)
                     {
-                        if (action == "성공" && !_record.IsSuccess)
+                        if (action == "삭제")
                         {
-                            _record.IsSuccess = true;
-                        }
-                        else if (action == "실패" && _record.IsSuccess)
-                        {
-                            _record.IsSuccess = false;
+                            ConfirmDeletingRecord(record);
                         }
                         else
                         {
-                            return;
+                            if (action == "성공" && !_record.IsSuccess)
+                            {
+                                ConfirmChangingSuccessRecord(_record);
+                            }
+                            else if (action == "실패" && _record.IsSuccess)
+                            {
+                                _record.IsSuccess = false;
+                                App.AlarmsRepo.SaveRecord(_record);
+                                SendMessage("changeWeekRecord", WeekRecord);
+                                OnPropertyChanged(nameof(WeekSuccessRate));
+                                SetDayRecords();
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
-
-                        OnPropertyChanged(nameof(WeekSuccessRate));
-
-                        App.AlarmsRepo.SaveRecord(_record);
-
-                        SendMessage("changeWeekRecord", WeekRecord);
                     }
                 }
             }
-            //OnPropertyChanged(nameof(DayRecords));
+        }
+        private void ConfirmDeletingRecord(Record record)
+        {
+            void action() => DeleteRecord(record);
+            MessageBoxService.ShowConfirm("기록 삭제", "기록을 정말 삭제하시겠습니까?", null, action);
+        }
+
+        private void DeleteRecord(Record record)
+        {
+            WeekRecord.DayRecords.Remove(record);
+            App.AlarmsRepo.DeleteRecord(record.Id);
+            SendMessage("deleteRecord", record);
+            OnPropertyChanged(nameof(WeekSuccessRate));
+            SetDayRecords();
+        }
+
+        private void ConfirmChangingSuccessRecord(Record record)
+        {
+            void action() => ChangeSuccessRecord(record);
+            MessageBoxService.ShowConfirm("성공으로 변경", "해당 알람은 성공한 것이 확실합니까?", null, action);
+        }
+
+        private void ChangeSuccessRecord(Record record)
+        {
+            record.IsSuccess = true;
+            App.AlarmsRepo.SaveRecord(record);
+            SendMessage("changeWeekRecord", WeekRecord);
+            OnPropertyChanged(nameof(WeekSuccessRate));
             SetDayRecords();
         }
 

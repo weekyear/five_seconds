@@ -161,7 +161,7 @@ namespace Five_Seconds.ViewModels
 
         public void SetIsSelected(SettingTone selectedTone)
         {
-            foreach(var settingTone in AllAlarmTones)
+            foreach(var settingTone in AllAlarmTones.ToList())
             {
                 if (settingTone.Name == selectedTone.Name)
                 {

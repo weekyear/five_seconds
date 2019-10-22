@@ -62,6 +62,13 @@ namespace Five_Seconds.ViewModels
                 UpdateWeekRecords(null);
                 OnPropertyChanged(nameof(MonthSuccessRate));
             });
+
+            MessagingCenter.Subscribe<RecordDetailViewModel, Record>(this, "deleteRecord", (sender, record) =>
+            {
+                Records.Remove(record);
+                UpdateWeekRecords(null);
+                OnPropertyChanged(nameof(MonthSuccessRate));
+            });
         }
 
         // Command
@@ -161,7 +168,7 @@ namespace Five_Seconds.ViewModels
 
         private void ChangeWeekRecord(WeekRecord weekRecord)
         {
-            foreach (var _weekRecord in WeekRecords)
+            foreach (var _weekRecord in WeekRecords.ToList())
             {
                 if (_weekRecord.StartDateOfWeek.Date == weekRecord.StartDateOfWeek.Date)
                 {
@@ -246,7 +253,7 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
-                foreach (var tag in TagItems)
+                foreach (var tag in TagItems.ToList())
                 {
                     var records = MonthRecords.FindAll((r) => r.Name.Contains(tag.Name));
                     foreach (var record in records)
