@@ -5,7 +5,7 @@ using Android.Content;
 
 namespace Five_Seconds.Droid.Services
 {
-    [BroadcastReceiver]
+    [BroadcastReceiver(Enabled = true, Exported = true)]
     [IntentFilter(new[] { Intent.ActionBootCompleted })]
     public class BootReceiver : BroadcastReceiver
     {

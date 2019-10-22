@@ -143,9 +143,9 @@
     <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="Services\AlarmController.cs" />
-    <Compile Include="Services\AlarmReceiver.cs" />
+    <Compile Include="BroadcastReceivers\AlarmReceiver.cs" />
     <Compile Include="Services\AlarmNotificationAndroid.cs" />
-    <Compile Include="Services\BootReceiver.cs" />
+    <Compile Include="BroadcastReceivers\BootReceiver.cs" />
     <Compile Include="Services\CountDownAndroid.cs" />
     <Compile Include="Services\FileLocatorAndroid.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />

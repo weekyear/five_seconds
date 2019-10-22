@@ -20,23 +20,28 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <StackLayout BackgroundColor="{StaticResource BackgroundColor}">
-        <Grid Margin="10, 20, 10, 10" HorizontalOptions="CenterAndExpand">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80*" />
-                <ColumnDefinition Width="10*" />
-                <ColumnDefinition Width="10*" />
-            </Grid.ColumnDefinitions>
-            <Label Grid.ColumnSpan="3" 
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="0">
+            <Grid Margin="10, 20, 10, 10" HorizontalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80*" />
+                    <ColumnDefinition Width="10*" />
+                    <ColumnDefinition Width="10*" />
+                </Grid.ColumnDefinitions>
+                <Label Grid.ColumnSpan="3" 
                    Text="5초의 알람"
                    FontSize="22"
                    HorizontalOptions="CenterAndExpand"/>
-            <ImageButton Grid.Row="2" Grid.Column="0"
+                <ImageButton Grid.Row="2" Grid.Column="0"
                          Margin="5, 0"
                          Source="ic_five_seconds_mini.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
@@ -44,14 +49,14 @@
                          HorizontalOptions="StartAndExpand"
                          VerticalOptions="StartAndExpand"
                          Command="{Binding ShowCountDownCommand}"/>
-            <Label x:Name="NextAlarmStrng" 
+                <Label x:Name="NextAlarmStrng" 
                    Grid.Row="1" Grid.ColumnSpan="3" 
                    Text="{Binding NextAlarmString}"
                    FontAttributes="Bold"
                    FontSize="28"
                    Margin="0, 0, 0, 20"
                    HorizontalOptions="CenterAndExpand"/>
-            <ImageButton Grid.Row="2" Grid.Column="0"
+                <ImageButton Grid.Row="2" Grid.Column="0"
                          Source="ic_plus.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
                          WidthRequest="32" HeightRequest="32"
@@ -59,22 +64,22 @@
                          HorizontalOptions="EndAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowAddAlarmCommand}"/>
-            <ImageButton Grid.Row="2" Grid.Column="1"
+                <ImageButton Grid.Row="2" Grid.Column="1"
                          Source="ic_timemachine.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
                          WidthRequest="32" HeightRequest="32"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowRecordCommand}"/>
-            <ImageButton Grid.Row="2" Grid.Column="2"
+                <ImageButton Grid.Row="2" Grid.Column="2"
                          Source="ic_menu_vertical.png"
                          BackgroundColor="{StaticResource BackgroundColor}"
                          WidthRequest="32" HeightRequest="32"
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand"
                          Command="{Binding ShowMainMenuCommand}"/>
-        </Grid>
-        <ListView x:Name="AlarmsListView"
+            </Grid>
+            <ListView x:Name="AlarmsListView"
                   ItemsSource="{Binding Alarms}"
                   RowHeight="100"
                   HasUnevenRows="True"
@@ -83,16 +88,17 @@
                   VerticalOptions="FillAndExpand"
                   SeparatorVisibility="Default"
                   CachingStrategy="RecycleElement">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <ViewCell.View>
-                            <custom:AlarmsGridView x:Name="AlarmsGrid"/>
-                        </ViewCell.View>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
-    
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <custom:AlarmsGridView x:Name="AlarmsGrid"/>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+    </Grid>
 </ContentPage>

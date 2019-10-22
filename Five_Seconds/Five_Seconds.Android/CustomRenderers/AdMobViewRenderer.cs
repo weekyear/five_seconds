@@ -49,7 +49,10 @@ namespace Five_Seconds.Droid.CustomRenderers
 
             adView.LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent);
 
-            adView.LoadAd(new AdRequest.Builder().Build());
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            //adView.AdListener = new AdListener(this);
+            adView.LoadAd(requestbuilder);
+            //adView.LoadAd(new AdRequest.Builder().Build());
 
             return adView;
         }
