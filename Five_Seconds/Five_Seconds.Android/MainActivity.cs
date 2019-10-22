@@ -28,6 +28,8 @@ namespace Five_Seconds.Droid
 
             base.OnCreate(savedInstanceState);
 
+            Android.Gms.Ads.MobileAds.Initialize(ApplicationContext, "ca-app-pub-8413101784746060~4411896846");
+
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
