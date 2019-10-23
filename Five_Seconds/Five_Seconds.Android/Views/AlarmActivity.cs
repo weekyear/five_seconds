@@ -52,7 +52,8 @@ namespace Five_Seconds.Droid
         private TextView pleaseSayText;
         private EditText alarmEditText;
         private View LaterAlarmDialog;
-        private CountDown countDown;
+        private CountDown countDownForFailed;
+        private CountDown countDownForFiveSeconds;
 
         AdView adView;
 
@@ -122,8 +123,8 @@ namespace Five_Seconds.Droid
 
         private void SetIsFailedCountDown()
         {
-            countDown = new CountDown(60000, 1000, this, false);
-            countDown.Start();
+            countDownForFailed = new CountDown(60000, 1000, this, false);
+            countDownForFailed.Start();
         }
 
         private void OnlyCountDown()
@@ -135,16 +136,12 @@ namespace Five_Seconds.Droid
 
         private void SetAlarmAfterCalled()
         {
-
             alarmsRepo = App.AlarmsRepo;
 
             alarm = App.AlarmsRepo?.GetAlarm(id);
             alarm.Days = App.AlarmsRepo?.GetDaysOfWeek(alarm.DaysId);
 
-            if (IsLaterAlarm)
-            {
-                return;
-            }
+            alarm.IsLaterAlarm = false;
 
             if (!IsRepeating)
             {
@@ -155,8 +152,6 @@ namespace Five_Seconds.Droid
             {
                 AlarmController.SetNextAlarm(alarm);
             }
-
-            App.Service.SendChangeAlarmsMessage();
         }
 
         private void GetDataFromBundle(Bundle bundle)
@@ -169,7 +164,6 @@ namespace Five_Seconds.Droid
             IsVibrateOn = (bool)bundle.Get("IsVibrateOn");
             IsRepeating = (bool)bundle.Get("IsRepeating");
             alarmVolume = (int)bundle.Get("alarmVolume");
-            IsLaterAlarm = (bool)bundle.Get("IsLaterAlarm");
         }
 
 
@@ -259,7 +253,7 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
-                countDown.Cancel();
+                countDownForFailed.Cancel();
 
                 IsSuccess = true;
 
@@ -432,8 +426,8 @@ namespace Five_Seconds.Droid
         private async void SetCountDown()
         {
             await Task.Delay(330);
-            countDown = new CountDown(5000, 10, this, true);
-            countDown.Start();
+            countDownForFiveSeconds = new CountDown(5000, 10, this, true);
+            countDownForFiveSeconds.Start();
         }
 
         public override void OnBackPressed()
@@ -632,11 +626,18 @@ namespace Five_Seconds.Droid
 
                 if (diffTimeSpan.Ticks < 0)
                 {
-                    Toast.MakeText(ApplicationContext, $"이미 지난 시각은 설정할 수 없습니다.", ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, $"이미 시간이 지났습니다. 최소 {-diffTimeSpan.Minutes + 1}분 후 설정해주세요", ToastLength.Long).Show();
                     return;
                 }
 
-                SetAlarmByManager((long)diffTimeSpan.TotalMilliseconds);
+                alarm.IsActive = true;
+                alarm.LaterAlarmTime = alarmTime;
+
+                AlarmController.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+
+                App.Service.SaveAlarmAtLocal(alarm);
+
+                countDownForFailed.Cancel();
 
                 Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
 
@@ -653,7 +654,7 @@ namespace Five_Seconds.Droid
             dialog.Dispose();
         }
 
-        private void SetAlarmByManager(long diffMillis)
+        private void SetLaterAlarmByManager(long diffMillis)
         {
             var _alarmIntent = new Intent(ApplicationContext, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
@@ -666,13 +667,12 @@ namespace Five_Seconds.Droid
             _alarmIntent.PutExtra("IsRepeating", IsRepeating);
             _alarmIntent.PutExtra("toneName", toneName);
             _alarmIntent.PutExtra("alarmVolume", alarmVolume);
-            _alarmIntent.PutExtra("IsLaterAlarm", true);
 
-            var pendingIntent = PendingIntent.GetBroadcast(ApplicationContext, -alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetBroadcast(ApplicationContext, -id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)ApplicationContext.GetSystemService("alarm");
 
             Intent showIntent = new Intent(ApplicationContext, typeof(MainActivity));
-            PendingIntent showOperation = PendingIntent.GetActivity(ApplicationContext, 0, showIntent, PendingIntentFlags.UpdateCurrent);
+            PendingIntent showOperation = PendingIntent.GetActivity(ApplicationContext, -id, showIntent, PendingIntentFlags.UpdateCurrent);
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }

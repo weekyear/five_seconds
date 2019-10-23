@@ -56,7 +56,7 @@ namespace Five_Seconds.Droid.Services
             toastService.Show(diffString);
         }
 
-        private static void SetAlarmByManager(Alarm alarm, long diffMillis)
+        public static void SetAlarmByManager(Alarm alarm, long diffMillis)
         {
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
@@ -69,13 +69,12 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.PutExtra("IsRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);
-            _alarmIntent.PutExtra("IsLaterAlarm", false);
 
             var pendingIntent = PendingIntent.GetBroadcast(Application.Context, alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
             var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
 
             Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
-            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, 0, showIntent, PendingIntentFlags.UpdateCurrent);
+            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }
@@ -84,19 +83,12 @@ namespace Five_Seconds.Droid.Services
         {
             try
             {
-                Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
                 var deviceStorage = new DeviceStorageAndroid();
-                Console.WriteLine("DeviceStorageAndroid_AlarmController");
                 var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
-                Console.WriteLine("SQLiteConnection_AlarmController");
                 var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
-                Console.WriteLine("ItemDatabaseGeneric_AlarmController");
                 var alarmsRepo = new AlarmsRepository(itemDatabase);
-                Console.WriteLine("AlarmsRepository_AlarmController");
                 var service = new AlarmService(alarmsRepo);
-                Console.WriteLine("AlarmService_AlarmController");
                 var alarms = service.GetAllAlarms();
-                Console.WriteLine("GetAllAlarms_AlarmController");
                 Console.WriteLine($"alarms Count : {alarms.Count}");
 
                 foreach (var alarm in alarms)
@@ -104,7 +96,6 @@ namespace Five_Seconds.Droid.Services
                     Console.WriteLine($"alarms Name : {alarm.Name}");
                     SetFirstAlarm(alarm);
                 }
-                Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
             }
             catch (Exception e)
             {

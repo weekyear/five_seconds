@@ -219,6 +219,8 @@ namespace Five_Seconds.ViewModels
                     Alarm.IsActive = true;
                     Alarm.IsInitFinished = true;
                 }
+                Alarm.IsLaterAlarm = false;
+
                 Service.SaveAlarm(Alarm);
                 await ClosePopup();
             }

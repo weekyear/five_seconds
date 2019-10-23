@@ -24,27 +24,31 @@ namespace Five_Seconds.Models
         public bool IsCountSoundOn { get; set; } = true;
         public bool IsCountOn { get; set; } = true;
 
-        //public int DaysId { get; set; }
-        [OneToOne]
-        public DaysOfWeek Days { get; set; } = new DaysOfWeek();
-        public int DaysId { get; set; }
-        private string tone;
-        public string Tone 
+        public bool IsLaterAlarm
         {
-            get
+            get 
             {
-                if (tone == null)
-                {
-                    return App.Tones[0].Name;
-                }
-                return tone;
+                bool isLaterAlarm = LaterAlarmTime != DateTime.MinValue;
+                return isLaterAlarm;
             }
             set
             {
-                if (tone == value) return;
-                tone = value;
+                if (value == false)
+                {
+                    LaterAlarmTime = DateTime.MinValue;
+                }
             }
         }
+
+        public DateTime LaterAlarmTime { get; set; } = DateTime.MinValue;
+
+        //public int DaysId { get; set; }
+        [OneToOne]
+        public DaysOfWeek Days { get; set; } = new DaysOfWeek();
+
+        public int DaysId { get; set; }
+
+        public string Tone { get; set; } = "Buzz";
 
         public DateTime Date
         {

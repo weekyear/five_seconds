@@ -78,6 +78,7 @@ namespace Five_Seconds.Services
 
         public int TurnOffAlarm(Alarm alarm)
         {
+            alarm.IsLaterAlarm = false;
             DependencyService.Get<IAlarmSetter>().DeleteAlarm(alarm.Id);
             return SaveAlarmAtLocal(alarm);
         }
@@ -125,7 +126,15 @@ namespace Five_Seconds.Services
             {
                 if (Alarms[i].IsActive)
                 {
-                    var alarmNextTime = Alarms[i].NextAlarmTime;
+                    DateTime alarmNextTime;
+                    if (Alarms[i].IsLaterAlarm)
+                    {
+                        alarmNextTime = Alarms[i].LaterAlarmTime;
+                    }
+                    else
+                    {
+                        alarmNextTime = Alarms[i].NextAlarmTime;
+                    }
 
                     if (min.Subtract(alarmNextTime).TotalMilliseconds > 0)
                     {

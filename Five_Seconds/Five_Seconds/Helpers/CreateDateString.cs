@@ -9,6 +9,11 @@ namespace Five_Seconds.Helpers
     {
         public static string CreateDateToString(Alarm alarm)
         {
+            if (alarm.IsLaterAlarm)
+            {
+                return "곧 다시 울림";
+            }
+
             if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
                 return ConvertDaysOfWeekToString(alarm);
@@ -71,7 +76,14 @@ namespace Five_Seconds.Helpers
 
             if (alarm != null)
             {
-                nextTime = alarm.NextAlarmTime;
+                if (alarm.IsLaterAlarm)
+                {
+                    nextTime = alarm.LaterAlarmTime;
+                }
+                else
+                {
+                    nextTime = alarm.NextAlarmTime;
+                }
                 bool isPastTime = nextTime.Subtract(DateTime.Now).Ticks < 0;
 
                 if (isPastTime) return "다음 알람이 없습니다.";
