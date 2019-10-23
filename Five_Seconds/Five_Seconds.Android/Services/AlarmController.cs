@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
+using Five_Seconds.Droid.BroadcastReceivers;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
@@ -81,27 +82,37 @@ namespace Five_Seconds.Droid.Services
 
         public static void SetAllAlarmWhenRestart()
         {
-            Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
-            var deviceStorage = new DeviceStorageAndroid();
-            Console.WriteLine("DeviceStorageAndroid_AlarmController");
-            var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
-            Console.WriteLine("SQLiteConnection_AlarmController");
-            var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
-            Console.WriteLine("ItemDatabaseGeneric_AlarmController");
-            var alarmsRepo = new AlarmsRepository(itemDatabase);
-            Console.WriteLine("AlarmsRepository_AlarmController");
-            var service = new AlarmService(alarmsRepo);
-            Console.WriteLine("AlarmService_AlarmController");
-            var alarms = service.GetAllAlarms();
-            Console.WriteLine("GetAllAlarms_AlarmController");
-            Console.WriteLine($"alarms Count : {alarms.Count}");
-
-            foreach (var alarm in alarms)
+            try
             {
-                Console.WriteLine($"alarms Name : {alarm.Name}");
-                SetFirstAlarm(alarm);
+                Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
+                var deviceStorage = new DeviceStorageAndroid();
+                Console.WriteLine("DeviceStorageAndroid_AlarmController");
+                var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
+                Console.WriteLine("SQLiteConnection_AlarmController");
+                var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
+                Console.WriteLine("ItemDatabaseGeneric_AlarmController");
+                var alarmsRepo = new AlarmsRepository(itemDatabase);
+                Console.WriteLine("AlarmsRepository_AlarmController");
+                var service = new AlarmService(alarmsRepo);
+                Console.WriteLine("AlarmService_AlarmController");
+                var alarms = service.GetAllAlarms();
+                Console.WriteLine("GetAllAlarms_AlarmController");
+                Console.WriteLine($"alarms Count : {alarms.Count}");
+
+                foreach (var alarm in alarms)
+                {
+                    Console.WriteLine($"alarms Name : {alarm.Name}");
+                    SetFirstAlarm(alarm);
+                }
+                Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
             }
-            Console.WriteLine("SetAllAlarmWhenRestart_AlarmController");
+            catch (Exception e)
+            {
+                Console.WriteLine($"Error Message :: {e.Message}");
+                Console.WriteLine($"Error InnerException :: {e.InnerException}");
+                Console.WriteLine($"Error StackTrace :: {e.StackTrace}");
+                Console.WriteLine($"Error Source :: {e.Source}");
+            }
         }
     }
 }

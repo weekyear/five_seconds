@@ -23,7 +23,6 @@ namespace Five_Seconds
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(DependencyService.Get<IDatabase>().DBConnect());
         private bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
 
-        public static bool IsInitFinished;
         public App()
         {
             AdMaiora.RealXaml.Client.AppManager.Init(this);
@@ -58,7 +57,7 @@ namespace Five_Seconds
                 Preferences.Set(nameof(isNotFirst), true);
             }
 
-            IsInitFinished = true;
+            Alarm.IsInitFinished = true;
         }
 
         protected override void OnStart()
@@ -114,6 +113,19 @@ namespace Five_Seconds
                     alarmToneRepo = new AlarmToneRepository();
                 }
                 return alarmToneRepo;
+            }
+        }
+
+        private static List<AlarmTone> tones = new List<AlarmTone>();
+        public static List<AlarmTone> Tones
+        {
+            get
+            {
+                if (tones.Count == 0)
+                {
+                    tones = AlarmToneRepo.GetAllAlarmTones();
+                }
+                return tones;
             }
         }
     }

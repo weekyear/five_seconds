@@ -11,6 +11,8 @@ namespace Five_Seconds.Models
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public static bool IsInitFinished = false;
+
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
 
@@ -21,7 +23,7 @@ namespace Five_Seconds.Models
 
         public void OnIsActiveChanged()
         {
-            if (App.IsInitFinished)
+            if (IsInitFinished)
             {
                 if (IsActive)
                 {

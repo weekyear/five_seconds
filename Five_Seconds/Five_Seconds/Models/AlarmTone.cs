@@ -46,18 +46,5 @@ namespace Five_Seconds.Models
 
             return false;
         }
-
-        private static List<AlarmTone> tones = new List<AlarmTone>();
-        public static List<AlarmTone> Tones
-        {
-            get
-            {
-                if (tones.Count == 0)
-                {
-                    tones = App.AlarmToneRepo.GetAllAlarmTones();
-                }
-                return tones;
-            }
-        }
     }
 }

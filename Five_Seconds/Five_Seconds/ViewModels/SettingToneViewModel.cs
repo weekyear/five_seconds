@@ -36,7 +36,7 @@ namespace Five_Seconds.ViewModels
         {
             AllAlarmTones.Clear();
 
-            var AlarmTones = AlarmTone.Tones;
+            var AlarmTones = App.Tones;
             foreach(var alarmTone in AlarmTones)
             {
                 bool isSelected = false;
@@ -108,7 +108,7 @@ namespace Five_Seconds.ViewModels
 
         private void PlayTone()
         {
-            _soundService.PlayAudio(AlarmTone.Tones.Find(a => a.Name == Alarm.Tone), true, Alarm.Volume);
+            _soundService.PlayAudio(App.Tones.Find(a => a.Name == Alarm.Tone), true, Alarm.Volume);
         }
 
         private void StopTone()
@@ -138,7 +138,7 @@ namespace Five_Seconds.ViewModels
                 IsCustomTone = true
             };
 
-            AlarmTone.Tones.Add(newTone);
+            App.Tones.Add(newTone);
             App.AlarmToneRepo.AddTone(newTone);
 
             AllAlarmTones.Add(new SettingTone(newTone.Name, false));

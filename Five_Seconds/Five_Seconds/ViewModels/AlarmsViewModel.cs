@@ -129,9 +129,9 @@ namespace Five_Seconds.ViewModels
 
         public async Task ShowModifyAlarm(Alarm alarm)
         {
-            App.IsInitFinished = false;
+            Alarm.IsInitFinished = false;
             await Navigation.PushAsync(new AlarmPage(Navigation, alarm));
-            App.IsInitFinished = true;
+            Alarm.IsInitFinished = true;
         }
 
         private ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)

@@ -215,9 +215,9 @@ namespace Five_Seconds.ViewModels
             {
                 if (!Alarm.IsActive)
                 {
-                    App.IsInitFinished = false;
+                    Alarm.IsInitFinished = false;
                     Alarm.IsActive = true;
-                    App.IsInitFinished = true;
+                    Alarm.IsInitFinished = true;
                 }
                 Service.SaveAlarm(Alarm);
                 await ClosePopup();

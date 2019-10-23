@@ -2,8 +2,9 @@
 using Android;
 using Android.App;
 using Android.Content;
+using Five_Seconds.Droid.Services;
 
-namespace Five_Seconds.Droid.Services
+namespace Five_Seconds.Droid.BroadcastReceivers
 {
     [BroadcastReceiver(Enabled = true, Exported = true)]
     [IntentFilter(new[] { Intent.ActionBootCompleted })]
@@ -14,7 +15,7 @@ namespace Five_Seconds.Droid.Services
             Console.WriteLine("OnReceive_BootReceiver");
             if (intent.Action.Equals(Intent.ActionBootCompleted))
             {
-                //AlarmController.SetAllAlarmWhenRestart();
+                AlarmController.SetAllAlarmWhenRestart();
                 Console.WriteLine("Finish SetAllAlarmWhenRestart_BootReceiver");
             }
         }

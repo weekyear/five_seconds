@@ -28,6 +28,8 @@ namespace Five_Seconds.Repository
         {
             lock (locker)
             {
+                Console.WriteLine("GetObjects_ItemDatabaseGeneric");
+                Console.WriteLine($"{connection.DatabasePath}, {connection.Trace}, {connection.ToString()}");
                 return (from i in connection.Table<T>() select i).ToList();
             }
         }

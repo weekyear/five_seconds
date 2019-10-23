@@ -11,6 +11,7 @@ using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Five_Seconds.Droid.BroadcastReceivers;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;

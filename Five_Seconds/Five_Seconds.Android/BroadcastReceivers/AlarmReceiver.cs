@@ -6,7 +6,7 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 
-namespace Five_Seconds.Droid.Services
+namespace Five_Seconds.Droid.BroadcastReceivers
 {
     [BroadcastReceiver]
     public class AlarmReceiver : BroadcastReceiver

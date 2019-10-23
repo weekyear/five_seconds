@@ -13,6 +13,7 @@ using Android.Speech;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
+using Five_Seconds.Droid.BroadcastReceivers;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;
@@ -404,7 +405,7 @@ namespace Five_Seconds.Droid
         {
             if (IsAlarmOn)
             {
-                AlarmTone alarmTone = AlarmTone.Tones.Find(a => a.Name == toneName);
+                AlarmTone alarmTone = App.Tones.Find(a => a.Name == toneName);
                 _soundService?.PlayAudio(alarmTone, true, alarmVolume);
             }
         }
@@ -723,10 +724,11 @@ namespace Five_Seconds.Droid
                 IsCountDown = isCountDown;
             }
 
-            public override void OnFinish()
+            public override async void OnFinish()
             {
                 if (IsCountDown)
                 {
+                    await Task.Delay(220);
                     Activity.FinishAndRemoveTask();
                 }
                 else
