@@ -342,6 +342,9 @@ namespace Five_Seconds.Droid
             else
             {
                 titleText.Text = "알람 실패 ㅠ^ㅠ";
+                titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
+                messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
+                confirmBtn.SetBackgroundResource(Resource.Drawable.ripple_failed_button);
                 successRate = (double)successRecords.Count / (alarmRecords.Count + 1);
             }
 
