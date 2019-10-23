@@ -240,8 +240,8 @@ namespace Five_Seconds.Droid
 
         private void StartListening_Click(object sender, EventArgs e)
         {
-            //RequestRecordAudioPermission();
-            SendBroadcast(new Intent(Intent.ActionBootCompleted));
+            RequestRecordAudioPermission();
+            //SendBroadcast(new Intent(Intent.ActionBootCompleted));
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -387,9 +387,10 @@ namespace Five_Seconds.Droid
         private void SetAdView()
         {
             SetMobileAds();
-            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
             adView.AdListener = new AdListener(this);
-            adView.LoadAd(requestbuilder);
+            //adView.LoadAd(requestbuilder);
+            adView.LoadAd(new AdRequest.Builder().Build());
         }
         private void SetMobileAds()
         {
