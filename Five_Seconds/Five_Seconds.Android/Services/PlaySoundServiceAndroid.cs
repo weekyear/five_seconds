@@ -84,6 +84,7 @@ namespace Five_Seconds.Droid.Services
                 _mediaPlayer.SetAudioStreamType(Stream.Alarm);
             }
 
+            _mediaPlayer.SetVolume((float)0.4, (float)0.4);
             _mediaPlayer.Looping = false;
             _mediaPlayer.Prepare();
             _mediaPlayer.Start();

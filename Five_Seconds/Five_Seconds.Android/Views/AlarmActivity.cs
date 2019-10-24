@@ -62,8 +62,6 @@ namespace Five_Seconds.Droid
         private string toneName;
         private bool IsAlarmOn;
         private bool IsVibrateOn;
-        private bool IsCountOn = true;
-        private bool IsCountSoundOn = true;
         private bool IsRepeating;
         private int alarmVolume;
 
@@ -158,8 +156,6 @@ namespace Five_Seconds.Droid
 
         private void GetDataFromBundle(Bundle bundle)
         {
-            IsCountSoundOn = (bool)bundle.Get("IsCountSoundOn");
-            IsCountOn = (bool)bundle.Get("IsCountOn");
             name = (string)bundle.Get("name");
             toneName = (string)bundle.Get("toneName");
             IsAlarmOn = (bool)bundle.Get("IsAlarmOn");
@@ -275,26 +271,15 @@ namespace Five_Seconds.Droid
 
         private void ShowCountActivity()
         {
-            if (IsCountOn)
-            {
-                var toastService = new ToastServiceAndroid();
+            var toastService = new ToastServiceAndroid();
 
-                toastService.Show("이제 5초를 셉니다!");
+            toastService.Show("이제 5초를 셉니다!");
 
-                HideAllViewExceptForCountText();
+            HideAllViewExceptForCountText();
 
-                if (IsCountSoundOn)
-                {
-                    _soundService?.PlayCountAudio();
-                }
+            _soundService?.PlayCountAudio();
 
-                SetCountDown();
-            }
-            else
-            {
-                IsFinished = true;
-                FinishAndRemoveTask();
-            }
+            SetCountDown();
         }
 
         private void SetVisibilityOfControls()
@@ -318,12 +303,16 @@ namespace Five_Seconds.Droid
 
             SetAdView();
 
+            IsFinished = true;
+
             feedbackDialog.Show();
         }
         private void SetFeedbackDialog()
         {
             feedbackDialog = new Dialog(this);
             feedbackDialog.SetContentView(Resource.Layout.AlarmFeedbackDialog);
+            feedbackDialog.SetCancelable(false);
+            feedbackDialog.SetCanceledOnTouchOutside(false);
 
             feedbackDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
 
@@ -388,28 +377,17 @@ namespace Five_Seconds.Droid
 
                 messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다.";
             }
-
-            if (IsCountOn && IsSuccess)
-            {
-                confirmBtn.Text = "5초 카운트";
-            }
-            else
-            {
-                confirmBtn.Text = "확인";
-            }
         }
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
             feedbackDialog.Dismiss();
-            IsFinished = true;
             FinishAndRemoveTask();
         }
 
         private void CountBtn_Click(object sender, EventArgs e)
         {
             feedbackDialog.Dismiss();
-            IsFinished = true;
             ShowCountActivity();
         }
 
@@ -565,50 +543,6 @@ namespace Five_Seconds.Droid
         {
         }
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
-        {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            if (requestCode == MY_PERMISSIONS_RECORD_AUDIO)
-            {
-                if (grantResults[0] != Permission.Granted)
-                {
-                    Toast.MakeText(ApplicationContext,
-                            "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Short).Show();
-                }
-                else
-                {
-                    StartVoiceRecognition();
-                }
-            }
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        public void RequestRecordAudioPermission()
-        {
-            if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
-            {
-                // Should we show an explanation?
-                if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
-                {
-                    // Explain to the user why we need to read the contacts
-                    Toast.MakeText(this, "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Long).Show();
-                }
-
-                RequestPermissions(new string[] { Manifest.Permission.RecordAudio }, MY_PERMISSIONS_RECORD_AUDIO);
-
-                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                // app-defined int constant that should be quite unique
-
-                return;
-            }
-            else if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) == Permission.Granted)
-            {
-                StartVoiceRecognition();
-            }
-        }
-
         private void StartVoiceRecognition()
         {
             TurnOffSoundAndVibration();
@@ -718,6 +652,51 @@ namespace Five_Seconds.Droid
                 IsPausePassed = true;
             }
             base.OnPause();
+        }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            if (requestCode == MY_PERMISSIONS_RECORD_AUDIO)
+            {
+                if (grantResults[0] != Permission.Granted)
+                {
+                    Toast.MakeText(ApplicationContext,
+                            "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Short).Show();
+                }
+                else
+                {
+                    StartVoiceRecognition();
+                }
+            }
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        public void RequestRecordAudioPermission()
+        {
+            if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
+            {
+                IsPausePassed = false;
+                // Should we show an explanation?
+                if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
+                {
+                    // Explain to the user why we need to read the contacts
+                    Toast.MakeText(this, "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Long).Show();
+                }
+
+                RequestPermissions(new string[] { Manifest.Permission.RecordAudio }, MY_PERMISSIONS_RECORD_AUDIO);
+
+                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                // app-defined int constant that should be quite unique
+
+                return;
+            }
+            else if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) == Permission.Granted)
+            {
+                StartVoiceRecognition();
+            }
         }
     }
 }

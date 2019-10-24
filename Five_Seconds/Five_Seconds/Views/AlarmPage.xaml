@@ -14,7 +14,6 @@
         <ResourceDictionary>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
-            <conv:BooleanCountSoundSwitchConverter x:Key="BooleanCountSoundSwitchConverter"/>
             <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
@@ -110,31 +109,6 @@
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
                                 ThumbColor="{Binding Alarm.IsVibrateOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                    </StackLayout>
-                </custom:TableViewCell>
-            </TableSection>
-            <TableSection Title="5초 카운트 옵션" TextColor="DarkBlue">
-                <custom:TableViewCell AllowHighlight="False" Height="60">
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label Text="카운트" TextColor="Black"  Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
-                        <Switch IsToggled="{Binding IsCountOn}"
-                                HorizontalOptions="EndAndExpand"
-                                OnColor="LightSteelBlue"
-                                ThumbColor="{Binding IsCountOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                    </StackLayout>
-                </custom:TableViewCell>
-                <custom:TableViewCell AllowHighlight="False" Height="60">
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <custom:ListItemLabel Text="카운트 소리" 
-                                              TextColor="{Binding Alarm.IsCountOn, Converter={StaticResource BooleanLabelColorConverter}}"
-                                              Margin="10, 0" 
-                                              FontSize="20" 
-                                              VerticalOptions="CenterAndExpand" />
-                        <Switch IsToggled="{Binding IsCountSoundOn}"
-                                IsEnabled="{Binding IsCountOn}"
-                                HorizontalOptions="EndAndExpand"
-                                OnColor="LightSteelBlue"
-                                ThumbColor="{Binding IsCountSoundOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
                     </StackLayout>
                 </custom:TableViewCell>
             </TableSection>

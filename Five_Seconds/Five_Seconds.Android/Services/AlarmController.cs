@@ -64,8 +64,6 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.PutExtra("name", alarm.Name);
             _alarmIntent.PutExtra("IsAlarmOn", alarm.IsAlarmOn);
             _alarmIntent.PutExtra("IsVibrateOn", alarm.IsVibrateOn);
-            _alarmIntent.PutExtra("IsCountSoundOn", alarm.IsCountSoundOn);
-            _alarmIntent.PutExtra("IsCountOn", alarm.IsCountOn);
             _alarmIntent.PutExtra("IsRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);

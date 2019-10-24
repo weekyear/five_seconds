@@ -140,29 +140,6 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public bool IsCountOn
-        {
-            get { return Alarm.IsCountOn; }
-            set
-            {
-                if (Alarm.IsCountOn == value) return;
-                Alarm.IsCountOn = value;
-                IsCountSoundOn = value;
-                OnPropertyChanged(nameof(IsCountOn));
-            }
-        }
-
-        public bool IsCountSoundOn
-        {
-            get { return Alarm.IsCountSoundOn; }
-            set
-            {
-                if (Alarm.IsCountSoundOn == value) return;
-                Alarm.IsCountSoundOn = value;
-                OnPropertyChanged(nameof(IsCountSoundOn));
-            }
-        }
-
         public string DateString
         {
             get
