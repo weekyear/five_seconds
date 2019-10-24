@@ -16,7 +16,6 @@ namespace Five_Seconds.Services
 
         public AlarmService(IAlarmsRepository repository)
         {
-            Console.WriteLine("Start_AlarmService");
             Repository = repository;
 
             Alarms = GetAllAlarms();
@@ -24,17 +23,13 @@ namespace Five_Seconds.Services
 
         public List<Alarm> GetAllAlarms()
         {
-            Console.WriteLine("GetAllAlarms_AlarmService");
             return AssignDaysToAlarms();
         }
 
         private List<Alarm> AssignDaysToAlarms()
         {
-            Console.WriteLine("AssignDaysToAlarms_AlarmService");
             var alarms = Repository.AlarmsFromDB;
-            Console.WriteLine("AlarmsFromDB_AlarmService");
             var daysOfWeeks = Repository.DaysOfWeeksFromDB;
-            Console.WriteLine("DaysOfWeeksFromDB_AlarmService");
 
             foreach (var days in daysOfWeeks)
             {
@@ -46,8 +41,6 @@ namespace Five_Seconds.Services
                     }
                 }
             }
-
-            Console.WriteLine($"AssignAlarms Count :: {alarms.Count}");
 
             return alarms;
         }

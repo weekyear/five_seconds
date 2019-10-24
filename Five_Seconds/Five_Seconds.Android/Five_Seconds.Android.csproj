@@ -51,6 +51,10 @@
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <BundleAssemblies>false</BundleAssemblies>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidDexTool>dx</AndroidDexTool>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -145,12 +149,16 @@
     <Compile Include="CustomRenderers\RoundedFrameRenderer.cs" />
     <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
+    <Compile Include="Interface\IAdListener.cs" />
+    <Compile Include="Services\AdListener.cs" />
     <Compile Include="Services\AlarmController.cs" />
     <Compile Include="BroadcastReceivers\AlarmReceiver.cs" />
     <Compile Include="Services\AlarmNotificationAndroid.cs" />
     <Compile Include="BroadcastReceivers\BootReceiver.cs" />
+    <Compile Include="Services\CountDown.cs" />
     <Compile Include="Services\CountDownAndroid.cs" />
     <Compile Include="Services\FileLocatorAndroid.cs" />
+    <Compile Include="Services\NotificationReceiver.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />
@@ -347,12 +355,12 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ripple_button.xml">
+    <AndroidResource Include="Resources\drawable\ripple_count_button.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\confirm_button.xml">
+    <AndroidResource Include="Resources\drawable\confirm_transparent_button.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -364,6 +372,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ripple_failed_button.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ripple_transparent_button.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\count_button.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

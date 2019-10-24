@@ -8,6 +8,6 @@ namespace Five_Seconds.Services
     {
         void UpdateNotification();
 
-        void CancelNotification();
+        void CancelAllNotification();
     }
 }

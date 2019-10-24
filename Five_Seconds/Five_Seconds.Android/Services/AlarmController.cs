@@ -81,29 +81,24 @@ namespace Five_Seconds.Droid.Services
 
         public static void SetAllAlarmWhenRestart()
         {
-            try
-            {
-                var deviceStorage = new DeviceStorageAndroid();
-                var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
-                var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
-                var alarmsRepo = new AlarmsRepository(itemDatabase);
-                var service = new AlarmService(alarmsRepo);
-                var alarms = service.GetAllAlarms();
-                Console.WriteLine($"alarms Count : {alarms.Count}");
+            var service = CreateServiceWithoutCore();
+            var alarms = service.GetAllAlarms();
 
-                foreach (var alarm in alarms)
-                {
-                    Console.WriteLine($"alarms Name : {alarm.Name}");
-                    SetFirstAlarm(alarm);
-                }
-            }
-            catch (Exception e)
+            foreach (var alarm in alarms)
             {
-                Console.WriteLine($"Error Message :: {e.Message}");
-                Console.WriteLine($"Error InnerException :: {e.InnerException}");
-                Console.WriteLine($"Error StackTrace :: {e.StackTrace}");
-                Console.WriteLine($"Error Source :: {e.Source}");
+                SetFirstAlarm(alarm);
             }
+        }
+
+        public static AlarmService CreateServiceWithoutCore()
+        {
+            var deviceStorage = new DeviceStorageAndroid();
+            var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
+            var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
+            var alarmsRepo = new AlarmsRepository(itemDatabase);
+            var service = new AlarmService(alarmsRepo);
+
+            return service;
         }
     }
 }

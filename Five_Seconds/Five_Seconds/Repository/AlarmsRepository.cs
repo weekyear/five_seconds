@@ -36,7 +36,6 @@ namespace Five_Seconds.Repository
 
         public IEnumerable<Alarm> GetAllAlarms()
         {
-            Console.WriteLine("GetAllAlarms_AlarmsRepository");
             return ItemDatabase.GetObjects<Alarm>();
         }
 

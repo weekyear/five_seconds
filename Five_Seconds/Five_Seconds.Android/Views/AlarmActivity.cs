@@ -13,7 +13,7 @@ using Android.Speech;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using Five_Seconds.Droid.BroadcastReceivers;
+using Five_Seconds.Droid.Interface;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;
@@ -21,7 +21,7 @@ using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
-using static Android.Views.View;
+using AdListener = Five_Seconds.Droid.Services.AdListener;
 using Button = Android.Widget.Button;
 using RelativeLayout = Android.Widget.RelativeLayout;
 using View = Android.Views.View;
@@ -29,7 +29,7 @@ using View = Android.Views.View;
 namespace Five_Seconds.Droid
 {
     [Activity(Label = "5초의 알람", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class AlarmActivity : Activity, IRecognitionListener
+    public class AlarmActivity : Activity, IRecognitionListener, IAdListener
     {
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
@@ -47,7 +47,7 @@ namespace Five_Seconds.Droid
         private ImageView tellmeView;
         public TextView countTextView;
         private TextView timeTextView;
-        private TextView timeOutTextView;
+        public TextView timeOutTextView;
         private TextView alarmTextView;
         private TextView pleaseSayText;
         private EditText alarmEditText;
@@ -55,7 +55,7 @@ namespace Five_Seconds.Droid
         private CountDown countDownForFailed;
         private CountDown countDownForFiveSeconds;
 
-        AdView adView;
+        AdView _adView;
 
         private int id;
         private string name;
@@ -66,18 +66,20 @@ namespace Five_Seconds.Droid
         private bool IsCountSoundOn = true;
         private bool IsRepeating;
         private int alarmVolume;
-        private bool IsLaterAlarm = false;
 
         private DateTime AlarmTimeNow;
         private bool IsSuccess = false;
 
+        public bool IsFinished = false;
+
         private bool IsPausePassed;
-        private bool IsFinished;
 
         Alarm alarm;
         IAlarmsRepository alarmsRepo;
 
         public Handler Handler => new Handler();
+
+        AdView IAdListener.AdView => _adView;
 
         public AlarmActivity()
         {
@@ -224,9 +226,9 @@ namespace Five_Seconds.Droid
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraCallingPackage, Application.PackageName);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraLanguageModel, RecognizerIntent.LanguageModelFreeForm);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraPrompt, "Speak now");
-            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 3000);
-            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 3000);
-            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 15000);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputCompleteSilenceLengthMillis, 2000);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputPossiblyCompleteSilenceLengthMillis, 2000);
+            mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraSpeechInputMinimumLengthMillis, 1500);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraMaxResults, 1);
             mSpeechRecognizerIntent.PutExtra(RecognizerIntent.ExtraLanguage, Java.Util.Locale.Default);
 
@@ -290,6 +292,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
+                IsFinished = true;
                 FinishAndRemoveTask();
             }
         }
@@ -306,15 +309,19 @@ namespace Five_Seconds.Droid
             Toast.MakeText(ApplicationContext, "알람 이름이 일치하지 않습니다. 알람 이름을 정확히 기입해주세요", ToastLength.Long).Show();
         }
 
+
         public void ShowFeedbackDialog()
         {
-            var Records = App.AlarmsRepo.RecordFromDB;
+            CreateRecord();
 
-            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
-            var successRecords = alarmRecords.FindAll(a => a.IsSuccess == true);
+            SetFeedbackDialog();
 
-            double successRate;
+            SetAdView();
 
+            feedbackDialog.Show();
+        }
+        private void SetFeedbackDialog()
+        {
             feedbackDialog = new Dialog(this);
             feedbackDialog.SetContentView(Resource.Layout.AlarmFeedbackDialog);
 
@@ -322,36 +329,65 @@ namespace Five_Seconds.Droid
 
             TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
             TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
+            LinearLayout buttonLayout = feedbackDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
             Button confirmBtn = feedbackDialog.FindViewById<Button>(Resource.Id.confirmBtn);
-            adView = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
+            Button countButton = feedbackDialog.FindViewById<Button>(Resource.Id.countButton);
+            Button failedBtn = feedbackDialog.FindViewById<Button>(Resource.Id.failedBtn);
+            _adView = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
 
-
-            SetAdView();
+            var Records = App.AlarmsRepo.RecordFromDB;
+            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
 
 
             if (IsSuccess)
             {
                 titleText.Text = "알람 성공!";
-                successRate = (double)(successRecords.Count + 1) / (alarmRecords.Count + 1);
+
+                confirmBtn.Click += ConfirmBtn_Click;
+                countButton.Click += CountBtn_Click;
             }
             else
             {
                 titleText.Text = "알람 실패 ㅠ^ㅠ";
                 titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
                 messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
-                confirmBtn.SetBackgroundResource(Resource.Drawable.ripple_failed_button);
-                successRate = (double)successRecords.Count / (alarmRecords.Count + 1);
+                buttonLayout.Visibility = ViewStates.Gone;
+                failedBtn.Visibility = ViewStates.Visible;
+
+                failedBtn.Click += ConfirmBtn_Click;
             }
 
-            if (alarmRecords.Count == 0)
+            if (alarmRecords.Count == 1)
             {
-                messageText.Text = $"이번이 첫 알람이네요!";
+                if (IsSuccess)
+                {
+                    messageText.Text = $"첫 시작이 아주 좋네요! 5초 카운트가 끝나기 전에 '{alarm.Name}' 바로 시작해봐요!";
+                }
+                else
+                {
+                    messageText.Text = $"첫 단추를 잘못 끼웠다고 상심 말아요. 다시 끼우면 되잖아요! 다음번엔 잘 해봐요!";
+                }
             }
             else
             {
-                messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다."; 
-            }
+                var successRecords = alarmRecords.FindAll(a => a.IsSuccess == true);
+                double successRate = (double)successRecords.Count / alarmRecords.Count;
 
+                if (successRate > 0.7)
+                {
+                }
+                else if (successRate > 0.5)
+                {
+                }
+                else if (successRate == -1)
+                {
+                }
+                else
+                {
+                }
+
+                messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다.";
+            }
 
             if (IsCountOn && IsSuccess)
             {
@@ -361,34 +397,31 @@ namespace Five_Seconds.Droid
             {
                 confirmBtn.Text = "확인";
             }
-
-            confirmBtn.Click += ConfirmBtn_Click;
-
-            feedbackDialog.Show();
         }
 
         private void ConfirmBtn_Click(object sender, EventArgs e)
         {
+            feedbackDialog.Dismiss();
             IsFinished = true;
-
-            if (IsCountOn && IsSuccess)
-            {
-                feedbackDialog.Dismiss();
-                ShowCountActivity();
-            }
-            else
-            {
-                feedbackDialog.Dismiss();
-                FinishAndRemoveTask();
-            }
+            FinishAndRemoveTask();
         }
+
+        private void CountBtn_Click(object sender, EventArgs e)
+        {
+            feedbackDialog.Dismiss();
+            IsFinished = true;
+            ShowCountActivity();
+        }
+
         private void SetAdView()
         {
             SetMobileAds();
+
             //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
-            adView.AdListener = new AdListener(this);
             //adView.LoadAd(requestbuilder);
-            adView.LoadAd(new AdRequest.Builder().Build());
+
+            _adView.AdListener = new AdListener(this);
+            _adView.LoadAd(new AdRequest.Builder().Build());
         }
         private void SetMobileAds()
         {
@@ -432,22 +465,6 @@ namespace Five_Seconds.Droid
 
         public override void OnBackPressed()
         {
-        }
-
-        //protected override void OnUserLeaveHint()
-        //{
-        //    IsPausePassed = true;
-        //    //notification으로 알람 울리는 중 표시
-        //}
-
-        public override void FinishAndRemoveTask()
-        {
-            if (alarm != null && IsFinished)
-            {
-                CreateRecord();
-            }
-
-            base.FinishAndRemoveTask();
         }
 
         private void CreateRecord()
@@ -557,7 +574,7 @@ namespace Five_Seconds.Droid
                 if (grantResults[0] != Permission.Granted)
                 {
                     Toast.MakeText(ApplicationContext,
-                            "이 앱은 음성 녹음 권한이 필요합니다.", ToastLength.Short).Show();
+                            "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Short).Show();
                 }
                 else
                 {
@@ -576,7 +593,7 @@ namespace Five_Seconds.Droid
                 if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
                 {
                     // Explain to the user why we need to read the contacts
-                    Toast.MakeText(this, "이 앱은 음성 녹음 권한이 필요합니다.", ToastLength.Long).Show();
+                    Toast.MakeText(this, "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Long).Show();
                 }
 
                 RequestPermissions(new string[] { Manifest.Permission.RecordAudio }, MY_PERMISSIONS_RECORD_AUDIO);
@@ -618,29 +635,9 @@ namespace Five_Seconds.Droid
                 var numberPicker1 = LaterAlarmDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
                 var number = numberPicker1.Value;
 
-                var dateTimeNow = DateTime.Now;
-                var alarmTime = AlarmTimeNow.AddMinutes(number);
+                SetLaterAlarm(number);
 
-
-                var diffTimeSpan = alarmTime.Subtract(dateTimeNow);
-
-                if (diffTimeSpan.Ticks < 0)
-                {
-                    Toast.MakeText(ApplicationContext, $"이미 시간이 지났습니다. 최소 {-diffTimeSpan.Minutes + 1}분 후 설정해주세요", ToastLength.Long).Show();
-                    return;
-                }
-
-                alarm.IsActive = true;
-                alarm.LaterAlarmTime = alarmTime;
-
-                AlarmController.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
-
-                App.Service.SaveAlarmAtLocal(alarm);
-
-                countDownForFailed.Cancel();
-
-                Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
-
+                IsFinished = true;
                 FinishAndRemoveTask();
             });
             dialog.SetNegativeButton("취소", (c, ev) =>
@@ -654,27 +651,31 @@ namespace Five_Seconds.Droid
             dialog.Dispose();
         }
 
-        private void SetLaterAlarmByManager(long diffMillis)
+        private void SetLaterAlarm(int minutes)
         {
-            var _alarmIntent = new Intent(ApplicationContext, typeof(AlarmReceiver));
-            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            _alarmIntent.PutExtra("id", id);
-            _alarmIntent.PutExtra("name", name);
-            _alarmIntent.PutExtra("IsAlarmOn", IsAlarmOn);
-            _alarmIntent.PutExtra("IsVibrateOn", IsVibrateOn);
-            _alarmIntent.PutExtra("IsCountSoundOn", IsCountSoundOn);
-            _alarmIntent.PutExtra("IsCountOn", IsCountOn);
-            _alarmIntent.PutExtra("IsRepeating", IsRepeating);
-            _alarmIntent.PutExtra("toneName", toneName);
-            _alarmIntent.PutExtra("alarmVolume", alarmVolume);
+            var alarmTime = SetLaterAlarmAndGetLaterAlamrTime(minutes);
 
-            var pendingIntent = PendingIntent.GetBroadcast(ApplicationContext, -id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
-            var alarmManager = (AlarmManager)ApplicationContext.GetSystemService("alarm");
+            var diffTimeSpan = alarmTime.Subtract(DateTime.Now);
 
-            Intent showIntent = new Intent(ApplicationContext, typeof(MainActivity));
-            PendingIntent showOperation = PendingIntent.GetActivity(ApplicationContext, -id, showIntent, PendingIntentFlags.UpdateCurrent);
-            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
-            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+            AlarmController.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+
+            App.Service.SaveAlarmAtLocal(alarm);
+
+            countDownForFailed.Cancel();
+
+            Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
+
+            AlarmNotificationAndroid.NotifyLaterAlarm(alarm, Intent);
+        }
+
+        private DateTime SetLaterAlarmAndGetLaterAlamrTime(int minutes)
+        {
+            var alarmTime = AlarmTimeNow.AddMinutes(minutes);
+
+            alarm.IsActive = true;
+            alarm.LaterAlarmTime = alarmTime;
+
+            return alarmTime;
         }
 
         private void SetTellmeBtnDefault()
@@ -695,11 +696,22 @@ namespace Five_Seconds.Droid
             _vibrator?.Cancel();
         }
 
+        protected override void OnUserLeaveHint()
+        {
+            base.OnUserLeaveHint();
+        }
+
         protected override void OnPause()
         {
             if (IsPausePassed)
             {
+                // 여기에 다시 울림 설정
                 TurnOffSoundAndVibration();
+                if (!IsFinished)
+                {
+                    SetLaterAlarm(5);
+                    FinishAndRemoveTask();
+                }
             }
             else
             {
@@ -707,80 +719,5 @@ namespace Five_Seconds.Droid
             }
             base.OnPause();
         }
-
-        private class CountDown : CountDownTimer
-        {
-            public long CountDownInterval { get; }
-            public long MillisInFuture { get; }
-            public AlarmActivity Activity { get; set; }
-
-            private bool IsCountDown { get; set; }
-
-            public CountDown(long millisInFuture, long countDownInterval, Activity activity, bool isCountDown) : base(millisInFuture, countDownInterval)
-            {
-                Activity = activity as AlarmActivity;
-                MillisInFuture = millisInFuture;
-                CountDownInterval = countDownInterval;
-                IsCountDown = isCountDown;
-            }
-
-            public override async void OnFinish()
-            {
-                if (IsCountDown)
-                {
-                    await Task.Delay(220);
-                    Activity.FinishAndRemoveTask();
-                }
-                else
-                {
-                    Activity.ShowFeedbackDialog();
-                }
-            }
-
-            public override void OnTick(long millisUntilFinished)
-            {
-                var alarmActivity = Activity as AlarmActivity;
-                double count = (double)millisUntilFinished / 1000;
-
-                if (IsCountDown)
-                {
-                    var countTextView = alarmActivity.countTextView;
-
-                    var stringFormat = string.Format("{0:f2}", count);
-                    countTextView.Text = stringFormat;
-                }
-                else
-                {
-                    var timeOutTextView = alarmActivity.timeOutTextView;
-
-
-                    var stringFormat = $"{count:00}초 이내";
-                    timeOutTextView.Text = stringFormat;
-                }
-            }
-        }
-        private class AdListener : Android.Gms.Ads.AdListener
-        {
-            private readonly AlarmActivity that;
-
-            public AdListener(AlarmActivity t)
-            {
-                that = t;
-            }
-
-            public override void OnAdLoaded()
-            {
-                that.adView.Visibility = ViewStates.Visible;
-                base.OnAdLoaded();
-            }
-
-            public override void OnAdFailedToLoad(int errorCode)
-            {
-                that.adView.Visibility = ViewStates.Gone;
-                base.OnAdFailedToLoad(errorCode);
-            }
-        }
     }
-
-    
 }

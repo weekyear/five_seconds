@@ -126,11 +126,11 @@ namespace Five_Seconds.Helpers
             }
             else if (diff.Hours > 0)
             {
-                return $"{diff.Hours}시간 {diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
+                return $"{diff.Hours}시간 {diff.Minutes + 1}분 후에 5초의 법칙을 실행합니다!";
             }
             else if (diff.Minutes > 0)
             {
-                return $"{diff.Minutes}분 후에 5초의 법칙을 실행합니다!";
+                return $"{diff.Minutes + 1}분 후에 5초의 법칙을 실행합니다!";
             }
             else if (diff.Seconds > 0)
             {

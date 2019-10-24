@@ -28,7 +28,6 @@ namespace Five_Seconds.ViewModels
             ShowAddAlarmCommand = new Command(async () => await ShowAddAlarm());
             ShowCountDownCommand = new Command(() => ShowCountDown());
             ShowRecordCommand = new Command(async() => await ShowRecord());
-            CancelNotifyCommand = new Command(() => CancelNotify());
             ShowAlarmMenuCommand = new Command<object>(async (m) => await ShowAlarmMenu(m));
             ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
         }
@@ -47,7 +46,6 @@ namespace Five_Seconds.ViewModels
         public Command ShowAddAlarmCommand { get; set; }
         public Command ShowCountDownCommand { get; set; }
         public Command ShowRecordCommand { get; set; }
-        public Command CancelNotifyCommand { get; set; }
         public Command<object> ShowAlarmMenuCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
         public ObservableCollection<Alarm> Alarms
@@ -69,11 +67,6 @@ namespace Five_Seconds.ViewModels
         {
             void action() => DependencyService.Get<ICountDown>().ShowCountDown();
             MessageBoxService.ShowConfirm("5초 카운트", "5초 카운트를 시작하시겠습니까?", null, action);
-        }
-
-        public void CancelNotify()
-        {
-            DependencyService.Get<IAlarmNotification>().CancelNotification();
         }
 
         public async Task ShowAlarmMenu(object _alarm)

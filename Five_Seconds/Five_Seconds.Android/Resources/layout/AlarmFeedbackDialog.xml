@@ -32,13 +32,42 @@
         android:layout_below="@id/messageText"
 		app:adSize="BANNER"
 		app:adUnitId="@string/admob_banner_id" />
-    <Button
-        android:id="@+id/confirmBtn"
+    <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="확인"
+        android:layout_below="@id/adView">
+        <Button 
+            android:id="@+id/confirmBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확인"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/ripple_transparent_button" />
+
+        <Button
+            android:id="@+id/countButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="5초 카운트"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/ripple_count_button"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/failedBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="실패"
         android:textSize="20dp"
         android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:layout_below="@id/adView"
-        android:background="@drawable/ripple_button"/>
+        android:background="@drawable/ripple_failed_button"/>
 </RelativeLayout>

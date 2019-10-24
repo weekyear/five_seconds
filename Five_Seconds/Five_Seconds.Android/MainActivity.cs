@@ -24,7 +24,6 @@ namespace Five_Seconds.Droid
         static readonly int READ_REQUEST_CODE = 42;
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            Console.WriteLine("OnCreate_MainActivity");
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 

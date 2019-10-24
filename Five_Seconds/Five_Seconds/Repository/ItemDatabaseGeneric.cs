@@ -11,8 +11,8 @@ namespace Five_Seconds.Repository
 {
     public class ItemDatabaseGeneric
     {
-        static object locker = new object();
-        SQLiteConnection connection;
+        static readonly object locker = new object();
+        readonly SQLiteConnection connection;
 
         public ItemDatabaseGeneric(SQLiteConnection connection)
         {
@@ -28,8 +28,6 @@ namespace Five_Seconds.Repository
         {
             lock (locker)
             {
-                Console.WriteLine("GetObjects_ItemDatabaseGeneric");
-                Console.WriteLine($"{connection.DatabasePath}, {connection.Trace}, {connection.ToString()}");
                 return (from i in connection.Table<T>() select i).ToList();
             }
         }
