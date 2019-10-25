@@ -49,8 +49,6 @@ namespace Five_Seconds
                 {
                     new Alarm() { Name = "일어나서 이불개자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 0, 0), IsActive = false },
                     new Alarm() { Name = "아침 운동 좋아", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 30, 0), IsActive = false },
-                    new Alarm() { Name = "점심먹고 짜투리 독서", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(12, 45, 0), IsActive = false },
-                    new Alarm() { Name = "야식은 나의 적", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(21, 0, 0), IsActive = false },
                     new Alarm() { Name = "일단 침대에 눕자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(23, 30, 0), IsActive = false }
                 };
 

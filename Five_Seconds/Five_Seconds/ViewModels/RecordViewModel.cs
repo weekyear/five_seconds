@@ -28,7 +28,7 @@ namespace Five_Seconds.ViewModels
 
             SubscribeMessage();
 
-            //SaveTestRecords();
+            SaveTestRecords();
         }
 
 
@@ -93,38 +93,39 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        //public List<Record> TestRecords { get; set; } = new List<Record>
-        //{
-        //    new Record(new Alarm() { Id = 1, Name = "일어나자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, false),
-        //    new Record(new Alarm() { Id = 2, Name = "밥묵자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 04, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 3, Name = "공부하자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 15, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 4, Name = "일하자1", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 16, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 5, Name = "일하자2", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 17, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 6, Name = "일하자3", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 7, Name = "일하자4", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 27, 5, 30, 00))}, false),
-        //    new Record(new Alarm() { Id = 8, Name = "일하자5", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 9, Name = "일하자6", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 30, 5, 30, 00))}, false),
-        //    new Record(new Alarm() { Id = 10, Name = "일하자7", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 11, Name = "일하자8", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 12, Name = "일하자9", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 29, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 13, Name = "일어나자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 14, Name = "일어나자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 16, 30, 00))}, false),
-        //    new Record(new Alarm() { Id = 15, Name = "일어나자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 18, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 16, Name = "일하자10", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, false),
-        //    new Record(new Alarm() { Id = 17, Name = "일하자11", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, true),
-        //    new Record(new Alarm() { Id = 18, Name = "일하자12", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, false),
-        //};
+        public List<Record> TestRecords { get; set; } = new List<Record>
+        {
+            new Record(new Alarm() { Id = 1, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, false) { DateTime = new DateTime(2019, 10, 02, 6, 30, 00)},
+            new Record(new Alarm() { Id = 2, Name = "아침 운동 좋아", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 04, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 04, 7, 00, 00)},
+            new Record(new Alarm() { Id = 3, Name = "공부하자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 15, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 15, 5, 20, 00)},
+            new Record(new Alarm() { Id = 4, Name = "야식은 나의 적", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 16, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 3, 12, 25, 00)},
+            new Record(new Alarm() { Id = 5, Name = "일단 침대에 눕자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 17, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 7, 11, 15, 00)},
+            new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 12, 10, 05, 00)},
+            new Record(new Alarm() { Id = 7, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 27, 5, 30, 00))}, false) { DateTime = new DateTime(2019, 10, 15, 18, 55, 00)},
+            new Record(new Alarm() { Id = 8, Name = "아침 운동 좋아", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 20, 17, 35, 00)},
+            new Record(new Alarm() { Id = 9, Name = "야식은 나의 적", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 30, 5, 30, 00))}, false) { DateTime = new DateTime(2019, 10, 25, 20, 27, 00)},
+            new Record(new Alarm() { Id = 10, Name = "일하자7", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 7, 23, 56, 00)},
+            new Record(new Alarm() { Id = 11, Name = "아침 운동 좋아", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 18, 14, 32, 00)},
+            new Record(new Alarm() { Id = 12, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 29, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 14, 9, 16, 00)},
+            new Record(new Alarm() { Id = 13, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 6, 15, 38, 00)},
+            new Record(new Alarm() { Id = 14, Name = "야식은 나의 적", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 16, 30, 00))}, false) { DateTime = new DateTime(2019, 10, 8, 14, 42, 00)},
+            new Record(new Alarm() { Id = 15, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 18, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 02, 17, 28, 00)},
+            new Record(new Alarm() { Id = 16, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, false) { DateTime = new DateTime(2019, 10, 22, 19, 19, 00)},
+            new Record(new Alarm() { Id = 17, Name = "아침 운동 좋아", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, true) { DateTime = new DateTime(2019, 10, 02, 15, 34, 00)},
+            new Record(new Alarm() { Id = 18, Name = "일단 침대에 눕자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 28, 5, 30, 00))}, false) { DateTime = new DateTime(2019, 10, 19, 21, 39, 00)},
+        };
 
-        //private void SaveTestRecords()
-        //{
-        //    if (Records.Count == 0)
-        //    {
-        //        foreach (var _record in TestRecords)
-        //        {
-        //            App.AlarmsRepo.SaveRecord(_record);
-        //        }
-        //    }
-        //}
+        private void SaveTestRecords()
+        {
+            if (Records.Count == 0)
+            {
+                foreach (var _record in TestRecords)
+                {
+                    App.AlarmsRepo.SaveRecord(_record);
+                    Records = App.AlarmsRepo.RecordFromDB;
+                }
+            }
+        }
 
         public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB;
 

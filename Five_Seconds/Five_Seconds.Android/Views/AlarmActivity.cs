@@ -34,7 +34,9 @@ namespace Five_Seconds.Droid
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
-        Dialog feedbackDialog;
+        private Dialog feedbackDialog;
+        private Dialog laterDialog;
+        private NumberPicker laterNumberPicker;
 
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
@@ -66,7 +68,7 @@ namespace Five_Seconds.Droid
         private int alarmVolume;
 
         private DateTime AlarmTimeNow;
-        private bool IsSuccess = false;
+        public bool IsSuccess = false;
 
         public bool IsFinished = false;
 
@@ -294,118 +296,6 @@ namespace Five_Seconds.Droid
             Toast.MakeText(ApplicationContext, "알람 이름이 일치하지 않습니다. 알람 이름을 정확히 기입해주세요", ToastLength.Long).Show();
         }
 
-
-        public void ShowFeedbackDialog()
-        {
-            CreateRecord();
-
-            SetFeedbackDialog();
-
-            SetAdView();
-
-            IsFinished = true;
-
-            feedbackDialog.Show();
-        }
-        private void SetFeedbackDialog()
-        {
-            feedbackDialog = new Dialog(this);
-            feedbackDialog.SetContentView(Resource.Layout.AlarmFeedbackDialog);
-            feedbackDialog.SetCancelable(false);
-            feedbackDialog.SetCanceledOnTouchOutside(false);
-
-            feedbackDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
-
-            TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
-            TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
-            LinearLayout buttonLayout = feedbackDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
-            Button confirmBtn = feedbackDialog.FindViewById<Button>(Resource.Id.confirmBtn);
-            Button countButton = feedbackDialog.FindViewById<Button>(Resource.Id.countButton);
-            Button failedBtn = feedbackDialog.FindViewById<Button>(Resource.Id.failedBtn);
-            _adView = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
-
-            var Records = App.AlarmsRepo.RecordFromDB;
-            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
-
-
-            if (IsSuccess)
-            {
-                titleText.Text = "알람 성공!";
-
-                confirmBtn.Click += ConfirmBtn_Click;
-                countButton.Click += CountBtn_Click;
-            }
-            else
-            {
-                titleText.Text = "알람 실패 ㅠ^ㅠ";
-                titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
-                messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
-                buttonLayout.Visibility = ViewStates.Gone;
-                failedBtn.Visibility = ViewStates.Visible;
-
-                failedBtn.Click += ConfirmBtn_Click;
-            }
-
-            if (alarmRecords.Count == 1)
-            {
-                if (IsSuccess)
-                {
-                    messageText.Text = $"첫 시작이 아주 좋네요! 5초 카운트가 끝나기 전에 '{alarm.Name}' 바로 시작해봐요!";
-                }
-                else
-                {
-                    messageText.Text = $"첫 단추를 잘못 끼웠다고 상심 말아요. 다시 끼우면 되잖아요! 다음번엔 잘 해봐요!";
-                }
-            }
-            else
-            {
-                var successRecords = alarmRecords.FindAll(a => a.IsSuccess == true);
-                double successRate = (double)successRecords.Count / alarmRecords.Count;
-
-                if (successRate > 0.7)
-                {
-                }
-                else if (successRate > 0.5)
-                {
-                }
-                else if (successRate == -1)
-                {
-                }
-                else
-                {
-                }
-
-                messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다.";
-            }
-        }
-
-        private void ConfirmBtn_Click(object sender, EventArgs e)
-        {
-            feedbackDialog.Dismiss();
-            FinishAndRemoveTask();
-        }
-
-        private void CountBtn_Click(object sender, EventArgs e)
-        {
-            feedbackDialog.Dismiss();
-            ShowCountActivity();
-        }
-
-        private void SetAdView()
-        {
-            SetMobileAds();
-
-            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
-            //adView.LoadAd(requestbuilder);
-
-            _adView.AdListener = new AdListener(this);
-            _adView.LoadAd(new AdRequest.Builder().Build());
-        }
-        private void SetMobileAds()
-        {
-            MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
-        }
-
         private void SetMediaPlayer()
         {
             if (IsAlarmOn)
@@ -550,39 +440,163 @@ namespace Five_Seconds.Droid
             mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
         }
 
-        private void ShowLaterDialog(object s, EventArgs e)
+        public void ShowFeedbackDialog()
         {
-            TurnOffSoundAndVibration();
+            CreateRecord();
 
-            LaterAlarmDialog = LayoutInflater.Inflate(Resource.Layout.LaterAlarmDialog, (ViewGroup)FindViewById(Resource.Id.laterAlarmLayout));
+            SetFeedbackDialog();
 
-            var numberPicker = LaterAlarmDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
-            numberPicker.MaxValue = 120;
-            numberPicker.MinValue = 1;
-            numberPicker.Value = 5;
+            SetAdView();
 
-            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.SetTitle($"{AlarmTimeNow.ToShortTimeString()}에서");
-            dialog.SetView(LaterAlarmDialog);
-            dialog.SetPositiveButton("확인", (c, ev) =>
+            IsFinished = true;
+
+            feedbackDialog.Show();
+        }
+
+        private void SetFeedbackDialog()
+        {
+            feedbackDialog = new Dialog(this);
+            feedbackDialog.SetContentView(Resource.Layout.AlarmFeedbackDialog);
+            feedbackDialog.SetCancelable(false);
+            feedbackDialog.SetCanceledOnTouchOutside(false);
+
+            feedbackDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
+
+            TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
+            TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
+            LinearLayout buttonLayout = feedbackDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
+            Button confirmBtn = feedbackDialog.FindViewById<Button>(Resource.Id.confirmBtn);
+            Button countButton = feedbackDialog.FindViewById<Button>(Resource.Id.countButton);
+            Button failedBtn = feedbackDialog.FindViewById<Button>(Resource.Id.failedBtn);
+            _adView = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
+
+            var Records = App.AlarmsRepo.RecordFromDB;
+            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
+
+
+            if (IsSuccess)
             {
-                var numberPicker1 = LaterAlarmDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
-                var number = numberPicker1.Value;
+                titleText.Text = "알람 성공!";
 
-                SetLaterAlarm(number);
-
-                IsFinished = true;
-                FinishAndRemoveTask();
-            });
-            dialog.SetNegativeButton("취소", (c, ev) =>
+                confirmBtn.Click += FeedbackDialog_ConfirmBtn_Click;
+                countButton.Click += FeedbackDialog_CountBtn_Click;
+            }
+            else
             {
-            });
+                titleText.Text = "알람 실패 ㅠ^ㅠ";
+                titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
+                messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
+                buttonLayout.Visibility = ViewStates.Gone;
+                failedBtn.Visibility = ViewStates.Visible;
 
-            AlertDialog alert = dialog.Create();
+                failedBtn.Click += FeedbackDialog_ConfirmBtn_Click;
+            }
 
-            alert.Show();
+            if (alarmRecords.Count == 1)
+            {
+                if (IsSuccess)
+                {
+                    messageText.Text = $"첫 시작이 아주 좋네요! 5초 카운트가 끝나기 전에 '{alarm.Name}' 바로 시작해봐요!";
+                }
+                else
+                {
+                    messageText.Text = $"첫 단추를 잘못 끼웠다고 상심 말아요. 다시 끼우면 되잖아요! 다음번엔 잘 해봐요!";
+                }
+            }
+            else
+            {
+                var successRecords = alarmRecords.FindAll(a => a.IsSuccess == true);
+                double successRate = (double)successRecords.Count / alarmRecords.Count;
 
-            dialog.Dispose();
+                if (successRate > 0.7)
+                {
+                }
+                else if (successRate > 0.5)
+                {
+                }
+                else if (successRate == -1)
+                {
+                }
+                else
+                {
+                }
+
+                messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다.";
+            }
+        }
+
+        private void FeedbackDialog_ConfirmBtn_Click(object sender, EventArgs e)
+        {
+            feedbackDialog.Dismiss();
+            FinishAndRemoveTask();
+        }
+
+        private void FeedbackDialog_CountBtn_Click(object sender, EventArgs e)
+        {
+            feedbackDialog.Dismiss();
+            ShowCountActivity();
+        }
+
+        private void SetAdView()
+        {
+            SetMobileAds();
+
+            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            //adView.LoadAd(requestbuilder);
+
+            _adView.AdListener = new AdListener(this);
+            _adView.LoadAd(new AdRequest.Builder().Build());
+        }
+        private void SetMobileAds()
+        {
+            MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
+        }
+        public void ShowLaterDialog(object s, EventArgs e)
+        {
+            SetLaterDialog();
+
+            SetAdView();
+
+            laterDialog.Show();
+        }
+
+        private void SetLaterDialog()
+        {
+            laterDialog = new Dialog(this);
+            laterDialog.SetContentView(Resource.Layout.LaterAlarmDialog);
+            laterDialog.SetTitle($"{AlarmTimeNow.ToShortTimeString()}에서");
+
+            laterDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
+
+
+            laterNumberPicker = laterDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
+            laterNumberPicker.MaxValue = 120;
+            laterNumberPicker.MinValue = 1;
+            laterNumberPicker.Value = 5;
+
+            Button confirmBtn = laterDialog.FindViewById<Button>(Resource.Id.confirmBtn);
+            Button cancelBtn = laterDialog.FindViewById<Button>(Resource.Id.cancelBtn);
+            _adView = laterDialog.FindViewById<AdView>(Resource.Id.adView);
+
+            confirmBtn.Click += LaterDialog_ConfirmBtn_Click;
+            cancelBtn.Click += LaterDialog_CancelBtn_Click;
+        }
+
+
+        private void LaterDialog_ConfirmBtn_Click(object sender, EventArgs e)
+        {
+            var number = laterNumberPicker.Value;
+
+            SetLaterAlarm(number);
+
+            IsFinished = true;
+            laterDialog.Dismiss();
+            FinishAndRemoveTask();
+        }
+
+        private void LaterDialog_CancelBtn_Click(object sender, EventArgs e)
+        {
+            laterDialog.Dismiss();
         }
 
         private void SetLaterAlarm(int minutes)

@@ -22,72 +22,77 @@
         <ToolbarItem Text="저장" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
 
-    <TableView HasUnevenRows="True" IsTabStop="True">
-        <TableRoot>
-            <TableSection>
-                <custom:TableViewCell AllowHighlight="False">
-                    <StackLayout Padding="12,0" Orientation="Horizontal">
-                        <Entry x:Name="Alarm_Name"
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TableView HasUnevenRows="True" IsTabStop="True" Grid.Row="0">
+            <TableRoot>
+                <TableSection>
+                    <custom:TableViewCell AllowHighlight="False">
+                        <StackLayout Padding="12,0" Orientation="Horizontal">
+                            <Entry x:Name="Alarm_Name"
                                Margin="10"
                                HorizontalOptions="FillAndExpand"
                                FontSize="20"
                                Placeholder="알람 이름을 적어주세요"
                                Text="{Binding Name}" />
-                    </StackLayout>
-                </custom:TableViewCell>
-                <custom:TableViewCell AllowHighlight="False">
-                    <StackLayout Orientation="Horizontal" Padding="13, 0">
-                        <droid:EditText Text="Android EditText" x:Arguments="{x:Static formsdroid:Forms.Context}"/>
-                        <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
+                        </StackLayout>
+                    </custom:TableViewCell>
+                    <custom:TableViewCell AllowHighlight="False">
+                        <StackLayout Orientation="Horizontal" Padding="13, 0">
+                            <droid:EditText Text="Android EditText" x:Arguments="{x:Static formsdroid:Forms.Context}"/>
+                            <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
                                                      Time="{Binding Time}" Margin="20"
                                                      Format="t"
                                                      FontSize="40"/>
-                    </StackLayout>
-                </custom:TableViewCell>
-                <custom:TableViewCell AllowHighlight="False">
-                    <StackLayout>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding DateString}"
+                        </StackLayout>
+                    </custom:TableViewCell>
+                    <custom:TableViewCell AllowHighlight="False">
+                        <StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding DateString}"
                                    HorizontalOptions="StartAndExpand"
                                    Margin="10"
                                    TextColor="DarkBlue"
                                    FontSize="16"/>
-                            <Button ImageSource="ic_calendar" 
+                                <Button ImageSource="ic_calendar" 
                                     Margin="10"
                                     HorizontalOptions="EndAndExpand"
                                     BackgroundColor="White" 
                                     Clicked="CalendarButton_Clicked"
                                     HeightRequest="30" WidthRequest="30"/>
-                            <DatePicker x:Name="DatePicker" TextColor="Transparent" 
+                                <DatePicker x:Name="DatePicker" TextColor="Transparent" 
                                         WidthRequest="1" HeightRequest="1" 
                                         Unfocused="DatePicker_Unfocused"
                                         Date="{Binding Date}"/>
+                            </StackLayout>
+                            <ScrollView Orientation="Horizontal">
+                                <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
+                            </ScrollView>
                         </StackLayout>
-                        <ScrollView Orientation="Horizontal">
-                            <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center"/>
-                        </ScrollView>
-                    </StackLayout>
-                </custom:TableViewCell>
-            </TableSection>
-            <TableSection Title="알람 옵션" TextColor="DarkBlue">
-                <custom:TableViewCell AllowHighlight="False" Height="60">
-                    <Grid HorizontalOptions="FillAndExpand"
+                    </custom:TableViewCell>
+                </TableSection>
+                <TableSection Title="알람 옵션" TextColor="DarkBlue">
+                    <custom:TableViewCell AllowHighlight="False" Height="60">
+                        <Grid HorizontalOptions="FillAndExpand"
                           VerticalOptions="CenterAndExpand"
                           Margin="10, 0, 10, 0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="50"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Text="알람음"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="60" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="알람음"
                                TextColor="Black"
                                FontSize="20"
                                VerticalOptions="CenterAndExpand"
                                Margin="10, 0"/>
-                        <custom:MusicSelectionButton Grid.Column="1" 
+                            <custom:MusicSelectionButton Grid.Column="1" 
                                                      IsEnabled="{Binding Alarm.IsAlarmOn}"
                                                      Text="{Binding Alarm.Tone}" 
                                                      BackgroundColor="Transparent"
@@ -95,23 +100,25 @@
                                                      TextColor="DarkBlue"
                                                      HorizontalOptions="FillAndExpand"
                                                      Command="{Binding ShowSettingToneCommand}"/>
-                        <Switch Grid.Column="2" 
+                            <Switch Grid.Column="2" 
                                 IsToggled="{Binding Alarm.IsAlarmOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
                                 ThumbColor="{Binding Alarm.IsAlarmOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                    </Grid>
-                </custom:TableViewCell>
-                <custom:TableViewCell AllowHighlight="False" Height="60">
-                    <StackLayout Orientation="Horizontal" Margin="10">
-                        <Label TextColor="Black" Text="진동" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
-                        <Switch IsToggled="{Binding Alarm.IsVibrateOn}"
+                        </Grid>
+                    </custom:TableViewCell>
+                    <custom:TableViewCell AllowHighlight="False" Height="60">
+                        <StackLayout Orientation="Horizontal" Margin="10">
+                            <Label TextColor="Black" Text="진동" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                            <Switch IsToggled="{Binding Alarm.IsVibrateOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
                                 ThumbColor="{Binding Alarm.IsVibrateOn, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                    </StackLayout>
-                </custom:TableViewCell>
-            </TableSection>
-        </TableRoot>
-    </TableView>
+                        </StackLayout>
+                    </custom:TableViewCell>
+                </TableSection>
+            </TableRoot>
+        </TableView>
+        <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+    </Grid>
 </ContentPage>

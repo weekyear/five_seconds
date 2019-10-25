@@ -42,6 +42,12 @@ namespace Five_Seconds.Views
             BindingContext = viewModel;
         }
 
+        protected override void OnDisappearing()
+        {
+            DependencyService.Get<IAdMobInterstitial>().Show("ca-app-pub-8413101784746060/6812351989");
+            base.OnDisappearing();
+        }
+
         public event EventHandler<string> SearchBarTextSubmited;
 
         public void OnSearchBarTextSubmited(string text) => SearchBarTextSubmited?.Invoke(this, text);

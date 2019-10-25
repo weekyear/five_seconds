@@ -20,6 +20,8 @@ namespace Five_Seconds.Droid.Services
 
         private bool IsCountDown { get; set; }
 
+        private Handler Handler => new Handler();
+
         public CountDown(long millisInFuture, long countDownInterval, Activity activity, bool isCountDown) : base(millisInFuture, countDownInterval)
         {
             Activity = activity as AlarmActivity;
@@ -40,7 +42,20 @@ namespace Five_Seconds.Droid.Services
             {
                 await Task.Delay(300);
                 Activity.ShowFeedbackDialog();
+                if (!Activity.IsSuccess)
+                {
+                    CloseActivityWhenFailedAndTimeOut();
+                }
             }
+        }
+
+        private void CloseActivityWhenFailedAndTimeOut()
+        {
+            // 10분 경과
+            Action DelayedAction = () => Activity.FinishAndRemoveTask();
+            // 1분 경과
+            var timeSpan = new TimeSpan(0, 1, 0);
+            Handler.PostDelayed(DelayedAction, (long)timeSpan.TotalMilliseconds);
         }
 
         public override void OnTick(long millisUntilFinished)

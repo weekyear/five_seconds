@@ -1,22 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/laterAlarmLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:background="@drawable/dialog_bg">
-    <NumberPicker
-        android:id="@+id/laterNumberPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:layout_width="wrap_content"
+    
+    <LinearLayout
+        android:id="@+id/numberPickerLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_margin="12dp"
-        android:layout_toRightOf="@id/laterNumberPicker"
-        android:layout_centerVertical="true"
-        android:text="분 후 알림"
-        android:textSize="32dp"/>
+        android:gravity="center_horizontal">
+        <NumberPicker
+            android:id="@+id/laterNumberPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="12dp"
+            android:layout_toRightOf="@id/laterNumberPicker"
+            android:layout_centerVertical="true"
+            android:text="분 후 알림"
+            android:textSize="32dp"/>
+    </LinearLayout>
+    <com.google.android.gms.ads.AdView
+		android:id="@+id/adView"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+        android:layout_below="@id/numberPickerLayout"
+		app:adSize="BANNER"
+		app:adUnitId="@string/admob_banner_id" />
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/adView">
+        <Button 
+            android:id="@+id/cancelBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="취 소"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/ripple_transparent_button" />
+        <Button
+            android:id="@+id/confirmBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="확 인"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/ripple_count_button"/>
+    </LinearLayout>
 </RelativeLayout>

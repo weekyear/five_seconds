@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "507995495397",
+    "firebase_url": "https://fiveseconds-11c0e.firebaseio.com",
+    "project_id": "fiveseconds-11c0e",
+    "storage_bucket": "fiveseconds-11c0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:507995495397:android:22abab0ce7653355b0ad0c",
+        "android_client_info": {
+          "package_name": "com.beside.Five_Seconds"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "507995495397-9gontuafdp7tean8jak6f6i3gtbq2uka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0BKWGimtKH8uWYHihGZUJJX1s5KvA7cE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "507995495397-9gontuafdp7tean8jak6f6i3gtbq2uka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

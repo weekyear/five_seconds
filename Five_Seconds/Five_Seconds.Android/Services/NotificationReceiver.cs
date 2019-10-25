@@ -8,6 +8,7 @@ using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
 using SQLite;
+using static Android.App.ActivityManager;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -40,7 +41,10 @@ namespace Five_Seconds.Droid.Services
 
                     Alarm.IsInitFinished = true;
 
-                    CrossCurrentActivity.Current.Activity.FinishAffinity();
+                    if (IsApplicationInTheBackground())
+                    {
+                        CrossCurrentActivity.Current.Activity.FinishAffinity();
+                    }
                     break;
                 case "지금 울림":
                     OpenAlarmActivity(context, bundle);
@@ -109,6 +113,17 @@ namespace Five_Seconds.Droid.Services
                     manager.Cancel(id);
                 }
             }
+        }
+
+        private bool IsApplicationInTheBackground()
+        {
+            bool isInBackground;
+
+            RunningAppProcessInfo myProcess = new RunningAppProcessInfo();
+            ActivityManager.GetMyMemoryState(myProcess);
+            isInBackground = myProcess.Importance != Importance.Foreground;
+
+            return isInBackground;
         }
 
 
