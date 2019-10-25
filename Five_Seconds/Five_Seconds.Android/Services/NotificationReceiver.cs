@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Five_Seconds.Models;
+using Five_Seconds.Repository;
 using Five_Seconds.Services;
+using Plugin.CurrentActivity;
+using SQLite;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -18,12 +15,16 @@ namespace Five_Seconds.Droid.Services
     public class NotificationReceiver : BroadcastReceiver
     {
         private IAlarmService alarmService;
+        private int id;
+        private SQLiteConnection sqliteConnection;
         public override void OnReceive(Context context, Intent intent)
         {
+            Console.WriteLine("OnReceive_NotificationReceiver");
             var bundle = intent.Extras;
 
-            var id = bundle.GetInt("id", -100000);
+            id = bundle.GetInt("id", -100000);
 
+            CancelNotification(context, intent);
 
             switch (intent.Action)
             {
@@ -32,35 +33,35 @@ namespace Five_Seconds.Droid.Services
                     Alarm.IsInitFinished = false;
                     // 서비스에서 TurnOffAlarm();
                     var alarm = alarmService.GetAlarm(id);
+
                     alarm.IsActive = false;
-                    alarmService.TurnOffAlarm(alarm);
+
+                    TurnOffAlarm(alarm);
+
                     Alarm.IsInitFinished = true;
+
+                    CrossCurrentActivity.Current.Activity.FinishAffinity();
                     break;
                 case "지금 울림":
                     OpenAlarmActivity(context, bundle);
                     break;
             }
 
-            var extras = intent.Extras;
-            if (extras != null && !extras.IsEmpty)
-            {
-                NotificationManager manager = context.GetSystemService(Context.NotificationService) as NotificationManager;
-                if (id != -100000)
-                {
-                    manager.Cancel(id);
-                }
-            }
+
         }
 
         private void GetAlarmService()
         {
-            if (App.Service == null)
-            {
-                alarmService = AlarmController.CreateServiceWithoutCore();
-            }
-            else
+            try
             {
                 alarmService = App.Service;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine("App.Service == null_NotificationReceiver");
+                alarmService = CreateServiceWithoutCore();
             }
         }
 
@@ -71,6 +72,55 @@ namespace Five_Seconds.Droid.Services
 
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);
+        }
+
+        private void TurnOffAlarm(Alarm alarm)
+        {
+            try
+            {
+                alarmService.TurnOffAlarm(alarm);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine("TurnOffAlarm_Background_NotificationReceiver");
+                TurnOffAlarmWhenIsBackground(alarm);
+            }
+        }
+
+        private void TurnOffAlarmWhenIsBackground(Alarm alarm)
+        {
+            alarm.IsLaterAlarm = false;
+            var alarmSetter = new AlarmSetterAndroid();
+            alarmSetter.DeleteAlarm(alarm.Id);
+            alarmService.SaveAlarmAtLocal(alarm);
+        }
+
+        private void CancelNotification(Context context, Intent intent)
+        {
+            var extras = intent.Extras;
+            if (extras != null && !extras.IsEmpty)
+            {
+                NotificationManager manager = context.GetSystemService(Context.NotificationService) as NotificationManager;
+                if (id != -100000)
+                {
+                    Console.WriteLine("CancelNotification_NotificationReceiver");
+                    manager.Cancel(id);
+                }
+            }
+        }
+
+
+        private AlarmService CreateServiceWithoutCore()
+        {
+            var deviceStorage = new DeviceStorageAndroid();
+            sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
+            var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
+            var alarmsRepo = new AlarmsRepository(itemDatabase);
+            var service = new AlarmService(alarmsRepo);
+
+            return service;
         }
     }
 }
