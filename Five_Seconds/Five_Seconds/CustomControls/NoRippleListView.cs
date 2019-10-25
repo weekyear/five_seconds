@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.CustomControls
 {
-    public class RoundedFrame : Frame
+    public class NoRippleListView : ListView
     {
     }
 }
