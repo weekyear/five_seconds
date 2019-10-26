@@ -67,5 +67,12 @@ namespace Five_Seconds.Views
                 _switch.ThumbColor = Color.LightGray;
             }
         }
+
+        private void ViewCell_Tapped(object sender, EventArgs e)
+        {
+            var viewCell = sender as ViewCell;
+            var item = viewCell.BindingContext as Alarm;
+            viewModel.ShowAlarmMenuCommand.Execute(item);
+        }
     }
 }

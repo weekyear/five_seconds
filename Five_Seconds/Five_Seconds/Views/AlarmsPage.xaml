@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
+             xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmsPage"
              NavigationPage.HasNavigationBar="False"
@@ -79,7 +80,7 @@
                                  VerticalOptions="CenterAndExpand"
                                  Command="{Binding ShowMainMenuCommand}"/>
                 </Grid>
-                <custom:NoRippleListView  x:Name="AlarmsListView"
+                <ListView  x:Name="AlarmsListView"
                                           ItemsSource="{Binding Alarms}"
                                           RowHeight="100"
                                           HasUnevenRows="True"
@@ -87,16 +88,18 @@
                                           ItemSelected="AlarmsListView_ItemSelected"
                                           VerticalOptions="FillAndExpand"
                                           SeparatorVisibility="None">
-                    <custom:NoRippleListView.ItemTemplate>
+                    <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <ViewCell.View>
-                                    <custom:AlarmsGridView x:Name="AlarmsGrid"/>
+                                    <Frame CornerRadius="15" Margin="0, 9" Padding="0" BackgroundColor="White">
+                                        <custom:AlarmsGridView x:Name="AlarmsGrid"/>
+                                    </Frame>
                                 </ViewCell.View>
                             </ViewCell>
                         </DataTemplate>
-                    </custom:NoRippleListView.ItemTemplate>
-                </custom:NoRippleListView>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackLayout>
             <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
         </Grid>

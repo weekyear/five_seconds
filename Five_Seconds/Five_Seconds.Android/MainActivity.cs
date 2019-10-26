@@ -14,6 +14,7 @@ using Android.Database;
 using Android.Provider;
 using Android;
 using Android.Gms.Ads;
+using Xamarin.Forms;
 
 namespace Five_Seconds.Droid
 {
@@ -29,7 +30,8 @@ namespace Five_Seconds.Droid
 
             base.OnCreate(savedInstanceState);
 
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
+            XamEffects.Droid.Effects.Init();
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);

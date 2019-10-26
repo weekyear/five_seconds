@@ -24,6 +24,7 @@ namespace Five_Seconds.iOS
         {
             //Google.MobileAds.MobileAds.SharedInstance.Start("YOUR IOS APP ID HERE");
             global::Xamarin.Forms.Forms.Init();
+            XamEffects.iOS.Effects.Init();
             LoadApplication(new App());
 
             Rg.Plugins.Popup.Popup.Init();
