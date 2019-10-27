@@ -147,6 +147,7 @@
     <Compile Include="CustomRenderers\CustomGestureListener.cs" />
     <Compile Include="CustomRenderers\GestureListViewRenderer.cs" />
     <Compile Include="CustomRenderers\NoRippleListViewRenderer.cs" />
+    <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="Interface\IAdListener.cs" />
     <Compile Include="Services\AdListener.cs" />
@@ -383,6 +384,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\no_selector.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\rounded_viewcell_background.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ripple_rounded_viewcell.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

@@ -80,26 +80,22 @@
                                  VerticalOptions="CenterAndExpand"
                                  Command="{Binding ShowMainMenuCommand}"/>
                 </Grid>
-                <ListView  x:Name="AlarmsListView"
+                <custom:NoRippleListView  x:Name="AlarmsListView"
                                           ItemsSource="{Binding Alarms}"
-                                          RowHeight="100"
+                                          RowHeight="180"
                                           HasUnevenRows="True"
                                           ItemTapped="ShowMenuByItemClicked"
                                           ItemSelected="AlarmsListView_ItemSelected"
                                           VerticalOptions="FillAndExpand"
                                           SeparatorVisibility="None">
-                    <ListView.ItemTemplate>
+                    <custom:NoRippleListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.View>
-                                    <Frame CornerRadius="15" Margin="0, 9" Padding="0" BackgroundColor="White">
-                                        <custom:AlarmsGridView x:Name="AlarmsGrid"/>
-                                    </Frame>
-                                </ViewCell.View>
-                            </ViewCell>
+                            <custom:RoundedViewCell>
+                                <custom:AlarmsGridView x:Name="AlarmsGrid" Padding="7"/>
+                            </custom:RoundedViewCell>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </custom:NoRippleListView.ItemTemplate>
+                </custom:NoRippleListView>
             </StackLayout>
             <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
         </Grid>

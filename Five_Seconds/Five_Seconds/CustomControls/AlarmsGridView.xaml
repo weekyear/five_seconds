@@ -23,7 +23,7 @@
 
     <ContentView.Content>
         <Grid x:Name="AlarmsGrid" BackgroundColor="Transparent" Padding="10" 
-                  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+              HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />

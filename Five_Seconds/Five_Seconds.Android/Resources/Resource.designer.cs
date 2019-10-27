@@ -13953,22 +13953,28 @@ namespace Five_Seconds.Droid
 			public const int ripple_failed_button = 2131165552;
 			
 			// aapt resource value: 0x7F070171
-			public const int ripple_transparent_button = 2131165553;
+			public const int ripple_rounded_viewcell = 2131165553;
 			
 			// aapt resource value: 0x7F070172
-			public const int rounded_button = 2131165554;
+			public const int ripple_transparent_button = 2131165554;
 			
 			// aapt resource value: 0x7F070173
-			public const int splash_background = 2131165555;
+			public const int rounded_button = 2131165555;
 			
 			// aapt resource value: 0x7F070174
-			public const int tooltip_frame_dark = 2131165556;
+			public const int rounded_viewcell_background = 2131165556;
 			
 			// aapt resource value: 0x7F070175
-			public const int tooltip_frame_light = 2131165557;
+			public const int splash_background = 2131165557;
 			
 			// aapt resource value: 0x7F070176
-			public const int xamarin_logo = 2131165558;
+			public const int tooltip_frame_dark = 2131165558;
+			
+			// aapt resource value: 0x7F070177
+			public const int tooltip_frame_light = 2131165559;
+			
+			// aapt resource value: 0x7F070178
+			public const int xamarin_logo = 2131165560;
 			
 			static Drawable()
 			{
