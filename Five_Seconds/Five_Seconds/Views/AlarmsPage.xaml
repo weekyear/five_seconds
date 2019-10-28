@@ -33,11 +33,11 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="12*" />
+                        <ColumnDefinition Width="10*" />
                         <ColumnDefinition Width="60*" />
-                        <ColumnDefinition Width="12*" />
-                        <ColumnDefinition Width="12*" />
-                        <ColumnDefinition Width="12*" />
+                        <ColumnDefinition Width="11*" />
+                        <ColumnDefinition Width="11*" />
+                        <ColumnDefinition Width="11*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.ColumnSpan="5" 
                            Text="5초의 알람"
@@ -50,6 +50,30 @@
                            FontSize="28"
                            Margin="0, 0, 0, 10"
                            HorizontalOptions="CenterAndExpand"/>
+                    <ImageButton Grid.Row="2" Grid.Column="0"
+                                 Source="ic_five_seconds_mini.png"
+                                 BackgroundColor="{StaticResource BackgroundColor}"
+                                 HorizontalOptions="CenterAndExpand"
+                                 VerticalOptions="CenterAndExpand"
+                                 Command="{Binding ShowCountDownCommand}"/>
+                    <ImageButton Grid.Row="2" Grid.Column="2"
+                                 Source="ic_plus.png"
+                                 BackgroundColor="{StaticResource BackgroundColor}"
+                                 HorizontalOptions="CenterAndExpand"
+                                 VerticalOptions="CenterAndExpand"
+                                 Command="{Binding ShowAddAlarmCommand}"/>
+                    <ImageButton Grid.Row="2" Grid.Column="3"
+                                 Source="ic_timemachine.png"
+                                 BackgroundColor="{StaticResource BackgroundColor}"
+                                 HorizontalOptions="CenterAndExpand"
+                                 VerticalOptions="CenterAndExpand"
+                                 Command="{Binding ShowRecordCommand}"/>
+                    <ImageButton Grid.Row="2" Grid.Column="4"
+                                 Source="ic_menu_vertical.png"
+                                 BackgroundColor="{StaticResource BackgroundColor}"
+                                 HorizontalOptions="CenterAndExpand"
+                                 VerticalOptions="CenterAndExpand"
+                                 Command="{Binding ShowMainMenuCommand}"/>
                     <Button x:Name="DeleteBtn" Grid.Row="2" Grid.ColumnSpan="5" 
                             BackgroundColor="IndianRed"
                             IsVisible="{Binding IsSelectedMode}"
@@ -59,36 +83,7 @@
                             FontSize="20"
                             FontAttributes="Bold"
                             TextColor="White"/>
-                    <ImageButton Grid.Row="2" Grid.Column="0"
-                                 Source="ic_five_seconds_mini.png"
-                                 BackgroundColor="{StaticResource BackgroundColor}"
-                                 WidthRequest="32" HeightRequest="32"
-                                 HorizontalOptions="CenterAndExpand"
-                                 VerticalOptions="CenterAndExpand"
-                                 IsVisible="{Binding IsNotSelectedMode}"
-                                 Command="{Binding ShowCountDownCommand}"/>
-                    <ImageButton Grid.Row="2" Grid.Column="2"
-                                 Source="ic_plus.png"
-                                 BackgroundColor="{StaticResource BackgroundColor}"
-                                 HorizontalOptions="CenterAndExpand"
-                                 VerticalOptions="CenterAndExpand"
-                                 IsVisible="{Binding IsNotSelectedMode}"
-                                 Command="{Binding ShowAddAlarmCommand}"/>
-                    <ImageButton Grid.Row="2" Grid.Column="3"
-                                 Source="ic_timemachine.png"
-                                 BackgroundColor="{StaticResource BackgroundColor}"
-                                 HorizontalOptions="CenterAndExpand"
-                                 VerticalOptions="CenterAndExpand"
-                                 IsVisible="{Binding IsNotSelectedMode}"
-                                 Command="{Binding ShowRecordCommand}"/>
-                    <ImageButton Grid.Row="2" Grid.Column="4"
-                                 Source="ic_menu_vertical.png"
-                                 BackgroundColor="{StaticResource BackgroundColor}"
-                                 HorizontalOptions="CenterAndExpand"
-                                 VerticalOptions="CenterAndExpand"
-                                 IsVisible="{Binding IsNotSelectedMode}"
-                                 Command="{Binding ShowMainMenuCommand}"/>
-                </Grid>
+            </Grid>
                 <custom:NoRippleListView  x:Name="AlarmsListView"
                                           ItemsSource="{Binding Alarms}"
                                           RowHeight="180"

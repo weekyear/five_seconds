@@ -26,7 +26,7 @@
             <Color x:Key="LightTextColor">#ffffff</Color>
             <Color x:Key="PrimaryTextColor">#263238</Color>
             <Color x:Key="SecondaryTextColor">#455a64</Color>
-            <Color x:Key="BackgroundColor">#f4f4f4</Color>
+            <Color x:Key="BackgroundColor">#f3f3f3</Color>
             <Style TargetType="Button">
                 <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="TextColor" Value="{StaticResource LightTextColor}" />

@@ -3,7 +3,7 @@
   <item>
     <shape>
       <solid
-          android:color="@color/alarmSecondaryColor"/>
+          android:color="@color/listViewSelected"/>
       <corners
           android:radius="25dp"/>
     </shape>
