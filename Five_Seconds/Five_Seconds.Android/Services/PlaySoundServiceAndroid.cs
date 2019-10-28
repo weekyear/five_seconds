@@ -75,13 +75,13 @@ namespace Five_Seconds.Droid.Services
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
             {
                 _mediaPlayer.SetAudioAttributes(new AudioAttributes.Builder()
-                    .SetUsage(AudioUsageKind.Alarm)
+                    .SetUsage(AudioUsageKind.Media)
                     .SetContentType(AudioContentType.Sonification)
                     .Build());
             }
             else
             {
-                _mediaPlayer.SetAudioStreamType(Stream.Alarm);
+                _mediaPlayer.SetAudioStreamType(Stream.Music);
             }
 
             _mediaPlayer.SetVolume((float)0.4, (float)0.4);

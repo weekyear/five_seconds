@@ -31,27 +31,29 @@
                 <ColumnDefinition Width="35*" />
                 <ColumnDefinition Width="15*" />
             </Grid.ColumnDefinitions>
-            <custom:ListItemLabel Text="{Binding DateString}"
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                <Image Source="ic_repeat.png" IsVisible="{Binding HasADayBeenSelected}"
+                       WidthRequest="18" HeightRequest="18"/>
+                <custom:ListItemLabel Text="{Binding DateString}"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                  FontSize="20"
+                                  FontSize="16"
                                   VerticalOptions="EndAndExpand"
                                   LineBreakMode="TailTruncation"/>
-            <StackLayout Grid.Column="1" Orientation="Horizontal">
+            </StackLayout>
+            <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
                 <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                      FontSize="16"
+                                      FontSize="12"
                                       Margin="0"
-                                      HorizontalOptions="EndAndExpand"
                                       VerticalOptions="EndAndExpand"/>
                 <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                       TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                       Margin="0"
-                                      HorizontalOptions="EndAndExpand"
-                                      FontSize="20" />
+                                      FontSize="16" />
             </StackLayout>
             <custom:ListItemLabel x:Name="AlarmNameLabel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                  FontSize="25"
+                                  FontSize="22"
                                   Text="{Binding Name}"
                                   MaxLines="1" 
                                   LineBreakMode="TailTruncation"

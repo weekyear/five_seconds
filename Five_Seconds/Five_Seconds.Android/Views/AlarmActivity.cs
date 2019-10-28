@@ -449,8 +449,6 @@ namespace Five_Seconds.Droid
         {
             CreateRecord();
 
-            //SetAdView();
-
             SetResultToDialogResult();
 
             IsFinished = true;
@@ -473,7 +471,7 @@ namespace Five_Seconds.Droid
         private void SetResultToDialogResult()
         {
             var Records = App.AlarmsRepo.RecordFromDB;
-            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
+            var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
 
             TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
             TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
@@ -547,13 +545,15 @@ namespace Five_Seconds.Droid
 
         private void SetAdView()
         {
-            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            //adViewForResult.LoadAd(requestbuilder);
+            //adViewForLater.LoadAd(requestbuilder);
+
+            var requestbuilder = new AdRequest.Builder().Build();
             adViewForResult.LoadAd(requestbuilder);
             adViewForLater.LoadAd(requestbuilder);
-
-            //_adView.AdListener = new AdListener(this);
-            //_adView.LoadAd(new AdRequest.Builder().Build());
         }
+
         private void SetMobileAds()
         {
             MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));

@@ -180,6 +180,8 @@ namespace Five_Seconds.ViewModels
 
         private async Task Save()
         {
+            Name = Name.TrimStart().TrimEnd();
+
             if (string.IsNullOrEmpty(Name))
             {
                 await Application.Current.MainPage.DisplayAlert("", "미션 이름을 깜빡하셨어요!", "확인");

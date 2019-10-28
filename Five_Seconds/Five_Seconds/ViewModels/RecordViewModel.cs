@@ -28,7 +28,7 @@ namespace Five_Seconds.ViewModels
 
             SubscribeMessage();
 
-            SaveTestRecords();
+            //SaveTestRecords();
         }
 
 
@@ -233,7 +233,6 @@ namespace Five_Seconds.ViewModels
 
             // 여기에 태그 관련 리스트 뽑아내게 수정해야 함
 
-
             WeekRecords.Clear();
 
             WeekRecords = weekRecords;
@@ -242,21 +241,22 @@ namespace Five_Seconds.ViewModels
         private void UpdateMonthRecordsByTag(TagItem tagItem)
         {
             var recordsByTag = new List<Record>();
+            var tagItems = new List<TagItem>(TagItems.ToList());
 
             if (tagItem != null)
             {
-                recordsByTag = MonthRecords.FindAll((r) => r.Name.Contains(tagItem.Name));
+                tagItems.Add(tagItem);
             }
 
-            if (TagItems.Count == 0 && recordsByTag.Count == 0)
+            if (tagItems.Count == 0 && recordsByTag.Count == 0)
             {
                 MonthRecordsByTag = MonthRecords;
             }
             else
             {
-                foreach (var tag in TagItems.ToList())
+                foreach (var tag in tagItems)
                 {
-                    var records = MonthRecords.FindAll((r) => r.Name.Contains(tag.Name));
+                    var records = MonthRecords.FindAll((r) => string.Compare(r.Name, tag.Name) == 0);
                     foreach (var record in records)
                     {
                         recordsByTag.Add(record);

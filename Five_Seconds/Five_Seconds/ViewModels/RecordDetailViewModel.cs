@@ -179,21 +179,22 @@ namespace Five_Seconds.ViewModels
         private void UpdateRecordsByTag(TagItem tagItem)
         {
             var recordsByTag = new List<Record>();
+            var tagItems = new List<TagItem>(TagItems.ToList());
 
             if (tagItem != null)
             {
-                recordsByTag = Records.FindAll((r) => r.Name.Contains(tagItem.Name));
+                tagItems.Add(tagItem);
             }
 
-            if (TagItems.Count == 0 && recordsByTag.Count == 0)
+            if (tagItems.Count == 0 && recordsByTag.Count == 0)
             {
                 RecordsByTag = Records;
             }
             else
             {
-                foreach (var tag in TagItems.ToList())
+                foreach (var tag in tagItems)
                 {
-                    var records = Records.FindAll((r) => r.Name.Contains(tag.Name));
+                    var records = Records.FindAll((r) => string.Compare(r.Name, tag.Name) == 0);
                     foreach (var record in records)
                     {
                         recordsByTag.Add(record);

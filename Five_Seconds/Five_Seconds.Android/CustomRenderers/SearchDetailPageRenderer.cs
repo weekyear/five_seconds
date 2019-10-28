@@ -11,14 +11,14 @@ using Xamarin.Forms.Platform.Android;
 using SearchView = Android.Support.V7.Widget.SearchView;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
-[assembly: ExportRenderer(typeof(RecordPage), typeof(SearchPageRenderer))]
+[assembly: ExportRenderer(typeof(RecordDetailPage), typeof(SearchDetailPageRenderer))]
 namespace Five_Seconds.Droid.CustomRenderers
 {
-    public class SearchPageRenderer : PageRenderer
+    public class SearchDetailPageRenderer : PageRenderer
     {
         SearchView SearchView { get; set; }
 
-        public SearchPageRenderer(Context context) : base(context)
+        public SearchDetailPageRenderer(Context context) : base(context)
         {
 
         }

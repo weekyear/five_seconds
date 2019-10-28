@@ -26,7 +26,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="0">
-                <Grid Margin="10, 20, 10, 0" HorizontalOptions="CenterAndExpand">
+                <Grid Margin="15, 15, 15, 0" HorizontalOptions="CenterAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />

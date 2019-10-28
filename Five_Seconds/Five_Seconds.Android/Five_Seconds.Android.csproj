@@ -148,6 +148,7 @@
     <Compile Include="CustomRenderers\GestureListViewRenderer.cs" />
     <Compile Include="CustomRenderers\NoRippleListViewRenderer.cs" />
     <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
+    <Compile Include="CustomRenderers\SearchDetailPageRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="Interface\IAdListener.cs" />
     <Compile Include="Services\AdListener.cs" />
@@ -396,6 +397,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ripple_rounded_viewcell_selected.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_repeat.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
