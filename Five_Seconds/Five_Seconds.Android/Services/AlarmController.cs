@@ -56,7 +56,33 @@ namespace Five_Seconds.Droid.Services
             toastService.Show(diffString);
         }
 
-        public static void SetAlarmByManager(Alarm alarm, long diffMillis)
+        private static void SetAlarmByManager(Alarm alarm, long diffMillis)
+        {
+            var _alarmIntent = SetAlarmIntent(alarm);
+
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
+
+            Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
+            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
+            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+        }
+
+        public static void SetLaterAlarmByManager(Alarm alarm, long diffMillis)
+        {
+            var _alarmIntent = SetAlarmIntent(alarm);
+
+            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, -alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
+
+            Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
+            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, -alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
+            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+        }
+
+        private static Intent SetAlarmIntent(Alarm alarm)
         {
             var _alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
             _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
@@ -68,13 +94,7 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);
 
-            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
-            var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
-
-            Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
-            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
-            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
-            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+            return _alarmIntent;
         }
 
         public static void SetAllAlarmWhenRestart()

@@ -91,6 +91,9 @@
                     <custom:NoRippleListView.ItemTemplate>
                         <DataTemplate>
                             <custom:RoundedViewCell>
+                                <custom:RoundedViewCell.ContextActions>
+                                <MenuItem Text="삭제" IsDestructive="True" />
+                            </custom:RoundedViewCell.ContextActions>
                                 <custom:AlarmsGridView x:Name="AlarmsGrid" Padding="7"/>
                             </custom:RoundedViewCell>
                         </DataTemplate>

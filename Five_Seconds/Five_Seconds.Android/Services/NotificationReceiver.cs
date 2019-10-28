@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -35,7 +34,10 @@ namespace Five_Seconds.Droid.Services
                     // 서비스에서 TurnOffAlarm();
                     var alarm = alarmService.GetAlarm(id);
 
-                    alarm.IsActive = false;
+                    if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
+                    {
+                        alarm.IsActive = false;
+                    }
 
                     TurnOffAlarm(alarm);
 

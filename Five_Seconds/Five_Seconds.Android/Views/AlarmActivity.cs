@@ -21,10 +21,8 @@ using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
-using AdListener = Five_Seconds.Droid.Services.AdListener;
 using Button = Android.Widget.Button;
 using RelativeLayout = Android.Widget.RelativeLayout;
-using View = Android.Views.View;
 
 namespace Five_Seconds.Droid
 {
@@ -53,11 +51,11 @@ namespace Five_Seconds.Droid
         private TextView alarmTextView;
         private TextView pleaseSayText;
         private EditText alarmEditText;
-        private View LaterAlarmDialog;
         private CountDown countDownForFailed;
         private CountDown countDownForFiveSeconds;
 
-        AdView _adView;
+        AdView adViewForResult;
+        AdView adViewForLater;
 
         private int id;
         private string name;
@@ -79,7 +77,7 @@ namespace Five_Seconds.Droid
 
         public Handler Handler => new Handler();
 
-        AdView IAdListener.AdView => _adView;
+        AdView IAdListener.AdView => adViewForResult;
 
         public AlarmActivity()
         {
@@ -109,6 +107,8 @@ namespace Five_Seconds.Droid
             SetMediaPlayer();
             SetVibrator();
 
+            SetMobileAds();
+
             SetContentView(Resource.Layout.AlarmActivity);
             SetAndFindViewById();
 
@@ -119,6 +119,13 @@ namespace Five_Seconds.Droid
             CreateSpeechRecognizer();
 
             SetIsFailedCountDown();
+
+
+            SetLaterDialog();
+
+            SetFeedbackDialog();
+
+            SetAdView();
 
             if (bundle == null) return;
         }
@@ -444,9 +451,9 @@ namespace Five_Seconds.Droid
         {
             CreateRecord();
 
-            SetFeedbackDialog();
+            //SetAdView();
 
-            SetAdView();
+            SetResultToDialogResult();
 
             IsFinished = true;
 
@@ -462,17 +469,20 @@ namespace Five_Seconds.Droid
 
             feedbackDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
 
+            adViewForResult = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
+        }
+
+        private void SetResultToDialogResult()
+        {
+            var Records = App.AlarmsRepo.RecordFromDB;
+            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
+
             TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
             TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
             LinearLayout buttonLayout = feedbackDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
             Button confirmBtn = feedbackDialog.FindViewById<Button>(Resource.Id.confirmBtn);
             Button countButton = feedbackDialog.FindViewById<Button>(Resource.Id.countButton);
             Button failedBtn = feedbackDialog.FindViewById<Button>(Resource.Id.failedBtn);
-            _adView = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
-
-            var Records = App.AlarmsRepo.RecordFromDB;
-            var alarmRecords = Records.FindAll(a => a.AlarmId == alarm.Id);
-
 
             if (IsSuccess)
             {
@@ -539,23 +549,23 @@ namespace Five_Seconds.Droid
 
         private void SetAdView()
         {
-            SetMobileAds();
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            adViewForResult.LoadAd(requestbuilder);
+            adViewForLater.LoadAd(requestbuilder);
 
-            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
-            //adView.LoadAd(requestbuilder);
-
-            _adView.AdListener = new AdListener(this);
-            _adView.LoadAd(new AdRequest.Builder().Build());
+            //_adView.AdListener = new AdListener(this);
+            //_adView.LoadAd(new AdRequest.Builder().Build());
         }
         private void SetMobileAds()
         {
             MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
         }
+
         public void ShowLaterDialog(object s, EventArgs e)
         {
-            SetLaterDialog();
+            //SetLaterDialog();
 
-            SetAdView();
+            //SetAdViewForLater();
 
             laterDialog.Show();
         }
@@ -568,7 +578,6 @@ namespace Five_Seconds.Droid
 
             laterDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
 
-
             laterNumberPicker = laterDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
             laterNumberPicker.MaxValue = 120;
             laterNumberPicker.MinValue = 1;
@@ -576,12 +585,11 @@ namespace Five_Seconds.Droid
 
             Button confirmBtn = laterDialog.FindViewById<Button>(Resource.Id.confirmBtn);
             Button cancelBtn = laterDialog.FindViewById<Button>(Resource.Id.cancelBtn);
-            _adView = laterDialog.FindViewById<AdView>(Resource.Id.adView);
+            adViewForLater = laterDialog.FindViewById<AdView>(Resource.Id.adView);
 
             confirmBtn.Click += LaterDialog_ConfirmBtn_Click;
             cancelBtn.Click += LaterDialog_CancelBtn_Click;
         }
-
 
         private void LaterDialog_ConfirmBtn_Click(object sender, EventArgs e)
         {
@@ -605,7 +613,7 @@ namespace Five_Seconds.Droid
 
             var diffTimeSpan = alarmTime.Subtract(DateTime.Now);
 
-            AlarmController.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+            AlarmController.SetLaterAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
 
             App.Service.SaveAlarmAtLocal(alarm);
 
