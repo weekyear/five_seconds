@@ -39,7 +39,7 @@ namespace Five_Seconds.ViewModels
             ShowCountDownCommand = new Command(() => ShowCountDown());
             DeleteAlarmsCommand = new Command(() => DeleteAlarms());
             ShowRecordCommand = new Command(async() => await ShowRecord());
-            ShowAlarmMenuCommand = new Command<object>(async (m) => await ShowAlarmMenu(m));
+            ShowModifyAlarmCommand = new Command<object>(async (m) => await ShowModifyAlarm(m));
             ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
         }
 
@@ -49,7 +49,7 @@ namespace Five_Seconds.ViewModels
         public Command ShowCountDownCommand { get; set; }
         public Command DeleteAlarmsCommand { get; set; }
         public Command ShowRecordCommand { get; set; }
-        public Command<object> ShowAlarmMenuCommand { get; set; }
+        public Command<object> ShowModifyAlarmCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
         public ObservableCollection<Alarm> Alarms
         {
@@ -110,27 +110,10 @@ namespace Five_Seconds.ViewModels
             ClearAllSelectedAlarm();
         }
 
-        private async Task ShowAlarmMenu(object _alarm)
+        private async Task ShowModifyAlarm(object _alarm)
         {
-            var alarm = _alarm as Alarm;
-            string[] actionSheetBtns = { "수정", "삭제" };
-
-            string action = await MessageBoxService.ShowActionSheet("알람 옵션", "취소", null, actionSheetBtns);
-
-            await ClickAlarmMenuAction(action, alarm);
-        }
-
-        private async Task ClickAlarmMenuAction(string action, Alarm alarm)
-        {
-            switch (action)
-            {
-                case "수정":
-                    await ShowModifyAlarm(alarm);
-                    break;
-                case "삭제":
-                    Service.DeleteAlarm(alarm);
-                    break;
-            }
+            var alarm = _alarm as Alarm; 
+            await ModifyAlarm(alarm);
         }
 
         private async Task ShowMainMenu()
@@ -161,7 +144,7 @@ namespace Five_Seconds.ViewModels
             await Navigation.PushAsync(new RecordPage(Navigation, MessageBoxService));
         }
 
-        private async Task ShowModifyAlarm(Alarm alarm)
+        private async Task ModifyAlarm(Alarm alarm)
         {
             Alarm.IsInitFinished = false;
             await Navigation.PushAsync(new AlarmPage(Navigation, alarm));

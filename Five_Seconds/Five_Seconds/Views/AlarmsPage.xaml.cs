@@ -33,7 +33,7 @@ namespace Five_Seconds.Views
         {
             if (!viewModel.IsSelectedMode)
             {
-                viewModel.ShowAlarmMenuCommand.Execute(e.Item);
+                viewModel.ShowModifyAlarmCommand.Execute(e.Item);
             }
             else
             {
@@ -80,7 +80,7 @@ namespace Five_Seconds.Views
         {
             var viewCell = sender as ViewCell;
             var item = viewCell.BindingContext as Alarm;
-            viewModel.ShowAlarmMenuCommand.Execute(item);
+            viewModel.ShowModifyAlarmCommand.Execute(item);
         }
 
         protected override bool OnBackButtonPressed()

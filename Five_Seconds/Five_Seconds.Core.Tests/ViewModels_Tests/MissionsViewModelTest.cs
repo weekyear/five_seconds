@@ -53,7 +53,7 @@ namespace Five_Seconds.Core.Tests.ViewModels
             // Arrange
             string[] actionSheetBtns = { "Modify", "Record", "Delete" };
             // Act
-            alarmsViewModel.ShowAlarmMenuCommand.Execute(null);
+            alarmsViewModel.ShowModifyAlarmCommand.Execute(null);
             // Assert
             messageBoxService.Verify(m => m.ShowActionSheet("Options", "Cancel", null, actionSheetBtns), Times.Once());
         }
