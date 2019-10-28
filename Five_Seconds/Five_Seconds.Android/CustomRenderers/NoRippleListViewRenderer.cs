@@ -11,6 +11,8 @@ using Android.Views;
 using Android.Widget;
 using Five_Seconds.CustomControls;
 using Five_Seconds.Droid.CustomRenderers;
+using Five_Seconds.Models;
+using Five_Seconds.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using ListView = Xamarin.Forms.ListView;
@@ -20,6 +22,7 @@ namespace Five_Seconds.Droid.CustomRenderers
 {
     public class NoRippleListViewRenderer : ListViewRenderer
     {
+        private ListView listView;
         public NoRippleListViewRenderer(Context context) : base(context)
         {
         }
@@ -28,6 +31,23 @@ namespace Five_Seconds.Droid.CustomRenderers
         {
             base.OnElementChanged(e);
             Control.SetSelector(Resource.Layout.no_selector);
+
+            listView = e.NewElement;
+
+            Control.ItemLongClick += new EventHandler<AdapterView.ItemLongClickEventArgs>(ItemLong_OnClick);
+        }
+
+        private void ItemLong_OnClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            var alarmsViewModel = listView.BindingContext as AlarmsViewModel;
+            
+            var alarmsFromVM = alarmsViewModel.Alarms;
+
+            var alarm = alarmsFromVM[e.Position - 1];
+
+            alarmsViewModel.IsSelectedMode = true;
+
+            alarmsViewModel.ChangeIsSelectedOfAlarm(alarm);
         }
     }
 }

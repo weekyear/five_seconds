@@ -27,7 +27,7 @@ using RelativeLayout = Android.Widget.RelativeLayout;
 namespace Five_Seconds.Droid
 {
     [Activity(Label = "5초의 알람", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class AlarmActivity : Activity, IRecognitionListener, IAdListener
+    public class AlarmActivity : Activity, IRecognitionListener
     {
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
@@ -76,8 +76,6 @@ namespace Five_Seconds.Droid
         IAlarmsRepository alarmsRepo;
 
         public Handler Handler => new Handler();
-
-        AdView IAdListener.AdView => adViewForResult;
 
         public AlarmActivity()
         {

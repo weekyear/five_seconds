@@ -25,12 +25,12 @@ namespace Five_Seconds.Droid.CustomRenderers
         protected override Android.Views.View GetCellCore(Cell item, Android.Views.View convertView, ViewGroup parent, Context context)
         {
             _nativeCell = base.GetCellCore(item, convertView, parent, context);
-            setStyle();
+            SetStyle();
 
             return _nativeCell;
         }
 
-        private void setStyle()
+        private void SetStyle()
         {
             var formsCell = Cell as TableViewCell;
             if (formsCell == null)
@@ -45,7 +45,7 @@ namespace Five_Seconds.Droid.CustomRenderers
 
             if (e.PropertyName == TableViewCell.AllowHighlightProperty.PropertyName)
             {
-                setStyle();
+                SetStyle();
             }
         }
     }

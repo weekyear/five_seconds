@@ -51,6 +51,8 @@ namespace Five_Seconds.Models
             }
         }
 
+        public bool IsSelected { get; set; } = false;
+
         public Alarm() { }
 
         public Alarm(Alarm original)

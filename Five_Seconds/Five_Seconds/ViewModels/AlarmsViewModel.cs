@@ -7,6 +7,7 @@ using Five_Seconds.Services;
 using System;
 using Five_Seconds.Helpers;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Five_Seconds.ViewModels
 {
@@ -18,33 +19,35 @@ namespace Five_Seconds.ViewModels
         {
             MessageBoxService = messageBoxService;
 
-            ConstructCommand();
-
             SubscribeMessage();
+
+            ConstructCommand();
+        }
+
+        private void SubscribeMessage()
+        {
+            MessagingCenter.Subscribe<AlarmService>(this, "changeAlarms", (sender) =>
+            {
+                OnPropertyChanged(nameof(Alarms));
+                OnPropertyChanged(nameof(NextAlarmString));
+            });
         }
 
         private void ConstructCommand()
         {
             ShowAddAlarmCommand = new Command(async () => await ShowAddAlarm());
             ShowCountDownCommand = new Command(() => ShowCountDown());
+            DeleteAlarmsCommand = new Command(() => DeleteAlarms());
             ShowRecordCommand = new Command(async() => await ShowRecord());
             ShowAlarmMenuCommand = new Command<object>(async (m) => await ShowAlarmMenu(m));
             ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
-        }
-
-        private void SubscribeMessage()
-        {
-           MessagingCenter.Subscribe<AlarmService>(this, "changeAlarms", (sender) =>
-           {
-               OnPropertyChanged(nameof(Alarms));
-               OnPropertyChanged(nameof(NextAlarmString));
-           });
         }
 
         // Property
 
         public Command ShowAddAlarmCommand { get; set; }
         public Command ShowCountDownCommand { get; set; }
+        public Command DeleteAlarmsCommand { get; set; }
         public Command ShowRecordCommand { get; set; }
         public Command<object> ShowAlarmMenuCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
@@ -58,18 +61,56 @@ namespace Five_Seconds.ViewModels
             get => CreateDateString.CreateNextDateTimeString(App.Service.GetNextAlarm());
         }
 
-        public async Task ShowAddAlarm()
+        public string DeleteAlarmString
+        {
+            get
+            {
+                var numOfDeleteAlarms = Alarms.Where(a => a.IsSelected == true).Count();
+                return $"{numOfDeleteAlarms}개 삭제";
+            }
+        }
+
+        private bool isSelectedMode;
+        public bool IsSelectedMode
+        {
+            get { return isSelectedMode; }
+            set
+            {
+                if (isSelectedMode == value) return;
+                isSelectedMode = value;
+                OnPropertyChanged(nameof(IsSelectedMode));
+                OnPropertyChanged(nameof(IsNotSelectedMode));
+            }
+        }
+
+        public bool IsNotSelectedMode
+        {
+            get { return !IsSelectedMode; }
+        }
+
+
+        private async Task ShowAddAlarm()
         {
             await Navigation.PushAsync(new AlarmPage(Navigation));
         }
 
-        public void ShowCountDown()
+        private void ShowCountDown()
         {
             void action() => DependencyService.Get<ICountDown>().ShowCountDown();
             MessageBoxService.ShowConfirm("5초 카운트", "5초 카운트를 시작하시겠습니까?", null, action);
         }
+        
+        private void DeleteAlarms()
+        {
+            var DeleteAlarms = Alarms.Where(a => a.IsSelected == true);
+            foreach (var alarm in DeleteAlarms)
+            {
+                Service.DeleteAlarm(alarm);
+            }
+            ClearAllSelectedAlarm();
+        }
 
-        public async Task ShowAlarmMenu(object _alarm)
+        private async Task ShowAlarmMenu(object _alarm)
         {
             var alarm = _alarm as Alarm;
             string[] actionSheetBtns = { "수정", "삭제" };
@@ -92,7 +133,7 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        public async Task ShowMainMenu()
+        private async Task ShowMainMenu()
         {
             string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법" };
 
@@ -120,7 +161,7 @@ namespace Five_Seconds.ViewModels
             await Navigation.PushAsync(new RecordPage(Navigation, MessageBoxService));
         }
 
-        public async Task ShowModifyAlarm(Alarm alarm)
+        private async Task ShowModifyAlarm(Alarm alarm)
         {
             Alarm.IsInitFinished = false;
             await Navigation.PushAsync(new AlarmPage(Navigation, alarm));
@@ -134,6 +175,22 @@ namespace Five_Seconds.ViewModels
             list.ForEach((item) => collection.Add(item));
 
             return collection;
+        }
+
+        public void ClearAllSelectedAlarm()
+        {
+            IsSelectedMode = false;
+
+            foreach (var alarm in Alarms)
+            {
+                alarm.IsSelected = false;
+            }
+        }
+
+        public void ChangeIsSelectedOfAlarm(Alarm alarm)
+        {
+            alarm.IsSelected = !alarm.IsSelected;
+            OnPropertyChanged(nameof(DeleteAlarmString));
         }
     }
 }

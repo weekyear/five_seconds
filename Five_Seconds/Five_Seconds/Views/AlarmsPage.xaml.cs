@@ -31,7 +31,15 @@ namespace Five_Seconds.Views
 
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
         {
-            viewModel.ShowAlarmMenuCommand.Execute(e.Item);
+            if (!viewModel.IsSelectedMode)
+            {
+                viewModel.ShowAlarmMenuCommand.Execute(e.Item);
+            }
+            else
+            {
+                var alarm = e.Item as Alarm;
+                viewModel.ChangeIsSelectedOfAlarm(alarm);
+            }
         }
 
         private void AlarmsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -73,6 +81,27 @@ namespace Five_Seconds.Views
             var viewCell = sender as ViewCell;
             var item = viewCell.BindingContext as Alarm;
             viewModel.ShowAlarmMenuCommand.Execute(item);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (viewModel.IsSelectedMode)
+            {
+                viewModel.ClearAllSelectedAlarm();
+
+                return true;
+            }
+            return base.OnBackButtonPressed();
+        }
+
+        private void Button_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "IsSelectedMode") return;
+
+            if (viewModel.IsSelectedMode)
+            {
+                DeleteBtn.FadeTo(1, 500, Easing.SpringIn);
+            }
         }
     }
 }

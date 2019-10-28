@@ -10,7 +10,7 @@
     </shape>
   </item>
 
-  <item android:drawable="@drawable/rounded_viewcell"
+  <item android:drawable="@drawable/rounded_viewcell_selected"
         android:bottom="7dp"
         android:top="7dp"/>
 </ripple>

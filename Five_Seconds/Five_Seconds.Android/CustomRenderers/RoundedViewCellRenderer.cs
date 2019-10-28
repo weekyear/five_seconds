@@ -17,7 +17,7 @@ namespace Five_Seconds.Droid.CustomRenderers
         {
             _nativeCell = base.GetCellCore(item, convertView, parent, context);
 
-            _nativeCell?.SetBackgroundResource(Resource.Drawable.ripple_rounded_viewcell);
+            SetSelected();
 
             return _nativeCell;
         }
@@ -25,6 +25,27 @@ namespace Five_Seconds.Droid.CustomRenderers
         protected override void OnCellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnCellPropertyChanged(sender, e);
+
+            if (e.PropertyName == RoundedViewCell.IsSelectedProperty.PropertyName)
+            {
+                SetSelected();
+            }
+        }
+
+        private void SetSelected()
+        {
+            var formsCell = Cell as RoundedViewCell;
+            if (formsCell == null)
+                return;
+
+            if (formsCell.IsSelected)
+            {
+                _nativeCell?.SetBackgroundResource(Resource.Drawable.ripple_rounded_viewcell_selected);
+            }
+            else
+            {
+                _nativeCell?.SetBackgroundResource(Resource.Drawable.ripple_rounded_viewcell);
+            }
         }
     }
 }

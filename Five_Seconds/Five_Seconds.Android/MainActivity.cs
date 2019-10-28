@@ -31,7 +31,6 @@ namespace Five_Seconds.Droid
             base.OnCreate(savedInstanceState);
 
             Forms.Init(this, savedInstanceState);
-            XamEffects.Droid.Effects.Init();
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);

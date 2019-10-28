@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
-             xmlns:xe="clr-namespace:XamEffects;assembly=XamEffects"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmsPage"
              NavigationPage.HasNavigationBar="False"
@@ -42,14 +41,6 @@
                            Text="5초의 알람"
                            FontSize="22"
                            HorizontalOptions="CenterAndExpand"/>
-                    <ImageButton Grid.Row="2" Grid.Column="0"
-                                 Margin="5, 0"
-                                 Source="ic_five_seconds_mini.png"
-                                 BackgroundColor="{StaticResource BackgroundColor}"
-                                 WidthRequest="30" HeightRequest="30"
-                                 HorizontalOptions="StartAndExpand"
-                                 VerticalOptions="StartAndExpand"
-                                 Command="{Binding ShowCountDownCommand}"/>
                     <Label x:Name="NextAlarmStrng" 
                            Grid.Row="1" Grid.ColumnSpan="3" 
                            Text="{Binding NextAlarmString}"
@@ -57,6 +48,25 @@
                            FontSize="28"
                            Margin="0, 0, 0, 20"
                            HorizontalOptions="CenterAndExpand"/>
+                    <Button x:Name="DeleteBtn" Grid.Row="2" Grid.ColumnSpan="3" 
+                            BackgroundColor="IndianRed"
+                            IsVisible="{Binding IsSelectedMode}"
+                            PropertyChanged="Button_PropertyChanged"
+                            VerticalOptions="CenterAndExpand"
+                            Text="{Binding DeleteAlarmString}"
+                            Command="{Binding DeleteAlarmsCommand}"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            TextColor="White"/>
+                    <ImageButton Grid.Row="2" Grid.Column="0"
+                                 Margin="5, 9"
+                                 Source="ic_five_seconds_mini.png"
+                                 BackgroundColor="{StaticResource BackgroundColor}"
+                                 WidthRequest="30" HeightRequest="30"
+                                 HorizontalOptions="StartAndExpand"
+                                 VerticalOptions="CenterAndExpand"
+                                 IsVisible="{Binding IsNotSelectedMode}"
+                                 Command="{Binding ShowCountDownCommand}"/>
                     <ImageButton Grid.Row="2" Grid.Column="0"
                                  Source="ic_plus.png"
                                  BackgroundColor="{StaticResource BackgroundColor}"
@@ -64,6 +74,7 @@
                                  Margin="5, 0"
                                  HorizontalOptions="EndAndExpand"
                                  VerticalOptions="CenterAndExpand"
+                                 IsVisible="{Binding IsNotSelectedMode}"
                                  Command="{Binding ShowAddAlarmCommand}"/>
                     <ImageButton Grid.Row="2" Grid.Column="1"
                                  Source="ic_timemachine.png"
@@ -71,6 +82,7 @@
                                  WidthRequest="32" HeightRequest="32"
                                  HorizontalOptions="CenterAndExpand"
                                  VerticalOptions="CenterAndExpand"
+                                 IsVisible="{Binding IsNotSelectedMode}"
                                  Command="{Binding ShowRecordCommand}"/>
                     <ImageButton Grid.Row="2" Grid.Column="2"
                                  Source="ic_menu_vertical.png"
@@ -78,6 +90,7 @@
                                  WidthRequest="32" HeightRequest="32"
                                  HorizontalOptions="CenterAndExpand"
                                  VerticalOptions="CenterAndExpand"
+                                 IsVisible="{Binding IsNotSelectedMode}"
                                  Command="{Binding ShowMainMenuCommand}"/>
                 </Grid>
                 <custom:NoRippleListView  x:Name="AlarmsListView"
@@ -90,10 +103,7 @@
                                           SeparatorVisibility="None">
                     <custom:NoRippleListView.ItemTemplate>
                         <DataTemplate>
-                            <custom:RoundedViewCell>
-                                <custom:RoundedViewCell.ContextActions>
-                                <MenuItem Text="삭제" IsDestructive="True" />
-                            </custom:RoundedViewCell.ContextActions>
+                            <custom:RoundedViewCell IsSelected="{Binding IsSelected}">
                                 <custom:AlarmsGridView x:Name="AlarmsGrid" Padding="7"/>
                             </custom:RoundedViewCell>
                         </DataTemplate>
