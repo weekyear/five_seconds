@@ -52,6 +52,23 @@ namespace Five_Seconds.Views
 
             BindingContext = viewModel;
         }
+        protected override void OnDisappearing()
+        {
+            IsSearching = false;
+            base.OnDisappearing();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (IsSearching)
+            {
+                IsSearching = false;
+                DependencyService.Get<IHelper>().CollapseSearchView();
+                return true;
+            }
+
+            return base.OnBackButtonPressed();
+        }
 
         public event EventHandler<string> SearchBarTextChanged;
         public event EventHandler<string> SearchBarTextSubmited;
@@ -62,7 +79,7 @@ namespace Five_Seconds.Views
 
         void HandleSearchBarTextChanged(object sender, string searchBarText)
         {
-            viewModel.SearchCommand.Execute(searchBarText);
+            viewModel.TextChangedCommand.Execute(searchBarText);
         }
         
         void HandleSearchBarTextSubmited(object sender, string searchBarText)
@@ -91,6 +108,21 @@ namespace Five_Seconds.Views
         private void DayRecords_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             viewModel.ShowRecordMenuCommand.Execute(e.Item);
+        }
+
+        private void SearchListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            viewModel.SearchCommand.Execute(e.Item);
+            IsSearching = false;
+            DependencyService.Get<IHelper>().CollapseSearchView();
+        }
+
+        private void SearchListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (SearchListView.SelectedItem != null || e.SelectedItem != null)
+            {
+                ((ListView)sender).SelectedItem = null;
+            }
         }
     }
 }

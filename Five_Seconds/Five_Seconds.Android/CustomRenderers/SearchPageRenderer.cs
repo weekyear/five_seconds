@@ -84,7 +84,7 @@ namespace Five_Seconds.Droid.CustomRenderers
                 {
                     SearchView = searchView;
                     SearchView.SetOnQueryTextFocusChangeListener(this);
-                    SearchView.QueryTextChange += HandleQueryTextChange; ;
+                    SearchView.QueryTextChange += HandleQueryTextChange;
                     SearchView.QueryTextSubmit += HandleQueryTextSubmit;
                     SearchView.ImeOptions = (int)ImeAction.Done;
                     SearchView.InputType = (int)InputTypes.TextVariationFilter;
@@ -104,6 +104,7 @@ namespace Five_Seconds.Droid.CustomRenderers
                 }
             }
         }
+
         private void HandleQueryTextChange(object sender, QueryTextChangeEventArgs e)
         {
             if (Element is ISearchPage searchPage)

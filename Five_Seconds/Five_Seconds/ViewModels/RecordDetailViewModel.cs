@@ -31,22 +31,39 @@ namespace Five_Seconds.ViewModels
             CreateTagItems();
 
             SetDayRecords();
+
+            InitRecordsForSearch();
         }
 
 
         private void ConstructCommand()
         {
             SearchCommand = new Command<string>((t) => Search(t));
+            TextChangedCommand = new Command<string>((t) => TextChanged(t));
             RemoveTagCommand = new Command<TagItem>((t) => RemoveTag(t));
             CloseCommand = new Command(async () => await ClosePopup());
             PreviousWeekCommand = new Command(() => PreviousWeek());
             NextWeekCommand = new Command(() => NextWeek());
             ShowRecordMenuCommand = new Command<object>(async (a) => await ShowRecordMenu(a));
         }
+        private void InitRecordsForSearch()
+        {
+            var ListRecordsForSearch = AllRecordsByName.ToList();
+            foreach (var record in Records)
+            {
+                var IsAlreadyExist = ListRecordsForSearch.Exists(r => r == record.Name);
+                if (!IsAlreadyExist)
+                {
+                    ListRecordsForSearch.Add(record.Name);
+                    AllRecordsByName.Add(record.Name);
+                }
+            }
+        }
 
         // Command
 
         public Command<string> SearchCommand { get; set; }
+        public Command<string> TextChangedCommand { get; set; }
         public Command<TagItem> RemoveTagCommand { get; set; }
         public Command CloseCommand { get; set; }
         public Command PreviousWeekCommand { get; set; }
@@ -56,7 +73,19 @@ namespace Five_Seconds.ViewModels
         // Property
 
         public List<Record> Records { get; set; }
+
+        // Property for Search //
+
+        public List<string> AllRecordsByName { get; set; } = new List<string>();
+        public List<string> RecordsBySearch { get; set; } = new List<string>();
         public bool IsSearching { get; set; }
+        public bool IsNotExistSearchResult
+        {
+            get { return IsSearching && RecordsBySearch.Count == 0; }
+        }
+
+        // Property for Search //
+
 
         private List<Record> recordsByTag;
         public List<Record> RecordsByTag
@@ -322,6 +351,25 @@ namespace Five_Seconds.ViewModels
             }
 
             TagItems.Add(_tagItem);
+        }
+        
+        private void TextChanged(string searchText)
+        {
+            var list = new List<string>();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                list = AllRecordsByName;
+            }
+            else
+            {
+                list = AllRecordsByName.FindAll(s => s.Contains(searchText));
+                if (list.Count == 0)
+                {
+                    OnPropertyChanged(nameof(IsNotExistSearchResult));
+                }
+            }
+            list.Sort();
+            RecordsBySearch = list;
         }
 
         public async Task ShowRecordMenu(object _record)

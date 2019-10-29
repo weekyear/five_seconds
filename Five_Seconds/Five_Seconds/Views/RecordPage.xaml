@@ -41,7 +41,8 @@
                         </DataTemplate>
                     </dltag:TagEntryView.TagItemTemplate>
                 </dltag:TagEntryView>
-                <Grid VerticalOptions="CenterAndExpand">
+
+                <Grid VerticalOptions="StartAndExpand">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -63,7 +64,7 @@
                        TextColor="Black"
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand"
-                       FontSize="28" />
+                       FontSize="26" />
                     <custom:PercentLabel  
                     Grid.Column="1"
                     Grid.Row="1"
@@ -71,7 +72,7 @@
                     FontAttributes="Bold"
                     HorizontalTextAlignment="Center"
                     VerticalOptions="CenterAndExpand"
-                    FontSize="32"
+                    FontSize="28"
                     TextColor="LightSlateGray"
                     Text="{Binding MonthSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                     <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
@@ -84,8 +85,8 @@
                 </Grid>
                 <custom:GestureListView x:Name="ListWeekRecords" 
                                     Margin="5, 0" 
-                                    RowHeight="100"
-                                    HasUnevenRows="False"
+                                    RowHeight="70"
+                                    HasUnevenRows="True"
                                     ItemsSource="{Binding WeekRecords}"
                                     ItemTapped="WeekRecords_ItemTapped"
                                     ItemSelected="WeekRecords_ItemSelected"
@@ -94,8 +95,7 @@
                     <custom:GestureListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell IsEnabled="{Binding HasRecord}">
-                                <Grid Padding="10"
-                                  VerticalOptions="CenterAndExpand">
+                                <Grid Padding="10" VerticalOptions="CenterAndExpand">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -106,27 +106,27 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <custom:ListItemLabel 
-                                    IsActive="{Binding HasRecord}"
-                                    Text="{Binding StartDateOfWeek, Converter={StaticResource SelectedWeekStringConverter}}"
-                                    TextColor="LightSlateGray"
-                                    FontSize="28"
-                                    FontAttributes="Bold" />
+                                        IsActive="{Binding HasRecord}"
+                                        Text="{Binding StartDateOfWeek, Converter={StaticResource SelectedWeekStringConverter}}"
+                                        TextColor="LightSlateGray"
+                                        FontSize="22"
+                                        FontAttributes="Bold" />
                                     <custom:ListItemLabel 
-                                    Grid.Row="1"
-                                    IsActive="{Binding HasRecord}"
-                                    Text="{Binding NumOfDayRecords}"
-                                    TextColor="LightSlateGray"
-                                    FontSize="18" />
+                                        Grid.Row="1"
+                                        IsActive="{Binding HasRecord}"
+                                        Text="{Binding NumOfDayRecords}"
+                                        TextColor="LightSlateGray"
+                                        FontSize="14" />
                                     <custom:PercentLabel  
-                                    Grid.Column="2"
-                                    Grid.RowSpan="2"
-                                    Percent="{Binding SuccessRate}"
-                                    FontAttributes="Bold"
-                                    HorizontalTextAlignment="Center"
-                                    VerticalOptions="CenterAndExpand"
-                                    FontSize="32"
-                                    TextColor="LightSlateGray"
-                                    Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
+                                        Grid.Column="2"
+                                        Grid.RowSpan="2"
+                                        Percent="{Binding SuccessRate}"
+                                        FontAttributes="Bold"
+                                        HorizontalTextAlignment="Center"
+                                        VerticalOptions="CenterAndExpand"
+                                        FontSize="24"
+                                        TextColor="LightSlateGray"
+                                        Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                                 </Grid>
                             </ViewCell>
                         </DataTemplate>
@@ -140,8 +140,36 @@
                       ItemTapped="SearchListView_ItemTapped"
                       ItemSelected="SearchListView_ItemSelected"
                       RowHeight="50"
-                      VerticalOptions="FillAndExpand"/>
-            
+                      VerticalOptions="FillAndExpand">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Margin="10, 0" VerticalOptions="CenterAndExpand" 
+                                   Text="{Binding .}"
+                                   TextColor="DarkBlue"
+                                   FontSize="18"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+
+            <Label Grid.Row="0" Text="기록이 없습니다"
+                   FontSize="28"
+                   IsVisible="{Binding HasNoWeekRecords}"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"
+                   VerticalTextAlignment="Center"/>
+
+            <Label Grid.Row="0" Margin="0, 60" 
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="StartAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   IsVisible="{Binding IsNotExistSearchResult}"
+                   Text="검색 결과가 없습니다. ㅠ^ㅠ"
+                   TextColor="Gray"
+                   FontSize="24"/>
+
             <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
         </Grid>
     </ContentPage.Content>

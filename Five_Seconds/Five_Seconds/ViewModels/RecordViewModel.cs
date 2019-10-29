@@ -164,6 +164,10 @@ namespace Five_Seconds.ViewModels
         public List<string> RecordsBySearch { get; set; } = new List<string>();
 
         public bool IsSearching { get; set; }
+        public bool IsNotExistSearchResult 
+        { 
+            get { return IsSearching && RecordsBySearch.Count == 0; }
+        }
 
 
         public List<Record> MonthRecords
@@ -203,6 +207,21 @@ namespace Five_Seconds.ViewModels
         }
 
         public ObservableCollection<WeekRecord> WeekRecords { get; set; } = new ObservableCollection<WeekRecord>();
+
+        public bool HasNoWeekRecords
+        {
+            get
+            {
+                if (WeekRecords.Count == 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
         private void ChangeWeekRecord(WeekRecord weekRecord)
         {
@@ -262,7 +281,10 @@ namespace Five_Seconds.ViewModels
                     DayRecords = RecordsOfWeek
                 };
 
-                weekRecords.Add(weekRecord);
+                if (weekRecord.HasRecord)
+                {
+                    weekRecords.Add(weekRecord);
+                }
 
                 startDateOfWeek = startDateOfWeek.AddDays(7);
                 startDateOfMonth = new DateTime(startDateOfWeek.Year, startDateOfWeek.Month, 1, 0, 0, 0);
@@ -273,6 +295,8 @@ namespace Five_Seconds.ViewModels
             WeekRecords.Clear();
 
             WeekRecords = weekRecords;
+
+            OnPropertyChanged(nameof(HasNoWeekRecords));
         }
 
         private void UpdateMonthRecordsByTag(TagItem tagItem)
@@ -304,7 +328,7 @@ namespace Five_Seconds.ViewModels
             }
         }
 
-        // Tag
+        // Search & Tag
 
         public void RemoveTag(TagItem tagItem)
         {
@@ -364,7 +388,7 @@ namespace Five_Seconds.ViewModels
                 list = AllRecordsByName.FindAll(s => s.Contains(searchText));
                 if (list.Count == 0)
                 {
-                    list.Add("검색 결과가 없습니다. ㅠ^ㅠ");
+                    OnPropertyChanged(nameof(IsNotExistSearchResult));
                 }
             }
             list.Sort();
