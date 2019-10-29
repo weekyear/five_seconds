@@ -20,6 +20,16 @@ namespace Five_Seconds.Views
     {
         readonly RecordViewModel viewModel;
 
+        public bool IsSearching
+        {
+            get { return viewModel.IsSearching; }
+            set
+            {
+                if (viewModel.IsSearching == value) return;
+                viewModel.IsSearching = value;
+            }
+        }
+
         public RecordPage(INavigation navigation, IMessageBoxService messageBoxService)
         {
             viewModel = new RecordViewModel(navigation, messageBoxService);
@@ -35,6 +45,7 @@ namespace Five_Seconds.Views
 
             Application.Current.Resources.Add(Resources);
 
+            SearchBarTextChanged += HandleSearchBarTextChanged;
             SearchBarTextSubmited += HandleSearchBarTextSubmited;
 
             InitializeComponent();
@@ -44,14 +55,34 @@ namespace Five_Seconds.Views
 
         protected override void OnDisappearing()
         {
+            IsSearching = false;
             DependencyService.Get<IAdMobInterstitial>().Show("ca-app-pub-8413101784746060/6812351989");
             base.OnDisappearing();
         }
 
+        protected override bool OnBackButtonPressed()
+        {
+            if (IsSearching)
+            {
+                IsSearching = false;
+                DependencyService.Get<IHelper>().CollapseSearchView();
+                return true;
+            }
+
+            return base.OnBackButtonPressed();
+        }
+
+        public event EventHandler<string> SearchBarTextChanged;
         public event EventHandler<string> SearchBarTextSubmited;
 
+        public void OnSearchBarTextChanged(string text) => SearchBarTextChanged?.Invoke(this, text);
         public void OnSearchBarTextSubmited(string text) => SearchBarTextSubmited?.Invoke(this, text);
         
+        void HandleSearchBarTextChanged(object sender, string searchBarText)
+        {
+            viewModel.TextChangedCommand.Execute(searchBarText);
+        }
+
         void HandleSearchBarTextSubmited(object sender, string searchBarText)
         {
             viewModel.SearchCommand.Execute(searchBarText);
@@ -78,6 +109,21 @@ namespace Five_Seconds.Views
         private void ListWeekRecords_SwipeRight(object sender, EventArgs e)
         {
             viewModel.PreviousMonthCommand.Execute(null);
+        }
+
+        private void SearchListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            viewModel.SearchCommand.Execute(e.Item);
+            IsSearching = false;
+            DependencyService.Get<IHelper>().CollapseSearchView();
+        }
+
+        private void SearchListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (SearchListView.SelectedItem != null || e.SelectedItem != null)
+            {
+                ((ListView)sender).SelectedItem = null;
+            }
         }
     }
 }

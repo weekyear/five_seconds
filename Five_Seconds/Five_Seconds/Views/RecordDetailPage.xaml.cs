@@ -20,6 +20,16 @@ namespace Five_Seconds.Views
     public partial class RecordDetailPage : ContentPage, ISearchPage
     {
         readonly RecordDetailViewModel viewModel;
+
+        public bool IsSearching
+        {
+            get { return viewModel.IsSearching; }
+            set
+            {
+                if (viewModel.IsSearching == value) return;
+                viewModel.IsSearching = value;
+            }
+        }
         public RecordDetailPage(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords, IMessageBoxService messageBoxService)
         {
             viewModel = new RecordDetailViewModel(navigation, weekRecord, allRecords, messageBoxService);
@@ -35,6 +45,7 @@ namespace Five_Seconds.Views
 
             Application.Current.Resources.Add(Resources);
 
+            SearchBarTextChanged += HandleSearchBarTextChanged;
             SearchBarTextSubmited += HandleSearchBarTextSubmited;
 
             InitializeComponent();
@@ -42,10 +53,18 @@ namespace Five_Seconds.Views
             BindingContext = viewModel;
         }
 
+        public event EventHandler<string> SearchBarTextChanged;
         public event EventHandler<string> SearchBarTextSubmited;
 
+        public void OnSearchBarTextChanged(string text) => SearchBarTextChanged?.Invoke(this, text);
         public void OnSearchBarTextSubmited(string text) => SearchBarTextSubmited?.Invoke(this, text);
 
+
+        void HandleSearchBarTextChanged(object sender, string searchBarText)
+        {
+            viewModel.SearchCommand.Execute(searchBarText);
+        }
+        
         void HandleSearchBarTextSubmited(object sender, string searchBarText)
         {
             viewModel.SearchCommand.Execute(searchBarText);

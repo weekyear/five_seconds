@@ -39,7 +39,8 @@ namespace Five_Seconds.Models
         {
             AlarmId = alarm.Id;
             Name = alarm.Name;
-            DateTime = DateTime.Now;
+            //DateTime = DateTime.Now;
+            DateTime = alarm.TimeOffset.DateTime;
             IsSuccess = isSuccess;
         }
     }

@@ -9,6 +9,8 @@
              Title="알람 설정"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmPage"
+             NavigationPage.HasBackButton="False"
+             NavigationPage.BackButtonTitle="백버튼"
              BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>

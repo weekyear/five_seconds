@@ -160,6 +160,7 @@
     <Compile Include="Services\CountDown.cs" />
     <Compile Include="Services\CountDownAndroid.cs" />
     <Compile Include="Services\FileLocatorAndroid.cs" />
+    <Compile Include="Services\HelperAndroid.cs" />
     <Compile Include="Services\InterstitialAdListener.cs" />
     <Compile Include="BroadcastReceivers\NotificationReceiver.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />

@@ -56,6 +56,7 @@ namespace Five_Seconds.ViewModels
         // Property
 
         public List<Record> Records { get; set; }
+        public bool IsSearching { get; set; }
 
         private List<Record> recordsByTag;
         public List<Record> RecordsByTag
