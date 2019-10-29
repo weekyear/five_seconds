@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using System.ComponentModel;
 using Android.Content;
 using Android.Gms.Ads;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Five_Seconds.CustomControls;
 using Five_Seconds.Droid.CustomRenderers;
 using Five_Seconds.Droid.Interface;
-using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
@@ -23,10 +13,10 @@ namespace Five_Seconds.Droid.CustomRenderers
 {
     public class AdMobViewRenderer : ViewRenderer<AdMobView, AdView>, IAdListener
     {
-        AdView _adView;
+        AdView adView;
         public AdMobViewRenderer(Context context) : base(context) { }
 
-        public AdView AdView => _adView;
+        public AdView AdView => adView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<AdMobView> e)
         {
@@ -46,20 +36,24 @@ namespace Five_Seconds.Droid.CustomRenderers
 
         private AdView CreateAdView()
         {
-            _adView = new AdView(Context)
+            adView = new AdView(Context)
             {
                 AdSize = AdSize.Banner,
                 AdUnitId = Element.AdUnitId
             };
 
-            _adView.LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
+            int heightPixels = AdSize.Banner.GetHeightInPixels(Context);
+            adView.SetMinimumHeight(heightPixels);
 
-            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
-            //adView.LoadAd(requestbuilder);
-            _adView.AdListener = new Services.AdListener(this);
-            _adView.LoadAd(new AdRequest.Builder().Build());
+            adView.LayoutParameters = new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.WrapContent);
 
-            return _adView;
+            adView.AdListener = new Services.AdListener(this);
+
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            adView.LoadAd(requestbuilder);
+            //_adView.LoadAd(new AdRequest.Builder().Build());
+
+            return adView;
         }
     }
 }

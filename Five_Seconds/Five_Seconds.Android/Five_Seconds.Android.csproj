@@ -161,7 +161,7 @@
     <Compile Include="Services\CountDownAndroid.cs" />
     <Compile Include="Services\FileLocatorAndroid.cs" />
     <Compile Include="Services\InterstitialAdListener.cs" />
-    <Compile Include="Services\NotificationReceiver.cs" />
+    <Compile Include="BroadcastReceivers\NotificationReceiver.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />

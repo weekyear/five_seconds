@@ -5,11 +5,12 @@ using Android.OS;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
+using Five_Seconds.Droid.Services;
 using Plugin.CurrentActivity;
 using SQLite;
 using static Android.App.ActivityManager;
 
-namespace Five_Seconds.Droid.Services
+namespace Five_Seconds.Droid.BroadcastReceivers
 {
     [BroadcastReceiver]
     public class NotificationReceiver : BroadcastReceiver

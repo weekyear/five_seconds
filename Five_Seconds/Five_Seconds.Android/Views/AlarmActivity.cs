@@ -546,8 +546,6 @@ namespace Five_Seconds.Droid
         private void SetAdView()
         {
             //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
-            //adViewForResult.LoadAd(requestbuilder);
-            //adViewForLater.LoadAd(requestbuilder);
 
             var requestbuilder = new AdRequest.Builder().Build();
             adViewForResult.LoadAd(requestbuilder);

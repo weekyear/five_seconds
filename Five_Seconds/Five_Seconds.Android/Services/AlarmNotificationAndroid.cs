@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
+using Five_Seconds.Droid.BroadcastReceivers;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
@@ -19,8 +20,8 @@ namespace Five_Seconds.Droid.Services
 {
     public class AlarmNotificationAndroid : IAlarmNotification
     {
-        private static string NOTIFICATION_CHANNEL_ID = "com.beside.five_seconds";
-        private static string channelName = "알람";
+        private static readonly string NOTIFICATION_CHANNEL_ID = "com.beside.five_seconds";
+        private static readonly string channelName = "알람";
 
         public static NotificationManager SetNotificationManager()
         {

@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AboutPage"
              Title="{Binding Title}">
-    
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
@@ -15,9 +15,14 @@
             <Color x:Key="LightTextColor">#999999</Color>
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <StackLayout BackgroundColor="White">
-        <ListView x:Name="AboutListView"
+    
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="White" Grid.Row="0">
+            <ListView x:Name="AboutListView"
                 ItemsSource="{Binding Abouts}"
                 Margin="10"
                 RowHeight="75"
@@ -25,19 +30,20 @@
                 ItemSelected="AboutListView_ItemSelected"
                 VerticalOptions="FillAndExpand"
                 CachingStrategy="RecycleElement">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Label Text="{Binding .}"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding .}"
                                VerticalOptions="CenterAndExpand"
                                TextColor="{StaticResource PrimaryTextColor}"
                                FontSize="20"
                                FontAttributes="Bold"
                                Margin="5, 0, 0, 0"/>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </StackLayout>
-    
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+        <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+    </Grid>
 </ContentPage>
