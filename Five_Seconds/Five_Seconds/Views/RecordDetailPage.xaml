@@ -8,6 +8,7 @@
              xmlns:dltag="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.TagEntryView"
              mc:Ignorable="d"
              Title="알람 기록 (주별)"
+             BackgroundColor="{StaticResource BackgroundColor}"
              x:Class="Five_Seconds.Views.RecordDetailPage">
     
     <ContentPage.Resources>
@@ -26,15 +27,16 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="0">
-            <StackLayout.GestureRecognizers>
-                <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
-                <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
-            </StackLayout.GestureRecognizers>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
             <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
                                  ShowEntryBox="False" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
                                  AllowKeyboardReturnToAddNewTag="True"
-                                 VerticalOptions="Start" Margin="10, 10">
+                                 VerticalOptions="Start" Margin="10, 10" Grid.Row="0">
                 <dltag:TagEntryView.TagItemTemplate>
                     <DataTemplate>
                         <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
@@ -44,30 +46,35 @@
                     </DataTemplate>
                 </dltag:TagEntryView.TagItemTemplate>
             </dltag:TagEntryView>
-            <Grid VerticalOptions="StartAndExpand" Margin="5, 0, 5, 0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <ImageButton Grid.RowSpan="2" Source="ic_left.png"
+            <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="1">
+                <StackLayout.GestureRecognizers>
+                    <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
+                    <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <Grid VerticalOptions="StartAndExpand" Margin="5, 0, 5, 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ImageButton Grid.RowSpan="2" Source="ic_left.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
                              WidthRequest="40" HeightRequest="40"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding PreviousWeekCommand}"/>
-                <Label Grid.Column="1" 
+                    <Label Grid.Column="1" 
                        Text="{Binding SelectedWeek, Converter={StaticResource SelectedWeekStringConverter}}"
                        TextColor="Black"
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand"
                        FontSize="28" />
-                <custom:PercentLabel  
+                    <custom:PercentLabel  
                     Grid.Column="1"
                     Grid.Row="1"
                     Percent="{Binding WeekSuccessRate}"
@@ -77,15 +84,15 @@
                     FontSize="32"
                     TextColor="LightSlateGray"
                     Text="{Binding WeekSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
-                <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
+                    <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
                              WidthRequest="40" HeightRequest="40"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextWeekCommand}"/>
-            </Grid>
-            <custom:GestureListView x:Name="DayRecords" 
+                </Grid>
+                <custom:GestureListView x:Name="DayRecords" 
                                     Margin="10" 
                                     ItemsSource="{Binding DayRecords}"
                                     VerticalOptions="CenterAndExpand"
@@ -95,25 +102,25 @@
                                     SwipeLeft="DayRecords_SwipeLeft"
                                     SwipeRight="DayRecords_SwipeRight" 
                                     IsVisible="{Binding HasRecord}">
-                <custom:GestureListView.GestureRecognizers>
-                    <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
-                    <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
-                </custom:GestureListView.GestureRecognizers>
-                <custom:GestureListView.GroupHeaderTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid HorizontalOptions="FillAndExpand"
+                    <custom:GestureListView.GestureRecognizers>
+                        <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
+                        <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
+                    </custom:GestureListView.GestureRecognizers>
+                    <custom:GestureListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid HorizontalOptions="FillAndExpand"
                                   VerticalOptions="CenterAndExpand"
                                   Margin="10, 0, 10, 0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="50" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="100"/>
-                                </Grid.ColumnDefinitions>
-                                <custom:PercentLabel 
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="50" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <custom:PercentLabel 
                                     Percent="{Binding SuccessRate}"
                                     Text="{Binding DayOfWeek}"
                                     TextColor="LightSlateGray"
@@ -121,7 +128,7 @@
                                     VerticalOptions="CenterAndExpand"
                                     FontAttributes="Bold"
                                     Margin="10, 0"/>
-                                <custom:PercentLabel 
+                                    <custom:PercentLabel 
                                     Grid.Column="1"
                                     Percent="{Binding SuccessRate}"
                                     Text="{Binding Date, Converter={StaticResource DateStringConverter}}"
@@ -130,7 +137,7 @@
                                     VerticalOptions="CenterAndExpand"
                                     FontAttributes="Bold"
                                     Margin="10, 0"/>
-                                <custom:PercentLabel 
+                                    <custom:PercentLabel 
                                     Grid.Column="2" 
                                     Percent="{Binding SuccessRate}"
                                     Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"
@@ -139,43 +146,43 @@
                                     FontAttributes="Bold"
                                     HorizontalOptions="EndAndExpand"
                                     VerticalOptions="CenterAndExpand"/>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </custom:GestureListView.GroupHeaderTemplate>
-                <custom:GestureListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Grid HorizontalOptions="FillAndExpand"
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </custom:GestureListView.GroupHeaderTemplate>
+                    <custom:GestureListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid HorizontalOptions="FillAndExpand"
                                   VerticalOptions="CenterAndExpand"
                                   Margin="0, 0, 10, 0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="40" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*"/>
-                                    <ColumnDefinition Width="25*"/>
-                                    <ColumnDefinition Width="60*"/>
-                                    <ColumnDefinition Width="20*"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="40" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="10*"/>
+                                        <ColumnDefinition Width="25*"/>
+                                        <ColumnDefinition Width="60*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
                                        TextColor="Black"
                                        FontSize="15"
                                        HorizontalOptions="EndAndExpand"
                                        VerticalOptions="CenterAndExpand"/>
-                                <Label Grid.Column="1" Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                    <Label Grid.Column="1" Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
                                        TextColor="Black"
                                        FontSize="15"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Margin="10, 0"/>
-                                <Label Grid.Column="2" 
+                                    <Label Grid.Column="2" 
                                        Text="{Binding Name}"
                                        TextColor="Black"
                                        FontSize="15"
                                        VerticalOptions="CenterAndExpand"
                                        Margin="10, 0"/>
-                                <custom:SuccessLabel 
+                                    <custom:SuccessLabel 
                                     Grid.Column="3" 
                                     IsSuccess="{Binding IsSuccess}"
                                     Text="{Binding IsSuccess, Converter={StaticResource SuccessStringConverter}}"
@@ -184,13 +191,13 @@
                                     FontAttributes="Bold"
                                     VerticalOptions="CenterAndExpand"
                                     Margin="10, 0"/>
-                            </Grid>
-                        </ViewCell>
-                    </DataTemplate>
-                </custom:GestureListView.ItemTemplate>
-            </custom:GestureListView>
-        </StackLayout>
-        <ListView x:Name="SearchListView" Grid.Row="0"
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </custom:GestureListView.ItemTemplate>
+                </custom:GestureListView>
+            </StackLayout>
+            <ListView x:Name="SearchListView" Grid.RowSpan="2"
                   BackgroundColor="White"
                   ItemsSource="{Binding RecordsBySearch}"
                   IsVisible="{Binding IsSearching}"
@@ -198,26 +205,26 @@
                   ItemSelected="SearchListView_ItemSelected"
                   RowHeight="50"
                   VerticalOptions="FillAndExpand">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Label Margin="10, 0" VerticalOptions="CenterAndExpand" 
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Margin="10, 0" VerticalOptions="CenterAndExpand" 
                                Text="{Binding .}"
                                TextColor="DarkBlue"
                                FontSize="18"/>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-        <Label Grid.Row="0" Text="기록이 없습니다"
+            <Label Grid.Row="0" Text="기록이 없습니다"
                FontSize="28"
                IsVisible="{Binding HasNoRecord}"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                VerticalTextAlignment="Center"/>
 
-        <Label Grid.Row="0" Margin="0, 60" 
+            <Label Grid.Row="0" Margin="0, 60" 
                    HorizontalTextAlignment="Center"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
@@ -225,6 +232,7 @@
                    Text="검색 결과가 없습니다. ㅠ^ㅠ"
                    TextColor="Gray"
                    FontSize="24"/>
-        <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+            <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+        </Grid>
     </Grid>
 </ContentPage>

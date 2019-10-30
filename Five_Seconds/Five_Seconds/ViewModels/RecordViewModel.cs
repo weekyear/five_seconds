@@ -47,13 +47,15 @@ namespace Five_Seconds.ViewModels
 
         private void InitRecordsForSearch()
         {
-            var ListRecordsForSearch = AllRecordsByName.ToList();
             foreach (var record in Records)
             {
-                var IsAlreadyExist = ListRecordsForSearch.Exists(r => r == record.Name);
+                var IsAlreadyExist = AllRecordsByName.Exists(r => r == record.Name);
                 if (!IsAlreadyExist)
                 {
-                    ListRecordsForSearch.Add(record.Name);
+                    if (TagItems.ToList().Exists(t => t.Name != record.Name))
+                    {
+                        RecordsBySearch.Add(record.Name);
+                    }
                     AllRecordsByName.Add(record.Name);
                 }
             }
@@ -161,7 +163,7 @@ namespace Five_Seconds.ViewModels
         public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB;
 
         public List<string> AllRecordsByName { get; set; } = new List<string>();
-        public List<string> RecordsBySearch { get; set; } = new List<string>();
+        public ObservableCollection<string> RecordsBySearch { get; set; } = new ObservableCollection<string>();
 
         public bool IsSearching { get; set; }
         public bool IsNotExistSearchResult 
@@ -340,6 +342,13 @@ namespace Five_Seconds.ViewModels
             TagItems.Remove(tagItem);
 
             UpdateWeekRecords(null);
+
+            RecordsBySearch.Add(tagItem.Name);
+
+            var list = new List<string>(RecordsBySearch);
+            list.Sort();
+
+            SortRecordsBySearch(list);
         }
 
         public TagItem ValidateAndReturn(string tag)
@@ -374,6 +383,8 @@ namespace Five_Seconds.ViewModels
             UpdateWeekRecords(_tagItem);
 
             TagItems.Add(_tagItem);
+            
+            RecordsBySearch.Remove(_tagItem.Name);
         }
         
         private void TextChanged(string searchText)
@@ -391,8 +402,22 @@ namespace Five_Seconds.ViewModels
                     OnPropertyChanged(nameof(IsNotExistSearchResult));
                 }
             }
+
+            foreach (var tagItem in TagItems)
+            {
+                list.Remove(tagItem.Name);
+            }
+
             list.Sort();
-            RecordsBySearch = list;
+
+            SortRecordsBySearch(list);
+        }
+
+        private void SortRecordsBySearch(List<string> list)
+        {
+            RecordsBySearch.Clear();
+
+            RecordsBySearch = new ObservableCollection<string>(list);
         }
 
         public class WeekRecord

@@ -8,7 +8,8 @@
              xmlns:dltag="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.TagEntryView"
              x:Class="Five_Seconds.Views.RecordPage"
              mc:Ignorable="d"
-             Title="알람 기록 (월별)">
+             Title="알람 기록 (월별)"
+             BackgroundColor="{StaticResource BackgroundColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:SelectedMonthStringConverter x:Key="SelectedMonthStringConverter"/>
@@ -23,15 +24,15 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-            <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="0">
-                <StackLayout.GestureRecognizers>
-                    <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}"/>
-                    <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}"/>
-                </StackLayout.GestureRecognizers>
+            <Grid RowSpacing="0" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
                 <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
                                  ShowEntryBox="False" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
                                  AllowKeyboardReturnToAddNewTag="True"
-                                 VerticalOptions="Start" Margin="10, 5">
+                                 VerticalOptions="Start" Margin="10, 5" Grid.Row="0">
                     <dltag:TagEntryView.TagItemTemplate>
                         <DataTemplate>
                             <Frame BackgroundColor="Transparent" OutlineColor="#2196F3" Padding="8" HasShadow="True">
@@ -41,31 +42,36 @@
                         </DataTemplate>
                     </dltag:TagEntryView.TagItemTemplate>
                 </dltag:TagEntryView>
+                <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="1">
+                    <StackLayout.GestureRecognizers>
+                        <SwipeGestureRecognizer Direction="Left" Command="{Binding NextMonthCommand}"/>
+                        <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousMonthCommand}"/>
+                    </StackLayout.GestureRecognizers>
 
-                <Grid VerticalOptions="StartAndExpand">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ImageButton Grid.RowSpan="2" Source="ic_left.png"
+                    <Grid VerticalOptions="StartAndExpand">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ImageButton Grid.RowSpan="2" Source="ic_left.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
                              WidthRequest="40" HeightRequest="40"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding PreviousMonthCommand}"/>
-                    <Label Grid.Column="1" 
+                        <Label Grid.Column="1" 
                        Text="{Binding SelectedMonth, Converter={StaticResource SelectedMonthStringConverter}}"
                        TextColor="Black"
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="CenterAndExpand"
                        FontSize="26" />
-                    <custom:PercentLabel  
+                        <custom:PercentLabel  
                     Grid.Column="1"
                     Grid.Row="1"
                     Percent="{Binding MonthSuccessRate}"
@@ -75,15 +81,15 @@
                     FontSize="28"
                     TextColor="LightSlateGray"
                     Text="{Binding MonthSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
-                    <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
+                        <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
                              WidthRequest="40" HeightRequest="40"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding NextMonthCommand}"/>
-                </Grid>
-                <custom:GestureListView x:Name="ListWeekRecords" 
+                    </Grid>
+                    <custom:GestureListView x:Name="ListWeekRecords" 
                                     Margin="5, 0" 
                                     RowHeight="70"
                                     HasUnevenRows="True"
@@ -92,32 +98,32 @@
                                     ItemSelected="WeekRecords_ItemSelected"
                                     SwipeLeft="ListWeekRecords_SwipeLeft"
                                     SwipeRight="ListWeekRecords_SwipeRight">
-                    <custom:GestureListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell IsEnabled="{Binding HasRecord}">
-                                <Grid Padding="10" VerticalOptions="CenterAndExpand">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <custom:ListItemLabel 
+                        <custom:GestureListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell IsEnabled="{Binding HasRecord}">
+                                    <Grid Padding="10" VerticalOptions="CenterAndExpand">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <custom:ListItemLabel 
                                         IsActive="{Binding HasRecord}"
                                         Text="{Binding StartDateOfWeek, Converter={StaticResource SelectedWeekStringConverter}}"
                                         TextColor="LightSlateGray"
                                         FontSize="22"
                                         FontAttributes="Bold" />
-                                    <custom:ListItemLabel 
+                                        <custom:ListItemLabel 
                                         Grid.Row="1"
                                         IsActive="{Binding HasRecord}"
                                         Text="{Binding NumOfDayRecords}"
                                         TextColor="LightSlateGray"
                                         FontSize="14" />
-                                    <custom:PercentLabel  
+                                        <custom:PercentLabel  
                                         Grid.Column="2"
                                         Grid.RowSpan="2"
                                         Percent="{Binding SuccessRate}"
@@ -127,13 +133,13 @@
                                         FontSize="24"
                                         TextColor="LightSlateGray"
                                         Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </custom:GestureListView.ItemTemplate>
-                </custom:GestureListView>
-            </StackLayout>
-            <ListView x:Name="SearchListView" Grid.Row="0"
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </custom:GestureListView.ItemTemplate>
+                    </custom:GestureListView>
+                </StackLayout>
+                <ListView x:Name="SearchListView" Grid.RowSpan="2"
                       BackgroundColor="White"
                       ItemsSource="{Binding RecordsBySearch}"
                       IsVisible="{Binding IsSearching}"
@@ -141,27 +147,27 @@
                       ItemSelected="SearchListView_ItemSelected"
                       RowHeight="50"
                       VerticalOptions="FillAndExpand">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <Label Margin="10, 0" VerticalOptions="CenterAndExpand" 
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Label Margin="10, 0" VerticalOptions="CenterAndExpand" 
                                    Text="{Binding .}"
                                    TextColor="DarkBlue"
                                    FontSize="18"/>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
 
-            <Label Grid.Row="0" Text="기록이 없습니다"
+                <Label Grid.Row="0" Text="기록이 없습니다"
                    FontSize="28"
                    IsVisible="{Binding HasNoWeekRecords}"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"
                    VerticalTextAlignment="Center"/>
 
-            <Label Grid.Row="0" Margin="0, 60" 
+                <Label Grid.Row="0" Margin="0, 60" 
                    HorizontalTextAlignment="Center"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
@@ -170,7 +176,8 @@
                    TextColor="Gray"
                    FontSize="24"/>
 
-            <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+                <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
+            </Grid>
         </Grid>
     </ContentPage.Content>
         

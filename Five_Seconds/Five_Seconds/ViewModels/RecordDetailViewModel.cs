@@ -77,7 +77,7 @@ namespace Five_Seconds.ViewModels
         // Property for Search //
 
         public List<string> AllRecordsByName { get; set; } = new List<string>();
-        public List<string> RecordsBySearch { get; set; } = new List<string>();
+        public ObservableCollection<string> RecordsBySearch { get; set; } = new ObservableCollection<string>();
         public bool IsSearching { get; set; }
         public bool IsNotExistSearchResult
         {
@@ -314,6 +314,13 @@ namespace Five_Seconds.ViewModels
             UpdateWeekRecord(null);
 
             SendMessage("removeTag", tagItem);
+
+            RecordsBySearch.Add(tagItem.Name);
+
+            var list = new List<string>(RecordsBySearch);
+            list.Sort();
+
+            SortRecordsBySearch(list);
         }
 
         public TagItem ValidateAndReturn(string tag)
@@ -351,6 +358,8 @@ namespace Five_Seconds.ViewModels
             }
 
             TagItems.Add(_tagItem);
+
+            RecordsBySearch.Remove(_tagItem.Name);
         }
         
         private void TextChanged(string searchText)
@@ -368,8 +377,21 @@ namespace Five_Seconds.ViewModels
                     OnPropertyChanged(nameof(IsNotExistSearchResult));
                 }
             }
+
+            foreach (var tagItem in TagItems)
+            {
+                list.Remove(tagItem.Name);
+            }
+
             list.Sort();
-            RecordsBySearch = list;
+            SortRecordsBySearch(list);
+        }
+
+        private void SortRecordsBySearch(List<string> list)
+        {
+            RecordsBySearch.Clear();
+
+            RecordsBySearch = new ObservableCollection<string>(list);
         }
 
         public async Task ShowRecordMenu(object _record)
