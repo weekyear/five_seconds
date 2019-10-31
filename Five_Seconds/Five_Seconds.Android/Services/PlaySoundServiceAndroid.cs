@@ -84,7 +84,7 @@ namespace Five_Seconds.Droid.Services
                 _mediaPlayer.SetAudioStreamType(Stream.Music);
             }
 
-            _mediaPlayer.SetVolume((float)0.4, (float)0.4);
+            _mediaPlayer.SetVolume((float)0.45, (float)0.45);
             _mediaPlayer.Looping = false;
             _mediaPlayer.Prepare();
             _mediaPlayer.Start();
@@ -96,6 +96,18 @@ namespace Five_Seconds.Droid.Services
                 _mediaPlayer.Stop();
 
             _mediaPlayer.Reset();
+        }
+
+        public void ChangeVolume(int volume)
+        {
+            if (_mediaPlayer.IsPlaying)
+                _mediaPlayer.Pause();
+            var maxVolume = 10;
+            
+            float log1 = (float)(Math.Log(maxVolume - volume) / Math.Log(maxVolume));
+
+            _mediaPlayer.SetVolume(1 - log1, 1 - log1);
+            _mediaPlayer.Start();
         }
     }
 }

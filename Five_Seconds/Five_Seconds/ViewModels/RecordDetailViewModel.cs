@@ -138,7 +138,7 @@ namespace Five_Seconds.ViewModels
         {
             get
             {
-                if (DayRecords.Count == 0)
+                if (!IsSearching && DayRecords.Count == 0)
                 {
                     return true;
                 }

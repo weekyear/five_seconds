@@ -217,14 +217,15 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <Label Grid.Row="0" Text="기록이 없습니다"
+        </Grid>
+        <Label Grid.Row="0" Text="기록이 없습니다"
                FontSize="28"
                IsVisible="{Binding HasNoRecord}"
                HorizontalOptions="CenterAndExpand"
                VerticalOptions="CenterAndExpand"
                VerticalTextAlignment="Center"/>
 
-            <Label Grid.Row="0" Margin="0, 60" 
+        <Label Grid.Row="0" Margin="0, 60" 
                    HorizontalTextAlignment="Center"
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
@@ -232,7 +233,6 @@
                    Text="검색 결과가 없습니다. ㅠ^ㅠ"
                    TextColor="Gray"
                    FontSize="24"/>
-            <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
-        </Grid>
+        <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>
     </Grid>
 </ContentPage>

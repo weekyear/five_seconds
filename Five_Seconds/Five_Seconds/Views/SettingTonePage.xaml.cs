@@ -33,6 +33,7 @@ namespace Five_Seconds.Views
         {
             base.OnDisappearing();
             viewModel.StopToneCommand.Execute(null);
+            viewModel.IsPlaying = false;
         }
 
         private void ToneListView_ItemTapped(object sender, ItemTappedEventArgs e)
@@ -40,6 +41,14 @@ namespace Five_Seconds.Views
             var settingTone = e.Item as SettingTone;
 
             viewModel.ClickTone(settingTone);
+        }
+
+        private void VolumeSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+        {
+            if (viewModel.IsPlaying)
+            {
+                viewModel.ChangeVolumeCommand.Execute(e.NewValue);
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Five_Seconds.ViewModels
 
             SubscribeMessage();
 
-            SaveTestRecords();
+            //SaveTestRecords();
 
             InitRecordsForSearch();
         }
@@ -214,7 +214,7 @@ namespace Five_Seconds.ViewModels
         {
             get
             {
-                if (WeekRecords.Count == 0)
+                if (!IsSearching && WeekRecords.Count == 0)
                 {
                     return true;
                 }

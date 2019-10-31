@@ -29,6 +29,7 @@ namespace Five_Seconds.ViewModels
             ClickPlayCommand = new Command(() => ClickPlay());
             PlayToneCommand = new Command(() => PlayTone());
             StopToneCommand = new Command(() => StopTone());
+            ChangeVolumeCommand = new Command<double>((v) => ChangeVolume(v));
             AddToneCommand = new Command(() => AddTone());
         }
 
@@ -52,6 +53,7 @@ namespace Five_Seconds.ViewModels
         public Command ClickPlayCommand { get; set; }
         public Command PlayToneCommand { get; set; }
         public Command StopToneCommand { get; set; }
+        public Command<double> ChangeVolumeCommand { get; set; }
         public Command AddToneCommand { get; set; }
 
 
@@ -114,6 +116,12 @@ namespace Five_Seconds.ViewModels
         private void StopTone()
         {
             _soundService.StopAudio();
+        }
+        
+        private void ChangeVolume(double volume)
+        {
+            var _volume = (int)volume;
+            _soundService.ChangeVolume(_volume);
         }
 
         private void AddTone()

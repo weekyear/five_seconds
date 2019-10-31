@@ -37,6 +37,7 @@
                         HorizontalOptions="FillAndExpand"
                         MinimumTrackColor="LightSkyBlue"
                         MaximumTrackColor="LightSkyBlue"
+                        ValueChanged="VolumeSlider_ValueChanged"
                         ThumbColor="DeepSkyBlue"
                         Maximum="10" Minimum="1" 
                         Margin="5"

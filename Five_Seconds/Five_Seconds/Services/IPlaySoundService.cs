@@ -11,5 +11,6 @@ namespace Five_Seconds.Services
         void PlayAudio(AlarmTone alarmTone, bool isLooping, int volume);
         void PlayCountAudio();
         void StopAudio();
+        void ChangeVolume(int volume);
     }
 }
