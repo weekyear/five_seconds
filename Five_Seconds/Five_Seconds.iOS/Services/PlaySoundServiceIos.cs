@@ -60,5 +60,10 @@ namespace Five_Seconds.iOS.Services
         {
             _audioPlayer?.Play();
         }
+
+        public void ChangeVolume(int volume)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

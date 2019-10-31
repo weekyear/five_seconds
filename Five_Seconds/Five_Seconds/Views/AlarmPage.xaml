@@ -9,8 +9,6 @@
              Title="알람 설정"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmPage"
-             NavigationPage.HasBackButton="False"
-             NavigationPage.BackButtonTitle="백버튼"
              BackgroundColor="White">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -46,9 +44,9 @@
                         <StackLayout Orientation="Horizontal" Padding="13, 0">
                             <droid:EditText Text="Android EditText" x:Arguments="{x:Static formsdroid:Forms.Context}"/>
                             <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
-                                                     Time="{Binding Time}" Margin="20"
-                                                     Format="t"
-                                                     FontSize="40"/>
+                                                         Time="{Binding Time}" Margin="20"
+                                                         Format="t"
+                                                         FontSize="40"/>
                         </StackLayout>
                     </custom:TableViewCell>
                     <custom:TableViewCell AllowHighlight="False">

@@ -12,7 +12,7 @@ namespace Five_Seconds.Repository
 
         //Settings GetSettings();
         IEnumerable<AlarmTone> GetAllTones();
-        int AddTone(AlarmTone alarmTone);
+        int SaveTone(AlarmTone alarmTone);
         int DeleteTone(AlarmTone alarmTone);
         AlarmTone GetTone(int id);
         List<AlarmTone> GetAllAlarmTones();

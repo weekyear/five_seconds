@@ -1,7 +1,7 @@
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/alarmFeedbackLayout"
+    android:id="@+id/alarmResultLayout"
     android:layout_width="match_parent"
     android:background="@drawable/dialog_bg"
     android:layout_height="wrap_content">

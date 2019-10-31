@@ -17,7 +17,7 @@ namespace Five_Seconds.Repository
             return ItemDatabase.GetObjects<AlarmTone>();
         }
 
-        public int AddTone(AlarmTone alarmTone)
+        public int SaveTone(AlarmTone alarmTone)
         {
             return ItemDatabase.SaveObject(alarmTone);
         }
@@ -41,7 +41,10 @@ namespace Five_Seconds.Repository
                 new AlarmTone("Xylophone", "xylophone.mp3"),
                 new AlarmTone("Shooting Stars", "shooting_stars.mp3"),
                 new AlarmTone("Sixteen Bit", "sixteen_bit.mp3"),
-                new AlarmTone("Sci-fi", "sci_fi.mp3")
+                new AlarmTone("Sci-fi", "sci_fi.mp3"),
+                new AlarmTone("Analog Alarm", "analog_alarm.mp3"),
+                new AlarmTone("Old Door Bell", "old_door_bell.mp3"),
+                new AlarmTone("Forhorn", "foghorn.mp3")
             };
 
             var allTones = GetAllTones() as List<AlarmTone>;

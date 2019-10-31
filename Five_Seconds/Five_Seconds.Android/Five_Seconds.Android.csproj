@@ -150,6 +150,7 @@
     <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
     <Compile Include="CustomRenderers\SearchDetailPageRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
+    <Compile Include="CustomRenderers\TonesListViewRenderer.cs" />
     <Compile Include="Interface\IAdListener.cs" />
     <Compile Include="Services\AdListener.cs" />
     <Compile Include="Services\AdMobInterstitialAndroid.cs" />
@@ -355,7 +356,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\AlarmFeedbackDialog.xml">
+    <AndroidResource Include="Resources\layout\AlarmResultDialog.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -401,6 +402,24 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_repeat.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\old_door_bell.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\analog_alarm.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\annoying_alarmclock.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\foghorn.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_repeat_active.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_repeat_inactive.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

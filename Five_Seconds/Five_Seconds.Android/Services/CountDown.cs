@@ -41,7 +41,7 @@ namespace Five_Seconds.Droid.Services
             else
             {
                 await Task.Delay(300);
-                Activity.ShowFeedbackDialog();
+                Activity.ShowResultDialog();
                 if (!Activity.IsSuccess)
                 {
                     CloseActivityWhenFailedAndTimeOut();

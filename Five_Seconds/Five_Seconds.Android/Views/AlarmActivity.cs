@@ -32,7 +32,7 @@ namespace Five_Seconds.Droid
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
-        private Dialog feedbackDialog;
+        private Dialog resultDialog;
         private Dialog laterDialog;
         private NumberPicker laterNumberPicker;
 
@@ -121,7 +121,7 @@ namespace Five_Seconds.Droid
 
             SetLaterDialog();
 
-            SetFeedbackDialog();
+            SetResultDialog();
 
             SetAdView();
 
@@ -262,7 +262,7 @@ namespace Five_Seconds.Droid
 
                 IsSuccess = true;
 
-                ShowFeedbackDialog();
+                ShowResultDialog();
             }
             else
             {
@@ -445,7 +445,7 @@ namespace Five_Seconds.Droid
             mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
         }
 
-        public void ShowFeedbackDialog()
+        public void ShowResultDialog()
         {
             CreateRecord();
 
@@ -453,19 +453,19 @@ namespace Five_Seconds.Droid
 
             IsFinished = true;
 
-            feedbackDialog.Show();
+            resultDialog.Show();
         }
 
-        private void SetFeedbackDialog()
+        private void SetResultDialog()
         {
-            feedbackDialog = new Dialog(this);
-            feedbackDialog.SetContentView(Resource.Layout.AlarmFeedbackDialog);
-            feedbackDialog.SetCancelable(false);
-            feedbackDialog.SetCanceledOnTouchOutside(false);
+            resultDialog = new Dialog(this);
+            resultDialog.SetContentView(Resource.Layout.AlarmResultDialog);
+            resultDialog.SetCancelable(false);
+            resultDialog.SetCanceledOnTouchOutside(false);
 
-            feedbackDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
+            resultDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
 
-            adViewForResult = feedbackDialog.FindViewById<AdView>(Resource.Id.adView);
+            adViewForResult = resultDialog.FindViewById<AdView>(Resource.Id.adView);
         }
 
         private void SetResultToDialogResult()
@@ -473,19 +473,19 @@ namespace Five_Seconds.Droid
             var Records = App.AlarmsRepo.RecordFromDB;
             var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
 
-            TextView titleText = feedbackDialog.FindViewById<TextView>(Resource.Id.titleText);
-            TextView messageText = feedbackDialog.FindViewById<TextView>(Resource.Id.messageText);
-            LinearLayout buttonLayout = feedbackDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
-            Button confirmBtn = feedbackDialog.FindViewById<Button>(Resource.Id.confirmBtn);
-            Button countButton = feedbackDialog.FindViewById<Button>(Resource.Id.countButton);
-            Button failedBtn = feedbackDialog.FindViewById<Button>(Resource.Id.failedBtn);
+            TextView titleText = resultDialog.FindViewById<TextView>(Resource.Id.titleText);
+            TextView messageText = resultDialog.FindViewById<TextView>(Resource.Id.messageText);
+            LinearLayout buttonLayout = resultDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
+            Button confirmBtn = resultDialog.FindViewById<Button>(Resource.Id.confirmBtn);
+            Button countButton = resultDialog.FindViewById<Button>(Resource.Id.countButton);
+            Button failedBtn = resultDialog.FindViewById<Button>(Resource.Id.failedBtn);
 
             if (IsSuccess)
             {
                 titleText.Text = "알람 성공!";
 
-                confirmBtn.Click += FeedbackDialog_ConfirmBtn_Click;
-                countButton.Click += FeedbackDialog_CountBtn_Click;
+                confirmBtn.Click += ResultDialog_ConfirmBtn_Click;
+                countButton.Click += ResultDialog_CountBtn_Click;
             }
             else
             {
@@ -495,7 +495,7 @@ namespace Five_Seconds.Droid
                 buttonLayout.Visibility = ViewStates.Gone;
                 failedBtn.Visibility = ViewStates.Visible;
 
-                failedBtn.Click += FeedbackDialog_ConfirmBtn_Click;
+                failedBtn.Click += ResultDialog_ConfirmBtn_Click;
             }
 
             if (alarmRecords.Count == 1)
@@ -531,15 +531,15 @@ namespace Five_Seconds.Droid
             }
         }
 
-        private void FeedbackDialog_ConfirmBtn_Click(object sender, EventArgs e)
+        private void ResultDialog_ConfirmBtn_Click(object sender, EventArgs e)
         {
-            feedbackDialog.Dismiss();
+            resultDialog.Dismiss();
             FinishAndRemoveTask();
         }
 
-        private void FeedbackDialog_CountBtn_Click(object sender, EventArgs e)
+        private void ResultDialog_CountBtn_Click(object sender, EventArgs e)
         {
-            feedbackDialog.Dismiss();
+            resultDialog.Dismiss();
             ShowCountActivity();
         }
 

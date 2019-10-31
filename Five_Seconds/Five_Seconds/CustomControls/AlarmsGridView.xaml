@@ -32,8 +32,9 @@
                 <ColumnDefinition Width="15*" />
             </Grid.ColumnDefinitions>
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                <Image Source="ic_repeat.png" IsVisible="{Binding HasADayBeenSelected}"
-                       WidthRequest="18" HeightRequest="18"/>
+                <custom:ActiveImage Source="ic_repeat_inactive.png" ImageSourceActive="ic_repeat_active.png" ImageSourceInactive="ic_repeat_inactive.png"
+                                    IsVisible="{Binding HasADayBeenSelected}" IsActive="{Binding IsActive}"
+                                    WidthRequest="18" HeightRequest="18" />
                 <custom:ListItemLabel Text="{Binding DateString}"
                                   TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
                                   FontSize="16"
