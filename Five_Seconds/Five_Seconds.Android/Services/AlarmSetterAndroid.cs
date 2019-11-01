@@ -51,5 +51,10 @@ namespace Five_Seconds.Droid.Services
         {
             alarms.ForEach((alarm) => DeleteAlarm(alarm.Id));
         }
+
+        public void RefreshAlarm()
+        {
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+        }
     }
 }

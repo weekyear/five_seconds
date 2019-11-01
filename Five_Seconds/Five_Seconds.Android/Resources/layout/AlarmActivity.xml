@@ -4,20 +4,80 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/alarmPrimaryColor">
-        <TextView
-            android:text="5.00"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:id="@+id/countTextView"
-        android:layout_centerInParent="true"
+    <LinearLayout
+        android:id="@+id/countLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="invisible"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/finishAlarmText"
+            android:text="알람 이름"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/alarmTextColor"
+            android:textStyle="bold"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"/>
+        <LinearLayout
+            android:id="@+id/countNumberLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+            <TextView
+                android:text="5.0"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/countTextView"
+                android:textColor="@color/countTextColor"
+                android:textSize="100dp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="16sp"
+                android:autoSizeMaxTextSize="100sp"
+                android:autoSizeStepGranularity="2sp" />
+            <TextView
+                android:id="@+id/secondsText"
+                android:text="초"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32dp"
+                android:textStyle="bold"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="12dp"
+                android:textColor="@color/countTextColor"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/startText"
+            android:text="안에 바로 시작하세요!"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_below="@id/countNumberLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:gravity="center"
             android:textColor="@color/alarmTextColor"
-            android:phoneNumber="true"
-            android:textSize="100dp" />
+            android:textStyle="bold"
+            android:layout_margin="10dp"
+            android:layout_marginTop="20dp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"/>
+    </LinearLayout>
+    
     <RelativeLayout
+        android:id="@+id/notCountLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+        <RelativeLayout
         android:id="@+id/alarmTextLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -110,7 +170,7 @@
             android:layout_marginTop="20dp"
             android:textSize="32dp"
             android:textStyle="bold"
-            android:textColor="#e1f5fe"/>
+            android:textColor="@color/countTextColor"/>
         <TextView
             android:id="@+id/alarmTextView"
             android:text="Alarm Text"
@@ -147,4 +207,5 @@
             android:gravity="center"
             android:background="@drawable/border_edittext"/>
     </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

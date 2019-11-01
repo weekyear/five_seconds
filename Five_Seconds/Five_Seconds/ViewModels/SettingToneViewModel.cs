@@ -18,6 +18,7 @@ namespace Five_Seconds.ViewModels
 
         private readonly IMessageBoxService MessageBoxService;
 
+        public static bool IsFinding;
         public SettingToneViewModel(INavigation navigation, Alarm alarm) : base(navigation)
         {
             Alarm = alarm;

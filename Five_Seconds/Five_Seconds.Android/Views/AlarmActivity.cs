@@ -39,9 +39,8 @@ namespace Five_Seconds.Droid
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
-        private RelativeLayout alarmTextLayout;
-        private LinearLayout tellAlarmLayout;
-        private LinearLayout buttonLayout;
+        private LinearLayout countLayout;
+        private RelativeLayout notCountLayout;
         private Button startButton;
         private Button laterButton;
         private ImageView tellmeView;
@@ -49,6 +48,7 @@ namespace Five_Seconds.Droid
         private TextView timeTextView;
         public TextView timeOutTextView;
         private TextView alarmTextView;
+        private TextView finishAlarmText;
         private TextView pleaseSayText;
         private EditText alarmEditText;
         private CountDown countDownForFailed;
@@ -174,22 +174,24 @@ namespace Five_Seconds.Droid
 
         private void SetAndFindViewById()
         {
-            alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
-            tellAlarmLayout = FindViewById<LinearLayout>(Resource.Id.tellAlarmLayout);
-            buttonLayout = FindViewById<LinearLayout>(Resource.Id.buttonLayout);
+            notCountLayout = FindViewById<RelativeLayout>(Resource.Id.notCountLayout);
+            countLayout = FindViewById<LinearLayout>(Resource.Id.countLayout);
+
             startButton = FindViewById<Button>(Resource.Id.startButton);
             laterButton = FindViewById<Button>(Resource.Id.laterButton);
             tellmeView = FindViewById<ImageView>(Resource.Id.tellmeView);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
             alarmTextView = FindViewById<TextView>(Resource.Id.alarmTextView);
+            finishAlarmText = FindViewById<TextView>(Resource.Id.finishAlarmText);
             pleaseSayText = FindViewById<TextView>(Resource.Id.pleaseSayText);
             alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
             timeOutTextView = FindViewById<TextView>(Resource.Id.timeOutTextView);
 
             timeOutTextView.Text = "60초 이내";
-            countTextView.Text = "5.00";
+            countTextView.Text = "5.0";
             alarmTextView.Text = name;
+            finishAlarmText.Text = name;
             timeTextView.Text = AlarmTimeNow.ToShortTimeString();
 
             tellmeView.Click += StartListening_Click;
@@ -199,11 +201,12 @@ namespace Five_Seconds.Droid
 
         private void SetControlsForCountActivity()
         {
-            alarmTextLayout = FindViewById<RelativeLayout>(Resource.Id.alarmTextLayout);
-            tellAlarmLayout = FindViewById<LinearLayout>(Resource.Id.tellAlarmLayout);
-            buttonLayout = FindViewById<LinearLayout>(Resource.Id.buttonLayout);
+            notCountLayout = FindViewById<RelativeLayout>(Resource.Id.notCountLayout);
+            countLayout = FindViewById<LinearLayout>(Resource.Id.countLayout);
+            finishAlarmText = FindViewById<TextView>(Resource.Id.finishAlarmText);
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
-            countTextView.Text = "5.00";
+            countTextView.Text = "5.0";
+            finishAlarmText.Visibility = ViewStates.Gone;
         }
 
         private void AddWindowManagerFlags()
@@ -323,10 +326,9 @@ namespace Five_Seconds.Droid
 
         private void HideAllViewExceptForCountText()
         {
-            alarmTextLayout.Visibility = ViewStates.Invisible;
-            tellAlarmLayout.Visibility = ViewStates.Invisible;
-            buttonLayout.Visibility = ViewStates.Invisible;
-            countTextView.Visibility = ViewStates.Visible;
+            notCountLayout.Visibility = ViewStates.Invisible;
+            countLayout.Visibility = ViewStates.Visible;
+            finishAlarmText.Text = $"{name}";
         }
 
         private async void SetCountDown()

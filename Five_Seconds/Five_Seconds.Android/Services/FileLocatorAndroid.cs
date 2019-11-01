@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
+using Five_Seconds.ViewModels;
 using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Application = Android.App.Application;
@@ -24,13 +25,11 @@ namespace Five_Seconds.Droid.Services
 
         public void OpenFileLocator()
         {
-            var activity = CrossCurrentActivity.Current.Activity;
-
-            _mainActivity = (MainActivity)activity;
+            _mainActivity = (MainActivity)CrossCurrentActivity.Current.Activity;
 
             _mainActivity.FileChosen += OnFileChosen;
 
-            _mainActivity.RequestReadExternalStoragePermission();
+            MyPermissions.RequestReadExternalStoragePermission(_mainActivity);
         }
 
         public event Action<string> FileChosen;

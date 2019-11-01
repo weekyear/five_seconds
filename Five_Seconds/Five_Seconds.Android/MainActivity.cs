@@ -15,14 +15,14 @@ using Android.Provider;
 using Android;
 using Android.Gms.Ads;
 using Xamarin.Forms;
+using Five_Seconds.Models;
+using Five_Seconds.ViewModels;
 
 namespace Five_Seconds.Droid
 {
     [Activity(Label = "5초의 알람", Icon = "@drawable/ic_five_seconds", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        const int MY_PERMISSIONS_REQUEST_READ_MEDIA = 2356;
-        static readonly int READ_REQUEST_CODE = 42;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
@@ -35,10 +35,32 @@ namespace Five_Seconds.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             SetMobileAds();
-
-            LoadApplication(new App());
         }
-        
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            StartApp();
+        }
+
+        protected override void OnResume()
+        {
+            if (SettingToneViewModel.IsFinding)
+            {
+                SettingToneViewModel.IsFinding = false;
+            }
+            base.OnResume();
+        }
+
+        private void StartApp()
+        {
+            if (MyPermissions.RequestAudioPermission(this) && !SettingToneViewModel.IsFinding)
+            {
+                LoadApplication(new App());
+            }
+        }
+
         private void SetMobileAds()
         {
             MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
@@ -48,57 +70,16 @@ namespace Five_Seconds.Droid
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            switch (requestCode)
+            if (MyPermissions.OnRequestPermissionsResult(this, requestCode, grantResults) && !Alarm.IsInitFinished)
             {
-                case MY_PERMISSIONS_REQUEST_READ_MEDIA:
-                    if ((grantResults.Length > 0) && (grantResults[0] == Permission.Granted))
-                    {
-                        Intent intent = new Intent(Intent.ActionOpenDocument);
-
-                        intent.AddCategory(Intent.CategoryOpenable);
-                        intent.SetType("audio/*");
-
-                        StartActivityForResult(intent, READ_REQUEST_CODE);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-
-        public void RequestReadExternalStoragePermission()
-        {
-            if (CheckSelfPermission(Manifest.Permission.ReadExternalStorage) != Permission.Granted)
-            {
-                // Should we show an explanation?
-                if (ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
-                {
-                    // Explain to the user why we need to read the contacts
-                }
-
-                RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage }, MY_PERMISSIONS_REQUEST_READ_MEDIA);
-
-                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-                // app-defined int constant that should be quite unique
-
-                return;
+                LoadApplication(new App());
             }
             else
             {
-                Intent intent = new Intent(Intent.ActionOpenDocument);
-
-                intent.AddCategory(Intent.CategoryOpenable);
-                intent.SetType("audio/*");
-
-                StartActivityForResult(intent, READ_REQUEST_CODE);
+                MyPermissions.AlertRequestPermissionsWhenDenied(this, requestCode, permissions, grantResults);
             }
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
         public event Action<string> FileChosen;
@@ -107,15 +88,27 @@ namespace Five_Seconds.Droid
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == 42 && resultCode == Result.Ok)
+            if (requestCode == MyPermissions.READ_MEDIA_REQUEST_CODE)
             {
-                if (data == null) return;
-                var _uri = data.Data;
-                var realPath = GetRealPathFromURI(_uri);
-                var stringUri = data.ToUri(IntentUriType.None);
-                Uri uri = new Uri(stringUri);
+                SettingToneViewModel.IsFinding = true;
 
-                FileChosen?.Invoke(realPath);
+                if (resultCode == Result.Ok)
+                {
+                    if (data == null) return;
+                    var _uri = data.Data;
+                    var realPath = GetRealPathFromURI(_uri);
+                    var stringUri = data.ToUri(IntentUriType.None);
+                    Uri uri = new Uri(stringUri);
+
+                    FileChosen?.Invoke(realPath);
+                }
+            }
+            else if (requestCode == MyPermissions.REQUEST_PERMISSION_SETTING)
+            {
+                if (resultCode == Result.Canceled)
+                {
+                    SettingToneViewModel.IsFinding = true;
+                }
             }
         }
 

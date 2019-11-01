@@ -164,6 +164,7 @@
     <Compile Include="Services\HelperAndroid.cs" />
     <Compile Include="Services\InterstitialAdListener.cs" />
     <Compile Include="BroadcastReceivers\NotificationReceiver.cs" />
+    <Compile Include="Services\MyPermissions.cs" />
     <Compile Include="Services\ToastServiceAndroid.cs" />
     <Compile Include="Views\AlarmActivity.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />

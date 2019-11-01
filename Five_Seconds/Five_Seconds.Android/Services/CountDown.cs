@@ -67,7 +67,7 @@ namespace Five_Seconds.Droid.Services
             {
                 var countTextView = alarmActivity.countTextView;
 
-                var stringFormat = string.Format("{0:f2}", count);
+                var stringFormat = string.Format("{0:f1}", count);
                 countTextView.Text = stringFormat;
             }
             else

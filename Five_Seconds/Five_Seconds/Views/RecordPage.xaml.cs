@@ -56,7 +56,6 @@ namespace Five_Seconds.Views
         protected override void OnDisappearing()
         {
             IsSearching = false;
-            DependencyService.Get<IAdMobInterstitial>().Show("ca-app-pub-8413101784746060/6812351989");
             base.OnDisappearing();
         }
 
@@ -67,6 +66,10 @@ namespace Five_Seconds.Views
                 IsSearching = false;
                 DependencyService.Get<IHelper>().CollapseSearchView();
                 return true;
+            }
+            else
+            {
+                DependencyService.Get<IAdMobInterstitial>().Show("ca-app-pub-8413101784746060/6812351989");
             }
 
             return base.OnBackButtonPressed();
