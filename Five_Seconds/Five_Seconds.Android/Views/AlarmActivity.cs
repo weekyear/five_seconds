@@ -112,14 +112,14 @@ namespace Five_Seconds.Droid
 
             AddWindowManagerFlags();
 
-            SetAlarmAfterCalled();
+            SetNextAlarm();
 
             CreateSpeechRecognizer();
 
             SetIsFailedCountDown();
 
 
-            SetLaterDialog();
+            CreateLaterDialog();
 
             SetResultDialog();
 
@@ -141,14 +141,17 @@ namespace Five_Seconds.Droid
             ShowCountActivity();
         }
 
-        private void SetAlarmAfterCalled()
+        private void SetNextAlarm()
         {
             alarmsRepo = App.AlarmsRepo;
 
             alarm = App.AlarmsRepo?.GetAlarm(id);
             alarm.Days = App.AlarmsRepo?.GetDaysOfWeek(alarm.DaysId);
 
-            alarm.IsLaterAlarm = false;
+            if (alarm.IsLaterAlarm)
+            {
+                alarm.IsLaterAlarm = false;
+            }
 
             if (!IsRepeating)
             {
@@ -170,7 +173,6 @@ namespace Five_Seconds.Droid
             IsRepeating = (bool)bundle.Get("IsRepeating");
             alarmVolume = (int)bundle.Get("alarmVolume");
         }
-
 
         private void SetAndFindViewById()
         {
@@ -561,11 +563,17 @@ namespace Five_Seconds.Droid
 
         public void ShowLaterDialog(object s, EventArgs e)
         {
-            //SetLaterDialog();
+            //CreateLaterDialog();
 
             //SetAdViewForLater();
 
             laterDialog.Show();
+        }
+
+        private void CreateLaterDialog()
+        {
+            SetLaterDialog();
+            FindAndSetViewById();
         }
 
         private void SetLaterDialog()
@@ -580,7 +588,10 @@ namespace Five_Seconds.Droid
             laterNumberPicker.MaxValue = 120;
             laterNumberPicker.MinValue = 1;
             laterNumberPicker.Value = 5;
+        }
 
+        private void FindAndSetViewById()
+        {
             Button confirmBtn = laterDialog.FindViewById<Button>(Resource.Id.confirmBtn);
             Button cancelBtn = laterDialog.FindViewById<Button>(Resource.Id.cancelBtn);
             adViewForLater = laterDialog.FindViewById<AdView>(Resource.Id.adView);

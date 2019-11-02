@@ -123,7 +123,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             bool isInBackground;
 
             RunningAppProcessInfo myProcess = new RunningAppProcessInfo();
-            ActivityManager.GetMyMemoryState(myProcess);
+            GetMyMemoryState(myProcess);
             isInBackground = myProcess.Importance != Importance.Foreground;
 
             return isInBackground;

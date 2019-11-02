@@ -163,6 +163,7 @@ namespace Five_Seconds.Droid.Services
                         .SetMessage("[설정] > [권한]에서 해당 권한을 활성화해주세요.")
                         .SetPositiveButton("설정", (senderAlert, args) =>
                         {
+                            SettingToneViewModel.IsFinding = true;
                             var intent = new Intent(Android.Provider.Settings.ActionApplicationDetailsSettings);
                             var uri = Android.Net.Uri.FromParts("package", activity.PackageName, null);
                             intent.SetData(uri);
