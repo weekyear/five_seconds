@@ -194,9 +194,7 @@ namespace Five_Seconds.ViewModels
             {
                 if (!Alarm.IsActive)
                 {
-                    Alarm.IsInitFinished = false;
-                    Alarm.IsActive = true;
-                    Alarm.IsInitFinished = true;
+                    Alarm.ChangeIsActive(Alarm, true);
                 }
                 Alarm.IsLaterAlarm = false;
 

@@ -79,7 +79,12 @@ namespace Five_Seconds.Droid.Services
             switch (requestCode)
             {
                 case MY_PERMISSIONS_REQUEST_FILE_STORAGE:
-                    if ((grantResults.Length > 0) && (grantResults?[0] == Permission.Granted))
+                    if (grantResults?[0] != Permission.Granted)
+                    {
+                        return false;
+                    }
+
+                    if (grantResults.Length > 0)
                     {
                         Intent intent = new Intent(Intent.ActionOpenDocument);
 

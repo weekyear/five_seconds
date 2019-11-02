@@ -51,6 +51,13 @@ namespace Five_Seconds.Models
             }
         }
 
+        public static void ChangeIsActive(Alarm alarm, bool isActive)
+        {
+            IsInitFinished = false;
+            alarm.IsActive = isActive;
+            IsInitFinished = true;
+        }
+
         public bool IsSelected { get; set; } = false;
 
         public Alarm() { }

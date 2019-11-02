@@ -56,7 +56,7 @@ namespace Five_Seconds.Droid.Services
             toastService.Show(diffString);
         }
 
-        private static void SetAlarmByManager(Alarm alarm, long diffMillis)
+        public static void SetAlarmByManager(Alarm alarm, long diffMillis)
         {
             var _alarmIntent = SetAlarmIntent(alarm);
 
@@ -65,19 +65,6 @@ namespace Five_Seconds.Droid.Services
 
             Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
             PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
-            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
-            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
-        }
-
-        public static void SetLaterAlarmByManager(Alarm alarm, long diffMillis)
-        {
-            var _alarmIntent = SetAlarmIntent(alarm);
-
-            var pendingIntent = PendingIntent.GetBroadcast(Application.Context, -alarm.Id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
-            var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
-
-            Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
-            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, -alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }

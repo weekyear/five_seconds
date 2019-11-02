@@ -13,7 +13,6 @@ using Android.Speech;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using Five_Seconds.Droid.Interface;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;
@@ -155,13 +154,14 @@ namespace Five_Seconds.Droid
 
             if (!IsRepeating)
             {
-                alarm.IsActive = false;
-                App.Service.SaveAlarmAtLocal(alarm);
+                Alarm.ChangeIsActive(alarm, false);
             }
             else
             {
                 AlarmController.SetNextAlarm(alarm);
             }
+
+            App.Service.SaveAlarmAtLocal(alarm);
         }
 
         private void GetDataFromBundle(Bundle bundle)
@@ -563,10 +563,6 @@ namespace Five_Seconds.Droid
 
         public void ShowLaterDialog(object s, EventArgs e)
         {
-            //CreateLaterDialog();
-
-            //SetAdViewForLater();
-
             laterDialog.Show();
         }
 
@@ -622,7 +618,8 @@ namespace Five_Seconds.Droid
 
             var diffTimeSpan = alarmTime.Subtract(DateTime.Now);
 
-            AlarmController.SetLaterAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+            AlarmController.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+            //AlarmController.SetLaterAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
 
             App.Service.SaveAlarmAtLocal(alarm);
 
@@ -637,7 +634,8 @@ namespace Five_Seconds.Droid
         {
             var alarmTime = AlarmTimeNow.AddMinutes(minutes);
 
-            alarm.IsActive = true;
+            Alarm.ChangeIsActive(alarm, true);
+
             alarm.LaterAlarmTime = alarmTime;
 
             return alarmTime;

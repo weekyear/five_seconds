@@ -30,19 +30,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             switch (intent.Action)
             {
                 case "알람 해제":
-                    GetAlarmService();
-                    Alarm.IsInitFinished = false;
-                    // 서비스에서 TurnOffAlarm();
-                    var alarm = alarmService.GetAlarm(id);
-
-                    if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
-                    {
-                        alarm.IsActive = false;
-                    }
-
-                    TurnOffAlarm(alarm);
-
-                    Alarm.IsInitFinished = true;
+                    TurnOffLaterAlarm();
 
                     if (IsApplicationInTheBackground())
                     {
@@ -55,6 +43,23 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             }
 
 
+        }
+
+        private void TurnOffLaterAlarm()
+        {
+            GetAlarmService();
+            Alarm.IsInitFinished = false;
+            // 서비스에서 TurnOffAlarm();
+            var alarm = alarmService.GetAlarm(id);
+
+            if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
+            {
+                alarm.IsActive = false;
+            }
+
+            TurnOffAlarm(alarm);
+
+            Alarm.IsInitFinished = true;
         }
 
         private void GetAlarmService()

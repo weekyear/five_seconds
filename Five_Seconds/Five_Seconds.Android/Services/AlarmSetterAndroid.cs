@@ -55,6 +55,9 @@ namespace Five_Seconds.Droid.Services
         public void RefreshAlarm()
         {
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+
+            Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+            PendingIntent pendingUpdateIntent = PendingIntent.getService(context, 0, alarmIntent, 0)
         }
     }
 }

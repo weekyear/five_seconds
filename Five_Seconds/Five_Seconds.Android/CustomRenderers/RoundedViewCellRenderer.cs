@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Android.Content;
 using Android.Views;
 using Five_Seconds.CustomControls;
@@ -28,7 +29,14 @@ namespace Five_Seconds.Droid.CustomRenderers
 
             if (e.PropertyName == RoundedViewCell.IsSelectedProperty.PropertyName)
             {
-                SetSelected();
+                try
+                {
+                    SetSelected();
+                }
+                catch (ObjectDisposedException error) 
+                {
+                    Console.WriteLine(error.Message);
+                }
             }
         }
 
@@ -38,14 +46,18 @@ namespace Five_Seconds.Droid.CustomRenderers
             if (formsCell == null)
                 return;
 
+            int backgroundResource;
+
             if (formsCell.IsSelected)
             {
-                _nativeCell?.SetBackgroundResource(Resource.Drawable.ripple_rounded_viewcell_selected);
+                backgroundResource = Resource.Drawable.ripple_rounded_viewcell_selected;
             }
             else
             {
-                _nativeCell?.SetBackgroundResource(Resource.Drawable.ripple_rounded_viewcell);
+                backgroundResource = Resource.Drawable.ripple_rounded_viewcell;
             }
+
+            _nativeCell?.SetBackgroundResource(backgroundResource);
         }
     }
 }

@@ -71,14 +71,7 @@ namespace Five_Seconds.Services
 
         public int TurnOffAlarm(Alarm alarm)
         {
-            int alarmManagerId = alarm.Id;
-
-            if (alarm.IsLaterAlarm)
-            {
-                alarmManagerId = -alarm.Id;
-            }
-
-            DependencyService.Get<IAlarmSetter>().DeleteAlarm(alarmManagerId);
+            DependencyService.Get<IAlarmSetter>().DeleteAlarm(alarm.Id) ;
 
             alarm.IsLaterAlarm = false;
             return SaveAlarmAtLocal(alarm);
