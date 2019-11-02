@@ -59,8 +59,14 @@ namespace Five_Seconds.Droid
 
             if (MyPermissions.RequestAudioPermission(this))
             {
-                LoadApplication(new App());
+                LoadAppAndRefreshAlarmManager();
             }
+        }
+
+        private void LoadAppAndRefreshAlarmManager()
+        {
+            LoadApplication(new App());
+            AlarmHelper.RefreshAlarmByManager(App.Service.GetAllAlarms());
         }
 
         private void SetMobileAds()
@@ -74,7 +80,7 @@ namespace Five_Seconds.Droid
 
             if (MyPermissions.OnRequestPermissionsResult(this, requestCode, grantResults) && !Alarm.IsInitFinished)
             {
-                LoadApplication(new App());
+                LoadAppAndRefreshAlarmManager();
             }
             else
             {

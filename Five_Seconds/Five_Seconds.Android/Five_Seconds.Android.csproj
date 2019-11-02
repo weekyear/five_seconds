@@ -154,7 +154,7 @@
     <Compile Include="Interface\IAdListener.cs" />
     <Compile Include="Services\AdListener.cs" />
     <Compile Include="Services\AdMobInterstitialAndroid.cs" />
-    <Compile Include="Services\AlarmController.cs" />
+    <Compile Include="Services\AlarmHelper.cs" />
     <Compile Include="BroadcastReceivers\AlarmReceiver.cs" />
     <Compile Include="Services\AlarmNotificationAndroid.cs" />
     <Compile Include="BroadcastReceivers\BootReceiver.cs" />

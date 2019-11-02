@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Five_Seconds.Services
@@ -87,10 +88,16 @@ namespace Five_Seconds.Services
         public int SaveAlarmAtLocal(Alarm alarm)
         {
             alarm.DaysId = Repository.SaveDaysOfWeek(alarm.Days);
-            Repository.SaveAlarm(alarm);
+            var id = Repository.SaveAlarm(alarm);
             UpdateAlarms();
             SendChangeAlarmsMessage();
-            return alarm.Id;
+
+            if (Preferences.Get("MaxAlarmId", 3) < id)
+            {
+                Preferences.Set("MaxAlarmId", id);
+            }
+
+            return id;
         }
 
         private void UpdateAlarms()

@@ -37,7 +37,6 @@ namespace Five_Seconds.Models
                         {
                             Date = DateTime.Now.Date;
                         }
-
                     }
 
                     App.Service.SaveAlarm(this);

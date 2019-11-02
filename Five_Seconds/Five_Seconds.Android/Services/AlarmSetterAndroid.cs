@@ -33,18 +33,12 @@ namespace Five_Seconds.Droid.Services
 
         public void SetAlarm(Alarm alarm)
         {
-            AlarmController.SetFirstAlarm(alarm);
+            AlarmHelper.SetAlarmAtFirst(alarm);
         }
 
         public void DeleteAlarm(int id)
         {
-            var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-            alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
-            alarmIntent.PutExtra("id", id);
-
-            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
-            alarmManager.Cancel(toDeletePendingIntent);
+            AlarmHelper.DeleteAlarmByManager(id);
         }
 
         public void DeleteAllAlarms(List<Alarm> alarms)
@@ -56,8 +50,16 @@ namespace Five_Seconds.Droid.Services
         {
             var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
 
-            Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-            PendingIntent pendingUpdateIntent = PendingIntent.getService(context, 0, alarmIntent, 0)
+            for (int id = 1; id < 100; id++)
+            {
+                Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+                PendingIntent pendingAlarmIntent = PendingIntent.GetService(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                alarmManager.Cancel(pendingAlarmIntent);
+            }
+
+
+            
         }
     }
 }

@@ -158,7 +158,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                AlarmController.SetNextAlarm(alarm);
+                AlarmHelper.SetRepeatAlarm(alarm);
             }
 
             App.Service.SaveAlarmAtLocal(alarm);
@@ -581,9 +581,9 @@ namespace Five_Seconds.Droid
             laterDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
 
             laterNumberPicker = laterDialog.FindViewById<NumberPicker>(Resource.Id.laterNumberPicker);
-            laterNumberPicker.MaxValue = 120;
+            laterNumberPicker.MaxValue = 119;
             laterNumberPicker.MinValue = 1;
-            laterNumberPicker.Value = 5;
+            laterNumberPicker.Value = 10;
         }
 
         private void FindAndSetViewById()
@@ -618,7 +618,7 @@ namespace Five_Seconds.Droid
 
             var diffTimeSpan = alarmTime.Subtract(DateTime.Now);
 
-            AlarmController.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+            AlarmHelper.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
             //AlarmController.SetLaterAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
 
             App.Service.SaveAlarmAtLocal(alarm);

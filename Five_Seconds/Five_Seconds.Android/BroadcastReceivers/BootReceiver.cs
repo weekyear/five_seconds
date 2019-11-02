@@ -14,7 +14,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
         {
             if (intent.Action.Equals(Intent.ActionBootCompleted))
             {
-                AlarmController.SetAllAlarmWhenRestart();
+                AlarmHelper.SetAllAlarmWhenRestart();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Five_Seconds.Droid.BroadcastReceivers;
@@ -7,19 +8,20 @@ using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using SQLite;
+using Xamarin.Essentials;
 
 namespace Five_Seconds.Droid.Services
 {
-    public class AlarmController
+    public class AlarmHelper
     {
-        public static void SetFirstAlarm(Alarm alarm)
+        public static void SetAlarmAtFirst(Alarm alarm)
         {
             var diffMillis = CalculateTimeDiff(alarm);
 
             SetAlarmByManager(alarm, diffMillis);
         }
 
-        public static void SetNextAlarm(Alarm alarm)
+        public static void SetRepeatAlarm(Alarm alarm)
         {
             long diffMillis = 0;
 
@@ -41,8 +43,6 @@ namespace Five_Seconds.Droid.Services
             var nextAlarmDateTime = alarm.NextAlarmTime;
 
             var diffTimeSpan = nextAlarmDateTime.Subtract(dateTimeNow);
-
-            ShowNextAlarmToast(nextAlarmDateTime);
 
             return (long)diffTimeSpan.TotalMilliseconds;
         }
@@ -91,7 +91,7 @@ namespace Five_Seconds.Droid.Services
 
             foreach (var alarm in alarms)
             {
-                SetFirstAlarm(alarm);
+                SetAlarmAtFirst(alarm);
             }
         }
 
@@ -104,6 +104,40 @@ namespace Five_Seconds.Droid.Services
             var service = new AlarmService(alarmsRepo);
 
             return service;
+        }
+
+        public static void DeleteAlarmByManager(int id)
+        {
+            var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+            alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            alarmIntent.PutExtra("id", id);
+
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+            alarmManager.Cancel(toDeletePendingIntent);
+        }
+
+        public static void RefreshAlarmByManager(List<Alarm> alarms)
+        {
+            var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
+            Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+
+            var maxId = Preferences.Get("MaxAlarmId", 3);
+
+            for (int id = 1; id <= maxId; id++)
+            {
+                PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                alarmManager.Cancel(pendingAlarmIntent);
+            }
+
+            foreach (var alarm in alarms)
+            {
+                if (alarm.IsActive)
+                {
+                    SetAlarmAtFirst(alarm);
+                }
+            }
         }
     }
 }

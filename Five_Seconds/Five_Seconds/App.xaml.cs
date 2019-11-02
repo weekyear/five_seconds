@@ -1,15 +1,11 @@
 ﻿using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
 using Five_Seconds.Repository;
 using Five_Seconds.Models;
-using Xam.Plugin.SimpleAppIntro;
 using System.Collections.Generic;
 using Xamarin.Essentials;
-using SQLite;
-using System.ComponentModel;
 using Five_Seconds.Helpers;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
@@ -22,6 +18,7 @@ namespace Five_Seconds
     {
         public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(DependencyService.Get<IDatabase>().DBConnect());
         private readonly bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
+        private readonly int MaxAlarmId = Preferences.Get(nameof(MaxAlarmId), 3);
 
         public App()
         {

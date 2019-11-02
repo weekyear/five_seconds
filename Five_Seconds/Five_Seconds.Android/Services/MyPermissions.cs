@@ -76,6 +76,7 @@ namespace Five_Seconds.Droid.Services
 
         public static bool OnRequestPermissionsResult(Activity activity, int requestCode, [GeneratedEnum] Permission[] grantResults)
         {
+            if (grantResults.Length == 0) return true;
             switch (requestCode)
             {
                 case MY_PERMISSIONS_REQUEST_FILE_STORAGE:
