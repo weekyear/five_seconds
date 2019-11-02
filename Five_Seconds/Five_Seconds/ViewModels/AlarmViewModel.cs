@@ -202,9 +202,10 @@ namespace Five_Seconds.ViewModels
 
                 Service.SaveAlarm(Alarm);
                 await ClosePopup();
+
+                var diffString = CreateDateString.CreateTimeRemainingString(Alarm.NextAlarmTime);
+                DependencyService.Get<IToastService>().Show(diffString);
             }
-            var diffString = CreateDateString.CreateTimeRemainingString(Alarm.NextAlarmTime);
-            DependencyService.Get<IToastService>().Show(diffString);
         }
 
         private async Task ShowSettingTone()

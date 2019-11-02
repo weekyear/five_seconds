@@ -45,21 +45,5 @@ namespace Five_Seconds.Droid.Services
         {
             alarms.ForEach((alarm) => DeleteAlarm(alarm.Id));
         }
-
-        public void RefreshAlarm()
-        {
-            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
-
-            for (int id = 1; id < 100; id++)
-            {
-                Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-                PendingIntent pendingAlarmIntent = PendingIntent.GetService(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
-
-                alarmManager.Cancel(pendingAlarmIntent);
-            }
-
-
-            
-        }
     }
 }

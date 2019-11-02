@@ -62,6 +62,7 @@ namespace Five_Seconds.Droid
         private bool IsAlarmOn;
         private bool IsVibrateOn;
         private bool IsRepeating;
+        private bool IsVoiceRecognition;
         private int alarmVolume;
 
         private DateTime AlarmTimeNow;
@@ -117,6 +118,7 @@ namespace Five_Seconds.Droid
 
             SetIsFailedCountDown();
 
+            SetViewByIsVoiceRecognition();
 
             CreateLaterDialog();
 
@@ -171,6 +173,7 @@ namespace Five_Seconds.Droid
             IsAlarmOn = (bool)bundle.Get("IsAlarmOn");
             IsVibrateOn = (bool)bundle.Get("IsVibrateOn");
             IsRepeating = (bool)bundle.Get("IsRepeating");
+            IsVoiceRecognition = (bool)bundle.Get("IsVoiceRecognition");
             alarmVolume = (int)bundle.Get("alarmVolume");
         }
 
@@ -209,6 +212,15 @@ namespace Five_Seconds.Droid
             countTextView = FindViewById<TextView>(Resource.Id.countTextView);
             countTextView.Text = "5.0";
             finishAlarmText.Visibility = ViewStates.Gone;
+        }
+
+        private void SetViewByIsVoiceRecognition()
+        {
+            if (!IsVoiceRecognition)
+            {
+                SetVisibleOfStartButton();
+                alarmEditText.Visibility = ViewStates.Gone;
+            }
         }
 
         private void AddWindowManagerFlags()
@@ -251,39 +263,54 @@ namespace Five_Seconds.Droid
 
         private void StartButton_Click(object sender, EventArgs e)
         {
-            HandleVoiceRecognitionResult();
+            if (IsVoiceRecognition)
+            {
+                HandleVoiceRecognitionResult();
+            }
+            else
+            {
+                SuccessAlarm();
+            }
         }
 
         private void HandleVoiceRecognitionResult()
         {
-            startButton.Text = "시작!";
-
             var editText = alarmEditText.Text.Replace(" ", "");
             var textView = alarmTextView.Text.Replace(" ", "");
 
             if (editText == textView)
             {
-                TurnOffSoundAndVibration();
-
-                countDownForFailed.Cancel();
-
-                IsSuccess = true;
-
-                ShowResultDialog();
+                SuccessAlarm();
             }
             else
             {
                 SetMediaPlayer();
                 SetVibrator();
 
-                pleaseSayText.Text = "라고 적어주세요";
-                SetVisibilityOfControls();
-                alarmEditText.RequestFocus();
-                InputMethodManager imm = GetSystemService(InputMethodService) as InputMethodManager;
-                imm.ShowSoftInput(alarmEditText, ShowFlags.Implicit);
-                alarmEditText.SetSelection(alarmEditText.Text.Length);
-                ShowToastDoNotMatchText();
+                FailedAlarm();
             }
+        }
+
+        private void SuccessAlarm()
+        {
+            TurnOffSoundAndVibration();
+
+            countDownForFailed.Cancel();
+
+            IsSuccess = true;
+
+            ShowResultDialog();
+        }
+
+        private void FailedAlarm()
+        {
+            pleaseSayText.Text = "라고 적어주세요";
+            SetVisibleOfStartButton();
+            alarmEditText.RequestFocus();
+            InputMethodManager imm = GetSystemService(InputMethodService) as InputMethodManager;
+            imm.ShowSoftInput(alarmEditText, ShowFlags.Implicit);
+            alarmEditText.SetSelection(alarmEditText.Text.Length);
+            ShowToastDoNotMatchText();
         }
 
         private void ShowCountActivity()
@@ -299,7 +326,7 @@ namespace Five_Seconds.Droid
             SetCountDown();
         }
 
-        private void SetVisibilityOfControls()
+        private void SetVisibleOfStartButton()
         {
             tellmeView.Visibility = ViewStates.Gone;
             alarmEditText.Visibility = ViewStates.Visible;

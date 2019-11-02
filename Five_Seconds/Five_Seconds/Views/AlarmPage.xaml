@@ -117,6 +117,17 @@
                         </StackLayout>
                     </custom:TableViewCell>
                 </TableSection>
+                <TableSection Title="알람 해제 옵션" TextColor="DarkBlue">
+                    <custom:TableViewCell AllowHighlight="False" Height="60">
+                        <StackLayout Orientation="Horizontal" Margin="10">
+                            <Label TextColor="Black" Text="음성 인식" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                            <Switch IsToggled="{Binding Alarm.IsVoiceRecognition}"
+                                    HorizontalOptions="EndAndExpand"
+                                    OnColor="LightSteelBlue"
+                                    ThumbColor="{Binding Alarm.IsVoiceRecognition, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
+                        </StackLayout>
+                    </custom:TableViewCell>
+                </TableSection>
             </TableRoot>
         </TableView>
         <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>

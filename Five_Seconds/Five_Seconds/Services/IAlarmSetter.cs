@@ -12,7 +12,5 @@ namespace Five_Seconds.Services
         void DeleteAlarm(int id);
 
         void DeleteAllAlarms(List<Alarm> alarms);
-
-        void RefreshAlarm();
     }
 }

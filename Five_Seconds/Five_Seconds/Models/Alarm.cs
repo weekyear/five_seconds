@@ -19,6 +19,7 @@ namespace Five_Seconds.Models
         public string Name { get; set; }
         public double Percentage { get; set; }
 
+        public bool IsVoiceRecognition { get; set; } = true;
         public bool IsActive { get; set; } = true;
 
         public void OnIsActiveChanged()
@@ -68,8 +69,9 @@ namespace Five_Seconds.Models
             Percentage = original.Percentage;
             IsActive = original.IsActive;
             IsAlarmOn = original.IsAlarmOn;
-            Volume = original.Volume;
             IsVibrateOn = original.IsVibrateOn;
+            IsVoiceRecognition = original.IsVoiceRecognition;
+            Volume = original.Volume;
             TimeOffset = original.TimeOffset;
 
             Days = new DaysOfWeek(original.Days);
