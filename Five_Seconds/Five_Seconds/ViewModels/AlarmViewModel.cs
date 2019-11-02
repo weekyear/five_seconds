@@ -1,5 +1,7 @@
 ﻿using Five_Seconds.CustomControls;
+using Five_Seconds.Helpers;
 using Five_Seconds.Models;
+using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
 using System.Threading.Tasks;
@@ -201,6 +203,8 @@ namespace Five_Seconds.ViewModels
                 Service.SaveAlarm(Alarm);
                 await ClosePopup();
             }
+            var diffString = CreateDateString.CreateTimeRemainingString(Alarm.NextAlarmTime);
+            DependencyService.Get<IToastService>().Show(diffString);
         }
 
         private async Task ShowSettingTone()

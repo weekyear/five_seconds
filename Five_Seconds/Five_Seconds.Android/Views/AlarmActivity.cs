@@ -263,6 +263,8 @@ namespace Five_Seconds.Droid
 
             if (editText == textView)
             {
+                TurnOffSoundAndVibration();
+
                 countDownForFailed.Cancel();
 
                 IsSuccess = true;
@@ -271,6 +273,9 @@ namespace Five_Seconds.Droid
             }
             else
             {
+                SetMediaPlayer();
+                SetVibrator();
+
                 pleaseSayText.Text = "라고 적어주세요";
                 SetVisibilityOfControls();
                 alarmEditText.RequestFocus();

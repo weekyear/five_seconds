@@ -66,7 +66,12 @@ namespace Five_Seconds.Droid
         private void LoadAppAndRefreshAlarmManager()
         {
             LoadApplication(new App());
-            AlarmHelper.RefreshAlarmByManager(App.Service.GetAllAlarms());
+
+            Alarm.IsInitFinished = false;
+            var allAlarms = App.Service.GetAllAlarms();
+            Alarm.IsInitFinished = true;
+
+            AlarmHelper.RefreshAlarmByManager(allAlarms);
         }
 
         private void SetMobileAds()
