@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
+using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
@@ -17,23 +18,13 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             var bundle = intent.Extras;
             var id = (int)bundle.Get("id");
 
-            CancelLaterNotification(context, id);
+            AlarmNotificationAndroid.CancelLaterNotification(context, id);
 
             var disIntent = new Intent(context, typeof(AlarmActivity));
             disIntent.PutExtras(bundle);
 
             disIntent.SetFlags(ActivityFlags.NewTask);
             context.StartActivity(disIntent);
-        }
-
-        private void CancelLaterNotification(Context context, int id)
-        {
-            NotificationManager manager = context.GetSystemService(Context.NotificationService) as NotificationManager;
-            if (id != -100000)
-            {
-                Console.WriteLine("CancelNotification_NotificationReceiver");
-                manager.Cancel(id);
-            }
         }
     }
 }

@@ -152,5 +152,15 @@ namespace Five_Seconds.Droid.Services
 
             return pendingIntent;
         }
+
+        public static void CancelLaterNotification(Context context, int id)
+        {
+            NotificationManager manager = context.GetSystemService(Context.NotificationService) as NotificationManager;
+            if (id != -100000)
+            {
+                Console.WriteLine("CancelNotification_NotificationReceiver");
+                manager.Cancel(id);
+            }
+        }
     }
 }

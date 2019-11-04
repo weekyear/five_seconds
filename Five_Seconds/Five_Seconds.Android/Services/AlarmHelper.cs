@@ -140,5 +140,26 @@ namespace Five_Seconds.Droid.Services
                 }
             }
         }
+
+        public static void RefreshAlarmByManager100(List<Alarm> alarms)
+        {
+            var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
+            Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
+
+            for (int id = 1; id <= 100; id++)
+            {
+                PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                alarmManager.Cancel(pendingAlarmIntent);
+            }
+
+            foreach (var alarm in alarms)
+            {
+                if (alarm.IsActive)
+                {
+                    SetAlarmAtFirst(alarm);
+                }
+            }
+        }
     }
 }

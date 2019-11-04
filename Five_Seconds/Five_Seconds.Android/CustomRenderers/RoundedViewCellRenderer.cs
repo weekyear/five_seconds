@@ -42,8 +42,7 @@ namespace Five_Seconds.Droid.CustomRenderers
 
         private void SetSelected()
         {
-            var formsCell = Cell as RoundedViewCell;
-            if (formsCell == null)
+            if (!(Cell is RoundedViewCell formsCell))
                 return;
 
             int backgroundResource;

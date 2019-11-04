@@ -122,7 +122,7 @@ namespace Five_Seconds.Helpers
 
             if (diff.Days > 0)
             {
-                return $"{dateTime.Month}월 {dateTime.Day}일 {dateTime.ToString("tt")} {dateTime.Hour}:{dateTime.Minute}에 5초의 법칙을 실행합니다!";
+                return $"{dateTime.Month}월 {dateTime.Day}일 {dateTime.ToString("tt")} {dateTime.Hour}:{dateTime.ToString("mm")}에 5초의 법칙을 실행합니다!";
             }
             else if (diff.Hours > 0)
             {

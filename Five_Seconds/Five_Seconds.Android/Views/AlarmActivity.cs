@@ -93,6 +93,12 @@ namespace Five_Seconds.Droid
 
             if (id == -100000)
             {
+                //나중에 지워야 됨
+                Alarm.IsInitFinished = false;
+                var allAlarms = App.Service.GetAllAlarms();
+                Alarm.IsInitFinished = true;
+                AlarmHelper.RefreshAlarmByManager100(allAlarms);
+
                 OnlyCountDown();
                 return;
             }
