@@ -137,11 +137,25 @@ namespace Five_Seconds.ViewModels
             {
                 if (AmPm == 0)
                 {
-                    return new TimeSpan(Hours - 12, Minutes, 0);
+                    if (Hours == 12)
+                    {
+                        return new TimeSpan(Hours - 12, Minutes, 0);
+                    }
+                    else
+                    {
+                        return new TimeSpan(Hours, Minutes, 0);
+                    }
                 }
                 else
                 {
-                    return new TimeSpan(Hours, Minutes, 0);
+                    if (Hours == 12)
+                    {
+                        return new TimeSpan(Hours, Minutes, 0);
+                    }
+                    else
+                    {
+                        return new TimeSpan(Hours + 12, Minutes, 0);
+                    }
                 }
             }
         }
