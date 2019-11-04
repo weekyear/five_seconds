@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -13,6 +14,8 @@ using Five_Seconds.CustomControls;
 using Five_Seconds.Droid.CustomRenderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using static Android.Widget.NumberPicker;
+using View = Android.Views.View;
 
 [assembly: ExportRenderer(typeof(ScrollableNumberPicker), typeof(ScrollableNumberPickerRenderer))]
 namespace Five_Seconds.Droid.CustomRenderers
@@ -37,6 +40,7 @@ namespace Five_Seconds.Droid.CustomRenderers
                     numberPicker.MaxValue = 1;
                     numberPicker.MinValue = 0;
                     var pickerVals = new string[] { "오전", "오후" };
+                    numberPicker.SetDisplayedValues(pickerVals);
                     break;
                 case "Hours":
                     numberPicker.MaxValue = 12;
@@ -48,14 +52,23 @@ namespace Five_Seconds.Droid.CustomRenderers
                     break;
             }
 
+            numberPicker.Value = Element.Value;
+
             numberPicker.ValueChanged += NumberPicker_ValueChanged;
 
             SetNativeControl(numberPicker);
         }
 
-        private void NumberPicker_ValueChanged(object sender, NumberPicker.ValueChangeEventArgs e)
+        private void NumberPicker_ValueChanged(object sender, ValueChangeEventArgs e)
         {
             Element.Value = e.NewVal;
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
+            if (e.PropertyName == "Value")
+                Control.Value = Element.Value;
         }
     }
 }

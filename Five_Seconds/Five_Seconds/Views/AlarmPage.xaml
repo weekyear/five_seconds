@@ -40,16 +40,10 @@
                         </StackLayout>
                     </custom:TableViewCell>
                     <custom:TableViewCell AllowHighlight="False">
-                        <StackLayout Orientation="Vertical" Padding="13, 0">
-                            <custom:BorderlessTimePicker x:Name="_timePicker" HorizontalOptions="CenterAndExpand"
-                                                         Time="{Binding Time}" Margin="20"
-                                                         Format="t"
-                                                         FontSize="40"/>
-                            <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                                <custom:ScrollableNumberPicker Value="{Binding AmPm}" PickerType="AmPm"/>
-                                <custom:ScrollableNumberPicker Value="{Binding Hours}" PickerType="Hours"/>
-                                <custom:ScrollableNumberPicker Value="{Binding Minutes}" PickerType="Minutes"/>
-                            </StackLayout>
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <custom:ScrollableNumberPicker x:Name="AmPmPicker" Value="{Binding AmPm}" PickerType="AmPm"/>
+                            <custom:ScrollableNumberPicker x:Name="HoursPicker" Value="{Binding Hours}" PickerType="Hours"/>
+                            <custom:ScrollableNumberPicker x:Name="Minutes" Value="{Binding Minutes}" PickerType="Minutes"/>
                         </StackLayout>
                     </custom:TableViewCell>
                     <custom:TableViewCell AllowHighlight="False">

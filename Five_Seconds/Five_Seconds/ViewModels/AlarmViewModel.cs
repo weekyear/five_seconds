@@ -15,6 +15,8 @@ namespace Five_Seconds.ViewModels
         {
             Alarm = new Alarm();
 
+            InitTimePicker();
+
             SubscribeMessage();
 
             ConstructCommand();
@@ -24,9 +26,36 @@ namespace Five_Seconds.ViewModels
         {
             Alarm = new Alarm(alarm);
 
+            InitTimePicker();
+
             SubscribeMessage();
 
             ConstructCommand();
+        }
+
+        private void InitTimePicker()
+        {
+            if (Alarm.Time.Hours == 12)
+            {
+                AmPm = 1;
+                Hours = Alarm.Time.Hours;
+            }
+            else if (Alarm.Time.Hours == 0)
+            {
+                AmPm = 0;
+                Hours = Alarm.Time.Hours + 12;
+            }
+            else if (Alarm.Time.Hours < 12)
+            {
+                AmPm = 0;
+                Hours = Alarm.Time.Hours;
+            }
+            else
+            {
+                AmPm = 1;
+                Hours = Alarm.Time.Hours - 12;
+            }
+            Minutes = Alarm.Time.Minutes;
         }
 
         private void SubscribeMessage()
@@ -106,18 +135,14 @@ namespace Five_Seconds.ViewModels
         {
             get
             {
-                if (Alarm.Time == TimeSpan.Zero)
+                if (AmPm == 0)
                 {
-                    Alarm.Time = DateTime.Now.TimeOfDay;
+                    return new TimeSpan(Hours - 12, Minutes, 0);
                 }
-                return Alarm.Time;
-            }
-            set
-            {
-                if (Alarm.Time == value) return;
-                Alarm.Time = value;
-                DateToStringWhenTimeChanged();
-                OnPropertyChanged(nameof(Time));
+                else
+                {
+                    return new TimeSpan(Hours, Minutes, 0);
+                }
             }
         }
 
@@ -136,16 +161,17 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        private int hours;
         public int Hours
         {
             get
             {
-                return Time.Hours;
+                return hours;
             }
             set
             {
-                if (Time.Hours == value) return;
-                if (Time.Hours == 11 && value == 12 || Time.Hours == 12 && value == 11)
+                if (hours == value) return;
+                if (hours == 11 && value == 12 || hours == 12 && value == 11)
                 {
                     if (AmPm == 1)
                     {
@@ -155,23 +181,25 @@ namespace Five_Seconds.ViewModels
                     {
                         AmPm = 1;
                     }
-                    OnPropertyChanged(nameof(AmPm));
                 }
-                Time = new TimeSpan(value, Time.Minutes, 0);
+                hours = value;
+                DateToStringWhenTimeChanged();
                 OnPropertyChanged(nameof(Hours));
             }
         }
 
+        private int minutes;
         public int Minutes
         {
             get
             {
-                return Time.Minutes;
+                return minutes;
             }
             set
             {
-                if (Time.Minutes == value) return;
-                Time = new TimeSpan(Time.Hours, value, 0);
+                if (minutes == value) return;
+                minutes = value;
+                DateToStringWhenTimeChanged();
                 OnPropertyChanged(nameof(Minutes));
             }
         }
@@ -255,6 +283,8 @@ namespace Five_Seconds.ViewModels
                     Alarm.ChangeIsActive(Alarm, true);
                 }
                 Alarm.IsLaterAlarm = false;
+
+                Alarm.TimeOffset = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0);
 
                 Service.SaveAlarm(Alarm);
                 await ClosePopup();
