@@ -67,6 +67,7 @@
     <Compile Include="CustomRenderers\AdMobViewRenderer.cs" />
     <Compile Include="CustomRenderers\BorderlessTimePickerRenderer.cs" />
     <Compile Include="CustomRenderers\DayOfWeekButtonRenderer.cs" />
+    <Compile Include="CustomRenderers\ScrollableNumberPickerRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />

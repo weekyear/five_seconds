@@ -120,6 +120,62 @@ namespace Five_Seconds.ViewModels
                 OnPropertyChanged(nameof(Time));
             }
         }
+
+        private int amPm;
+        public int AmPm
+        {
+            get
+            {
+                return amPm;
+            }
+            set
+            {
+                if (amPm == value) return;
+                amPm = value;
+                OnPropertyChanged(nameof(AmPm));
+            }
+        }
+
+        public int Hours
+        {
+            get
+            {
+                return Time.Hours;
+            }
+            set
+            {
+                if (Time.Hours == value) return;
+                if (Time.Hours == 11 && value == 12 || Time.Hours == 12 && value == 11)
+                {
+                    if (AmPm == 1)
+                    {
+                        AmPm = 0;
+                    }
+                    else
+                    {
+                        AmPm = 1;
+                    }
+                    OnPropertyChanged(nameof(AmPm));
+                }
+                Time = new TimeSpan(value, Time.Minutes, 0);
+                OnPropertyChanged(nameof(Hours));
+            }
+        }
+
+        public int Minutes
+        {
+            get
+            {
+                return Time.Minutes;
+            }
+            set
+            {
+                if (Time.Minutes == value) return;
+                Time = new TimeSpan(Time.Hours, value, 0);
+                OnPropertyChanged(nameof(Minutes));
+            }
+        }
+
         public DaysOfWeek Days
         {
             get { return Alarm.Days; }

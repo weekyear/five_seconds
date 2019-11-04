@@ -8,6 +8,7 @@ namespace Five_Seconds.CustomControls
     {
         void OnSearchBarTextChanged(string text);
         void OnSearchBarTextSubmited(string text);
+
         event EventHandler<string> SearchBarTextChanged;
         event EventHandler<string> SearchBarTextSubmited;
 

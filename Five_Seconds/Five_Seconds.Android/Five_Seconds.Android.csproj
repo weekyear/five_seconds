@@ -148,6 +148,7 @@
     <Compile Include="CustomRenderers\GestureListViewRenderer.cs" />
     <Compile Include="CustomRenderers\NoRippleListViewRenderer.cs" />
     <Compile Include="CustomRenderers\RoundedViewCellRenderer.cs" />
+    <Compile Include="CustomRenderers\ScrollableNumberPickerRenderer.cs" />
     <Compile Include="CustomRenderers\SearchDetailPageRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="CustomRenderers\TonesListViewRenderer.cs" />
