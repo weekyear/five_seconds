@@ -171,6 +171,7 @@ namespace Five_Seconds.ViewModels
             {
                 if (amPm == value) return;
                 amPm = value;
+                DateToStringWhenTimeChanged();
                 OnPropertyChanged(nameof(AmPm));
             }
         }

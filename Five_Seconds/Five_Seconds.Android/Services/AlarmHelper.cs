@@ -36,6 +36,12 @@ namespace Five_Seconds.Droid.Services
             }
         }
 
+        public static void SetLaterAlarm(Alarm alarm)
+        {
+            var diffTimeSpan = alarm.LaterAlarmTime.Subtract(DateTime.Now);
+            SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+        }
+
         private static long CalculateTimeDiff(Alarm alarm)
         {
             var dateTimeNow = DateTime.Now;
@@ -134,7 +140,11 @@ namespace Five_Seconds.Droid.Services
 
             foreach (var alarm in alarms)
             {
-                if (alarm.IsActive)
+                if (alarm.IsLaterAlarm)
+                {
+                    SetLaterAlarm(alarm);
+                }
+                else if (alarm.IsActive)
                 {
                     SetAlarmAtFirst(alarm);
                 }

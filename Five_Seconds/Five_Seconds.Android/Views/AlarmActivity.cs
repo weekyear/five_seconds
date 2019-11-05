@@ -654,9 +654,7 @@ namespace Five_Seconds.Droid
         {
             var alarmTime = SetLaterAlarmAndGetLaterAlamrTime(minutes);
 
-            var diffTimeSpan = alarmTime.Subtract(DateTime.Now);
-
-            AlarmHelper.SetAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
+            AlarmHelper.SetLaterAlarm(alarm);
             //AlarmController.SetLaterAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
 
             App.Service.SaveAlarmAtLocal(alarm);
