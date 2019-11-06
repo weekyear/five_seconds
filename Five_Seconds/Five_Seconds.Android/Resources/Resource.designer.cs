@@ -42,6 +42,10 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Animation.design_bottom_sheet_slide_out = global::Five_Seconds.Droid.Resource.Animation.design_bottom_sheet_slide_out;
 			global::PanCardView.Droid.Resource.Animation.design_snackbar_in = global::Five_Seconds.Droid.Resource.Animation.design_snackbar_in;
 			global::PanCardView.Droid.Resource.Animation.design_snackbar_out = global::Five_Seconds.Droid.Resource.Animation.design_snackbar_out;
+			global::PanCardView.Droid.Resource.Animation.EnterFromLeft = global::Five_Seconds.Droid.Resource.Animation.EnterFromLeft;
+			global::PanCardView.Droid.Resource.Animation.EnterFromRight = global::Five_Seconds.Droid.Resource.Animation.EnterFromRight;
+			global::PanCardView.Droid.Resource.Animation.ExitToLeft = global::Five_Seconds.Droid.Resource.Animation.ExitToLeft;
+			global::PanCardView.Droid.Resource.Animation.ExitToRight = global::Five_Seconds.Droid.Resource.Animation.ExitToRight;
 			global::PanCardView.Droid.Resource.Animator.design_appbar_state_list_animator = global::Five_Seconds.Droid.Resource.Animator.design_appbar_state_list_animator;
 			global::PanCardView.Droid.Resource.Animator.design_fab_hide_motion_spec = global::Five_Seconds.Droid.Resource.Animator.design_fab_hide_motion_spec;
 			global::PanCardView.Droid.Resource.Animator.design_fab_show_motion_spec = global::Five_Seconds.Droid.Resource.Animator.design_fab_show_motion_spec;
@@ -583,6 +587,10 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Color.bright_foreground_inverse_material_light = global::Five_Seconds.Droid.Resource.Color.bright_foreground_inverse_material_light;
 			global::PanCardView.Droid.Resource.Color.bright_foreground_material_dark = global::Five_Seconds.Droid.Resource.Color.bright_foreground_material_dark;
 			global::PanCardView.Droid.Resource.Color.bright_foreground_material_light = global::Five_Seconds.Droid.Resource.Color.bright_foreground_material_light;
+			global::PanCardView.Droid.Resource.Color.browser_actions_bg_grey = global::Five_Seconds.Droid.Resource.Color.browser_actions_bg_grey;
+			global::PanCardView.Droid.Resource.Color.browser_actions_divider_color = global::Five_Seconds.Droid.Resource.Color.browser_actions_divider_color;
+			global::PanCardView.Droid.Resource.Color.browser_actions_text_color = global::Five_Seconds.Droid.Resource.Color.browser_actions_text_color;
+			global::PanCardView.Droid.Resource.Color.browser_actions_title_color = global::Five_Seconds.Droid.Resource.Color.browser_actions_title_color;
 			global::PanCardView.Droid.Resource.Color.button_material_dark = global::Five_Seconds.Droid.Resource.Color.button_material_dark;
 			global::PanCardView.Droid.Resource.Color.button_material_light = global::Five_Seconds.Droid.Resource.Color.button_material_light;
 			global::PanCardView.Droid.Resource.Color.cardview_dark_background = global::Five_Seconds.Droid.Resource.Color.cardview_dark_background;
@@ -750,6 +758,8 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Dimension.abc_text_size_subtitle_material_toolbar = global::Five_Seconds.Droid.Resource.Dimension.abc_text_size_subtitle_material_toolbar;
 			global::PanCardView.Droid.Resource.Dimension.abc_text_size_title_material = global::Five_Seconds.Droid.Resource.Dimension.abc_text_size_title_material;
 			global::PanCardView.Droid.Resource.Dimension.abc_text_size_title_material_toolbar = global::Five_Seconds.Droid.Resource.Dimension.abc_text_size_title_material_toolbar;
+			global::PanCardView.Droid.Resource.Dimension.browser_actions_context_menu_max_width = global::Five_Seconds.Droid.Resource.Dimension.browser_actions_context_menu_max_width;
+			global::PanCardView.Droid.Resource.Dimension.browser_actions_context_menu_min_padding = global::Five_Seconds.Droid.Resource.Dimension.browser_actions_context_menu_min_padding;
 			global::PanCardView.Droid.Resource.Dimension.cardview_compat_inset_shadow = global::Five_Seconds.Droid.Resource.Dimension.cardview_compat_inset_shadow;
 			global::PanCardView.Droid.Resource.Dimension.cardview_default_elevation = global::Five_Seconds.Droid.Resource.Dimension.cardview_default_elevation;
 			global::PanCardView.Droid.Resource.Dimension.cardview_default_radius = global::Five_Seconds.Droid.Resource.Dimension.cardview_default_radius;
@@ -1239,6 +1249,13 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Id.beginning = global::Five_Seconds.Droid.Resource.Id.beginning;
 			global::PanCardView.Droid.Resource.Id.blocking = global::Five_Seconds.Droid.Resource.Id.blocking;
 			global::PanCardView.Droid.Resource.Id.bottom = global::Five_Seconds.Droid.Resource.Id.bottom;
+			global::PanCardView.Droid.Resource.Id.bottomtab_navarea = global::Five_Seconds.Droid.Resource.Id.bottomtab_navarea;
+			global::PanCardView.Droid.Resource.Id.bottomtab_tabbar = global::Five_Seconds.Droid.Resource.Id.bottomtab_tabbar;
+			global::PanCardView.Droid.Resource.Id.browser_actions_header_text = global::Five_Seconds.Droid.Resource.Id.browser_actions_header_text;
+			global::PanCardView.Droid.Resource.Id.browser_actions_menu_items = global::Five_Seconds.Droid.Resource.Id.browser_actions_menu_items;
+			global::PanCardView.Droid.Resource.Id.browser_actions_menu_item_icon = global::Five_Seconds.Droid.Resource.Id.browser_actions_menu_item_icon;
+			global::PanCardView.Droid.Resource.Id.browser_actions_menu_item_text = global::Five_Seconds.Droid.Resource.Id.browser_actions_menu_item_text;
+			global::PanCardView.Droid.Resource.Id.browser_actions_menu_view = global::Five_Seconds.Droid.Resource.Id.browser_actions_menu_view;
 			global::PanCardView.Droid.Resource.Id.buttonPanel = global::Five_Seconds.Droid.Resource.Id.buttonPanel;
 			global::PanCardView.Droid.Resource.Id.cancel_action = global::Five_Seconds.Droid.Resource.Id.cancel_action;
 			global::PanCardView.Droid.Resource.Id.center = global::Five_Seconds.Droid.Resource.Id.center;
@@ -1277,6 +1294,8 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Id.fill_horizontal = global::Five_Seconds.Droid.Resource.Id.fill_horizontal;
 			global::PanCardView.Droid.Resource.Id.fill_vertical = global::Five_Seconds.Droid.Resource.Id.fill_vertical;
 			global::PanCardView.Droid.Resource.Id.@fixed = global::Five_Seconds.Droid.Resource.Id.@fixed;
+			global::PanCardView.Droid.Resource.Id.flyoutcontent_appbar = global::Five_Seconds.Droid.Resource.Id.flyoutcontent_appbar;
+			global::PanCardView.Droid.Resource.Id.flyoutcontent_recycler = global::Five_Seconds.Droid.Resource.Id.flyoutcontent_recycler;
 			global::PanCardView.Droid.Resource.Id.forever = global::Five_Seconds.Droid.Resource.Id.forever;
 			global::PanCardView.Droid.Resource.Id.FUNCTION = global::Five_Seconds.Droid.Resource.Id.FUNCTION;
 			global::PanCardView.Droid.Resource.Id.ghost_view = global::Five_Seconds.Droid.Resource.Id.ghost_view;
@@ -1297,6 +1316,10 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Id.line3 = global::Five_Seconds.Droid.Resource.Id.line3;
 			global::PanCardView.Droid.Resource.Id.listMode = global::Five_Seconds.Droid.Resource.Id.listMode;
 			global::PanCardView.Droid.Resource.Id.list_item = global::Five_Seconds.Droid.Resource.Id.list_item;
+			global::PanCardView.Droid.Resource.Id.main_appbar = global::Five_Seconds.Droid.Resource.Id.main_appbar;
+			global::PanCardView.Droid.Resource.Id.main_tablayout = global::Five_Seconds.Droid.Resource.Id.main_tablayout;
+			global::PanCardView.Droid.Resource.Id.main_toolbar = global::Five_Seconds.Droid.Resource.Id.main_toolbar;
+			global::PanCardView.Droid.Resource.Id.main_viewpager = global::Five_Seconds.Droid.Resource.Id.main_viewpager;
 			global::PanCardView.Droid.Resource.Id.masked = global::Five_Seconds.Droid.Resource.Id.masked;
 			global::PanCardView.Droid.Resource.Id.media_actions = global::Five_Seconds.Droid.Resource.Id.media_actions;
 			global::PanCardView.Droid.Resource.Id.message = global::Five_Seconds.Droid.Resource.Id.message;
@@ -1391,6 +1414,8 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Id.search_voice_btn = global::Five_Seconds.Droid.Resource.Id.search_voice_btn;
 			global::PanCardView.Droid.Resource.Id.selected = global::Five_Seconds.Droid.Resource.Id.selected;
 			global::PanCardView.Droid.Resource.Id.select_dialog_listview = global::Five_Seconds.Droid.Resource.Id.select_dialog_listview;
+			global::PanCardView.Droid.Resource.Id.shellcontent_appbar = global::Five_Seconds.Droid.Resource.Id.shellcontent_appbar;
+			global::PanCardView.Droid.Resource.Id.shellcontent_toolbar = global::Five_Seconds.Droid.Resource.Id.shellcontent_toolbar;
 			global::PanCardView.Droid.Resource.Id.SHIFT = global::Five_Seconds.Droid.Resource.Id.SHIFT;
 			global::PanCardView.Droid.Resource.Id.shortcut = global::Five_Seconds.Droid.Resource.Id.shortcut;
 			global::PanCardView.Droid.Resource.Id.showCustom = global::Five_Seconds.Droid.Resource.Id.showCustom;
@@ -1499,6 +1524,9 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Layout.abc_search_view = global::Five_Seconds.Droid.Resource.Layout.abc_search_view;
 			global::PanCardView.Droid.Resource.Layout.abc_select_dialog_material = global::Five_Seconds.Droid.Resource.Layout.abc_select_dialog_material;
 			global::PanCardView.Droid.Resource.Layout.abc_tooltip = global::Five_Seconds.Droid.Resource.Layout.abc_tooltip;
+			global::PanCardView.Droid.Resource.Layout.BottomTabLayout = global::Five_Seconds.Droid.Resource.Layout.BottomTabLayout;
+			global::PanCardView.Droid.Resource.Layout.browser_actions_context_menu_page = global::Five_Seconds.Droid.Resource.Layout.browser_actions_context_menu_page;
+			global::PanCardView.Droid.Resource.Layout.browser_actions_context_menu_row = global::Five_Seconds.Droid.Resource.Layout.browser_actions_context_menu_row;
 			global::PanCardView.Droid.Resource.Layout.design_bottom_navigation_item = global::Five_Seconds.Droid.Resource.Layout.design_bottom_navigation_item;
 			global::PanCardView.Droid.Resource.Layout.design_bottom_sheet_dialog = global::Five_Seconds.Droid.Resource.Layout.design_bottom_sheet_dialog;
 			global::PanCardView.Droid.Resource.Layout.design_layout_snackbar = global::Five_Seconds.Droid.Resource.Layout.design_layout_snackbar;
@@ -1513,6 +1541,7 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Layout.design_navigation_menu = global::Five_Seconds.Droid.Resource.Layout.design_navigation_menu;
 			global::PanCardView.Droid.Resource.Layout.design_navigation_menu_item = global::Five_Seconds.Droid.Resource.Layout.design_navigation_menu_item;
 			global::PanCardView.Droid.Resource.Layout.design_text_input_password_icon = global::Five_Seconds.Droid.Resource.Layout.design_text_input_password_icon;
+			global::PanCardView.Droid.Resource.Layout.FlyoutContent = global::Five_Seconds.Droid.Resource.Layout.FlyoutContent;
 			global::PanCardView.Droid.Resource.Layout.mr_cast_dialog = global::Five_Seconds.Droid.Resource.Layout.mr_cast_dialog;
 			global::PanCardView.Droid.Resource.Layout.mr_cast_group_item = global::Five_Seconds.Droid.Resource.Layout.mr_cast_group_item;
 			global::PanCardView.Droid.Resource.Layout.mr_cast_group_volume_item = global::Five_Seconds.Droid.Resource.Layout.mr_cast_group_volume_item;
@@ -1544,9 +1573,11 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Layout.notification_template_media_custom = global::Five_Seconds.Droid.Resource.Layout.notification_template_media_custom;
 			global::PanCardView.Droid.Resource.Layout.notification_template_part_chronometer = global::Five_Seconds.Droid.Resource.Layout.notification_template_part_chronometer;
 			global::PanCardView.Droid.Resource.Layout.notification_template_part_time = global::Five_Seconds.Droid.Resource.Layout.notification_template_part_time;
+			global::PanCardView.Droid.Resource.Layout.RootLayout = global::Five_Seconds.Droid.Resource.Layout.RootLayout;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_item_material = global::Five_Seconds.Droid.Resource.Layout.select_dialog_item_material;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_multichoice_material = global::Five_Seconds.Droid.Resource.Layout.select_dialog_multichoice_material;
 			global::PanCardView.Droid.Resource.Layout.select_dialog_singlechoice_material = global::Five_Seconds.Droid.Resource.Layout.select_dialog_singlechoice_material;
+			global::PanCardView.Droid.Resource.Layout.ShellContent = global::Five_Seconds.Droid.Resource.Layout.ShellContent;
 			global::PanCardView.Droid.Resource.Layout.support_simple_spinner_dropdown_item = global::Five_Seconds.Droid.Resource.Layout.support_simple_spinner_dropdown_item;
 			global::PanCardView.Droid.Resource.String.abc_action_bar_home_description = global::Five_Seconds.Droid.Resource.String.abc_action_bar_home_description;
 			global::PanCardView.Droid.Resource.String.abc_action_bar_up_description = global::Five_Seconds.Droid.Resource.String.abc_action_bar_up_description;
@@ -1824,6 +1855,7 @@ namespace Five_Seconds.Droid
 			global::PanCardView.Droid.Resource.Style.CardView = global::Five_Seconds.Droid.Resource.Style.CardView;
 			global::PanCardView.Droid.Resource.Style.CardView_Dark = global::Five_Seconds.Droid.Resource.Style.CardView_Dark;
 			global::PanCardView.Droid.Resource.Style.CardView_Light = global::Five_Seconds.Droid.Resource.Style.CardView_Light;
+			global::PanCardView.Droid.Resource.Style.collectionViewStyle = global::Five_Seconds.Droid.Resource.Style.collectionViewStyle;
 			global::PanCardView.Droid.Resource.Style.Platform_AppCompat = global::Five_Seconds.Droid.Resource.Style.Platform_AppCompat;
 			global::PanCardView.Droid.Resource.Style.Platform_AppCompat_Light = global::Five_Seconds.Droid.Resource.Style.Platform_AppCompat_Light;
 			global::PanCardView.Droid.Resource.Style.Platform_MaterialComponents = global::Five_Seconds.Droid.Resource.Style.Platform_MaterialComponents;
@@ -11143,215 +11175,218 @@ namespace Five_Seconds.Droid
 			// aapt resource value: 0x7F0E002C
 			public const int character_counter_pattern = 2131623980;
 			
-			// aapt resource value: 0x7F0E002D
-			public const int common_google_play_services_enable_button = 2131623981;
-			
 			// aapt resource value: 0x7F0E002E
-			public const int common_google_play_services_enable_text = 2131623982;
+			public const int common_google_play_services_enable_button = 2131623982;
 			
 			// aapt resource value: 0x7F0E002F
-			public const int common_google_play_services_enable_title = 2131623983;
+			public const int common_google_play_services_enable_text = 2131623983;
 			
 			// aapt resource value: 0x7F0E0030
-			public const int common_google_play_services_install_button = 2131623984;
+			public const int common_google_play_services_enable_title = 2131623984;
 			
 			// aapt resource value: 0x7F0E0031
-			public const int common_google_play_services_install_text = 2131623985;
+			public const int common_google_play_services_install_button = 2131623985;
 			
 			// aapt resource value: 0x7F0E0032
-			public const int common_google_play_services_install_title = 2131623986;
+			public const int common_google_play_services_install_text = 2131623986;
 			
 			// aapt resource value: 0x7F0E0033
-			public const int common_google_play_services_notification_channel_name = 2131623987;
+			public const int common_google_play_services_install_title = 2131623987;
 			
 			// aapt resource value: 0x7F0E0034
-			public const int common_google_play_services_notification_ticker = 2131623988;
+			public const int common_google_play_services_notification_channel_name = 2131623988;
 			
 			// aapt resource value: 0x7F0E0035
-			public const int common_google_play_services_unknown_issue = 2131623989;
+			public const int common_google_play_services_notification_ticker = 2131623989;
 			
 			// aapt resource value: 0x7F0E0036
-			public const int common_google_play_services_unsupported_text = 2131623990;
+			public const int common_google_play_services_unknown_issue = 2131623990;
 			
 			// aapt resource value: 0x7F0E0037
-			public const int common_google_play_services_update_button = 2131623991;
+			public const int common_google_play_services_unsupported_text = 2131623991;
 			
 			// aapt resource value: 0x7F0E0038
-			public const int common_google_play_services_update_text = 2131623992;
+			public const int common_google_play_services_update_button = 2131623992;
 			
 			// aapt resource value: 0x7F0E0039
-			public const int common_google_play_services_update_title = 2131623993;
+			public const int common_google_play_services_update_text = 2131623993;
 			
 			// aapt resource value: 0x7F0E003A
-			public const int common_google_play_services_updating_text = 2131623994;
+			public const int common_google_play_services_update_title = 2131623994;
 			
 			// aapt resource value: 0x7F0E003B
-			public const int common_google_play_services_wear_update_text = 2131623995;
+			public const int common_google_play_services_updating_text = 2131623995;
 			
 			// aapt resource value: 0x7F0E003C
-			public const int common_open_on_phone = 2131623996;
+			public const int common_google_play_services_wear_update_text = 2131623996;
 			
 			// aapt resource value: 0x7F0E003D
-			public const int common_signin_button_text = 2131623997;
+			public const int common_open_on_phone = 2131623997;
 			
 			// aapt resource value: 0x7F0E003E
-			public const int common_signin_button_text_long = 2131623998;
+			public const int common_signin_button_text = 2131623998;
 			
 			// aapt resource value: 0x7F0E003F
-			public const int default_web_client_id = 2131623999;
+			public const int common_signin_button_text_long = 2131623999;
+			
+			// aapt resource value: 0x7F0E002D
+			public const int com_crashlytics_android_build_id = 2131623981;
 			
 			// aapt resource value: 0x7F0E0040
-			public const int fab_transformation_scrim_behavior = 2131624000;
+			public const int default_web_client_id = 2131624000;
 			
 			// aapt resource value: 0x7F0E0041
-			public const int fab_transformation_sheet_behavior = 2131624001;
+			public const int fab_transformation_scrim_behavior = 2131624001;
 			
 			// aapt resource value: 0x7F0E0042
-			public const int firebase_database_url = 2131624002;
+			public const int fab_transformation_sheet_behavior = 2131624002;
 			
 			// aapt resource value: 0x7F0E0043
-			public const int gcm_defaultSenderId = 2131624003;
+			public const int firebase_database_url = 2131624003;
 			
 			// aapt resource value: 0x7F0E0044
-			public const int google_api_key = 2131624004;
+			public const int gcm_defaultSenderId = 2131624004;
 			
 			// aapt resource value: 0x7F0E0045
-			public const int google_app_id = 2131624005;
+			public const int google_api_key = 2131624005;
 			
 			// aapt resource value: 0x7F0E0046
-			public const int google_crash_reporting_api_key = 2131624006;
+			public const int google_app_id = 2131624006;
 			
 			// aapt resource value: 0x7F0E0047
-			public const int google_storage_bucket = 2131624007;
+			public const int google_crash_reporting_api_key = 2131624007;
 			
 			// aapt resource value: 0x7F0E0048
-			public const int hide_bottom_view_on_scroll_behavior = 2131624008;
+			public const int google_storage_bucket = 2131624008;
 			
 			// aapt resource value: 0x7F0E0049
-			public const int library_name = 2131624009;
+			public const int hide_bottom_view_on_scroll_behavior = 2131624009;
 			
 			// aapt resource value: 0x7F0E004A
-			public const int mr_button_content_description = 2131624010;
+			public const int library_name = 2131624010;
 			
 			// aapt resource value: 0x7F0E004B
-			public const int mr_cast_button_connected = 2131624011;
+			public const int mr_button_content_description = 2131624011;
 			
 			// aapt resource value: 0x7F0E004C
-			public const int mr_cast_button_connecting = 2131624012;
+			public const int mr_cast_button_connected = 2131624012;
 			
 			// aapt resource value: 0x7F0E004D
-			public const int mr_cast_button_disconnected = 2131624013;
+			public const int mr_cast_button_connecting = 2131624013;
 			
 			// aapt resource value: 0x7F0E004E
-			public const int mr_cast_dialog_title_view_placeholder = 2131624014;
+			public const int mr_cast_button_disconnected = 2131624014;
 			
 			// aapt resource value: 0x7F0E004F
-			public const int mr_chooser_searching = 2131624015;
+			public const int mr_cast_dialog_title_view_placeholder = 2131624015;
 			
 			// aapt resource value: 0x7F0E0050
-			public const int mr_chooser_title = 2131624016;
+			public const int mr_chooser_searching = 2131624016;
 			
 			// aapt resource value: 0x7F0E0051
-			public const int mr_controller_album_art = 2131624017;
+			public const int mr_chooser_title = 2131624017;
 			
 			// aapt resource value: 0x7F0E0052
-			public const int mr_controller_casting_screen = 2131624018;
+			public const int mr_controller_album_art = 2131624018;
 			
 			// aapt resource value: 0x7F0E0053
-			public const int mr_controller_close_description = 2131624019;
+			public const int mr_controller_casting_screen = 2131624019;
 			
 			// aapt resource value: 0x7F0E0054
-			public const int mr_controller_collapse_group = 2131624020;
+			public const int mr_controller_close_description = 2131624020;
 			
 			// aapt resource value: 0x7F0E0055
-			public const int mr_controller_disconnect = 2131624021;
+			public const int mr_controller_collapse_group = 2131624021;
 			
 			// aapt resource value: 0x7F0E0056
-			public const int mr_controller_expand_group = 2131624022;
+			public const int mr_controller_disconnect = 2131624022;
 			
 			// aapt resource value: 0x7F0E0057
-			public const int mr_controller_no_info_available = 2131624023;
+			public const int mr_controller_expand_group = 2131624023;
 			
 			// aapt resource value: 0x7F0E0058
-			public const int mr_controller_no_media_selected = 2131624024;
+			public const int mr_controller_no_info_available = 2131624024;
 			
 			// aapt resource value: 0x7F0E0059
-			public const int mr_controller_pause = 2131624025;
+			public const int mr_controller_no_media_selected = 2131624025;
 			
 			// aapt resource value: 0x7F0E005A
-			public const int mr_controller_play = 2131624026;
+			public const int mr_controller_pause = 2131624026;
 			
 			// aapt resource value: 0x7F0E005B
-			public const int mr_controller_stop = 2131624027;
+			public const int mr_controller_play = 2131624027;
 			
 			// aapt resource value: 0x7F0E005C
-			public const int mr_controller_stop_casting = 2131624028;
+			public const int mr_controller_stop = 2131624028;
 			
 			// aapt resource value: 0x7F0E005D
-			public const int mr_controller_volume_slider = 2131624029;
+			public const int mr_controller_stop_casting = 2131624029;
 			
 			// aapt resource value: 0x7F0E005E
-			public const int mr_dialog_device_header = 2131624030;
+			public const int mr_controller_volume_slider = 2131624030;
 			
 			// aapt resource value: 0x7F0E005F
-			public const int mr_dialog_route_header = 2131624031;
+			public const int mr_dialog_device_header = 2131624031;
 			
 			// aapt resource value: 0x7F0E0060
-			public const int mr_system_route_name = 2131624032;
+			public const int mr_dialog_route_header = 2131624032;
 			
 			// aapt resource value: 0x7F0E0061
-			public const int mr_user_route_category_name = 2131624033;
+			public const int mr_system_route_name = 2131624033;
 			
 			// aapt resource value: 0x7F0E0062
-			public const int mtrl_chip_close_icon_content_description = 2131624034;
+			public const int mr_user_route_category_name = 2131624034;
 			
 			// aapt resource value: 0x7F0E0063
-			public const int password_toggle_content_description = 2131624035;
+			public const int mtrl_chip_close_icon_content_description = 2131624035;
 			
 			// aapt resource value: 0x7F0E0064
-			public const int path_password_eye = 2131624036;
+			public const int password_toggle_content_description = 2131624036;
 			
 			// aapt resource value: 0x7F0E0065
-			public const int path_password_eye_mask_strike_through = 2131624037;
+			public const int path_password_eye = 2131624037;
 			
 			// aapt resource value: 0x7F0E0066
-			public const int path_password_eye_mask_visible = 2131624038;
+			public const int path_password_eye_mask_strike_through = 2131624038;
 			
 			// aapt resource value: 0x7F0E0067
-			public const int path_password_strike_through = 2131624039;
+			public const int path_password_eye_mask_visible = 2131624039;
 			
 			// aapt resource value: 0x7F0E0068
-			public const int project_id = 2131624040;
+			public const int path_password_strike_through = 2131624040;
 			
 			// aapt resource value: 0x7F0E0069
-			public const int realarm = 2131624041;
+			public const int project_id = 2131624041;
 			
 			// aapt resource value: 0x7F0E006A
-			public const int s1 = 2131624042;
+			public const int realarm = 2131624042;
 			
 			// aapt resource value: 0x7F0E006B
-			public const int s2 = 2131624043;
+			public const int s1 = 2131624043;
 			
 			// aapt resource value: 0x7F0E006C
-			public const int s3 = 2131624044;
+			public const int s2 = 2131624044;
 			
 			// aapt resource value: 0x7F0E006D
-			public const int s4 = 2131624045;
+			public const int s3 = 2131624045;
 			
 			// aapt resource value: 0x7F0E006E
-			public const int s5 = 2131624046;
+			public const int s4 = 2131624046;
 			
 			// aapt resource value: 0x7F0E006F
-			public const int s6 = 2131624047;
+			public const int s5 = 2131624047;
 			
 			// aapt resource value: 0x7F0E0070
-			public const int s7 = 2131624048;
+			public const int s6 = 2131624048;
 			
 			// aapt resource value: 0x7F0E0071
-			public const int search_menu_title = 2131624049;
+			public const int s7 = 2131624049;
 			
 			// aapt resource value: 0x7F0E0072
-			public const int status_bar_notification_info_overflow = 2131624050;
+			public const int search_menu_title = 2131624050;
+			
+			// aapt resource value: 0x7F0E0073
+			public const int status_bar_notification_info_overflow = 2131624051;
 			
 			static String()
 			{

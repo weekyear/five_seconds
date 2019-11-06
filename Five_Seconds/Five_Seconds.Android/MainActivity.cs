@@ -30,6 +30,8 @@ namespace Five_Seconds.Droid
 
             base.OnCreate(savedInstanceState);
 
+            Fabric.Fabric.With(this, new Crashlytics.Crashlytics());
+            Crashlytics.Crashlytics.HandleManagedExceptions();
             Forms.Init(this, savedInstanceState);
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
