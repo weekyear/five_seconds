@@ -30,13 +30,18 @@ namespace Five_Seconds.Droid
 
             base.OnCreate(savedInstanceState);
 
+
+            Forms.Init(this, savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
+
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
+
+            SetMobileAds();
+
             Fabric.Fabric.With(this, new Crashlytics.Crashlytics());
             Crashlytics.Crashlytics.HandleManagedExceptions();
-            Forms.Init(this, savedInstanceState);
-            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
-            SetMobileAds();
         }
 
         protected override void OnStart()

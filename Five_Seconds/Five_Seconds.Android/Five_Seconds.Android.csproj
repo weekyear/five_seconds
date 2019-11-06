@@ -205,6 +205,7 @@
     <Compile Include="BroadcastReceivers\BootReceiver.cs" />
     <Compile Include="Services\CountDown.cs" />
     <Compile Include="Services\CountDownAndroid.cs" />
+    <Compile Include="Services\CrashTestAndroid.cs" />
     <Compile Include="Services\FileLocatorAndroid.cs" />
     <Compile Include="Services\HelperAndroid.cs" />
     <Compile Include="Services\InterstitialAdListener.cs" />

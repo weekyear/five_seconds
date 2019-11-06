@@ -17,10 +17,7 @@ namespace Five_Seconds.Droid.Services
 {
     public class PlaySoundServiceAndroid : IPlaySoundService
     {
-        static CancellationTokenSource tokenSource2 = new CancellationTokenSource();
-        CancellationToken ct = tokenSource2.Token;
-
-        MediaPlayer _mediaPlayer = new MediaPlayer();
+        readonly MediaPlayer _mediaPlayer = new MediaPlayer();
         AssetFileDescriptor _assetFileDescriptor;
 
         public void PlayAudio(AlarmTone alarmTone, int volume)
@@ -32,16 +29,16 @@ namespace Five_Seconds.Droid.Services
         {
             StopAudio();
 
-            if (!alarmTone.IsCustomTone)
-            {
-                _assetFileDescriptor = Application.Context.Assets.OpenFd(alarmTone.Path);
-                _mediaPlayer.SetDataSource(_assetFileDescriptor.FileDescriptor, _assetFileDescriptor.StartOffset, _assetFileDescriptor.Length);
-            }
-            else
+            if (alarmTone.IsCustomTone)
             {
                 FileInputStream fis = new FileInputStream(alarmTone.Path);
                 FileDescriptor fd = fis.FD;
                 _mediaPlayer.SetDataSource(fd);
+            }
+            else
+            {
+                _assetFileDescriptor = Application.Context.Assets.OpenFd(alarmTone.Path);
+                _mediaPlayer.SetDataSource(_assetFileDescriptor.FileDescriptor, _assetFileDescriptor.StartOffset, _assetFileDescriptor.Length);
             }
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)

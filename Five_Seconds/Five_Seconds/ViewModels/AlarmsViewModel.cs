@@ -91,12 +91,13 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowAddAlarm()
         {
-            await Navigation.PushAsync(new AlarmPage(Navigation));
+            await Navigation.PushAsync(new AlarmPage(Navigation)).ConfigureAwait(false);
         }
 
         private void ShowCountDown()
         {
             void action() => DependencyService.Get<ICountDown>().ShowCountDown();
+            //void action() => DependencyService.Get<ICrashTest>().CrashTest();
             MessageBoxService.ShowConfirm("5초 카운트", "5초 카운트를 시작하시겠습니까?", null, action);
         }
         

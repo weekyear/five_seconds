@@ -264,7 +264,6 @@ namespace Five_Seconds.Droid
         private void StartListening_Click(object sender, EventArgs e)
         {
             RequestRecordAudioPermission();
-            //SendBroadcast(new Intent(Intent.ActionBootCompleted));
         }
 
         private void StartButton_Click(object sender, EventArgs e)
