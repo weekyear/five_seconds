@@ -7,6 +7,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Ads;
 using Android.Graphics.Drawables;
+using Android.Hardware.Display;
 using Android.OS;
 using Android.Runtime;
 using Android.Speech;
@@ -19,6 +20,7 @@ using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
 using RelativeLayout = Android.Widget.RelativeLayout;
@@ -31,6 +33,7 @@ namespace Five_Seconds.Droid
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
         Vibrator _vibrator;
 
+        private Dialog reviewDialog;
         private Dialog resultDialog;
         private Dialog laterDialog;
         private NumberPicker laterNumberPicker;
@@ -38,8 +41,13 @@ namespace Five_Seconds.Droid
         private SpeechRecognizer mSpeechRecognizer;
         private Intent mSpeechRecognizerIntent;
         const int MY_PERMISSIONS_RECORD_AUDIO = 2357;
+
         private LinearLayout countLayout;
         private RelativeLayout notCountLayout;
+        private LinearLayout buttonLayout;
+        private LinearLayout feedbackButtonLayout;
+        private LinearLayout reviewButtonLayout;
+
         private Button startButton;
         private Button laterButton;
         private ImageView tellmeView;
@@ -53,6 +61,9 @@ namespace Five_Seconds.Droid
         private CountDown countDownForFailed;
         private CountDown countDownForFiveSeconds;
 
+        private TextView titleText;
+        private TextView messageText;
+
         AdView adViewForResult;
         AdView adViewForLater;
 
@@ -64,6 +75,8 @@ namespace Five_Seconds.Droid
         private bool IsRepeating;
         private bool IsVoiceRecognition;
         private int alarmVolume;
+
+        private bool CanShowReview;
 
         private DateTime AlarmTimeNow;
         public bool IsSuccess = false;
@@ -232,7 +245,24 @@ namespace Five_Seconds.Droid
         private void AddWindowManagerFlags()
         {
             // add flags to turn screen on and appear over lock screen
+            //bool IsScreenOn = false;
+            //var dm = GetSystemService(DisplayService) as DisplayManager;
+            //foreach (Display display in dm.GetDisplays()) 
+            //{
+            //    var displayState = display.State;
+            //    if (displayState != DisplayState.Off)
+            //    {
+            //        IsScreenOn = true;
+            //    }
+            //}
+
+            //if (IsScreenOn)
+            //{
+            //    IsPausePassed = true;
+            //}
+
             var pm = GetSystemService(PowerService) as PowerManager;
+
 
             if (pm.IsInteractive)
             {
@@ -274,6 +304,10 @@ namespace Five_Seconds.Droid
             }
             else
             {
+                //Test:: 
+                //SetReviewDialog();
+                //ShowReviewDialog();
+
                 SuccessAlarm();
             }
         }
@@ -525,6 +559,13 @@ namespace Five_Seconds.Droid
 
             if (IsSuccess)
             {
+                CanShowReview = Preferences.Get("CanShowReview", true);
+
+                if (CanShowReview)
+                {
+                    SetReviewDialog();
+                }
+
                 titleText.Text = "알람 성공!";
 
                 confirmBtn.Click += ResultDialog_ConfirmBtn_Click;
@@ -577,7 +618,15 @@ namespace Five_Seconds.Droid
         private void ResultDialog_ConfirmBtn_Click(object sender, EventArgs e)
         {
             resultDialog.Dismiss();
-            FinishAndRemoveTask();
+
+            if (CanShowReview && IsSuccess)
+            {
+                ShowReviewDialog();
+            }
+            else
+            {
+                FinishAndRemoveTask();
+            }
         }
 
         private void ResultDialog_CountBtn_Click(object sender, EventArgs e)
@@ -717,12 +766,13 @@ namespace Five_Seconds.Droid
             {
                 IsPausePassed = true;
             }
+
             base.OnPause();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             if (requestCode == MY_PERMISSIONS_RECORD_AUDIO)
             {
@@ -763,6 +813,132 @@ namespace Five_Seconds.Droid
             {
                 StartVoiceRecognition();
             }
+        }
+
+        private void SetReviewDialog()
+        {
+            reviewDialog = new Dialog(this);
+            reviewDialog.SetContentView(Resource.Layout.ReviewDialog);
+            reviewDialog.SetCancelable(false);
+            reviewDialog.SetCanceledOnTouchOutside(false);
+
+            reviewDialog.Window.SetBackgroundDrawable(new ColorDrawable(Android.Graphics.Color.Transparent));
+        }
+
+        public void ShowReviewDialog()
+        {
+            SetReviewToDialogResult();
+
+            reviewDialog.Show();
+        }
+
+        private void SetReviewToDialogResult()
+        {
+            var Records = App.AlarmsRepo.RecordFromDB;
+            var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
+
+            titleText = reviewDialog.FindViewById<TextView>(Resource.Id.titleText);
+            messageText = reviewDialog.FindViewById<TextView>(Resource.Id.messageText);
+
+            buttonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
+            feedbackButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.feedbackButtonLayout);
+            reviewButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.reviewButtonLayout);
+
+            Button confirmBtn1 = reviewDialog.FindViewById<Button>(Resource.Id.confirmBtn1);
+            Button confirmBtn2 = reviewDialog.FindViewById<Button>(Resource.Id.confirmBtn2);
+            Button confirmBtn3 = reviewDialog.FindViewById<Button>(Resource.Id.confirmBtn3);
+            Button cancelBtn1 = reviewDialog.FindViewById<Button>(Resource.Id.cancelBtn1);
+            Button cancelBtn2 = reviewDialog.FindViewById<Button>(Resource.Id.cancelBtn2);
+            Button cancelBtn3 = reviewDialog.FindViewById<Button>(Resource.Id.cancelBtn3);
+            Button laterBtn3 = reviewDialog.FindViewById<Button>(Resource.Id.laterBtn3);
+
+            confirmBtn1.Click += ConfirmBtn1_Click;
+            cancelBtn1.Click += CancelBtn1_Click;
+
+            confirmBtn2.Click += ConfirmBtn2_Click;
+            cancelBtn2.Click += CancelBtn2_Click;
+
+            confirmBtn3.Click += ConfirmBtn3_Click;
+            cancelBtn3.Click += CancelBtn3_Click;
+            laterBtn3.Click += LaterBtn3_Click;
+        }
+
+        private void ConfirmBtn1_Click(object sender, EventArgs e)
+        {
+            buttonLayout.Visibility = ViewStates.Gone;
+            reviewButtonLayout.Visibility = ViewStates.Visible;
+
+            titleText.Text = "도움이 되서 기뻐요!";
+            messageText.Text = "5초의 알람 리뷰를 통해 추천해주시겠어요?";
+        }
+
+        private void CancelBtn1_Click(object sender, EventArgs e)
+        {
+            buttonLayout.Visibility = ViewStates.Gone;
+            feedbackButtonLayout.Visibility = ViewStates.Visible;
+
+            titleText.Text = "도움이 못 돼서 죄송해요";
+            messageText.Text = "불편, 개선 사항이 있다면 말씀해주시겠어요?";
+        }
+
+        private void ConfirmBtn2_Click(object sender, EventArgs e)
+        {
+            // 이메일 인텐트
+            var intent = new Intent(Intent.ActionSend);
+            intent.SetType("message/rfc822");
+            intent.PutExtra(Intent.ExtraEmail, "save_us_222@naver.com");
+            intent.PutExtra(Intent.ExtraSubject, $"{AlarmTimeNow.ToShortDateString()} 5초의 알람 오류 보고");
+
+            try
+            {
+                StartActivity(Intent.CreateChooser(intent, "이메일 보내기.."));
+            }
+            catch (ActivityNotFoundException)
+            {
+                Toast.MakeText(this, "There are no email clients installed.", ToastLength.Short).Show();
+            }
+
+            FinishAndRemoveTask();
+        }
+
+        private void CancelBtn2_Click(object sender, EventArgs e)
+        {
+            // 앱 리뷰 다신 안 하기
+            Preferences.Set("CanShowReview", false);
+            FinishAndRemoveTask();
+        }
+
+        private void ConfirmBtn3_Click(object sender, EventArgs e)
+        {
+            Intent googleAppStoreIntent;
+            try
+            {
+                googleAppStoreIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=" + PackageName));
+
+            }
+            catch (ActivityNotFoundException)
+            {
+                googleAppStoreIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("http://play.google.com/store/apps/details?id=" + PackageName));
+
+            }
+            googleAppStoreIntent.AddFlags(ActivityFlags.NewTask);
+            StartActivity(googleAppStoreIntent);
+
+            FinishAndRemoveTask();
+        }
+
+        private void CancelBtn3_Click(object sender, EventArgs e)
+        {
+            // 앱 리뷰 다신 안 하기
+            Preferences.Set("CanShowReview", false);
+            FinishAndRemoveTask();
+        }
+
+        private void LaterBtn3_Click(object sender, EventArgs e)
+        {
+            // 리뷰 알람 카운트 다시 카운트 하기
+            Preferences.Set("ReviewStatck", 0);
+            FinishAndRemoveTask();
         }
     }
 }

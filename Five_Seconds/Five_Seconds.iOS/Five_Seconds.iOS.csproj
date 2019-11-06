@@ -154,11 +154,6 @@
     <PackageReference Include="DLToolkit.Forms.Controls.TagEntryView">
       <Version>1.0.5</Version>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>2.9.7</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="Moq">
       <Version>4.13.1</Version>
     </PackageReference>
