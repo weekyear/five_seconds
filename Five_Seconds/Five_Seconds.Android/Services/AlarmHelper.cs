@@ -53,15 +53,6 @@ namespace Five_Seconds.Droid.Services
             return (long)diffTimeSpan.TotalMilliseconds;
         }
 
-        private static void ShowNextAlarmToast(DateTime dateTime)
-        {
-            var diffString = CreateDateString.CreateTimeRemainingString(dateTime);
-
-            var toastService = new ToastServiceAndroid();
-
-            toastService.Show(diffString);
-        }
-
         public static void SetAlarmByManager(Alarm alarm, long diffMillis)
         {
             var _alarmIntent = SetAlarmIntent(alarm);
@@ -94,12 +85,12 @@ namespace Five_Seconds.Droid.Services
         public static void SetAllAlarmWhenRestart()
         {
             var service = CreateServiceWithoutCore();
-            var alarms = service.GetAllAlarms();
 
-            foreach (var alarm in alarms)
-            {
-                SetAlarmAtFirst(alarm);
-            }
+            Alarm.IsInitFinished = false;
+            var alarms = service.GetAllAlarms();
+            Alarm.IsInitFinished = true;
+
+            RefreshAlarmByManager(alarms);
         }
 
         public static AlarmService CreateServiceWithoutCore()

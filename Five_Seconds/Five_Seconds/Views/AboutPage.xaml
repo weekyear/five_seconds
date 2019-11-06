@@ -6,7 +6,8 @@
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AboutPage"
-             Title="{Binding Title}">
+             Title="{Binding Title}"
+             BackgroundColor="White">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -24,7 +25,7 @@
         <StackLayout BackgroundColor="White" Grid.Row="0">
             <ListView x:Name="AboutListView"
                 ItemsSource="{Binding Abouts}"
-                Margin="10"
+                Margin="5"
                 RowHeight="75"
                 ItemTapped="ShowAboutByItemClicked"
                 ItemSelected="AboutListView_ItemSelected"

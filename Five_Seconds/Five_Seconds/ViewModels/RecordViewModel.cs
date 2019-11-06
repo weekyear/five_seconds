@@ -47,6 +47,8 @@ namespace Five_Seconds.ViewModels
 
         private void InitRecordsForSearch()
         {
+            AllRecordsByName.Clear();
+
             foreach (var record in Records)
             {
                 var IsAlreadyExist = AllRecordsByName.Exists(r => r == record.Name);
@@ -85,7 +87,9 @@ namespace Five_Seconds.ViewModels
             MessagingCenter.Subscribe<RecordDetailViewModel, Record>(this, "deleteRecord", (sender, record) =>
             {
                 Records.Remove(record);
+                InitRecordsForSearch();
                 UpdateWeekRecords(null);
+                RefreshRecordsBySearch();
                 OnPropertyChanged(nameof(MonthSuccessRate));
             });
         }
@@ -146,6 +150,7 @@ namespace Five_Seconds.ViewModels
             new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 12, 5, 30, 00))}, true),
             new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 21, 5, 30, 00))}, true),
             new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true),
+            new Record(new Alarm() { Id = 7, Name = "점심 먹고", TimeOffset = new DateTimeOffset(new DateTime(2019, 11, 5, 5, 30, 00))}, true),
         };
 
         private void SaveTestRecords()
@@ -418,6 +423,20 @@ namespace Five_Seconds.ViewModels
             RecordsBySearch.Clear();
 
             RecordsBySearch = new ObservableCollection<string>(list);
+        }
+
+        private void RefreshRecordsBySearch()
+        {
+            var list = new List<string>();
+
+            list = AllRecordsByName;
+
+            foreach (var tagItem in TagItems)
+            {
+                list.Remove(tagItem.Name);
+            }
+
+            SortRecordsBySearch(list);
         }
 
         public class WeekRecord

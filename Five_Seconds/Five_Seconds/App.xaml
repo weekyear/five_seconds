@@ -16,6 +16,15 @@
                 <Setter Property="BarTextColor" Value="{StaticResource NavigationPrimaryTextColor}" />
             </Style>
 
+            <Style x:Key="AboutTextStyle" TargetType="Label">
+                <Setter Property="Margin" Value="5"/>
+                <Setter Property="FontSize" Value="20"/>
+                <Setter Property="TextColor" Value="#263238"/>
+                <Setter Property="VerticalOptions" Value="Start"/>
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="LineBreakMode" Value="CharacterWrap"/>
+            </Style>
+
             <!--Custom Styles-->
             <Color x:Key="Primary">#3498DB</Color>
             <Color x:Key="PrimaryDark">#1976D2</Color>
@@ -31,6 +40,40 @@
                 <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
                 <Setter Property="TextColor" Value="{StaticResource LightTextColor}" />
             </Style>
+
+            <x:String x:Key="AboutDetail_1_1"> 여러분은 이상적인 아침을 상상해봤나요?</x:String>
+            <x:String x:Key="AboutDetail_1_2"> 밑의 사진은 제가 상상하는 이상적인 아침을 일상을 시간대별로 나타내 보았습니다.</x:String>
+            <x:String x:Key="AboutDetail_1_3"> 아침 일찍 일어나서 한강 같은데 가서 조깅, 운동도 해주고 집에 돌아와서 샤워하고 하루 일정 정리하고 출근 시간보다 일찍 가서 자리 정리나 아침 독서도 하고 일을 시작하는 거죠. 엄청 보람찬 아침이지 않나요?</x:String>
+            <x:String x:Key="AboutDetail_1_4"> 하지만 현실은 어떻나요? 아침 6시 반쯤엔 당연히 자고 있습니다. 7시, 8시에도 계속 자고 있습니다. </x:String>
+            <x:String x:Key="AboutDetail_1_5"> 첫 수업 시간에 거의 다다르고 나서야 간신히 일어나서 씻고 학교가기 바쁜 아침을 보내죠. 참고로 이 일상은 1년 전 마지막 학기를 보내는 저의 모습이기도 합니다..ㅎㅎ..</x:String>
+            <x:String x:Key="AboutDetail_1_6"> 제가 생각하는 이상적인 아침과 저의 실제 아침이 여러분들과 크게 다르지 않을거라 생각합니다. 우리는 모두 각자 이상적인 아침을 위해 무엇을 해야하는지 알고 있습니다.</x:String>
+            <x:String x:Key="AboutDetail_1_7"> 일찍 일어나야 하는 것을 알고, 운동해야 하는 것을 알고, 아침 독서를 하면 좋은 것도 당연히 알고 있습니다.</x:String>
+            <x:String x:Key="AboutDetail_1_8"> 하지만 실제로는 아무 것도 하지 않고 잠을 자는데 바쁩니다.</x:String>
+            <x:String x:Key="AboutDetail_1_9"> 다시 한 번 더 말할게요!</x:String>
+            <x:String x:Key="AboutDetail_1_10"> 우리는 해야할 것을 알고 있지만 실제론 하지 않습니다.</x:String>
+            <x:String x:Key="AboutDetail_1_11"> 바로 이 때 적용할 수 있는 법칙이 5초의 법칙입니다! 5초의 법칙 활용법은 다음과 같습니다.</x:String>
+            <x:String x:Key="AboutDetail_1_12"> 1. 아침에 알람소리가 울리자마자 숫자를 거꾸로 세기 시작합니다.</x:String>
+            <x:String x:Key="AboutDetail_1_13"> 2. "5, 4, 3, 2, 1, 기상!"</x:String>
+            <x:String x:Key="AboutDetail_1_14"> 3. 이불을 걷어 젖히고 몸을 일으켜 침대 밖으로 튀어 나옵니다.</x:String>
+            <x:String x:Key="AboutDetail_1_15"> 별거 없지 않나요? 이게 왜 효과가 있다는 걸까하고 생각하실 겁니다. 왜 5초의 법칙이 효과가 좋은지 다음 글에서 알아보도록 합시다!</x:String>
+
+            <x:String x:Key="AboutDetail_2_1">5초의 법칙이 효과적인 이유를 한 마디로 표현하면 다음과 같습니다.</x:String>
+            <x:String x:Key="AboutDetail_2_2">나를 설득할 시간을 주지 않는다.</x:String>
+            <x:String x:Key="AboutDetail_2_3">하나씩 설명 드릴게요. 사람들은 모두 간사하고 나태합니다.</x:String>
+            <x:String x:Key="AboutDetail_2_4">그래서 일어나야 할 때 일어나지 않고 운동하러 가야하는데 운동하러 가지 않고 해야할 것을 하지 않기 위해 내가 납득할만한 변명을 대면서 자기 합리화를 시도합니다. 그리고 대개 그 시도는 성공하죠.</x:String>
+            <x:String x:Key="AboutDetail_2_5">이 자기 합리화를 시작하기 전에 먼저 행동으로 옮겨야 합니다.</x:String>
+            <x:String x:Key="AboutDetail_2_6">우리들은 행동과 생각이 일치하지 않을 때 인지부조화를 느껴 불편함을 느낍니다. 그래서 하기 싫다는 생각이 들면 행동을 하지 않음으로써 생각과 행동을 일치시켜 인지부조화를 해소시키죠.</x:String>
+            <x:String x:Key="AboutDetail_2_7">그렇다면 먼저 행동하면 어떨까요? 혹시 헬스장 가기 싫다는 생각이 들다가도 헬스장에 막상 가면 운동하고 싶은 마음이 생긴 적 있지 않나요? 이처럼 행동을 먼저 해서 행동에 맞춰 생각을 일치시켜 인지부조화를 해소시킬 수도 있습니다.</x:String>
+            <x:String x:Key="AboutDetail_2_8">5초의 법칙에서는 이 자기합리화를 시작하기까지의 시간을 평균 5초라고 하는데, 이 5초의 시간 안에 먼저 행동으로 옮기는 법칙이 바로 5초의 법칙입니다.</x:String>
+
+            <x:String x:Key="AboutDetail_3_1">사실 그렇게 대단한 기능을 많이 넣진 않았습니다만 최대한 사용하는 사람이 행동을 할 수 있게하려고 고민해봤습니다. 일반 알람과 비교한 차별점은 3가지입니다. </x:String>
+            <x:String x:Key="AboutDetail_3_2">차별점 1 : 알람 음성인식 해제</x:String>
+            <x:String x:Key="AboutDetail_3_3">알람 앱을 끄기 위해서 음성인식으로 알람 이름을 말하게끔 만들었어요. 일어나는 알람을 끄기 위해 "일어나자"라고 말하면 일어나야 할 것 같은 마음이 들지 않을까 싶었어요. (저에 한해서는 꽤 효과적이었습니다.) </x:String>
+            <x:String x:Key="AboutDetail_3_4">차별점 2 : 5초 카운트</x:String>
+            <x:String x:Key="AboutDetail_3_5">책에서는 로켓이 출발하기 전에 세는 카운트를 연상시키면서 5초를 센다고 하더라고요. 그래서 저도 로켓 카운트 소리를 넣어서 카운트를 세주는 기능을 넣어봤습니다.</x:String>
+            <x:String x:Key="AboutDetail_3_6">로켓은 무슨 일이 있어도 카운트가 0이 되면 출발하게 되어있습니다. 여러분 스스로 로켓이 되어 카운트가 0이 되면 무슨 일이 있더라도 바로 행동을 시작 해보세요!!</x:String>
+            <x:String x:Key="AboutDetail_3_7">차별점 3 : 알람 기록 확인</x:String>
+            <x:String x:Key="AboutDetail_3_8">여러분의 [5초의 법칙]을 알람별, 시간별로 실패, 성공했는지를 확인할 수 있습니다. 각 알람별로 점점 나아지고 있구나라던가~ 수요일에 유독 못 일어나는 구나~ 라던가 알 수 있습니다.</x:String>
         </ResourceDictionary>
     </Application.Resources>
     

@@ -283,6 +283,8 @@ namespace Five_Seconds.ViewModels
         {
             Name = Name.TrimStart().TrimEnd();
 
+            Alarm.TimeOffset = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0);
+
             if (string.IsNullOrEmpty(Name))
             {
                 await Application.Current.MainPage.DisplayAlert("", "미션 이름을 깜빡하셨어요!", "확인");
@@ -298,8 +300,6 @@ namespace Five_Seconds.ViewModels
                     Alarm.ChangeIsActive(Alarm, true);
                 }
                 Alarm.IsLaterAlarm = false;
-
-                Alarm.TimeOffset = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0);
 
                 Service.SaveAlarm(Alarm);
                 await ClosePopup();

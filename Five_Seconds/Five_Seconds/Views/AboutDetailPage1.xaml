@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Five_Seconds.Views.AboutDetailPage1"
+             Title="1) 5초의 법칙 왜 필요한가?"
+             BackgroundColor="White"
+             Padding="10">
+    <ContentPage.Content>
+        <ScrollView  Orientation = "Vertical" VerticalOptions="StartAndExpand">
+            <StackLayout>
+                <Label Text="{StaticResource AboutDetail_1_1}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_2}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_3}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Image Source="detail_1_1.png"
+                       Margin="10"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                <Label Text="But,"
+                       Style="{StaticResource AboutTextStyle}"
+                       FontSize="32"
+                       TextColor="DarkRed" />
+                <Label Text="{StaticResource AboutDetail_1_4}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_5}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Image Source="detail_1_2.png"
+                       Margin="10"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                <Label Text="{StaticResource AboutDetail_1_6}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_7}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_8}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_9}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_10}"
+                       Style="{StaticResource AboutTextStyle}"
+                       FontSize="28"
+                       TextColor="Black"
+                       FontAttributes="Bold" />
+                <Label Text="{StaticResource AboutDetail_1_11}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_1_12}"
+                       Style="{StaticResource AboutTextStyle}"
+                       TextColor="DarkBlue"
+                       FontAttributes="Bold, Italic"    />
+                <Label Text="{StaticResource AboutDetail_1_13}"
+                       Style="{StaticResource AboutTextStyle}"
+                       TextColor="DarkBlue"
+                       FontAttributes="Bold, Italic" />
+                <Label Text="{StaticResource AboutDetail_1_14}"
+                       Style="{StaticResource AboutTextStyle}"
+                       TextColor="DarkBlue"
+                       FontAttributes="Bold, Italic" />
+                <Label Text="{StaticResource AboutDetail_1_15}"
+                       Style="{StaticResource AboutTextStyle}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,6 +1,7 @@
 ﻿using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
+using Five_Seconds.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -36,36 +37,29 @@ namespace Five_Seconds.ViewModels
             {
                 "1) 5초의 법칙 왜 필요한가?",
                 "2) 5초의 법칙 왜 효과적인가?",
-                "3) 5초의 알람 차별점"
+                "3) 5초의 알람 앱이란?"
             };
         }
 
         private void ConstructCommand()
         {
-            ShowAboutCommand = new Command<int>((m) => ShowAbout(m));
+            ShowAboutCommand = new Command<int>(async(m) => await ShowAbout(m));
         }
 
-        public void ShowAbout(int index)
+        public async Task ShowAbout(int index)
         {
-            string url = string.Empty;
-
             switch (index)
             {
                 case 0:
-                    url = "http://blog.daum.net/save_us_222/58";
+                    await Navigation.PushAsync(new AboutDetailPage1());
                     break;
                 case 1:
-                    url = "http://blog.daum.net/save_us_222/59";
+                    await Navigation.PushAsync(new AboutDetailPage2());
                     break;
                 case 2:
-                    url = "http://blog.daum.net/save_us_222/60";
-                    break;
-                case 3:
-                    url = "http://blog.daum.net/save_us_222/61";
+                    await Navigation.PushAsync(new AboutDetailPage3());
                     break;
             }
-
-            Device.OpenUri(new Uri(url));
         }
     }
 }

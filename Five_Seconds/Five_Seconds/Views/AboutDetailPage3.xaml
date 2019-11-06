@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="Five_Seconds.Views.AboutDetailPage3"
+             Title="3) 5초의 알람 앱이란?"
+             BackgroundColor="{StaticResource BackgroundColor}"
+             Padding="10">
+    <ContentPage.Content>
+        <ScrollView  Orientation = "Vertical" VerticalOptions="StartAndExpand">
+            <StackLayout>
+                <Label Text="{StaticResource AboutDetail_3_1}"
+                   Style="{StaticResource AboutTextStyle}"/>
+                <Label Text="{StaticResource AboutDetail_3_2}"
+                   Style="{StaticResource AboutTextStyle}"
+                   FontAttributes="Bold"
+                   FontSize="25"/>
+                <ScrollView  Orientation = "Horizontal" VerticalOptions="StartAndExpand">
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="detail_3_1.jpg"
+                       Margin="5"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                        <Image Source="detail_3_2.jpg"
+                       Margin="5"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </ScrollView>
+                <Label Text="{StaticResource AboutDetail_3_3}"
+                   Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_3_4}"
+                   Style="{StaticResource AboutTextStyle}"
+                   FontAttributes="Bold"
+                   FontSize="25"/>
+
+                <ScrollView  Orientation = "Horizontal" VerticalOptions="StartAndExpand">
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="detail_3_3.jpg"
+                       Margin="5"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                        <Image Source="detail_3_4.jpg"
+                       Margin="5"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </ScrollView>
+                <Label Text="{StaticResource AboutDetail_3_5}"
+                       Style="{StaticResource AboutTextStyle}" />
+                <Label Text="{StaticResource AboutDetail_3_6}"
+                   Style="{StaticResource AboutTextStyle}"
+                   FontAttributes="Bold"/>
+                <Label Text="{StaticResource AboutDetail_3_7}"
+                   Style="{StaticResource AboutTextStyle}"
+                   FontAttributes="Bold"
+                   FontSize="25"/>
+
+                <ScrollView  Orientation = "Horizontal" VerticalOptions="StartAndExpand">
+                    <StackLayout Orientation="Horizontal">
+                        <Image Source="detail_3_5.jpg"
+                       Margin="5"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                        <Image Source="detail_3_6.jpg"
+                       Margin="5"
+                       VerticalOptions="Start"
+                       HorizontalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </ScrollView>
+                <Label Text="{StaticResource AboutDetail_3_8}"
+                   Style="{StaticResource AboutTextStyle}" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

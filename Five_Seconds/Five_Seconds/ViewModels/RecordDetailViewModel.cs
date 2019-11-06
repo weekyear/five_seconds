@@ -48,6 +48,8 @@ namespace Five_Seconds.ViewModels
         }
         private void InitRecordsForSearch()
         {
+            AllRecordsByName.Clear();
+
             var ListRecordsForSearch = AllRecordsByName.ToList();
             foreach (var record in Records)
             {
@@ -56,6 +58,10 @@ namespace Five_Seconds.ViewModels
                 {
                     ListRecordsForSearch.Add(record.Name);
                     AllRecordsByName.Add(record.Name);
+                    if (TagItems.ToList().Exists(t => t.Name != record.Name))
+                    {
+                        RecordsBySearch.Add(record.Name);
+                    }
                 }
             }
         }
@@ -383,15 +389,30 @@ namespace Five_Seconds.ViewModels
                 list.Remove(tagItem.Name);
             }
 
-            list.Sort();
             SortRecordsBySearch(list);
         }
 
         private void SortRecordsBySearch(List<string> list)
         {
+            list.Sort();
+
             RecordsBySearch.Clear();
 
             RecordsBySearch = new ObservableCollection<string>(list);
+        }
+
+        private void RefreshRecordsBySearch()
+        {
+            var list = new List<string>();
+            
+            list = AllRecordsByName;
+
+            foreach (var tagItem in TagItems)
+            {
+                list.Remove(tagItem.Name);
+            }
+
+            SortRecordsBySearch(list);
         }
 
         public async Task ShowRecordMenu(object _record)
@@ -421,6 +442,7 @@ namespace Five_Seconds.ViewModels
                         if (action == "삭제")
                         {
                             ConfirmDeletingRecord(record);
+                            RefreshRecordsBySearch();
                         }
                         else
                         {
@@ -453,6 +475,9 @@ namespace Five_Seconds.ViewModels
 
         private void DeleteRecord(Record record)
         {
+            Records.Remove(record);
+            InitRecordsForSearch();
+
             WeekRecord.DayRecords.Remove(record);
             App.AlarmsRepo.DeleteRecord(record.Id);
             SendMessage("deleteRecord", record);

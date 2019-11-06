@@ -454,6 +454,8 @@ namespace Five_Seconds.Droid
                     //message = "알수없음";
                     break;
             }
+            SetMediaPlayer();
+            SetVibrator();
         }
 
         public void OnEvent(int eventType, Bundle @params)
