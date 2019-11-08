@@ -26,15 +26,17 @@ namespace Five_Seconds.Helpers
                 "#b3e5fc", "#FFFFFF", "#FFFFFF", FontAttributes.Bold, FontAttributes.Italic, 24, 16)),
                 new Slide(new SlideConfig("더 알고 싶은데..", "어플 내에서 5초의 법칙을 더 자세히 알아보실 수 있습니다~", "ic_search_phone.png",
                 "#b2ebf2", "#FFFFFF", "#FFFFFF", FontAttributes.Bold, FontAttributes.Italic, 24, 16)),
-            });
-
-            welcomePage.DoneText = "시작";
-            welcomePage.SkipText = "건너뛰기";
-            welcomePage.NextText = "다음";
-            welcomePage.BarColor = "#607D8B";
-            welcomePage.SkipButtonBackgroundColor = "#00000000";
-            welcomePage.DoneButtonBackgroundColor = "#80deea";
-            welcomePage.NextButtonBackgroundColor = "#00000000";
+            })
+            {
+                Vibrate = false,
+                DoneText = "시작",
+                SkipText = "건너뛰기",
+                NextText = "다음",
+                BarColor = "#607D8B",
+                SkipButtonBackgroundColor = "#00000000",
+                DoneButtonBackgroundColor = "#80deea",
+                NextButtonBackgroundColor = "#00000000"
+            };
 
             return welcomePage;
         }

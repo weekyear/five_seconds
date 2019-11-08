@@ -23,9 +23,9 @@ namespace Five_Seconds.Droid.Services
             intlistener.OnAdLoaded();
             _ad.AdListener = intlistener;
 
-            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
 
-            var requestbuilder = new AdRequest.Builder().Build();
+            //var requestbuilder = new AdRequest.Builder().Build();
             _ad.LoadAd(requestbuilder);
         }
     }

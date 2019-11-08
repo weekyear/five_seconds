@@ -35,8 +35,15 @@ namespace Five_Seconds.Droid.Services
             if (IsCountDown)
             {
                 await Task.Delay(300);
-                Activity.IsFinished = true;
-                Activity.FinishAndRemoveTask();
+                if (Activity.CanShowReview)
+                {
+                    await Task.Delay(1000);
+                    Activity.ShowReviewDialog();
+                }
+                else
+                {
+                    Activity.FinishAndRemoveTask();
+                }
             }
             else
             {

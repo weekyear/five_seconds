@@ -6,7 +6,7 @@
     android:background="@drawable/dialog_bg"
     android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/titleText"
+        android:id="@+id/reviewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="12dp"
@@ -14,22 +14,35 @@
         android:textSize="24dp"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/alarmPrimaryColor"/>
+        android:textColor="@color/reviewPrimaryDarkColor"/>
     <TextView
-        android:id="@+id/messageText"
+        android:id="@+id/reviewText1"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="15dp"
-        android:layout_below="@id/titleText"
-        android:layout_centerVertical="true"
-        android:textColor="@color/colorPrimaryDark"
-        android:text="5초의 알람을 사용해주셔서 감사합니다! 저희 어플 사용이 만족스러우신가요?"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_below="@id/reviewTitle"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/reviewTextColor"
+        android:breakStrategy="balanced"
+        android:text="5초의 알람을 사용해주셔서 감사합니다!"
+        android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/reviewText2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_below="@id/reviewText1"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/reviewTextColor"
+        android:breakStrategy="balanced"
+        android:text="저희 어플이 도움이 되고 있나요?"
         android:textSize="20dp"/>
     <LinearLayout
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/messageText">
+        android:layout_below="@id/reviewText2">
         <Button 
             android:id="@+id/cancelBtn1"
             android:layout_width="0dp"
@@ -38,8 +51,8 @@
             android:text="음..별로.."
             android:textSize="20dp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/ripple_transparent_button" />
+            android:textColor="@color/reviewTextColor"
+            android:background="@drawable/ripple_review_cancel_button" />
         <Button
             android:id="@+id/confirmBtn1"
             android:layout_width="0dp"
@@ -49,13 +62,13 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:background="@drawable/ripple_count_button"/>
+            android:background="@drawable/ripple_review_confirm_button"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/feedbackButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/messageText"
+        android:layout_below="@id/reviewText2"
         android:visibility="gone">
         <Button 
             android:id="@+id/cancelBtn2"
@@ -65,8 +78,8 @@
             android:text="아뇨, 괜찮아요"
             android:textSize="20dp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/ripple_transparent_button" />
+            android:textColor="@color/reviewTextColor"
+            android:background="@drawable/ripple_review_cancel_button" />
         <Button
             android:id="@+id/confirmBtn2"
             android:layout_width="0dp"
@@ -76,13 +89,13 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:background="@drawable/ripple_count_button"/>
+            android:background="@drawable/ripple_review_confirm_button"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/reviewButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/messageText"
+        android:layout_below="@id/reviewText2"
         android:visibility="gone">
         <Button 
             android:id="@+id/laterBtn3"
@@ -92,8 +105,8 @@
             android:text="나중에요"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/ripple_transparent_button" />
+            android:textColor="@color/reviewTextColor"
+            android:background="@drawable/ripple_review_cancel_button" />
         <Button
             android:id="@+id/cancelBtn3"
             android:layout_width="0dp"
@@ -102,8 +115,8 @@
             android:text="안 할래요"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:background="@android:color/darker_gray"/>
+            android:textColor="#1c313a"
+            android:background="@drawable/ripple_review_deny_button"/>
         <Button
             android:id="@+id/confirmBtn3"
             android:layout_width="0dp"
@@ -113,6 +126,6 @@
             android:textSize="16dp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:background="@drawable/ripple_count_button"/>
+            android:background="@drawable/ripple_review_confirm_button"/>
     </LinearLayout>
 </RelativeLayout>

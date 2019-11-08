@@ -20,6 +20,7 @@ using Five_Seconds.Models;
 using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
+using SQLite;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Button = Android.Widget.Button;
@@ -36,6 +37,7 @@ namespace Five_Seconds.Droid
         private Dialog reviewDialog;
         private Dialog resultDialog;
         private Dialog laterDialog;
+
         private NumberPicker laterNumberPicker;
 
         private SpeechRecognizer mSpeechRecognizer;
@@ -61,8 +63,9 @@ namespace Five_Seconds.Droid
         private CountDown countDownForFailed;
         private CountDown countDownForFiveSeconds;
 
-        private TextView titleText;
-        private TextView messageText;
+        private TextView reviewTitle;
+        private TextView reviewText1;
+        private TextView reviewText2;
 
         AdView adViewForResult;
         AdView adViewForLater;
@@ -76,17 +79,16 @@ namespace Five_Seconds.Droid
         private bool IsVoiceRecognition;
         private int alarmVolume;
 
-        private bool CanShowReview;
+        public bool CanShowReview;
 
         private DateTime AlarmTimeNow;
         public bool IsSuccess = false;
 
         public bool IsFinished = false;
 
-        private bool IsPausePassed;
-
-        Alarm alarm;
-        IAlarmsRepository alarmsRepo;
+        private Alarm alarm;
+        private IAlarmService alarmService;
+        private IAlarmsRepository alarmsRepo;
 
         public Handler Handler => new Handler();
 
@@ -96,6 +98,7 @@ namespace Five_Seconds.Droid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            Console.WriteLine("OnCreate_AlarmActivity");
             base.OnCreate(savedInstanceState);
 
             AlarmTimeNow = DateTime.Now;
@@ -106,7 +109,7 @@ namespace Five_Seconds.Droid
 
             if (id == -100000)
             {
-                //나중에 지워야 됨
+                // Refresh AlarmManager
                 Alarm.IsInitFinished = false;
                 var allAlarms = App.Service.GetAllAlarms();
                 Alarm.IsInitFinished = true;
@@ -118,34 +121,50 @@ namespace Five_Seconds.Droid
 
             GetDataFromBundle(bundle);
 
+            Console.WriteLine("OnCreate_AlarmActivity_01");
+
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
+            Console.WriteLine("OnCreate_AlarmActivity_02");
             Forms.Init(this, savedInstanceState);
+            Console.WriteLine("OnCreate_AlarmActivity_03");
 
             SetMediaPlayer();
             SetVibrator();
+            Console.WriteLine("OnCreate_AlarmActivity_04");
 
             SetMobileAds();
+            Console.WriteLine("OnCreate_AlarmActivity_05");
 
             SetContentView(Resource.Layout.AlarmActivity);
             SetAndFindViewById();
+            Console.WriteLine("OnCreate_AlarmActivity_06");
 
             AddWindowManagerFlags();
+            Console.WriteLine("OnCreate_AlarmActivity_07");
 
             SetNextAlarm();
+            Console.WriteLine("OnCreate_AlarmActivity_08");
 
             CreateSpeechRecognizer();
+            Console.WriteLine("OnCreate_AlarmActivity_09");
 
             SetIsFailedCountDown();
+            Console.WriteLine("OnCreate_AlarmActivity_10");
 
             SetViewByIsVoiceRecognition();
+            Console.WriteLine("OnCreate_AlarmActivity_11");
 
             CreateLaterDialog();
+            Console.WriteLine("OnCreate_AlarmActivity_12");
 
             SetResultDialog();
+            Console.WriteLine("OnCreate_AlarmActivity_13");
 
             SetAdView();
+            Console.WriteLine("OnCreate_AlarmActivity_14");
 
             if (bundle == null) return;
+            Console.WriteLine("OnCreate_AlarmActivity_15");
         }
 
         private void SetIsFailedCountDown()
@@ -163,10 +182,11 @@ namespace Five_Seconds.Droid
 
         private void SetNextAlarm()
         {
-            alarmsRepo = App.AlarmsRepo;
+            alarmService = HelperAndroid.GetAlarmService();
+            alarmsRepo = alarmService.Repository;
 
-            alarm = App.AlarmsRepo?.GetAlarm(id);
-            alarm.Days = App.AlarmsRepo?.GetDaysOfWeek(alarm.DaysId);
+            alarm = alarmsRepo?.GetAlarm(id);
+            alarm.Days = alarmsRepo?.GetDaysOfWeek(alarm.DaysId);
 
             if (alarm.IsLaterAlarm)
             {
@@ -182,7 +202,7 @@ namespace Five_Seconds.Droid
                 AlarmHelper.SetRepeatAlarm(alarm);
             }
 
-            App.Service.SaveAlarmAtLocal(alarm);
+            alarmService.SaveAlarmAtLocal(alarm);
         }
 
         private void GetDataFromBundle(Bundle bundle)
@@ -244,31 +264,6 @@ namespace Five_Seconds.Droid
 
         private void AddWindowManagerFlags()
         {
-            // add flags to turn screen on and appear over lock screen
-            //bool IsScreenOn = false;
-            //var dm = GetSystemService(DisplayService) as DisplayManager;
-            //foreach (Display display in dm.GetDisplays()) 
-            //{
-            //    var displayState = display.State;
-            //    if (displayState != DisplayState.Off)
-            //    {
-            //        IsScreenOn = true;
-            //    }
-            //}
-
-            //if (IsScreenOn)
-            //{
-            //    IsPausePassed = true;
-            //}
-
-            var pm = GetSystemService(PowerService) as PowerManager;
-
-
-            if (pm.IsInteractive)
-            {
-                IsPausePassed = true;
-            }
-
             Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
             Window.AddFlags(WindowManagerFlags.DismissKeyguard);
             Window.AddFlags(WindowManagerFlags.KeepScreenOn);
@@ -304,7 +299,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                //Test:: 
+                //ReviewDialog Test:: 
                 //SetReviewDialog();
                 //ShowReviewDialog();
 
@@ -337,6 +332,10 @@ namespace Five_Seconds.Droid
             countDownForFailed.Cancel();
 
             IsSuccess = true;
+
+            var successStack = Preferences.Get("SuccessStack", 0);
+
+            Preferences.Set("SuccessStack", successStack + 1);
 
             ShowResultDialog();
         }
@@ -497,7 +496,6 @@ namespace Five_Seconds.Droid
 
         public void OnPartialResults(Bundle partialResults)
         {
-            //IList<string> matches = partialResults.GetStringArrayList(SpeechRecognizer.ResultsRecognition);
         }
 
         public void OnReadyForSpeech(Bundle @params)
@@ -559,13 +557,6 @@ namespace Five_Seconds.Droid
 
             if (IsSuccess)
             {
-                CanShowReview = Preferences.Get("CanShowReview", true);
-
-                if (CanShowReview)
-                {
-                    SetReviewDialog();
-                }
-
                 titleText.Text = "알람 성공!";
 
                 confirmBtn.Click += ResultDialog_ConfirmBtn_Click;
@@ -600,6 +591,14 @@ namespace Five_Seconds.Droid
 
                 if (successRate > 0.7)
                 {
+                    bool HasShownReview = Preferences.Get("HasShownReview", false);
+                    var successStack = Preferences.Get("SuccessStack", 0);
+                    CanShowReview = alarmRecords.Count > 4 && IsSuccess && !HasShownReview && successStack > 9;
+
+                    if (CanShowReview)
+                    {
+                        SetReviewDialog();
+                    }
                 }
                 else if (successRate > 0.5)
                 {
@@ -619,7 +618,7 @@ namespace Five_Seconds.Droid
         {
             resultDialog.Dismiss();
 
-            if (CanShowReview && IsSuccess)
+            if (CanShowReview)
             {
                 ShowReviewDialog();
             }
@@ -637,9 +636,9 @@ namespace Five_Seconds.Droid
 
         private void SetAdView()
         {
-            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
 
-            var requestbuilder = new AdRequest.Builder().Build();
+            //var requestbuilder = new AdRequest.Builder().Build();
             adViewForResult.LoadAd(requestbuilder);
             adViewForLater.LoadAd(requestbuilder);
         }
@@ -747,26 +746,23 @@ namespace Five_Seconds.Droid
 
         protected override void OnUserLeaveHint()
         {
+            if (!IsFinished)
+            {
+                SetLaterAlarm(5);
+            }
+            FinishAndRemoveTask();
+
             base.OnUserLeaveHint();
+        }
+
+        public override void FinishAndRemoveTask()
+        {
+            TurnOffSoundAndVibration();
+            base.FinishAndRemoveTask();
         }
 
         protected override void OnPause()
         {
-            if (IsPausePassed)
-            {
-                // 여기에 다시 울림 설정
-                TurnOffSoundAndVibration();
-                if (!IsFinished)
-                {
-                    SetLaterAlarm(5);
-                    FinishAndRemoveTask();
-                }
-            }
-            else
-            {
-                IsPausePassed = true;
-            }
-
             base.OnPause();
         }
 
@@ -794,7 +790,6 @@ namespace Five_Seconds.Droid
         {
             if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
             {
-                IsPausePassed = false;
                 // Should we show an explanation?
                 if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
                 {
@@ -837,13 +832,19 @@ namespace Five_Seconds.Droid
             var Records = App.AlarmsRepo.RecordFromDB;
             var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
 
-            titleText = reviewDialog.FindViewById<TextView>(Resource.Id.titleText);
-            messageText = reviewDialog.FindViewById<TextView>(Resource.Id.messageText);
+            reviewTitle = reviewDialog.FindViewById<TextView>(Resource.Id.reviewTitle);
+            reviewText1 = reviewDialog.FindViewById<TextView>(Resource.Id.reviewText1);
+            reviewText2 = reviewDialog.FindViewById<TextView>(Resource.Id.reviewText2);
 
             buttonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
             feedbackButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.feedbackButtonLayout);
             reviewButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.reviewButtonLayout);
 
+            SetClickEventForReviewDialog();
+        }
+
+        private void SetClickEventForReviewDialog()
+        {
             Button confirmBtn1 = reviewDialog.FindViewById<Button>(Resource.Id.confirmBtn1);
             Button confirmBtn2 = reviewDialog.FindViewById<Button>(Resource.Id.confirmBtn2);
             Button confirmBtn3 = reviewDialog.FindViewById<Button>(Resource.Id.confirmBtn3);
@@ -868,8 +869,9 @@ namespace Five_Seconds.Droid
             buttonLayout.Visibility = ViewStates.Gone;
             reviewButtonLayout.Visibility = ViewStates.Visible;
 
-            titleText.Text = "도움이 되서 기뻐요!";
-            messageText.Text = "5초의 알람 리뷰를 통해 추천해주시겠어요?";
+            reviewTitle.Text = "도움이 되서 기뻐요!";
+            reviewText1.Text = "계속 도움이 되는 5초의 알람이 될게요!";
+            reviewText2.Text = "5초의 알람 리뷰를 통해 추천해주시겠어요?";
         }
 
         private void CancelBtn1_Click(object sender, EventArgs e)
@@ -877,8 +879,9 @@ namespace Five_Seconds.Droid
             buttonLayout.Visibility = ViewStates.Gone;
             feedbackButtonLayout.Visibility = ViewStates.Visible;
 
-            titleText.Text = "도움이 못 돼서 죄송해요";
-            messageText.Text = "불편, 개선 사항이 있다면 말씀해주시겠어요?";
+            reviewTitle.Text = "도움드리지 못 해 죄송해요";
+            reviewText1.Text = "앱을 더욱 보완해서 보답드릴게요!";
+            reviewText2.Text = "불편, 건의 사항이 있다면 말씀해주시겠어요?";
         }
 
         private void ConfirmBtn2_Click(object sender, EventArgs e)
@@ -898,13 +901,13 @@ namespace Five_Seconds.Droid
                 Toast.MakeText(this, "There are no email clients installed.", ToastLength.Short).Show();
             }
 
+            Preferences.Set("SuccessStack", 0);
             FinishAndRemoveTask();
         }
 
         private void CancelBtn2_Click(object sender, EventArgs e)
         {
-            // 앱 리뷰 다신 안 하기
-            Preferences.Set("CanShowReview", false);
+            Preferences.Set("SuccessStack", 0);
             FinishAndRemoveTask();
         }
 
@@ -924,20 +927,23 @@ namespace Five_Seconds.Droid
             googleAppStoreIntent.AddFlags(ActivityFlags.NewTask);
             StartActivity(googleAppStoreIntent);
 
+            Preferences.Set("HasShownReview", true);
+
             FinishAndRemoveTask();
         }
 
         private void CancelBtn3_Click(object sender, EventArgs e)
         {
             // 앱 리뷰 다신 안 하기
-            Preferences.Set("CanShowReview", false);
+
+            Preferences.Set("HasShownReview", true);
             FinishAndRemoveTask();
         }
 
         private void LaterBtn3_Click(object sender, EventArgs e)
         {
             // 리뷰 알람 카운트 다시 카운트 하기
-            Preferences.Set("ReviewStatck", 0);
+            Preferences.Set("SuccessStack", 0);
             FinishAndRemoveTask();
         }
     }

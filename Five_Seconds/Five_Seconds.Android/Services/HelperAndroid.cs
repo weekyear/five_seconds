@@ -14,6 +14,8 @@ using SearchView = Android.Support.V7.Widget.SearchView;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
 using Plugin.CurrentActivity;
+using SQLite;
+using Five_Seconds.Repository;
 
 [assembly: Xamarin.Forms.Dependency(typeof(HelperAndroid))]
 namespace Five_Seconds.Droid.Services
@@ -28,5 +30,34 @@ namespace Five_Seconds.Droid.Services
         }
 
         Toolbar GetToolbar() => CrossCurrentActivity.Current.Activity.FindViewById<Toolbar>(Resource.Id.toolbar);
+
+        public static IAlarmService GetAlarmService()
+        {
+            IAlarmService alarmService;
+            try
+            {
+                alarmService = App.Service;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine("App.Service == null_NotificationReceiver");
+                alarmService = CreateServiceWithoutCore();
+            }
+
+            return alarmService;
+        }
+
+        private static AlarmService CreateServiceWithoutCore()
+        {
+            var deviceStorage = new DeviceStorageAndroid();
+            var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
+            var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
+            var alarmsRepo = new AlarmsRepository(itemDatabase);
+            var service = new AlarmService(alarmsRepo);
+
+            return service;
+        }
     }
 }

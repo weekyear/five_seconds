@@ -55,6 +55,7 @@ namespace Five_Seconds
                 }
 
                 var welcomePage = AppIntro.CreateAppIntro();
+                welcomePage.Vibrate = false;
                 MainPage.Navigation.PushModalAsync(welcomePage);
 
                 Preferences.Set(nameof(isNotFirst), true);

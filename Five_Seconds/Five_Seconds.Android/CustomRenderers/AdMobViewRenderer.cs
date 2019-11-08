@@ -49,9 +49,9 @@ namespace Five_Seconds.Droid.CustomRenderers
 
             adView.AdListener = new Services.AdListener(this);
 
-            //var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
 
-            var requestbuilder = new AdRequest.Builder().Build();
+            //var requestbuilder = new AdRequest.Builder().Build();
             adView.LoadAd(requestbuilder);
 
             return adView;

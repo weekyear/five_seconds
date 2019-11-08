@@ -14,7 +14,6 @@ namespace Five_Seconds.Droid.Services
 
         public override void OnAdLoaded()
         {
-            that.AdView.Visibility = ViewStates.Visible;
             base.OnAdLoaded();
         }
 

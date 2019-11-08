@@ -11,6 +11,11 @@
   <color name="alarmPrimaryLightColor">#1e88e5</color>
   <color name="recordingBtnPressedColor">#1565c0</color>
   <color name="recordingBtnLineColor">#4D002171</color>
+  <color name="reviewPrimaryColor">#388e3c</color>
+  <color name="reviewPrimaryDarkColor">#00600f</color>
+  <color name="reviewTextColor">#005005</color>
+  <color name="reviewPrimaryLightColor">#e8f5e9</color>
+  <color name="reviewDenyColor">#eceff1</color>
   <color name="failedTitleColor">#d32f2f</color>
   <color name="failedMessageColor">#af4448</color>
   <color name="failedPrimaryColor">#ef5350</color>

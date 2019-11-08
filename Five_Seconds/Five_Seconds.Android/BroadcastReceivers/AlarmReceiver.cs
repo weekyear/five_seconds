@@ -15,6 +15,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
     {
         public override void OnReceive(Context context, Intent intent)
         {
+            Console.WriteLine("OnReceive_AlarmReceiver");
             var bundle = intent.Extras;
             var id = (int)bundle.Get("id");
 

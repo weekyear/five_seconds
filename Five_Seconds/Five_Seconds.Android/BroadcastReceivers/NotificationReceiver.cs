@@ -16,8 +16,8 @@ namespace Five_Seconds.Droid.BroadcastReceivers
     public class NotificationReceiver : BroadcastReceiver
     {
         private IAlarmService alarmService;
+        private Alarm alarm;
         private int id;
-        private SQLiteConnection sqliteConnection;
         public override void OnReceive(Context context, Intent intent)
         {
             Console.WriteLine("OnReceive_NotificationReceiver");
@@ -31,6 +31,8 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             {
                 case "알람 해제":
                     TurnOffLaterAlarm();
+
+                    CreateFailedRecord();
 
                     if (IsApplicationInTheBackground())
                     {
@@ -47,10 +49,10 @@ namespace Five_Seconds.Droid.BroadcastReceivers
 
         private void TurnOffLaterAlarm()
         {
-            GetAlarmService();
+            alarmService = HelperAndroid.GetAlarmService();
             Alarm.IsInitFinished = false;
             // 서비스에서 TurnOffAlarm();
-            var alarm = alarmService.GetAlarm(id);
+            alarm = alarmService.GetAlarm(id);
 
             if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
@@ -62,19 +64,11 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             Alarm.IsInitFinished = true;
         }
 
-        private void GetAlarmService()
+        private void CreateFailedRecord()
         {
-            try
-            {
-                alarmService = App.Service;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.InnerException);
-                Console.WriteLine("App.Service == null_NotificationReceiver");
-                alarmService = CreateServiceWithoutCore();
-            }
+            alarm.Time = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0);
+            var record = new Record(alarm, false);
+            alarmService.Repository.SaveRecord(record);
         }
 
         private void OpenAlarmActivity(Context context, Bundle bundle)
@@ -132,18 +126,6 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             isInBackground = myProcess.Importance != Importance.Foreground;
 
             return isInBackground;
-        }
-
-
-        private AlarmService CreateServiceWithoutCore()
-        {
-            var deviceStorage = new DeviceStorageAndroid();
-            sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
-            var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
-            var alarmsRepo = new AlarmsRepository(itemDatabase);
-            var service = new AlarmService(alarmsRepo);
-
-            return service;
         }
     }
 }

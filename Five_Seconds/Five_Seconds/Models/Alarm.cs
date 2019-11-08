@@ -16,7 +16,7 @@ namespace Five_Seconds.Models
         [PrimaryKey, NotNull, AutoIncrement]
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public double Percentage { get; set; }
 
         public bool IsVoiceRecognition { get; set; } = true;
