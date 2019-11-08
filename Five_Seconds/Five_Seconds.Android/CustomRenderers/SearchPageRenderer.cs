@@ -1,7 +1,5 @@
 ﻿using Android.Content;
-using Android.InputMethodServices;
 using Android.Runtime;
-using Android.Support.V7.App;
 using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;

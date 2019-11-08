@@ -3,6 +3,7 @@ using Android.App;
 using Android.Gms.Ads;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
+using System.Diagnostics;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AdMobInterstitialAndroid))]
 namespace Five_Seconds.Droid.Services
@@ -10,6 +11,7 @@ namespace Five_Seconds.Droid.Services
     public class AdMobInterstitialAndroid : IAdMobInterstitial
     {
         InterstitialAd _ad;
+        private AdRequest requestBuilder;
 
         public void Show(string adUnit)
         {
@@ -23,10 +25,18 @@ namespace Five_Seconds.Droid.Services
             intlistener.OnAdLoaded();
             _ad.AdListener = intlistener;
 
-            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            requestBuilder = new AdRequest.Builder().Build();
 
-            //var requestbuilder = new AdRequest.Builder().Build();
-            _ad.LoadAd(requestbuilder);
+            CreateRequestBuilderWhenTest();
+
+            _ad.LoadAd(requestBuilder);
+        }
+
+        [Conditional("DEBUG")]
+        private void CreateRequestBuilderWhenTest()
+        {
+            requestBuilder.Dispose();
+            requestBuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
         }
     }
 }

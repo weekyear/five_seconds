@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Android.Content;
 using Android.Gms.Ads;
 using Android.Widget;
@@ -17,6 +18,7 @@ namespace Five_Seconds.Droid.CustomRenderers
         public AdMobViewRenderer(Context context) : base(context) { }
 
         public AdView AdView => adView;
+        private AdRequest requestBuilder;
 
         protected override void OnElementChanged(ElementChangedEventArgs<AdMobView> e)
         {
@@ -49,12 +51,22 @@ namespace Five_Seconds.Droid.CustomRenderers
 
             adView.AdListener = new Services.AdListener(this);
 
-            var requestbuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            requestBuilder = new AdRequest.Builder().Build();
 
-            //var requestbuilder = new AdRequest.Builder().Build();
-            adView.LoadAd(requestbuilder);
+            CreateRequestBuilderWhenTest();
+
+            adView.LoadAd(requestBuilder);
+
+            requestBuilder.Dispose();
 
             return adView;
+        }
+
+        [Conditional("DEBUG")]
+        private void CreateRequestBuilderWhenTest()
+        {
+            requestBuilder.Dispose();
+            requestBuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
         }
     }
 }

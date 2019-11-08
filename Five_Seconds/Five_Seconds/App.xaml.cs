@@ -114,22 +114,9 @@ namespace Five_Seconds
             {
                 if (alarmToneRepo == null)
                 {
-                    alarmToneRepo = new AlarmToneRepository();
+                    alarmToneRepo = new AlarmToneRepository(ItemDatabase);
                 }
                 return alarmToneRepo;
-            }
-        }
-
-        private static List<AlarmTone> tones = new List<AlarmTone>();
-        public static List<AlarmTone> Tones
-        {
-            get
-            {
-                if (tones.Count == 0)
-                {
-                    tones = AlarmToneRepo.GetAllAlarmTones();
-                }
-                return tones;
             }
         }
     }

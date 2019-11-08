@@ -59,5 +59,33 @@ namespace Five_Seconds.Droid.Services
 
             return service;
         }
+
+        public static IAlarmToneRepository GetAlarmToneRepository()
+        {
+            IAlarmToneRepository alarmToneRepo;
+            try
+            {
+                alarmToneRepo = App.AlarmToneRepo;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine("App.ToneRepo == null_NotificationReceiver");
+                alarmToneRepo = CreateToneRepoWithoutCore();
+            }
+
+            return alarmToneRepo;
+        }
+
+        private static AlarmToneRepository CreateToneRepoWithoutCore()
+        {
+            var deviceStorage = new DeviceStorageAndroid();
+            var sqliteConnection = new SQLiteConnection(deviceStorage.GetFilePath("AlarmsSQLite.db3"));
+            var itemDatabase = new ItemDatabaseGeneric(sqliteConnection);
+            var toneRepo = new AlarmToneRepository(itemDatabase);
+
+            return toneRepo;
+        }
     }
 }

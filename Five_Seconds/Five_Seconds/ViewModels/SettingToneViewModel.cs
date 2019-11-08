@@ -42,7 +42,7 @@ namespace Five_Seconds.ViewModels
         {
             AllAlarmTones.Clear();
 
-            var AlarmTones = App.Tones;
+            var AlarmTones = App.AlarmToneRepo.Tones;
             foreach(var alarmTone in AlarmTones)
             {
                 bool isSelected = false;
@@ -116,7 +116,7 @@ namespace Five_Seconds.ViewModels
 
         private void PlayTone()
         {
-            _soundService.PlayAudio(App.Tones.Find(a => a.Name == Alarm.Tone), true, Alarm.Volume);
+            _soundService.PlayAudio(App.AlarmToneRepo.Tones.Find(a => a.Name == Alarm.Tone), true, Alarm.Volume);
         }
 
         private void StopTone()
@@ -152,7 +152,7 @@ namespace Five_Seconds.ViewModels
                 IsCustomTone = true
             };
 
-            App.Tones.Add(newTone);
+            App.AlarmToneRepo.Tones.Add(newTone);
             App.AlarmToneRepo.SaveTone(newTone);
 
             AllAlarmTones.Add(new SettingTone(newTone.Name, false));
@@ -192,7 +192,7 @@ namespace Five_Seconds.ViewModels
         {
             var toneName = settingTone.Name;
 
-            var alarmTone = App.Tones.Find(a => a.Name == toneName);
+            var alarmTone = App.AlarmToneRepo.Tones.Find(a => a.Name == toneName);
 
             if (alarmTone.IsCustomTone)
             {
@@ -208,14 +208,14 @@ namespace Five_Seconds.ViewModels
         private void DeleteTone(string selectedTone)
         {
             var settingTone = AllAlarmTones.ToList().Find(a => a.Name == selectedTone);
-            var alarmTone = App.Tones.Find(a => a.Name == selectedTone);
+            var alarmTone = App.AlarmToneRepo.Tones.Find(a => a.Name == selectedTone);
 
             if (settingTone.IsSelected)
             {
                 ClickTone(AllAlarmTones[0]);
             }
 
-            App.Tones.Remove(alarmTone);
+            App.AlarmToneRepo.Tones.Remove(alarmTone);
             App.AlarmToneRepo.DeleteTone(alarmTone);
             AllAlarmTones.Remove(settingTone);
         }

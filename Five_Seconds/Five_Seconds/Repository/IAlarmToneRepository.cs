@@ -9,12 +9,12 @@ namespace Five_Seconds.Repository
     public interface IAlarmToneRepository
     {
         ItemDatabaseGeneric ItemDatabase { get; }
+        List<AlarmTone> Tones { get; }
 
         //Settings GetSettings();
         IEnumerable<AlarmTone> GetAllTones();
         int SaveTone(AlarmTone alarmTone);
         int DeleteTone(AlarmTone alarmTone);
         AlarmTone GetTone(int id);
-        List<AlarmTone> GetAllAlarmTones();
     }
 }

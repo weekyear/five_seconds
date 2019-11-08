@@ -10,7 +10,18 @@ namespace Five_Seconds.Repository
 {
     public class AlarmToneRepository : IAlarmToneRepository
     {
-        public ItemDatabaseGeneric ItemDatabase { get; } = App.ItemDatabase;
+        public ItemDatabaseGeneric ItemDatabase { get; }
+
+        public List<AlarmTone> Tones
+        {
+            get { return GetAllAlarmTones() as List<AlarmTone>; }
+        }
+
+        public AlarmToneRepository(ItemDatabaseGeneric itemDatabase)
+        {
+            //if (Device.RuntimePlatform == "Test") return;
+            ItemDatabase = itemDatabase;
+        }
 
         public IEnumerable<AlarmTone> GetAllTones()
         {
@@ -32,7 +43,7 @@ namespace Five_Seconds.Repository
             return ItemDatabase.GetObject<AlarmTone>(id);
         }
 
-        public List<AlarmTone> GetAllAlarmTones()
+        private List<AlarmTone> GetAllAlarmTones()
         {
             var defaultTones = new List<AlarmTone>()
             {
