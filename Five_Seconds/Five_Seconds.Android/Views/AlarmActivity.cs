@@ -100,14 +100,11 @@ namespace Five_Seconds.Droid
 
             AlarmTimeNow = DateTime.Now;
 
-            Console.WriteLine("OnCreate_AlarmActivity_01");
             GetAlarmServiceAndRepository();
-            Console.WriteLine("OnCreate_AlarmActivity_02");
 
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
             GetDataFromBundle(bundle);
-            Console.WriteLine("OnCreate_AlarmActivity_03");
 
             if (id == -100000)
             {
@@ -115,11 +112,8 @@ namespace Five_Seconds.Droid
                 return;
             }
 
-            Console.WriteLine("OnCreate_AlarmActivity_04");
             SettingForAlarmActivity(savedInstanceState);
-            Console.WriteLine("OnCreate_AlarmActivity_05");
             CreatingForAlarmActivity();
-            Console.WriteLine("OnCreate_AlarmActivity_06");
 
             if (bundle == null) return;
         }
@@ -198,24 +192,16 @@ namespace Five_Seconds.Droid
 
         private void SettingForAlarmActivity(Bundle savedInstanceState)
         {
-            Console.WriteLine("SettingForAlarmAcitivty_00");
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
-            Console.WriteLine("SettingForAlarmAcitivty_01");
             Forms.Init(this, savedInstanceState);
-            Console.WriteLine("SettingForAlarmAcitivty_02");
             MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
-            Console.WriteLine("SettingForAlarmAcitivty_03");
 
             SetContentView(Resource.Layout.AlarmActivity);
-            Console.WriteLine("SettingForAlarmAcitivty_04");
             SetAndFindViewById();
-            Console.WriteLine("SettingForAlarmAcitivty_05");
 
             AddWindowManagerFlags();
-            Console.WriteLine("SettingForAlarmAcitivty_06");
 
             SetMediaPlayerAndVibrator();
-            Console.WriteLine("SettingForAlarmAcitivty_07");
         }
 
         private void SetAndFindViewById()
@@ -258,7 +244,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                TestReviewDialog();
+                //TestReviewDialog();
 
                 SuccessAlarm();
             }
@@ -322,9 +308,9 @@ namespace Five_Seconds.Droid
         {
             CreateRecord();
 
-            SetResultToDialogResult();
-
             IsFinished = true;
+
+            SetResultToDialogResult();
 
             resultDialog.Show();
         }
@@ -631,7 +617,7 @@ namespace Five_Seconds.Droid
         {
             requestBuilder = new AdRequest.Builder().Build();
 
-            CreateRequestBuilderWhenTest();
+            //CreateRequestBuilderWhenTest();
 
             adViewForResult.LoadAd(requestBuilder);
             adViewForLater.LoadAd(requestBuilder);

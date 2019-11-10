@@ -27,7 +27,7 @@ namespace Five_Seconds.Droid.Services
 
             requestBuilder = new AdRequest.Builder().Build();
 
-            CreateRequestBuilderWhenTest();
+            //CreateRequestBuilderWhenTest();
 
             _ad.LoadAd(requestBuilder);
         }
