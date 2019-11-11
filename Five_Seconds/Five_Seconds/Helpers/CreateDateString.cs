@@ -73,9 +73,9 @@ namespace Five_Seconds.Helpers
 
                     return $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
                 case "en-US":
-                    return $"{string.Format("{0:MM} {0:dd}", date)}, ({date.DayOfWeek})";
+                    return $"{date.ToString("m", CultureInfo.CurrentCulture)}, ({date.DayOfWeek})";
                 default:
-                    return $"{string.Format("{0:MM} {0:dd}", date)}, ({date.DayOfWeek})";
+                    return $"{date.ToString("m", CultureInfo.CurrentCulture)}, ({date.DayOfWeek})";
             }
         }
 

@@ -138,16 +138,16 @@ namespace Five_Seconds.Droid.Services
                 if (grantResults[i] == Permission.Denied)
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(activity)
-                        .SetTitle("알람 음성 해제를 위해서 마이크 권한이 필요합니다.")
-                        .SetMessage("[설정] > [권한]에서 해당 권한을 활성화해주세요.")
-                        .SetPositiveButton("설정", (senderAlert, args) =>
+                        .SetTitle(Application.Context.GetString(Resource.String.RequestMicPermission))
+                        .SetMessage(Application.Context.GetString(Resource.String.ActivatePermission))
+                        .SetPositiveButton(Application.Context.GetString(Resource.String.Settings), (senderAlert, args) =>
                         {
                             var intent = new Intent(Android.Provider.Settings.ActionApplicationDetailsSettings);
                             var uri = Android.Net.Uri.FromParts("package", activity.PackageName, null);
                             intent.SetData(uri);
                             activity.StartActivityForResult(intent, REQUEST_PERMISSION_SETTING);
                         })
-                        .SetNegativeButton("닫기", (senderAlert, args) =>
+                        .SetNegativeButton(Application.Context.GetString(Resource.String.Close), (senderAlert, args) =>
                         {
                             activity.Finish();
                         })
@@ -165,9 +165,9 @@ namespace Five_Seconds.Droid.Services
                 if (grantResults[i] == Permission.Denied)
                 {
                     AlertDialog.Builder alert = new AlertDialog.Builder(activity)
-                        .SetTitle("저장공간 권한이 필요합니다.")
-                        .SetMessage("[설정] > [권한]에서 해당 권한을 활성화해주세요.")
-                        .SetPositiveButton("설정", (senderAlert, args) =>
+                        .SetTitle(Application.Context.GetString(Resource.String.RequestStoragePermission))
+                        .SetMessage(Application.Context.GetString(Resource.String.ActivatePermission))
+                        .SetPositiveButton(Application.Context.GetString(Resource.String.Settings), (senderAlert, args) =>
                         {
                             SettingToneViewModel.IsFinding = true;
                             var intent = new Intent(Android.Provider.Settings.ActionApplicationDetailsSettings);
@@ -175,7 +175,7 @@ namespace Five_Seconds.Droid.Services
                             intent.SetData(uri);
                             activity.StartActivityForResult(intent, REQUEST_PERMISSION_SETTING);
                         })
-                        .SetNegativeButton("닫기", (senderAlert, args) =>
+                        .SetNegativeButton(Application.Context.GetString(Resource.String.Close), (senderAlert, args) =>
                         {
                         })
                         .SetCancelable(false);

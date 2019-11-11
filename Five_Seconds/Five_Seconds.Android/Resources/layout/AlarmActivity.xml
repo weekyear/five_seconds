@@ -43,7 +43,7 @@
                 android:autoSizeStepGranularity="2sp" />
             <TextView
                 android:id="@+id/secondsText"
-                android:text="초"
+                android:text="@string/Seconds"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         </LinearLayout>
         <TextView
             android:id="@+id/startText"
-            android:text="안에 바로 시작!!"
+            android:text="@string/Start"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_below="@id/countNumberLayout"
             android:layout_width="match_parent"
@@ -99,13 +99,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/ic_five_seconds"
-                android:text="5초의 알람"
+                android:text="@string/FiveSecondsAlarm"
                 android:textSize="16dp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/alarmTextColor"/>
             <TextView
                 android:id="@+id/timeTextView"
-                android:text="오전 6:00"
+                android:text=""
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="16dp"
                 android:layout_width="wrap_content"
@@ -140,7 +140,7 @@
             android:background="@drawable/rounded_button"
             android:textStyle="bold"
             android:id="@+id/startButton"
-            android:text="시작"
+            android:text="@string/Go"
             android:textColor="@color/alarmTextColor"
             android:visibility="gone"
             android:gravity="center"/>
@@ -167,7 +167,7 @@
             android:id="@+id/timeOutTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="60초 이내"
+            android:text=""
             android:layout_marginTop="20dp"
             android:textSize="32dp"
             android:textStyle="bold"
@@ -191,7 +191,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/pleaseSayText"
             android:layout_margin="10dp"
-            android:text="라고 말해주세요"
+            android:text="@string/PleaseSay"
             android:textColor="@color/alarmTextColor"
             android:textSize="28dp"
             android:gravity="center"

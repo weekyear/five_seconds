@@ -4,7 +4,6 @@ using Xamarin.Forms;
 using Five_Seconds.Models;
 using Five_Seconds.Views;
 using Five_Seconds.Services;
-using System;
 using Five_Seconds.Helpers;
 using System.Collections.Generic;
 using System.Linq;

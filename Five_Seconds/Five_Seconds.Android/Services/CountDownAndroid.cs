@@ -1,6 +1,4 @@
-﻿using Android.App;
-using Android.Content;
-using Five_Seconds.Droid;
+﻿using Android.Content;
 using Five_Seconds.Droid.Services;
 using Five_Seconds.Services;
 using Xamarin.Forms;

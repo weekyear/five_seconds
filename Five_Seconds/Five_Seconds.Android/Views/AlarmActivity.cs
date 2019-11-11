@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 using Android;
 using Android.App;
@@ -27,7 +28,7 @@ using RelativeLayout = Android.Widget.RelativeLayout;
 
 namespace Five_Seconds.Droid
 {
-    [Activity(Label = "5초의 알람", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "@string/FiveSecondsAlarm", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : Activity, IRecognitionListener
     {
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();
@@ -168,7 +169,7 @@ namespace Five_Seconds.Droid
         {
             var toastService = new ToastServiceAndroid();
 
-            toastService.Show("이제 5초를 셉니다!");
+            toastService.Show(GetString(Resource.String.IllCount));
 
             HideAllViewExceptForCountText();
 
@@ -232,7 +233,18 @@ namespace Five_Seconds.Droid
             alarmEditText = FindViewById<EditText>(Resource.Id.alarmEditText);
             timeOutTextView = FindViewById<TextView>(Resource.Id.timeOutTextView);
 
-            timeOutTextView.Text = "60초 이내";
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "ko-KR":
+                    timeOutTextView.Text = "60초 이내";
+                    break;
+                case "en-US":
+                    timeOutTextView.Text = "Within 60 sec";
+                    break;
+                default:
+                    timeOutTextView.Text = "Within 60 sec";
+                    break;
+            }
             countTextView.Text = "5.0";
             alarmTextView.Text = name;
             finishAlarmText.Text = name;
@@ -280,7 +292,7 @@ namespace Five_Seconds.Droid
         }
         private void FailedAlarm()
         {
-            pleaseSayText.Text = "라고 적어주세요";
+            pleaseSayText.Text = GetString(Resource.String.PleaseWrite);
             SetVisibleOfStartButton();
             alarmEditText.RequestFocus();
             InputMethodManager imm = GetSystemService(InputMethodService) as InputMethodManager;
@@ -290,7 +302,7 @@ namespace Five_Seconds.Droid
         }
         private void ShowToastDoNotMatchText()
         {
-            Toast.MakeText(ApplicationContext, "알람 이름이 일치하지 않습니다. 알람 이름을 정확히 기입해주세요", ToastLength.Long).Show();
+            Toast.MakeText(ApplicationContext, GetString(Resource.String.DoNotMatchAlarmName), ToastLength.Long).Show();
         }
 
         [Conditional("DEBUG")]
@@ -348,14 +360,14 @@ namespace Five_Seconds.Droid
 
             if (IsSuccess)
             {
-                titleText.Text = "알람 성공!";
+                titleText.Text = GetString(Resource.String.Success);
 
                 confirmBtn.Click += ResultDialog_ConfirmBtn_Click;
                 countButton.Click += ResultDialog_CountBtn_Click;
             }
             else
             {
-                titleText.Text = "알람 실패 ㅠ^ㅠ";
+                titleText.Text = GetString(Resource.String.Failure);
                 titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
                 messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
                 buttonLayout.Visibility = ViewStates.Gone;
@@ -366,13 +378,17 @@ namespace Five_Seconds.Droid
 
             if (alarmRecords.Count == 1)
             {
-                if (IsSuccess)
+                switch (CultureInfo.CurrentCulture.Name)
                 {
-                    messageText.Text = $"첫 시작이 아주 좋네요! 5초 카운트가 끝나기 전에 '{alarm.Name}' 바로 시작해봐요!";
-                }
-                else
-                {
-                    messageText.Text = $"첫 단추를 잘못 끼웠다고 상심 말아요. 다시 끼우면 되잖아요! 다음번엔 잘 해봐요!";
+                    case "ko-KR":
+                        messageText.Text = CreateStringWhenFirstAlarm_ko_KR();
+                        break;
+                    case "en-US":
+                        messageText.Text = CreateStringWhenFirstAlarm_en_US();
+                        break;
+                    default:
+                        messageText.Text = CreateStringWhenFirstAlarm_en_US();
+                        break;
                 }
             }
             else
@@ -401,7 +417,41 @@ namespace Five_Seconds.Droid
                 {
                 }
 
-                messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다.";
+                switch (CultureInfo.CurrentCulture.Name)
+                {
+                    case "ko-KR":
+                        messageText.Text = $"'{alarm.Name}' 알람의 전체 성공률은 {successRate * 100:0.##}% 입니다.";
+                        break;
+                    case "en-US":
+                        messageText.Text = $"The overall success rate of '{alarm.Name}' alarm is {successRate * 100:0.##}%.";
+                        break;
+                    default:
+                        messageText.Text = $"The overall success rate of '{alarm.Name}' alarm is {successRate * 100:0.##}%.";
+                        break;
+                }
+            }
+        }
+
+        private string CreateStringWhenFirstAlarm_ko_KR()
+        {
+            if (IsSuccess)
+            {
+                return $"첫 시작이 아주 좋네요! 5초 카운트가 끝나기 전에 '{alarm.Name}' 바로 시작해봐요!";
+            }
+            else
+            {
+                return $"첫 단추를 잘못 끼웠다고 상심 말아요. 다시 끼우면 되잖아요! 다음번엔 잘 해봐요!";
+            }
+        }
+        private string CreateStringWhenFirstAlarm_en_US()
+        {
+            if (IsSuccess)
+            {
+                return $"Very good start! Let's start '{alarm.Name}' before the 5 second count is over!";
+            }
+            else
+            {
+                return $"Don't be bothered if you put the first button wrong. Just put it back! Do well next time!";
             }
         }
 
@@ -678,8 +728,7 @@ namespace Five_Seconds.Droid
             {
                 if (grantResults[0] != Permission.Granted)
                 {
-                    Toast.MakeText(ApplicationContext,
-                            "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Short).Show();
+                    Toast.MakeText(ApplicationContext, GetString(Resource.String.RequestMicPermission), ToastLength.Short).Show();
                 }
                 else
                 {
@@ -698,7 +747,7 @@ namespace Five_Seconds.Droid
                 if (ShouldShowRequestPermissionRationale(Manifest.Permission.RecordAudio))
                 {
                     // Explain to the user why we need to read the contacts
-                    Toast.MakeText(this, "알람을 해제하려면 음성 녹음 권한이 필요합니다.", ToastLength.Long).Show();
+                    Toast.MakeText(this, GetString(Resource.String.RequestMicPermission), ToastLength.Long).Show();
                 }
 
                 RequestPermissions(new string[] { Manifest.Permission.RecordAudio }, MY_PERMISSIONS_RECORD_AUDIO);
@@ -775,9 +824,9 @@ namespace Five_Seconds.Droid
             buttonLayout.Visibility = ViewStates.Gone;
             reviewButtonLayout.Visibility = ViewStates.Visible;
 
-            reviewTitle.Text = "도움이 되서 기뻐요!";
-            reviewText1.Text = "계속 도움이 되는 5초의 알람이 될게요!";
-            reviewText2.Text = "5초의 알람 리뷰를 통해 추천해주시겠어요?";
+            reviewTitle.Text = GetString(Resource.String.GladToHelpYou);
+            reviewText1.Text = GetString(Resource.String.WillKeepTrying);
+            reviewText2.Text = GetString(Resource.String.WouldYouRecommend);
         }
 
         private void CancelBtn1_Click(object sender, EventArgs e)
@@ -785,9 +834,9 @@ namespace Five_Seconds.Droid
             buttonLayout.Visibility = ViewStates.Gone;
             feedbackButtonLayout.Visibility = ViewStates.Visible;
 
-            reviewTitle.Text = "도움드리지 못 해 죄송해요";
-            reviewText1.Text = "앱을 더욱 보완해서 보답드릴게요!";
-            reviewText2.Text = "불편, 건의 사항이 있다면 말씀해주시겠어요?";
+            reviewTitle.Text = GetString(Resource.String.ImSorry);
+            reviewText1.Text = GetString(Resource.String.IllImprove);
+            reviewText2.Text = GetString(Resource.String.CanYouTellMe);
         }
 
         private void ConfirmBtn2_Click(object sender, EventArgs e)
@@ -796,11 +845,11 @@ namespace Five_Seconds.Droid
             var intent = new Intent(Intent.ActionSend);
             intent.SetType("message/rfc822");
             intent.PutExtra(Intent.ExtraEmail, "save_us_222@naver.com");
-            intent.PutExtra(Intent.ExtraSubject, $"{AlarmTimeNow.ToShortDateString()} 5초의 알람 오류 보고");
+            intent.PutExtra(Intent.ExtraSubject, $"{AlarmTimeNow.ToShortDateString()} {GetString(Resource.String.ErrorReport)}");
 
             try
             {
-                StartActivity(Intent.CreateChooser(intent, "이메일 보내기.."));
+                StartActivity(Intent.CreateChooser(intent, "Email.."));
             }
             catch (ActivityNotFoundException)
             {
@@ -885,12 +934,12 @@ namespace Five_Seconds.Droid
 
                 case SpeechRecognizerError.InsufficientPermissions:
                     SetTellmeBtnDefault();
-                    Toast.MakeText(ApplicationContext, "오디오 녹음 권한을 허용해주세요", ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, GetString(Resource.String.PleaseAllowAudioPermission), ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.Network:
                     SetTellmeBtnDefault();
-                    Toast.MakeText(ApplicationContext, "네트워크 에러입니다. 네트워크 연결 확인을 해주세요.", ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, GetString(Resource.String.NetworkError), ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.NetworkTimeout:
@@ -907,12 +956,12 @@ namespace Five_Seconds.Droid
 
                 case SpeechRecognizerError.Server:
                     SetTellmeBtnDefault();
-                    Toast.MakeText(ApplicationContext, "서버에 문제가 있습니다. 텍스트 창에 해야할 일을 적어주세요.", ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, GetString(Resource.String.ServerError), ToastLength.Long).Show();
                     break;
 
                 case SpeechRecognizerError.SpeechTimeout:
                     SetTellmeBtnDefault();
-                    Toast.MakeText(ApplicationContext, "음성 녹음 시간이 초과되었습니다. 다시 시도해주세요.", ToastLength.Long).Show();
+                    Toast.MakeText(ApplicationContext, GetString(Resource.String.RecordingTimeOut), ToastLength.Long).Show();
                     break;
 
                 default:

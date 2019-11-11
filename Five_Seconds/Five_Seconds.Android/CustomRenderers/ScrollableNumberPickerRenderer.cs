@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using System.ComponentModel;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Five_Seconds.CustomControls;
 using Five_Seconds.Droid.CustomRenderers;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using static Android.Widget.NumberPicker;
-using View = Android.Views.View;
+using Application = Android.App.Application;
 
 [assembly: ExportRenderer(typeof(ScrollableNumberPicker), typeof(ScrollableNumberPickerRenderer))]
 namespace Five_Seconds.Droid.CustomRenderers
@@ -39,7 +30,7 @@ namespace Five_Seconds.Droid.CustomRenderers
                 case "AmPm":
                     numberPicker.MaxValue = 1;
                     numberPicker.MinValue = 0;
-                    var pickerVals = new string[] { "오전", "오후" };
+                    var pickerVals = new string[] { Application.Context.GetString(Resource.String.Am), Application.Context.GetString(Resource.String.Pm) };
                     numberPicker.SetDisplayedValues(pickerVals);
                     break;
                 case "Hours":

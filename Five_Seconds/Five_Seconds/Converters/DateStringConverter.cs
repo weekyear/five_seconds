@@ -31,9 +31,9 @@ namespace Five_Seconds.Converters
                 case "ko-KR":
                     return $"{dateTime.Month}월 {dateTime.Day}일";
                 case "en-US":
-                    return $"{dateTime.Month}.{dateTime.Day}";
+                    return dateTime.ToString("M", CultureInfo.CurrentCulture);
                 default:
-                    return $"{dateTime.Month}.{dateTime.Day}";
+                    return dateTime.ToString("M", CultureInfo.CurrentCulture);
             }
         }
     }

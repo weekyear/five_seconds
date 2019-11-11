@@ -1,8 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <string name="realarm">
-      <b>다시 알림</b>
-  </string>
+  <string name="realarm">Realarm</string>
+  <string name="FiveSecondsAlarm">5 seconds rule Alarm</string>
+  <string name="FiveSecondsCount">Count 5 sec</string>
+  <string name="IllCount">Count five seconds!</string>
+  <string name="PleaseWrite">please type alarm name</string>
+  <string name="PleaseSay">please say alarm name</string>
+  <string name="DoNotMatchAlarmName">Alarm names do not match. Please enter the correct alarm name</string>
+  <string name="Success">Success!</string>
+  <string name="Failure">Failed :(</string>
+  <string name="RequestMicPermission">You need voice recording permission to clear the alarm.</string>
+  <string name="RequestStoragePermission">Storage permission is required.</string>
+  <string name="GladToHelpYou">I am glad to help you.</string>
+  <string name="WillKeepTrying">I will keep trying to help you.</string>
+  <string name="WouldYouRecommend">Would you recommend it via a 5 seconds rule alarm review?</string>
+  <string name="ImSorry">I am sorry I cant help you</string>
+  <string name="IllImprove">I will improve this app even more!</string>
+  <string name="CanYouTellMe">Can you tell me if you have any inconvenience or suggestions?</string>
+  <string name="ErrorReport">5 seconds rule alarm error report</string>
+  <string name="PleaseAllowAudioPermission">Please allow audio recording permission</string>
+  <string name="NetworkError">Network error. Please check your network connection.</string>
+  <string name="ServerError">There is a problem with the server. please try again.</string>
+  <string name="RecordingTimeOut">Voice recording timed out. please try again.</string>
+  <string name="ActivatePermission">Please activate the permissions in [App Settings] > [Permissions].</string>
+  <string name="Seconds">sec</string>
+  <string name="Start">Start!!</string>
+  <string name="ThankYou">Thank You!!</string>
+  <string name="ThankYouForUsing">Thank you for using the 5 seconds rule alarm!</string>
+  <string name="HelpfulToYou">Is our app helpful to you?</string>
+  <string name="NotReally">Um..not really</string>
+  <string name="ILikeIt">I like it</string>
+  <string name="NoThanks">No, Thanks</string>
+  <string name="IWillHelp">Yes, I Will Help</string>
+  <string name="Later">Later</string>
+  <string name="No">No</string>
+  <string name="Recommend">Recommend</string>
+  <string name="MinutesLater">minutes later</string>
+  <string name="Cancel">Cancel</string>
+  <string name="Close">Close</string>
+  <string name="Settings">Settings</string>
+  <string name="OK">OK</string>
+  <string name="Fail">Failed</string>
+  <string name="Go">Go!</string>
+  <string name="Am">AM</string>
+  <string name="Pm">PM</string>
+  
   <string name="admob_app_id">ca-app-pub-8413101784746060~4411896846</string>
   <string name="admob_banner_id">ca-app-pub-8413101784746060/7584855097</string>
   <string name="com.crashlytics.android.build_id">crashlytics_8413101784746060_7584855097</string>

@@ -23,7 +23,7 @@
             android:layout_margin="12dp"
             android:layout_toRightOf="@id/laterNumberPicker"
             android:layout_centerVertical="true"
-            android:text="분 후 알림"
+            android:text="@string/MinutesLater"
             android:textSize="32dp"/>
     </LinearLayout>
     <com.google.android.gms.ads.AdView
@@ -43,7 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="취 소"
+            android:text="@string/Cancel"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
@@ -53,7 +53,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="확 인"
+            android:text="@string/OK"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@android:color/white"

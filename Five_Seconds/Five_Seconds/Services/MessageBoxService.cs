@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Five_Seconds.Resources;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -12,13 +11,13 @@ namespace Five_Seconds.Services
 
         public async void ShowAlert(string title, string message, Action onClosed = null)
         {
-            await CurrentMainPage.DisplayAlert(title, message, "확인");
+            await CurrentMainPage.DisplayAlert(title, message, AppResources.OK);
             onClosed?.Invoke();
         }
 
         public async void ShowConfirm(string title, string message, Action onClosed = null, Action action = null)
         {
-            bool confirm = await CurrentMainPage.DisplayAlert(title, message, "확인", "취소");
+            bool confirm = await CurrentMainPage.DisplayAlert(title, message, AppResources.OK, AppResources.Cancel);
             if (confirm)
             {
                 action?.Invoke();

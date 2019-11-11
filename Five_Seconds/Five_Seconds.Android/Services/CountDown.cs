@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,7 +82,21 @@ namespace Five_Seconds.Droid.Services
             {
                 var timeOutTextView = alarmActivity.timeOutTextView;
 
-                var stringFormat = $"{count:00}초 이내";
+                string stringFormat;
+
+                switch (CultureInfo.CurrentCulture.Name)
+                {
+                    case "ko-KR":
+                        stringFormat = $"{count:00}초 이내";
+                        break;
+                    case "en-US":
+                        stringFormat = $"Within {count:00} sec";
+                        break;
+                    default:
+                        stringFormat = $"Within {count:00} sec";
+                        break;
+                }
+
                 timeOutTextView.Text = stringFormat;
             }
         }
