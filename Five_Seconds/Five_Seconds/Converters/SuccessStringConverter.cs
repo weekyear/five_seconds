@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Five_Seconds.Resources;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
@@ -15,11 +16,11 @@ namespace Five_Seconds.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((string)value == "성공")
+            if ((string)value == AppResources.Success)
             {
                 return true;
             }
-            else if ((string)value == "실패")
+            else if ((string)value == AppResources.Failure)
             {
                 return false;
             }
@@ -29,11 +30,11 @@ namespace Five_Seconds.Converters
         {
             if ((bool)value)
             {
-                return "성공";
+                return AppResources.Success;
             }
             else
             {
-                return "실패";
+                return AppResources.Failure;
             }
         }
     }

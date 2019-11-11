@@ -4,9 +4,10 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             xmlns:local="clr-namespace:Five_Seconds.Helpers"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AboutPage"
-             Title="{Binding Title}"
+             Title="{local:Translate WhatFiveSecondsRule}"
              BackgroundColor="White">
 
     <ContentPage.Resources>

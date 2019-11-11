@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
-             Title="알람 설정"
+             xmlns:local="clr-namespace:Five_Seconds.Helpers"
+             Title="{local:Translate AlarmSetting}"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmPage"
              BackgroundColor="White">
@@ -18,7 +19,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="저장" Command="{Binding SaveCommand}"/>
+        <ToolbarItem Text="{local:Translate Save}" Command="{Binding SaveCommand}"/>
     </ContentPage.ToolbarItems>
 
     <Grid RowSpacing="0">
@@ -35,7 +36,7 @@
                                Margin="10"
                                HorizontalOptions="FillAndExpand"
                                FontSize="20"
-                               Placeholder="알람 이름을 적어주세요"
+                               Placeholder="{local:Translate PleaseAlarmName}"
                                Text="{Binding Name}" />
                         </StackLayout>
                     </custom:TableViewCell>
@@ -71,7 +72,7 @@
                         </StackLayout>
                     </custom:TableViewCell>
                 </TableSection>
-                <TableSection Title="알람 옵션" TextColor="DarkBlue">
+                <TableSection Title="{local:Translate AlarmOption}" TextColor="DarkBlue">
                     <custom:TableViewCell AllowHighlight="False" Height="60">
                         <Grid HorizontalOptions="FillAndExpand"
                           VerticalOptions="CenterAndExpand"
@@ -84,7 +85,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="50"/>
                             </Grid.ColumnDefinitions>
-                            <Label Text="알람음"
+                            <Label Text="{local:Translate AlarmSound}"
                                TextColor="Black"
                                FontSize="20"
                                VerticalOptions="CenterAndExpand"
@@ -106,7 +107,7 @@
                     </custom:TableViewCell>
                     <custom:TableViewCell AllowHighlight="False" Height="60">
                         <StackLayout Orientation="Horizontal" Margin="10">
-                            <Label TextColor="Black" Text="진동" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                            <Label TextColor="Black" Text="{local:Translate Vibration}" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
                             <Switch IsToggled="{Binding Alarm.IsVibrateOn}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
@@ -114,10 +115,10 @@
                         </StackLayout>
                     </custom:TableViewCell>
                 </TableSection>
-                <TableSection Title="알람 해제 옵션" TextColor="DarkBlue">
+                <TableSection Title="{local:Translate AlarmOffOption}" TextColor="DarkBlue">
                     <custom:TableViewCell AllowHighlight="False" Height="60">
                         <StackLayout Orientation="Horizontal" Margin="10">
-                            <Label TextColor="Black" Text="음성 인식" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
+                            <Label TextColor="Black" Text="{local:Translate VoiceRecognition}" Margin="10, 0" FontSize="20" VerticalOptions="CenterAndExpand" />
                             <Switch IsToggled="{Binding Alarm.IsVoiceRecognition}"
                                     HorizontalOptions="EndAndExpand"
                                     OnColor="LightSteelBlue"

@@ -1,10 +1,12 @@
 ﻿using Five_Seconds.Helpers;
 using Five_Seconds.Models;
+using Five_Seconds.Resources;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -379,7 +381,7 @@ namespace Five_Seconds.ViewModels
         {
             if (TagItems.Count > 7)
             {
-                MessageBoxService.ShowAlert("검색어 개수 초과", "검색어 수는 7개까지만 허용됩니다.");
+                MessageBoxService.ShowAlert(AppResources.QueryCountExceeded, AppResources.QueryCountExceededDetail);
                 return;
             }
 
@@ -449,8 +451,16 @@ namespace Five_Seconds.ViewModels
             {
                 get
                 {
-                    if (DayRecords.Count == 0) { return "기록 없음"; }
-                    return $"알람 {DayRecords.Count} 개";
+                    if (DayRecords.Count == 0) { return AppResources.NoRecord; }
+                    switch (CultureInfo.CurrentCulture.Name)
+                    {
+                        case "ko-KR":
+                            return $"알람 {DayRecords.Count} 개";
+                        case "en-US":
+                            return $"{DayRecords.Count} Alarms";
+                        default:
+                            return $"{DayRecords.Count} Alarms";
+                    }
                 }
             }
 

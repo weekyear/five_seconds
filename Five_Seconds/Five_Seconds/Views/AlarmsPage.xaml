@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             xmlns:local="clr-namespace:Five_Seconds.Helpers"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmsPage"
@@ -40,7 +41,7 @@
                         <ColumnDefinition Width="11*" />
                     </Grid.ColumnDefinitions>
                     <Label Grid.ColumnSpan="5" 
-                           Text="5초의 알람"
+                           Text="{local:Translate App_Name}"
                            FontSize="22"
                            HorizontalOptions="CenterAndExpand"/>
                     <Label x:Name="NextAlarmStrng" 

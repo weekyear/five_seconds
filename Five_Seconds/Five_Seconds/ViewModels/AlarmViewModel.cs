@@ -5,6 +5,7 @@ using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Five_Seconds.ViewModels
@@ -301,7 +302,14 @@ namespace Five_Seconds.ViewModels
                 }
                 Alarm.IsLaterAlarm = false;
 
-                Service.SaveAlarm(Alarm);
+                var id = Service.SaveAlarm(Alarm);
+
+
+                if (Preferences.Get("MaxAlarmId", 3) < id)
+                {
+                    Preferences.Set("MaxAlarmId", id);
+                }
+
                 await ClosePopup();
 
                 var diffString = CreateDateString.CreateTimeRemainingString(Alarm.NextAlarmTime);

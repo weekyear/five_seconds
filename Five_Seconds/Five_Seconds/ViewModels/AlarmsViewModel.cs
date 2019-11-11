@@ -8,6 +8,8 @@ using System;
 using Five_Seconds.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using Five_Seconds.Resources;
+using System.Globalization;
 
 namespace Five_Seconds.ViewModels
 {
@@ -66,7 +68,15 @@ namespace Five_Seconds.ViewModels
             get
             {
                 var numOfDeleteAlarms = Alarms.Where(a => a.IsSelected == true).Count();
-                return $"{numOfDeleteAlarms}개 삭제";
+                switch (CultureInfo.CurrentCulture.Name)
+                {
+                    case "ko-KR":
+                        return $"{numOfDeleteAlarms}개 삭제";
+                    case "en-US":
+                        return $"Delete {numOfDeleteAlarms} Alarms";
+                    default:
+                        return $"Delete {numOfDeleteAlarms} Alarms";
+                }
             }
         }
 
@@ -98,7 +108,7 @@ namespace Five_Seconds.ViewModels
         {
             void action() => DependencyService.Get<ICountDown>().ShowCountDown();
             //void action() => DependencyService.Get<ICrashTest>().CrashTest();
-            MessageBoxService.ShowConfirm("5초 카운트", "5초 카운트를 시작하시겠습니까?", null, action);
+            MessageBoxService.ShowConfirm(AppResources.FiveCount, AppResources.FiveCountDetail, null, action);
         }
         
         private void DeleteAlarms()
@@ -119,24 +129,23 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowMainMenu()
         {
-            string[] actionSheetBtns = { "5초의 법칙이란", "5초의 알람 간단 사용법" };
+            string[] actionSheetBtns = { AppResources.WhatFiveSecondsRule, AppResources.BriefDescription };
 
-            string action = await MessageBoxService.ShowActionSheet("메뉴", "취소", null, actionSheetBtns);
+            string action = await MessageBoxService.ShowActionSheet(AppResources.Menu, AppResources.Cancel, null, actionSheetBtns);
 
             await ClickMenuAction(action);
         }
 
         private async Task ClickMenuAction(string action)
         {
-            switch (action)
+            if (action == AppResources.WhatFiveSecondsRule)
             {
-                case "5초의 법칙이란":
-                    await Navigation.PushAsync(new AboutPage());
-                    break;
-                case "5초의 알람 간단 사용법":
-                    var welcomePage = AppIntro.CreateAppIntro();
-                    await Navigation.PushModalAsync(welcomePage);
-                    break;
+                await Navigation.PushAsync(new AboutPage());
+            }
+            else if (action == AppResources.BriefDescription)
+            {
+                var welcomePage = AppIntro.CreateAppIntro();
+                await Navigation.PushModalAsync(welcomePage);
             }
         }
 

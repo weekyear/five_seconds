@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using Five_Seconds.Resources;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Five_Seconds.Models
         public bool Saturday { get; set; } = false;
 
         public bool[] AllDays => new bool[] { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
-        public static string[] AllDaysString => new string[] { "일", "월", "화", "수", "목", "금", "토" };
+        public static string[] AllDaysString => new string[] { AppResources.Sunday, AppResources.Monday, AppResources.Tuesday, AppResources.Wednesday, AppResources.Thursday, AppResources.Friday, AppResources.Saturday };
 
         public DaysOfWeek() { }
 

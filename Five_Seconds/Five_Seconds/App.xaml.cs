@@ -11,6 +11,7 @@ using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Application = Xamarin.Forms.Application;
 using NavigationPage = Xamarin.Forms.NavigationPage;
+using System.Globalization;
 
 namespace Five_Seconds
 {
@@ -22,6 +23,8 @@ namespace Five_Seconds
 
         public App()
         {
+            //SetCulture("en-US");
+
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
             DependencyService.Register<INavigation>();
@@ -62,6 +65,12 @@ namespace Five_Seconds
             }
 
             Alarm.IsInitFinished = true;
+        }
+
+        private void SetCulture(string culture)
+        {
+            CultureInfo myCulture = new CultureInfo(culture);
+            CultureInfo.DefaultThreadCurrentCulture = myCulture;
         }
 
         protected override void OnStart()

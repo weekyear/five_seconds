@@ -1,6 +1,8 @@
 ﻿using Five_Seconds.Models;
+using Five_Seconds.Resources;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Five_Seconds.Helpers
@@ -11,7 +13,7 @@ namespace Five_Seconds.Helpers
         {
             if (alarm.IsLaterAlarm)
             {
-                return "곧 다시 울림";
+                return AppResources.RingingSoon;
             }
 
             if (DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
@@ -39,17 +41,17 @@ namespace Five_Seconds.Helpers
 
             stringBuilder.Remove(0, 2);
 
-            if (stringBuilder.ToString() == "일, 월, 화, 수, 목, 금, 토")
+            if (stringBuilder.ToString() == $"{AppResources.Sunday}, {AppResources.Monday}, {AppResources.Tuesday}, {AppResources.Wednesday}, {AppResources.Thursday}, {AppResources.Friday}, {AppResources.Saturday}")
             {
-                return "매일";
+                return AppResources.Everyday;
             }
-            else if (stringBuilder.ToString() == "일, 토")
+            else if (stringBuilder.ToString() == $"{AppResources.Sunday}, {AppResources.Saturday}")
             {
-                return "주말";
+                return AppResources.Weekend;
             }
-            else if (stringBuilder.ToString() == "월, 화, 수, 목, 금")
+            else if (stringBuilder.ToString() == $"{AppResources.Monday}, {AppResources.Tuesday}, {AppResources.Wednesday}, {AppResources.Thursday}, {AppResources.Friday}")
             {
-                return "평일";
+                return AppResources.Weekday;
             }
             else
             {
@@ -61,13 +63,20 @@ namespace Five_Seconds.Helpers
         {
             var allDaysString = DaysOfWeek.AllDaysString;
 
-            if (date.Date.Subtract(DateTime.Now.Date).TotalDays == 1)
+            switch (CultureInfo.CurrentCulture.Name)
             {
-                return $"{string.Format("내일-{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
-            }
+                case "ko-KR":
+                    if (date.Date.Subtract(DateTime.Now.Date).TotalDays == 1)
+                    {
+                        return $"{string.Format("내일-{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
+                    }
 
-            var dateTime = $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
-            return dateTime;
+                    return $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
+                case "en-US":
+                    return $"{string.Format("{0:MM} {0:dd}", date)}, ({date.DayOfWeek})";
+                default:
+                    return $"{string.Format("{0:MM} {0:dd}", date)}, ({date.DayOfWeek})";
+            }
         }
 
         public static string CreateNextDateTimeString(Alarm alarm)
@@ -86,40 +95,77 @@ namespace Five_Seconds.Helpers
                 }
                 bool isPastTime = nextTime.Subtract(DateTime.Now).Ticks < 0;
 
-                if (isPastTime) return "다음 알람이 없습니다.";
+                if (isPastTime) return AppResources.NoNextAlarm;
             }
             else
             {
-                return "다음 알람이 없습니다.";
+                return AppResources.NoNextAlarm;
             }
 
             var diffDays = nextTime.Date.Subtract(DateTime.Now.Date);
             string dateTimeString;
 
-            switch (diffDays.Days)
+            switch (CultureInfo.CurrentCulture.Name)
             {
-                case 0:
-                    dateTimeString = $"오늘 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+                case "ko-KR":
+                    dateTimeString = GetDateTimeStringKO_KR(nextTime, diffDays);
                     break;
-                case 1:
-                    dateTimeString = $"내일 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
-                    break;
-                case 2:
-                    dateTimeString = $"모레 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+                case "en-US":
+                    dateTimeString = GetDateTimeStringEN_US(nextTime, diffDays);
                     break;
                 default:
-                    dateTimeString = $"{diffDays.Days}일 후 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+                    dateTimeString = GetDateTimeStringEN_US(nextTime, diffDays);
                     break;
-
             }
 
             return dateTimeString;
+        }
+
+        private static string GetDateTimeStringKO_KR(DateTime nextTime, TimeSpan diffDays)
+        {
+            switch (diffDays.Days)
+            {
+                case 0:
+                    return $"오늘 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+                case 1:
+                    return $"내일 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+                case 2:
+                    return $"모레 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+                default:
+                    return $"{diffDays.Days}일 후 {string.Format("{0:tt} {0:hh}시 {0:mm}분", nextTime)}";
+            }
+        }
+
+        private static string GetDateTimeStringEN_US(DateTime nextTime, TimeSpan diffDays)
+        {
+            switch (diffDays.Days)
+            {
+                case 0:
+                    return $"Today, {nextTime.ToShortTimeString()}";
+                case 1:
+                    return $"Tomorrow, {nextTime.ToShortTimeString()}";
+                default:
+                    return $"Alarm in {diffDays.Days} days";
+            }
         }
 
         public static string CreateTimeRemainingString(DateTime dateTime)
         {
             var diff = dateTime.Subtract(DateTime.Now);
 
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "ko-KR":
+                    return CreateTimeRemainingString_ko_KR(dateTime, diff);
+                case "en-US":
+                    return CreateTimeRemainingString_en_US(dateTime, diff);
+                default:
+                    return CreateTimeRemainingString_en_US(dateTime, diff);
+            }
+        }
+
+        private static string CreateTimeRemainingString_ko_KR(DateTime dateTime, TimeSpan diff)
+        {
             if (diff.Days > 0)
             {
                 return $"{dateTime.Month}월 {dateTime.Day}일 {dateTime.ToString("tt")} {dateTime.Hour}:{dateTime.ToString("mm")}에 5초의 법칙을 실행합니다!";
@@ -135,6 +181,29 @@ namespace Five_Seconds.Helpers
             else if (diff.Seconds > 0)
             {
                 return $"{diff.Seconds}초 후에 5초의 법칙을 실행합니다!";
+            }
+            else
+            {
+                return "이미 지난 시간입니다.";
+            }
+        }
+        private static string CreateTimeRemainingString_en_US(DateTime dateTime, TimeSpan diff)
+        {
+            if (diff.Days > 0)
+            {
+                return $"Alarm set for  {dateTime.Hour}:{dateTime.ToString("mm")} {dateTime.ToString("tt")} on {dateTime.DayOfWeek}, {dateTime.Month} {dateTime.Day}";
+            }
+            else if (diff.Hours > 0)
+            {
+                return $"Alarm set for {diff.Hours} hours {diff.Minutes + 1} minutes from now.";
+            }
+            else if (diff.Minutes > 0)
+            {
+                return $"Alarm set for {diff.Minutes + 1} minutes from now.";
+            }
+            else if (diff.Seconds > 0)
+            {
+                return $"Alarm set for {diff.Seconds} seconds from now.";
             }
             else
             {

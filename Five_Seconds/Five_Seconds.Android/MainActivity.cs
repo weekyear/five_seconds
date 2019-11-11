@@ -75,7 +75,7 @@ namespace Five_Seconds.Droid
             LoadApplication(new App());
 
             Alarm.IsInitFinished = false;
-            var allAlarms = App.Service.GetAllAlarms();
+            var allAlarms = HelperAndroid.GetAlarmService().GetAllAlarms();
             Alarm.IsInitFinished = true;
 
             AlarmHelper.RefreshAlarmByManager(allAlarms);

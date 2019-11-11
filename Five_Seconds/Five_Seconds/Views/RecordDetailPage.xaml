@@ -6,8 +6,9 @@
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              xmlns:dltag="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.TagEntryView"
+             xmlns:local="clr-namespace:Five_Seconds.Helpers"
              mc:Ignorable="d"
-             Title="알람 기록 (주별)"
+             Title="{local:Translate AlarmRecord_Week}"
              BackgroundColor="{StaticResource BackgroundColor}"
              x:Class="Five_Seconds.Views.RecordDetailPage">
     
@@ -218,7 +219,7 @@
             </ListView>
 
         </Grid>
-        <Label Grid.Row="0" Text="알람 기록이 없습니다"
+        <Label Grid.Row="0" Text="{local:Translate ThereIsNoRecord}"
                FontSize="28"
                IsVisible="{Binding HasNoRecord}"
                HorizontalOptions="CenterAndExpand"
@@ -230,7 +231,7 @@
                    VerticalOptions="StartAndExpand"
                    HorizontalOptions="CenterAndExpand"
                    IsVisible="{Binding IsNotExistSearchResult}"
-                   Text="검색 결과가 없습니다. ㅠ^ㅠ"
+                   Text="{local:Translate NoResults}"
                    TextColor="Gray"
                    FontSize="24"/>
         <custom:AdMobView Grid.Row="1" AdUnitId="ca-app-pub-8413101784746060/7584855097"/>

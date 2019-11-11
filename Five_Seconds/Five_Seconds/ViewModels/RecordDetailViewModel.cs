@@ -1,10 +1,12 @@
 ﻿using Five_Seconds.Helpers;
 using Five_Seconds.Models;
 using Five_Seconds.Repository;
+using Five_Seconds.Resources;
 using Five_Seconds.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -245,13 +247,13 @@ namespace Five_Seconds.ViewModels
         {
             var startDateOfSelectedWeek = SelectedWeek;
 
-            var monList = new DayRecord() { DayOfWeek = "월", Date = startDateOfSelectedWeek };
-            var tueList = new DayRecord() { DayOfWeek = "화", Date = startDateOfSelectedWeek.AddDays(1) };
-            var wedList = new DayRecord() { DayOfWeek = "수", Date = startDateOfSelectedWeek.AddDays(2) };
-            var thuList = new DayRecord() { DayOfWeek = "목", Date = startDateOfSelectedWeek.AddDays(3) };
-            var friList = new DayRecord() { DayOfWeek = "금", Date = startDateOfSelectedWeek.AddDays(4) };
-            var satList = new DayRecord() { DayOfWeek = "토", Date = startDateOfSelectedWeek.AddDays(5) };
-            var sunList = new DayRecord() { DayOfWeek = "일", Date = startDateOfSelectedWeek.AddDays(6) };
+            var monList = new DayRecord() { DayOfWeek = AppResources.Monday, Date = startDateOfSelectedWeek };
+            var tueList = new DayRecord() { DayOfWeek = AppResources.Tuesday, Date = startDateOfSelectedWeek.AddDays(1) };
+            var wedList = new DayRecord() { DayOfWeek = AppResources.Wednesday, Date = startDateOfSelectedWeek.AddDays(2) };
+            var thuList = new DayRecord() { DayOfWeek = AppResources.Thursday, Date = startDateOfSelectedWeek.AddDays(3) };
+            var friList = new DayRecord() { DayOfWeek = AppResources.Friday, Date = startDateOfSelectedWeek.AddDays(4) };
+            var satList = new DayRecord() { DayOfWeek = AppResources.Saturday, Date = startDateOfSelectedWeek.AddDays(5) };
+            var sunList = new DayRecord() { DayOfWeek = AppResources.Sunday, Date = startDateOfSelectedWeek.AddDays(6) };
 
             foreach (var record in WeekRecord.DayRecords)
             {
@@ -351,7 +353,7 @@ namespace Five_Seconds.ViewModels
         {
             if (TagItems.Count > 7)
             {
-                MessageBoxService.ShowAlert("검색어 개수 초과", "검색어 수는 7개까지만 허용됩니다.");
+                MessageBoxService.ShowAlert(AppResources.QueryCountExceeded, AppResources.QueryCountExceededDetail);
                 return;
             }
 
@@ -418,9 +420,9 @@ namespace Five_Seconds.ViewModels
         public async Task ShowRecordMenu(object _record)
         {
             var record = _record as Record;
-            string[] actionSheetBtns = { "성공", "실패", "삭제" };
+            string[] actionSheetBtns = { AppResources.Success, AppResources.Failure, AppResources.Delete };
 
-            string action = await MessageBoxService.ShowActionSheet("기록 수정", "취소", null, actionSheetBtns);
+            string action = await MessageBoxService.ShowActionSheet(AppResources.RecordOption, AppResources.Cancel, null, actionSheetBtns);
 
             ClickRecordMenuAction(action, record);
 
@@ -439,18 +441,18 @@ namespace Five_Seconds.ViewModels
                 {
                     if (_record.Id == record.Id)
                     {
-                        if (action == "삭제")
+                        if (action == AppResources.Delete)
                         {
                             ConfirmDeletingRecord(record);
                             RefreshRecordsBySearch();
                         }
                         else
                         {
-                            if (action == "성공" && !_record.IsSuccess)
+                            if (action == AppResources.Success && !_record.IsSuccess)
                             {
                                 ConfirmChangingSuccessRecord(_record);
                             }
-                            else if (action == "실패" && _record.IsSuccess)
+                            else if (action == AppResources.Failure && _record.IsSuccess)
                             {
                                 _record.IsSuccess = false;
                                 App.AlarmsRepo.SaveRecord(_record);
@@ -470,7 +472,7 @@ namespace Five_Seconds.ViewModels
         private void ConfirmDeletingRecord(Record record)
         {
             void action() => DeleteRecord(record);
-            MessageBoxService.ShowConfirm("기록 삭제", "기록을 정말 삭제하시겠습니까?", null, action);
+            MessageBoxService.ShowConfirm(AppResources.DeleteRecord, AppResources.AskDeleteRecord, null, action);
         }
 
         private void DeleteRecord(Record record)
@@ -488,7 +490,7 @@ namespace Five_Seconds.ViewModels
         private void ConfirmChangingSuccessRecord(Record record)
         {
             void action() => ChangeSuccessRecord(record);
-            MessageBoxService.ShowConfirm("성공으로 변경", "해당 알람은 성공한 것이 확실합니까?", null, action);
+            MessageBoxService.ShowConfirm(AppResources.ChangeSuccess, AppResources.ChangeSuccessDetail, null, action);
         }
 
         private void ChangeSuccessRecord(Record record)
@@ -508,8 +510,17 @@ namespace Five_Seconds.ViewModels
             {
                 get
                 {
-                    if (DayRecords.Count == 0) { return "기록 없음"; }
-                    return $"{DayRecords.Count} 개";
+                    if (DayRecords.Count == 0) { return AppResources.NoRecord; }
+
+                    switch (CultureInfo.CurrentCulture.Name)
+                    {
+                        case "ko-KR":
+                            return $"{DayRecords.Count} 개";
+                        case "en-US":
+                            return $"{DayRecords.Count} Alarms";
+                        default:
+                            return $"{DayRecords.Count} Alarms";
+                    }
                 }
             }
 

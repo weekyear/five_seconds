@@ -53,7 +53,7 @@ namespace Five_Seconds.Droid.CustomRenderers
 
             requestBuilder = new AdRequest.Builder().Build();
 
-            //CreateRequestBuilderWhenTest();
+            CreateRequestBuilderWhenTest();
 
             adView.LoadAd(requestBuilder);
 

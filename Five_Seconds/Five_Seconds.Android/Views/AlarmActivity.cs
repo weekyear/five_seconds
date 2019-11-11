@@ -197,11 +197,23 @@ namespace Five_Seconds.Droid
             MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
 
             SetContentView(Resource.Layout.AlarmActivity);
+            GetAlarmFromDB();
             SetAndFindViewById();
 
             AddWindowManagerFlags();
 
             SetMediaPlayerAndVibrator();
+        }
+
+        private void GetAlarmFromDB()
+        {
+            alarm = alarmsRepo?.GetAlarm(id);
+            alarm.Days = alarmsRepo?.GetDaysOfWeek(alarm.DaysId);
+
+            if (alarm == null)
+            {
+                FinishAndRemoveTask();
+            }
         }
 
         private void SetAndFindViewById()
@@ -469,9 +481,6 @@ namespace Five_Seconds.Droid
 
         private void CreateNextAlarm()
         {
-            alarm = alarmsRepo?.GetAlarm(id);
-            alarm.Days = alarmsRepo?.GetDaysOfWeek(alarm.DaysId);
-
             if (alarm.IsLaterAlarm)
             {
                 alarm.IsLaterAlarm = false;
@@ -617,7 +626,7 @@ namespace Five_Seconds.Droid
         {
             requestBuilder = new AdRequest.Builder().Build();
 
-            //CreateRequestBuilderWhenTest();
+            CreateRequestBuilderWhenTest();
 
             adViewForResult.LoadAd(requestBuilder);
             adViewForLater.LoadAd(requestBuilder);

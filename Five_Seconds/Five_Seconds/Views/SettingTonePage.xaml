@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
-			 Title="벨소리 설정"
+             xmlns:local="clr-namespace:Five_Seconds.Helpers"
+             Title="{local:Translate AlarmSoundSetting}"
              mc:Ignorable="d"
              x:Name="tonePage"
              x:Class="Five_Seconds.Views.SettingTonePage">
@@ -17,7 +18,7 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem IconImageSource="ic_plus_white.png" Text="벨소리 추가" Command="{Binding AddToneCommand}"/>
+        <ToolbarItem Text="{local:Translate AddRingtone}" Command="{Binding AddToneCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

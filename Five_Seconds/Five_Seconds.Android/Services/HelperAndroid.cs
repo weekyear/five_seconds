@@ -33,17 +33,23 @@ namespace Five_Seconds.Droid.Services
 
         public static IAlarmService GetAlarmService()
         {
+            Console.WriteLine("GetAlarmService_00");
             IAlarmService alarmService;
+            Console.WriteLine("GetAlarmService_01");
             try
             {
+                Console.WriteLine("GetAlarmService_02");
                 alarmService = App.Service;
             }
             catch (Exception e)
             {
+                Console.WriteLine("GetAlarmService_03");
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.InnerException);
                 Console.WriteLine("App.Service == null_NotificationReceiver");
+                Console.WriteLine("GetAlarmService_04");
                 alarmService = CreateServiceWithoutCore();
+                Console.WriteLine("GetAlarmService_05");
             }
 
             return alarmService;

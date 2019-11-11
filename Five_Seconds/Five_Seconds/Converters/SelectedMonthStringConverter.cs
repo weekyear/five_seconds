@@ -26,9 +26,15 @@ namespace Five_Seconds.Converters
                 return "없음";
             }
 
-
-            var monthString = $"{dateTime.Year}년 {dateTime.Month}월 알람";
-            return monthString;
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "ko-KR":
+                    return $"{dateTime.Year}년 {dateTime.Month}월";
+                case "en-US":
+                    return dateTime.ToString("y", CultureInfo.CurrentCulture);
+                default:
+                    return dateTime.ToString("y", CultureInfo.CurrentCulture);
+            }
         }
     }
 }

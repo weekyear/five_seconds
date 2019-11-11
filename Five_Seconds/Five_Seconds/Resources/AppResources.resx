@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddRingtone" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AlarmOffOption" xml:space="preserve">
+    <value>Alarm Off Option</value>
+  </data>
+  <data name="AlarmOption" xml:space="preserve">
+    <value>Alarm Option</value>
+  </data>
+  <data name="AlarmRecord_Month" xml:space="preserve">
+    <value>Alarm Record (Month)</value>
+  </data>
+  <data name="AlarmRecord_Week" xml:space="preserve">
+    <value>Alarm Record (Week)</value>
+  </data>
+  <data name="AlarmSetting" xml:space="preserve">
+    <value>Alarm Setting</value>
+  </data>
+  <data name="AlarmSound" xml:space="preserve">
+    <value>Alarm Sound</value>
+  </data>
+  <data name="AlarmSoundSetting" xml:space="preserve">
+    <value>Ringtone Setting</value>
+  </data>
+  <data name="App_Name" xml:space="preserve">
+    <value>5 Seconds Rule Alarm</value>
+  </data>
+  <data name="AskDeleteRecord" xml:space="preserve">
+    <value>Do you really want to delete this record?</value>
+  </data>
+  <data name="AskMediaPermission" xml:space="preserve">
+    <value>Do you want to allow the app to access your photos, media, and files on your device?</value>
+  </data>
+  <data name="BriefDescription" xml:space="preserve">
+    <value>5 secodnds rule brief description</value>
+  </data>
+  <data name="Brief_01" xml:space="preserve">
+    <value>Welcome to the five seconds rule~</value>
+  </data>
+  <data name="Brief_02" xml:space="preserve">
+    <value>Let`s make an alarm</value>
+  </data>
+  <data name="Brief_03" xml:space="preserve">
+    <value>The Alarm sounds!</value>
+  </data>
+  <data name="Brief_04" xml:space="preserve">
+    <value>What if voice recognition is wrong?</value>
+  </data>
+  <data name="Brief_05" xml:space="preserve">
+    <value>I'll count five seconds!</value>
+  </data>
+  <data name="Brief_06" xml:space="preserve">
+    <value>If you want know ablut five seconds rules?</value>
+  </data>
+  <data name="Brief_Detail_01" xml:space="preserve">
+    <value>I`ll show you how to use our application</value>
+  </data>
+  <data name="Brief_Detail_02" xml:space="preserve">
+    <value>Click the + button on the top right of the main screen and add an alarm.</value>
+  </data>
+  <data name="Brief_Detail_03" xml:space="preserve">
+    <value>When the alarm rings, press the microphone button and tell your phone the 'alarm name'!</value>
+  </data>
+  <data name="Brief_Detail_04" xml:space="preserve">
+    <value>Enter the alarm name in the text box and press the start button.</value>
+  </data>
+  <data name="Brief_Detail_05" xml:space="preserve">
+    <value>Let's start immediately before the 5 second count is over!</value>
+  </data>
+  <data name="Brief_Detail_06" xml:space="preserve">
+    <value>Please Search for 5 seconds rules on Google</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ChangeSuccess" xml:space="preserve">
+    <value>Change to success</value>
+  </data>
+  <data name="ChangeSuccessDetail" xml:space="preserve">
+    <value>Are you sure the alarm was successful?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteRecord" xml:space="preserve">
+    <value>Delete record</value>
+  </data>
+  <data name="Denial" xml:space="preserve">
+    <value>Denial</value>
+  </data>
+  <data name="Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
+  <data name="Everyday" xml:space="preserve">
+    <value>Everyday</value>
+  </data>
+  <data name="Failure" xml:space="preserve">
+    <value>Fail</value>
+  </data>
+  <data name="FiveCount" xml:space="preserve">
+    <value>Count five seconds</value>
+  </data>
+  <data name="FiveCountDetail" xml:space="preserve">
+    <value>Do you want to start counting 5 seconds?</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>F</value>
+  </data>
+  <data name="Menu" xml:space="preserve">
+    <value>Menu</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="NoNextAlarm" xml:space="preserve">
+    <value>All alarms are off</value>
+  </data>
+  <data name="NoRecord" xml:space="preserve">
+    <value>No Record</value>
+  </data>
+  <data name="NoResults" xml:space="preserve">
+    <value>No Results</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="Permit" xml:space="preserve">
+    <value>Permit</value>
+  </data>
+  <data name="PleaseAlarmName" xml:space="preserve">
+    <value>Please write alarm name</value>
+  </data>
+  <data name="QueryCountExceeded" xml:space="preserve">
+    <value>Query count exceeded</value>
+  </data>
+  <data name="QueryCountExceededDetail" xml:space="preserve">
+    <value>Only seven queries are allowed.</value>
+  </data>
+  <data name="RecordOption" xml:space="preserve">
+    <value>Record Option</value>
+  </data>
+  <data name="RingingSoon" xml:space="preserve">
+    <value>Ringing Soon</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="Sunday" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="ThereIsNoRecord" xml:space="preserve">
+    <value>There is no record~</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="Vibration" xml:space="preserve">
+    <value>Vibration</value>
+  </data>
+  <data name="VoiceRecognition" xml:space="preserve">
+    <value>Voice Recognition</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="Weekday" xml:space="preserve">
+    <value>Weekday</value>
+  </data>
+  <data name="Weekend" xml:space="preserve">
+    <value>Weekend</value>
+  </data>
+  <data name="WhatFiveSecondsRule" xml:space="preserve">
+    <value>What is the 5 seconds rule?</value>
+  </data>
+</root>

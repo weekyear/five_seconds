@@ -92,11 +92,6 @@ namespace Five_Seconds.Services
             UpdateAlarms();
             SendChangeAlarmsMessage();
 
-            if (Preferences.Get("MaxAlarmId", 3) < id)
-            {
-                Preferences.Set("MaxAlarmId", id);
-            }
-
             return id;
         }
 

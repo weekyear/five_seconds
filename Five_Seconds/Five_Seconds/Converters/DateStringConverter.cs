@@ -23,10 +23,18 @@ namespace Five_Seconds.Converters
 
             if (dateTime == DateTime.MinValue)
             {
-                return "날짜 없음";
+                return "None";
             }
-            var dateString = $"{dateTime.Month}월 {dateTime.Day}일";
-            return dateString;
+
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "ko-KR":
+                    return $"{dateTime.Month}월 {dateTime.Day}일";
+                case "en-US":
+                    return $"{dateTime.Month}.{dateTime.Day}";
+                default:
+                    return $"{dateTime.Month}.{dateTime.Day}";
+            }
         }
     }
 }

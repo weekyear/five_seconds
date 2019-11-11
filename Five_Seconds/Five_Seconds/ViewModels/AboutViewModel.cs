@@ -15,8 +15,6 @@ namespace Five_Seconds.ViewModels
     {
         public AboutViewModel(INavigation navigation) : base(navigation)
         {
-            Title = "5초의 법칙이란";
-
             InitAbouts();
             ConstructCommand();
 

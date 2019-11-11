@@ -49,9 +49,12 @@ namespace Five_Seconds.Droid.BroadcastReceivers
 
         private void TurnOffLaterAlarm()
         {
+            Console.WriteLine("TurnOffLaterAlarm_00");
             alarmService = HelperAndroid.GetAlarmService();
             Alarm.IsInitFinished = false;
+            Console.WriteLine("TurnOffLaterAlarm_01");
             // 서비스에서 TurnOffAlarm();
+            Console.WriteLine("TurnOffLaterAlarm_02");
             alarm = alarmService.GetAlarm(id);
 
             if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
@@ -59,6 +62,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
                 alarm.IsActive = false;
             }
 
+            Console.WriteLine("TurnOffLaterAlarm_03");
             TurnOffAlarm(alarm);
 
             Alarm.IsInitFinished = true;
@@ -100,7 +104,13 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             alarm.IsLaterAlarm = false;
             var alarmSetter = new AlarmSetterAndroid();
             alarmSetter.DeleteAlarm(alarm.Id);
-            alarmService.SaveAlarmAtLocal(alarm);
+            SaveAlarmAtLocal();
+        }
+
+        private void SaveAlarmAtLocal()
+        {
+            alarmService.Repository.SaveDaysOfWeek(alarm.Days);
+            alarmService.Repository.SaveAlarm(alarm);
         }
 
         private void CancelNotification(Context context, Intent intent)
