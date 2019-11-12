@@ -46,6 +46,8 @@
   <string name="Go">시작</string>
   <string name="Am">오전</string>
   <string name="Pm">오후</string>
+  <string name="AlarmOff">알람 해제</string>
+  <string name="GoOffNow">지금 울림</string>
   
   <string name="admob_app_id">ca-app-pub-8413101784746060~4411896846</string>
   <string name="admob_banner_id">ca-app-pub-8413101784746060/7584855097</string>

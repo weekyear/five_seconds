@@ -59,11 +59,15 @@ namespace Five_Seconds.Droid.Services
 
         private void CloseActivityWhenFailedAndTimeOut()
         {
-            // 10분 경과
-            Action DelayedAction = () => Activity.FinishAndRemoveTask();
-            // 1분 경과
+            Action DelayedAction = () => NotifyFaieldAlarmAndFinish();
             var timeSpan = new TimeSpan(0, 1, 0);
             Handler.PostDelayed(DelayedAction, (long)timeSpan.TotalMilliseconds);
+        }
+
+        private void NotifyFaieldAlarmAndFinish()
+        {
+            AlarmNotificationAndroid.NotifyFailedAlarm(Activity.alarm);
+            Activity.FinishAndRemoveTask();
         }
 
         public override void OnTick(long millisUntilFinished)

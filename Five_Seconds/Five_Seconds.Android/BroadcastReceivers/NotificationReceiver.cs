@@ -26,25 +26,24 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             id = bundle.GetInt("id", -100000);
 
             CancelNotification(context, intent);
+            
+            context.GetString(Resource.String.GoOffNow);
 
-            switch (intent.Action)
+            if (intent.Action == context.GetString(Resource.String.AlarmOff))
             {
-                case "알람 해제":
-                    TurnOffLaterAlarm();
+                TurnOffLaterAlarm();
 
-                    CreateFailedRecord();
+                CreateFailedRecord();
 
-                    if (IsApplicationInTheBackground())
-                    {
-                        CrossCurrentActivity.Current.Activity.FinishAffinity();
-                    }
-                    break;
-                case "지금 울림":
-                    OpenAlarmActivity(context, bundle);
-                    break;
+                if (IsApplicationInTheBackground())
+                {
+                    CrossCurrentActivity.Current.Activity.FinishAffinity();
+                }
             }
-
-
+            else if (intent.Action == context.GetString(Resource.String.GoOffNow))
+            {
+                OpenAlarmActivity(context, bundle);
+            }
         }
 
         private void TurnOffLaterAlarm()

@@ -86,7 +86,7 @@ namespace Five_Seconds.Droid
         public bool IsSuccess = false;
         public bool IsFinished = false;
 
-        private Alarm alarm;
+        public Alarm alarm;
         private IAlarmService alarmService;
         private IAlarmsRepository alarmsRepo;
         private IAlarmToneRepository tonesRepo;
