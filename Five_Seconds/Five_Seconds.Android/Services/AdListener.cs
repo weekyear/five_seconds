@@ -19,7 +19,6 @@ namespace Five_Seconds.Droid.Services
 
         public override void OnAdFailedToLoad(int errorCode)
         {
-            that.AdView.Visibility = ViewStates.Gone;
             base.OnAdFailedToLoad(errorCode);
         }
     }

@@ -109,6 +109,7 @@ namespace Five_Seconds.Droid
 
             if (id == -100000)
             {
+                IsFinished = true;
                 CheckOnlyCountActivityAndRefreshAlarmManager();
                 return;
             }
@@ -507,8 +508,15 @@ namespace Five_Seconds.Droid
             {
                 _vibrator = Vibrator.FromContext(this);
                 long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
-                VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
-                _vibrator?.Vibrate(effect);
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+                {
+                    VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
+                    _vibrator?.Vibrate(effect);
+                }
+                else
+                {
+                    _vibrator?.Vibrate(mVibratePattern, 100);
+                }
             }
         }
 
@@ -676,7 +684,7 @@ namespace Five_Seconds.Droid
         {
             requestBuilder = new AdRequest.Builder().Build();
 
-            CreateRequestBuilderWhenTest();
+            //CreateRequestBuilderWhenTest();
 
             adViewForResult.LoadAd(requestBuilder);
             adViewForLater.LoadAd(requestBuilder);

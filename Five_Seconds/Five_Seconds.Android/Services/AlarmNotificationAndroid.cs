@@ -25,11 +25,15 @@ namespace Five_Seconds.Droid.Services
 
         public static NotificationManager SetNotificationManager()
         {
-            var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
-
             var manager = Application.Context.GetSystemService("notification") as NotificationManager;
 
-            manager?.CreateNotificationChannel(chan);
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                var chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationImportance.Low);
+
+
+                manager?.CreateNotificationChannel(chan);
+            }
 
             return manager;
         }

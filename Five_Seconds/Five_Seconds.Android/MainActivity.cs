@@ -23,20 +23,17 @@ namespace Five_Seconds.Droid
     [Activity(Label = "@string/FiveSecondsAlarm", Icon = "@drawable/ic_five_seconds", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        private Bundle bundle;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
+            bundle = savedInstanceState;
+
+            InitForOpenApp(savedInstanceState);
+
             base.OnCreate(savedInstanceState);
-
-
-            Forms.Init(this, savedInstanceState);
-            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-
-            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
-
-            CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             SetMobileAds();
 
@@ -44,11 +41,29 @@ namespace Five_Seconds.Droid
             Crashlytics.Crashlytics.HandleManagedExceptions();
         }
 
+        private void InitForOpenApp(Bundle savedInstanceState)
+        {
+            Forms.Init(this, savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+
+            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
+
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
+        }
+
         protected override void OnStart()
         {
             base.OnStart();
+            try
+            {
+                StartApp();
+            }
+            catch
+            {
+                InitForOpenApp(bundle);
+                StartApp();
+            }
 
-            StartApp();
         }
 
         protected override void OnResume()
