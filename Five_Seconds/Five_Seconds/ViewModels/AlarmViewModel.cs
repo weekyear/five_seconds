@@ -1,6 +1,7 @@
 ﻿using Five_Seconds.CustomControls;
 using Five_Seconds.Helpers;
 using Five_Seconds.Models;
+using Five_Seconds.Resources;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
@@ -21,6 +22,8 @@ namespace Five_Seconds.ViewModels
             SubscribeMessage();
 
             ConstructCommand();
+
+            ResetWhenAlarmTypeChanged(AlarmType);
         }
 
         public AlarmViewModel(INavigation navigation, Alarm alarm) : base(navigation)
@@ -32,6 +35,8 @@ namespace Five_Seconds.ViewModels
             SubscribeMessage();
 
             ConstructCommand();
+
+            ResetWhenAlarmTypeChanged(AlarmType);
         }
 
         private void InitTimePicker()
@@ -270,6 +275,11 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        public string AlarmDescription
+        {
+            get; set;
+        }
+
         public int AlarmType
         {
             get { return Alarm.AlarmType; }
@@ -277,7 +287,24 @@ namespace Five_Seconds.ViewModels
             {
                 if (Alarm.AlarmType == value) return;
                 Alarm.AlarmType = value;
+                ResetWhenAlarmTypeChanged(value);
                 OnPropertyChanged(nameof(AlarmType));
+            }
+        }
+
+        private void ResetWhenAlarmTypeChanged(int alarmType)
+        {
+            switch (alarmType)
+            {
+                case 0:
+                    AlarmDescription = AppResources.SimpleAlarmDescription;
+                    break;
+                case 1:
+                    AlarmDescription = AppResources.VoiceAlarmDescription;
+                    break;
+                case 2:
+                    AlarmDescription = AppResources.DoNotDelayAlarmDescription;
+                    break;
             }
         }
 

@@ -19,12 +19,31 @@ namespace Five_Seconds.Models
         public string Name { get; set; } = string.Empty;
         public double Percentage { get; set; }
 
-        public bool IsVoiceRecognition { get; set; } = true;
-        public bool IsActive { get; set; } = true;
+        public bool IsVoiceRecognition { get; private set; } = true;
+        public bool IsNotDelayAlarm { get; private set; } = false;
         public int AlarmType { get; set; } = 1;
-        public bool IsFiveCount  { get; set; } = false;
-        public bool IsNotDelayAlarm  { get; set; } = false;
+        public void OnAlarmTypeChanged()
+        {
+            switch (AlarmType)
+            {
+                case 0:
+                    IsVoiceRecognition = false;
+                    IsNotDelayAlarm = false;
+                    break;
+                case 1:
+                    IsVoiceRecognition = true;
+                    IsNotDelayAlarm = false;
+                    break;
+                case 2:
+                    IsVoiceRecognition = true;
+                    IsNotDelayAlarm = true;
+                    break;
+            }
+        }
 
+        public bool IsFiveCount  { get; set; } = true;
+
+        public bool IsActive { get; set; } = true;
         public void OnIsActiveChanged()
         {
             if (IsInitFinished)
@@ -70,13 +89,15 @@ namespace Five_Seconds.Models
             Id = original.Id;
             Name = original.Name;
             Percentage = original.Percentage;
+            AlarmType = original.AlarmType;
+
             IsActive = original.IsActive;
             IsAlarmOn = original.IsAlarmOn;
             IsVibrateOn = original.IsVibrateOn;
-            AlarmType = original.AlarmType;
             IsVoiceRecognition = original.IsVoiceRecognition;
             IsFiveCount = original.IsFiveCount;
             IsNotDelayAlarm = original.IsNotDelayAlarm;
+
             Volume = original.Volume;
             TimeOffset = original.TimeOffset;
 

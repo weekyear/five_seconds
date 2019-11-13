@@ -63,7 +63,7 @@ namespace Five_Seconds.CustomControls
                     SetIsVisible(selectedType, viewCell);
                     break;
                 case 2:
-                    SetIsVisibleTypeTwo(viewCell);
+                    SetIsVisible(selectedType, viewCell);
                     break;
             }
         }

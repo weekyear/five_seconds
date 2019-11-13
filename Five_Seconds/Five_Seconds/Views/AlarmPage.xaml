@@ -24,8 +24,65 @@
 
     <ScrollView VerticalOptions="Fill">
         <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
-            
-            <Frame BackgroundColor="White" CornerRadius="15" Margin="5" Padding="1">
+
+            <Frame BackgroundColor="White" CornerRadius="10" Margin="5" Padding="0">
+                <StackLayout>
+                    <Grid ColumnSpacing="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="10*"/>
+                            <ColumnDefinition Width="10*"/>
+                        </Grid.ColumnDefinitions>
+                        <custom:TypeButton Grid.Column="0"
+                                           CornerRadius="10"
+                                           ButtonType="0"
+                                           AlarmType="{Binding AlarmType}"
+                                           Text="{local:Translate SimpleAlarm}"
+                                           Clicked="TypeButton_Clicked"
+                                           TextColor="LightGray"
+                                           FontSize="Body"
+                                           BackgroundColor="White"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand"/>
+                        <custom:TypeButton Grid.Column="1"
+                                           CornerRadius="10"
+                                           ButtonType="1"
+                                           AlarmType="{Binding AlarmType}"
+                                           Text="{local:Translate VoiceAlarm}"
+                                           Clicked="TypeButton_Clicked"
+                                           BackgroundColor="{StaticResource Primary}"
+                                           TextColor="White"
+                                           FontAttributes="Bold"
+                                           FontSize="Medium"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand"/>
+                        <custom:TypeButton Grid.Column="2"
+                                           CornerRadius="10"
+                                           ButtonType="2"
+                                           AlarmType="{Binding AlarmType}"
+                                           Text="{local:Translate IndomitableAlarm}"
+                                           Clicked="TypeButton_Clicked"
+                                           TextColor="LightGray"
+                                           BackgroundColor="White"
+                                           FontSize="Body"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalOptions="FillAndExpand"/>
+                    </Grid>
+                    <Label TextColor="{StaticResource PrimaryDark}" 
+                           VerticalOptions="CenterAndExpand" 
+                           HorizontalOptions="FillAndExpand" 
+                           Text="{Binding AlarmDescription}" 
+                           Margin="0, 10" 
+                           FontSize="Medium" 
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
+                </StackLayout>
+            </Frame>
+
+            <Frame BackgroundColor="White" CornerRadius="15" Margin="5, 0, 5, 5" Padding="1">
                 <Entry x:Name="Alarm_Name"
                                Margin="10"
                                HorizontalOptions="FillAndExpand"
@@ -35,31 +92,31 @@
             </Frame>
 
             <Frame BackgroundColor="White" CornerRadius="10" Margin="5, 0, 5, 5" Padding="1">
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-                    <custom:ScrollableNumberPicker x:Name="AmPmPicker" Value="{Binding AmPm}" PickerType="AmPm"/>
-                    <custom:ScrollableNumberPicker x:Name="HoursPicker" Value="{Binding Hours}" PickerType="Hours"/>
-                    <custom:ScrollableNumberPicker x:Name="Minutes" Value="{Binding Minutes}" PickerType="Minutes"/>
-                </StackLayout>
-            </Frame>
-            
-            <Frame BackgroundColor="White" CornerRadius="10" Margin="5, 0, 5, 5" Padding="1">
                 <StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="5">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <custom:ScrollableNumberPicker x:Name="AmPmPicker" Value="{Binding AmPm}" PickerType="AmPm"/>
+                        <custom:ScrollableNumberPicker x:Name="HoursPicker" Value="{Binding Hours}" PickerType="Hours"/>
+                        <custom:ScrollableNumberPicker x:Name="Minutes" Value="{Binding Minutes}" PickerType="Minutes"/>
+                    </StackLayout>
+                    
+                    <BoxView Color="LightGray" HorizontalOptions="FillAndExpand" Margin="10, 0" HeightRequest="1"/>
+                    
+                    <StackLayout Orientation="Horizontal" Margin="5, 0">
                         <Label Text="{Binding DateString}"
-                                   HorizontalOptions="StartAndExpand"
-                                   Margin="10"
-                                   TextColor="DarkBlue"
-                                   FontSize="Body"/>
+                               HorizontalOptions="StartAndExpand"
+                               Margin="10"
+                               TextColor="DarkBlue"
+                               FontSize="Body"/>
                         <Button ImageSource="ic_calendar" 
-                                    Margin="10"
-                                    HorizontalOptions="EndAndExpand"
-                                    BackgroundColor="White" 
-                                    Clicked="CalendarButton_Clicked"
-                                    HeightRequest="30" WidthRequest="30"/>
+                                Margin="10"
+                                HorizontalOptions="EndAndExpand"
+                                BackgroundColor="White" 
+                                Clicked="CalendarButton_Clicked"
+                                HeightRequest="30" WidthRequest="30"/>
                         <DatePicker x:Name="DatePicker" TextColor="Transparent" 
-                                        WidthRequest="1" HeightRequest="1" 
-                                        Unfocused="DatePicker_Unfocused"
-                                        Date="{Binding Date}"/>
+                                    WidthRequest="1" HeightRequest="1" 
+                                    Unfocused="DatePicker_Unfocused"
+                                    Date="{Binding Date}"/>
                     </StackLayout>
                     <ScrollView Orientation="Horizontal">
                         <custom:DaysOfWeekSelectionView Days="{Binding Days}" HorizontalOptions="Center" Margin="0, 0, 0, 10"/>
@@ -110,90 +167,17 @@
                 </StackLayout>
             </Frame>
 
-            <Frame BackgroundColor="White" CornerRadius="10" Margin="5, 0, 5, 5" Padding="0">
-                <StackLayout>
-                    <Grid ColumnSpacing="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*"/>
-                            <ColumnDefinition Width="10*"/>
-                            <ColumnDefinition Width="10*"/>
-                        </Grid.ColumnDefinitions>
-                        <custom:TypeButton Grid.Column="0"
-                                           CornerRadius="10"
-                                           ButtonType="0"
-                                           AlarmType="{Binding AlarmType}"
-                                           Text="{local:Translate SimpleAlarm}"
-                                           Clicked="TypeButton_Clicked"
-                                           TextColor="LightGray"
-                                           FontSize="Body"
-                                           BackgroundColor="White"
-                                           HorizontalOptions="FillAndExpand"
-                                           VerticalOptions="FillAndExpand"/>
-                        <custom:TypeButton Grid.Column="1"
-                                           CornerRadius="10"
-                                           ButtonType="1"
-                                           AlarmType="{Binding AlarmType}"
-                                           Text="{local:Translate FiveSecAlarm}"
-                                           Clicked="TypeButton_Clicked"
-                                           BackgroundColor="{StaticResource Primary}"
-                                           TextColor="White"
-                                           FontAttributes="Bold"
-                                           FontSize="Medium"
-                                           HorizontalOptions="FillAndExpand"
-                                           VerticalOptions="FillAndExpand"/>
-                        <custom:TypeButton Grid.Column="2"
-                                           CornerRadius="10"
-                                           ButtonType="2"
-                                           AlarmType="{Binding AlarmType}"
-                                           Text="{local:Translate IndomitableAlarm}"
-                                           Clicked="TypeButton_Clicked"
-                                           TextColor="LightGray"
-                                           BackgroundColor="White"
-                                           FontSize="Body"
-                                           HorizontalOptions="FillAndExpand"
-                                           VerticalOptions="FillAndExpand"/>
-                    </Grid>
-                    
-                    <custom:AlarmTypeLayout LayoutType="0" AlarmType="{Binding AlarmType}" Orientation="Horizontal" Margin="10, 20" IsVisible="False">
-                        <Label TextColor="SlateGray" Text="{local:Translate SimpleAlarmDescription}" Margin="10, 0" FontSize="Medium" VerticalOptions="CenterAndExpand" />
-                    </custom:AlarmTypeLayout>
-                    
-                    <custom:AlarmTypeLayout LayoutType="1" AlarmType="{Binding AlarmType}" Orientation="Horizontal" Margin="10">
-                        <Label TextColor="Black" Text="{local:Translate VoiceRecognition}" Margin="10, 0" FontSize="Medium" VerticalOptions="CenterAndExpand" />
-                        <Switch IsToggled="{Binding Alarm.IsVoiceRecognition}"
-                                HorizontalOptions="EndAndExpand"
-                                OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsVoiceRecognition, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                    </custom:AlarmTypeLayout>
-                    
-                    <custom:AlarmTypeBoxView ViewType="1" AlarmType="{Binding AlarmType}" Color="LightGray" HorizontalOptions="FillAndExpand" Margin="10, 0" HeightRequest="1"/>
-                    
-                    <custom:AlarmTypeLayout LayoutType="1" AlarmType="{Binding AlarmType}" Orientation="Horizontal" Margin="10">
+            <Frame BackgroundColor="White" CornerRadius="10" Margin="5, 0, 5, 5" Padding="1">
+                <StackLayout Orientation="Vertical" Margin="5">
+                    <StackLayout Orientation="Horizontal" Margin="10">
                         <Label TextColor="Black" Text="{local:Translate FiveCount}" Margin="10, 0" FontSize="Medium" VerticalOptions="CenterAndExpand" />
                         <Switch IsToggled="{Binding Alarm.IsFiveCount}"
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
                                 ThumbColor="{Binding Alarm.IsFiveCount, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                    </custom:AlarmTypeLayout>
-                    
-                    <custom:AlarmTypeBoxView ViewType="2" AlarmType="{Binding AlarmType}" Color="LightGray" HorizontalOptions="FillAndExpand" Margin="10, 0" HeightRequest="1"/>
-                                        
-                    <custom:AlarmTypeLayout LayoutType="2" AlarmType="{Binding AlarmType}" Orientation="Vertical" Margin="10">
-                        <StackLayout Orientation="Horizontal">
-                            <Label TextColor="Black" Text="{local:Translate DoNotDelayAlarm}" Margin="10, 0" FontSize="Medium" VerticalOptions="CenterAndExpand" />
-                            <Switch IsToggled="{Binding Alarm.IsNotDelayAlarm}"
-                                HorizontalOptions="EndAndExpand"
-                                OnColor="LightSteelBlue"
-                                ThumbColor="{Binding Alarm.IsNotDelayAlarm, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
-                        </StackLayout>
-                        <Label TextColor="SlateGray" Text="{local:Translate DoNotDelayAlarmDescription}" Margin="10, 0" FontSize="Small" VerticalOptions="CenterAndExpand" />
-                    </custom:AlarmTypeLayout>
+                    </StackLayout>
                 </StackLayout>
             </Frame>
-            
         </StackLayout>
     </ScrollView>
 </ContentPage>

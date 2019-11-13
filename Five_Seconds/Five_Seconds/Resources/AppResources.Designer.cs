@@ -349,7 +349,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This alarm can only be turned off by voice recognition..
+        ///   Looks up a localized string similar to This alarm can only be turned off by voice recognition and cannot be delayed..
         /// </summary>
         internal static string DoNotDelayAlarmDescription {
             get {
@@ -390,15 +390,6 @@ namespace Five_Seconds.Resources {
         internal static string FiveCountDetail {
             get {
                 return ResourceManager.GetString("FiveCountDetail", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Five sec Alarm.
-        /// </summary>
-        internal static string FiveSecAlarm {
-            get {
-                return ResourceManager.GetString("FiveSecAlarm", resourceCulture);
             }
         }
         
@@ -633,6 +624,24 @@ namespace Five_Seconds.Resources {
         internal static string Vibration {
             get {
                 return ResourceManager.GetString("Vibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Voice Alarm.
+        /// </summary>
+        internal static string VoiceAlarm {
+            get {
+                return ResourceManager.GetString("VoiceAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This alarm can only be turned off by voice recognition..
+        /// </summary>
+        internal static string VoiceAlarmDescription {
+            get {
+                return ResourceManager.GetString("VoiceAlarmDescription", resourceCulture);
             }
         }
         
