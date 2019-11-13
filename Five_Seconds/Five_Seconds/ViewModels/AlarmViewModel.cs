@@ -270,6 +270,17 @@ namespace Five_Seconds.ViewModels
             }
         }
 
+        public int AlarmType
+        {
+            get { return Alarm.AlarmType; }
+            set
+            {
+                if (Alarm.AlarmType == value) return;
+                Alarm.AlarmType = value;
+                OnPropertyChanged(nameof(AlarmType));
+            }
+        }
+
         // Validation
         public bool HasDayBeenSelected { get; set; } = true;
 

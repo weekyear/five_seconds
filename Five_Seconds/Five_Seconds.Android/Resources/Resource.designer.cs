@@ -11329,10 +11329,10 @@ namespace Five_Seconds.Droid
 			public const int firebase_database_url = 2131624048;
 			
 			// aapt resource value: 0x7F0E000A
-			public const int FiveSecondsAlarm = 2131623946;
+			public const int FiveSecondAlarm = 2131623946;
 			
 			// aapt resource value: 0x7F0E000B
-			public const int FiveSecondsCount = 2131623947;
+			public const int FiveSecondCount = 2131623947;
 			
 			// aapt resource value: 0x7F0E0071
 			public const int gcm_defaultSenderId = 2131624049;
@@ -11548,7 +11548,7 @@ namespace Five_Seconds.Droid
 			public const int search_menu_title = 2131624095;
 			
 			// aapt resource value: 0x7F0E0024
-			public const int Seconds = 2131623972;
+			public const int Second = 2131623972;
 			
 			// aapt resource value: 0x7F0E0025
 			public const int ServerError = 2131623973;

@@ -9,7 +9,8 @@
              Title="{local:Translate AlarmSoundSetting}"
              mc:Ignorable="d"
              x:Name="tonePage"
-             x:Class="Five_Seconds.Views.SettingTonePage">
+             x:Class="Five_Seconds.Views.SettingTonePage"
+             BackgroundColor="{StaticResource BackgroundColor}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -23,17 +24,18 @@
 
     <ContentPage.Content>
         <StackLayout>
-            <Grid HorizontalOptions="FillAndExpand"
+            <Frame BackgroundColor="White" CornerRadius="10" Margin="5" Padding="1">
+                <Grid HorizontalOptions="FillAndExpand"
                   VerticalOptions="CenterAndExpand"
                   Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="85*"/>
-                    <ColumnDefinition Width="15*"/>
-                </Grid.ColumnDefinitions>
-                <Slider x:Name="VolumeSlider" 
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="85*"/>
+                        <ColumnDefinition Width="15*"/>
+                    </Grid.ColumnDefinitions>
+                    <Slider x:Name="VolumeSlider" 
                         HorizontalOptions="FillAndExpand"
                         MinimumTrackColor="LightSkyBlue"
                         MaximumTrackColor="LightSkyBlue"
@@ -43,7 +45,7 @@
                         Margin="5"
                         Value="{Binding Volume}"
                         VerticalOptions="CenterAndExpand"/>
-                <custom:PlayButton HorizontalOptions="EndAndExpand" Grid.Column="1"
+                    <custom:PlayButton HorizontalOptions="EndAndExpand" Grid.Column="1"
                                    BackgroundColor="White"
                                    IsPlaying="{Binding IsPlaying}"
                                    ImageSource="ic_play"
@@ -51,33 +53,36 @@
                                    ImageSourcePause="ic_pause"
                                    Padding="0, 0, 10, 0"
                                    Command="{Binding ClickPlayCommand}"/>
-            </Grid>
-            <custom:TonesListView x:Name="ToneListView" 
-                      ItemsSource="{Binding AllAlarmTones, Mode=TwoWay}"
-                      ItemTapped="ToneListView_ItemTapped"
-                      HasUnevenRows="true">
-                <custom:TonesListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell Height="65">
-                            <ViewCell.IsContextActionsLegacyModeEnabled/>
-                            <ViewCell.ContextActions>
-                                <MenuItem Command="{Binding DeleteToneCommand}" CommandParameter="{Binding Name}" Text="삭제" IsDestructive="True" />
-                            </ViewCell.ContextActions>
-                            <ViewCell.View>
-                                <StackLayout BackgroundColor="{Binding IsSelected, Converter={StaticResource BooleanLayoutColorConverter}}">
-                                    <Label Text="{Binding Name}"
-                                           FontSize="18" 
+                </Grid>
+            </Frame>
+            <Frame BackgroundColor="White" Margin="5, 0, 5, 5" Padding="1">
+                <custom:TonesListView x:Name="ToneListView" 
+                                      ItemsSource="{Binding AllAlarmTones, Mode=TwoWay}"
+                                      ItemTapped="ToneListView_ItemTapped"
+                                      HasUnevenRows="true">
+                    <custom:TonesListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell Height="65">
+                                <ViewCell.IsContextActionsLegacyModeEnabled/>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Command="{Binding DeleteToneCommand}" CommandParameter="{Binding Name}" Text="삭제" IsDestructive="True" />
+                                </ViewCell.ContextActions>
+                                <ViewCell.View>
+                                    <StackLayout BackgroundColor="{Binding IsSelected, Converter={StaticResource BooleanLayoutColorConverter}}">
+                                        <Label Text="{Binding Name}"
+                                           FontSize="Medium" 
                                            TextColor="Black"
                                            VerticalTextAlignment="Center"
                                            LineBreakMode="TailTruncation"
                                            MaxLines="1"
                                            Margin="20"/>
-                                </StackLayout>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </custom:TonesListView.ItemTemplate>
-            </custom:TonesListView>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </custom:TonesListView.ItemTemplate>
+                </custom:TonesListView>
+            </Frame>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

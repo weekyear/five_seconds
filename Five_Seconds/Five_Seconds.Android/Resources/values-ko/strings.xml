@@ -1,10 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <string name="realarm">
-    <b>다시 알림</b>
-  </string>
-  <string name="FiveSecondsAlarm">5초의 알람</string>
-  <string name="FiveSecondsCount">5초 카운트</string>
+  <string name="realarm"><b>다시 알림</b></string>
+  <string name="FiveSecondAlarm">5초의 알람</string>
+  <string name="FiveSecondCount">5초 카운트</string>
   <string name="IllCount">이제 5초를 셀게요!</string>
   <string name="PleaseWrite">라고 적어주세요</string>
   <string name="PleaseSay">라고 말해주세요</string>
@@ -14,7 +12,7 @@
   <string name="RequestMicPermission">알람을 해제하려면 음성 녹음 권한이 필요합니다.</string>
   <string name="RequestStoragePermission">저장공간 권한이 필요합니다.</string>
   <string name="GladToHelpYou">도움이 되서 기뻐요!</string>
-  <string name="willKeepTrying">계속 도움이 되는 5초의 알람이 될게요!</string>
+  <string name="WillKeepTrying">계속 도움이 되는 5초의 알람이 될게요!</string>
   <string name="WouldYouRecommend">5초의 알람 리뷰를 통해 추천해주시겠어요?</string>
   <string name="ImSorry">도움드리지 못 해 죄송해요</string>
   <string name="IllImprove">앱을 더욱 보완해서 보답드릴게요!</string>
@@ -25,7 +23,7 @@
   <string name="ServerError">서버에 문제가 있습니다. 다시 시도해주세요.</string>
   <string name="RecordingTimeOut">음성 녹음 시간이 초과되었습니다. 다시 시도해주세요.</string>
   <string name="ActivatePermission">[설정] > [권한]에서 해당 권한을 활성화해주세요.</string>
-  <string name="Seconds">초</string>
+  <string name="Second">초</string>
   <string name="Start">안에 바로 시작!!</string>
   <string name="ThankYou">감사! 압도적 감사!!</string>
   <string name="ThankYouForUsing">5초의 알람을 사용해주셔서 감사합니다!</string>

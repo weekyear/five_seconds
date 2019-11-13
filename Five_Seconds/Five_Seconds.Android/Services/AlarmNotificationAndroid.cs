@@ -102,13 +102,13 @@ namespace Five_Seconds.Droid.Services
                 switch (CultureInfo.CurrentCulture.Name)
                 {
                     case "ko-KR":
-                        message = $"{alarm.Name}를 실패하였습니다.";
+                        message = $"{alarm.LaterAlarmTime.ToShortTimeString()}에 {alarm.Name}를 실패하였습니다.";
                         break;
                     case "en-US":
-                        message = $"You failed {alarm.Name}";
+                        message = $"You failed {alarm.Name} at {alarm.LaterAlarmTime.ToShortTimeString()}";
                         break;
                     default:
-                        message = $"You failed {alarm.Name}";
+                        message = $"You failed {alarm.Name} at {alarm.LaterAlarmTime.ToShortTimeString()}";
                         break;
                 }
             }

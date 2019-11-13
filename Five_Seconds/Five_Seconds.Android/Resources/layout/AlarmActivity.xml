@@ -43,7 +43,7 @@
                 android:autoSizeStepGranularity="2sp" />
             <TextView
                 android:id="@+id/secondsText"
-                android:text="@string/Seconds"
+                android:text="@string/Second"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/ic_five_seconds"
-                android:text="@string/FiveSecondsAlarm"
+                android:text="@string/FiveSecondAlarm"
                 android:textSize="16dp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/alarmTextColor"/>

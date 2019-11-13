@@ -20,7 +20,7 @@ using Five_Seconds.ViewModels;
 
 namespace Five_Seconds.Droid
 {
-    [Activity(Label = "@string/FiveSecondsAlarm", Icon = "@drawable/ic_five_seconds", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "@string/FiveSecondAlarm", Icon = "@drawable/ic_five_seconds", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         private Bundle bundle;

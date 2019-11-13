@@ -210,6 +210,12 @@
   <data name="Done" xml:space="preserve">
     <value>완료</value>
   </data>
+  <data name="DoNotDelayAlarm" xml:space="preserve">
+    <value>알람 미루지 않기</value>
+  </data>
+  <data name="DoNotDelayAlarmDescription" xml:space="preserve">
+    <value>음성 인식으로만 해제할 수 있는 알람입니다.</value>
+  </data>
   <data name="Everyday" xml:space="preserve">
     <value>매일</value>
   </data>
@@ -222,8 +228,14 @@
   <data name="FiveCountDetail" xml:space="preserve">
     <value>5초 카운트를 시작하시겠습니까?</value>
   </data>
+  <data name="FiveSecAlarm" xml:space="preserve">
+    <value>5초의 알람</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>금</value>
+  </data>
+  <data name="IndomitableAlarm" xml:space="preserve">
+    <value>의지의 알람</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>메뉴</value>
@@ -269,6 +281,12 @@
   </data>
   <data name="Save" xml:space="preserve">
     <value>저장</value>
+  </data>
+  <data name="SimpleAlarm" xml:space="preserve">
+    <value>간편한 알람</value>
+  </data>
+  <data name="SimpleAlarmDescription" xml:space="preserve">
+    <value>간단한 터치로 해제할 수 있는 알람입니다.</value>
   </data>
   <data name="Skip" xml:space="preserve">
     <value>건너뛰기</value>

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
   <string name="realarm">Realarm</string>
-  <string name="FiveSecondsAlarm">5 seconds rule Alarm</string>
-  <string name="FiveSecondsCount">Count 5 sec</string>
+  <string name="FiveSecondAlarm">5 second rule Alarm</string>
+  <string name="FiveSecondCount">Count 5 sec</string>
   <string name="IllCount">Count five seconds!</string>
   <string name="PleaseWrite">please type alarm name</string>
   <string name="PleaseSay">please say alarm name</string>
@@ -13,20 +13,20 @@
   <string name="RequestStoragePermission">Storage permission is required.</string>
   <string name="GladToHelpYou">I am glad to help you.</string>
   <string name="WillKeepTrying">I will keep trying to help you.</string>
-  <string name="WouldYouRecommend">Would you recommend it via a 5 seconds rule alarm review?</string>
+  <string name="WouldYouRecommend">Would you recommend it via a 5 second rule alarm review?</string>
   <string name="ImSorry">I am sorry I cant help you</string>
   <string name="IllImprove">I will improve this app even more!</string>
   <string name="CanYouTellMe">Can you tell me if you have any inconvenience or suggestions?</string>
-  <string name="ErrorReport">5 seconds rule alarm error report</string>
+  <string name="ErrorReport">5 second rule alarm error report</string>
   <string name="PleaseAllowAudioPermission">Please allow audio recording permission</string>
   <string name="NetworkError">Network error. Please check your network connection.</string>
   <string name="ServerError">There is a problem with the server. please try again.</string>
   <string name="RecordingTimeOut">Voice recording timed out. please try again.</string>
   <string name="ActivatePermission">Please activate the permissions in [App Settings] > [Permissions].</string>
-  <string name="Seconds">sec</string>
+  <string name="Second">sec</string>
   <string name="Start">Start!!</string>
   <string name="ThankYou">Thank You!!</string>
-  <string name="ThankYouForUsing">Thank you for using the 5 seconds rule alarm!</string>
+  <string name="ThankYouForUsing">Thank you for using the 5 second rule alarm!</string>
   <string name="HelpfulToYou">Is our app helpful to you?</string>
   <string name="NotReally">Um..not really</string>
   <string name="ILikeIt">I like it</string>

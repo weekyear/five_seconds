@@ -28,7 +28,7 @@ using RelativeLayout = Android.Widget.RelativeLayout;
 
 namespace Five_Seconds.Droid
 {
-    [Activity(Label = "@string/FiveSecondsAlarm", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "@string/FiveSecondAlarm", Theme = "@style/MainTheme", ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class AlarmActivity : Activity, IRecognitionListener
     {
         readonly IPlaySoundService _soundService = new PlaySoundServiceAndroid();

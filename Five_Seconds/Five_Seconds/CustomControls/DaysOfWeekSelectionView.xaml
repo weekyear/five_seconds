@@ -11,21 +11,21 @@
     <ContentView.Content>
         <Grid HorizontalOptions="FillAndExpand">
             <Grid.RowDefinitions>
-                <RowDefinition Height="45" />
+                <RowDefinition Height="40" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
             </Grid.ColumnDefinitions>
             <custom:DayOfWeekButton BackgroundColor="Transparent" 
                                     Margin="0" Padding="0"
                                     Grid.Column="0" 
-                                    FontSize="16" Text="{local:Translate Sunday}" TextColor="Black"
+                                    FontSize="Small" Text="{local:Translate Sunday}" TextColor="Black"
                                     BorderWidth="3" CornerRadius="50"
                                     IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Sunday}"
                                     IsSelectedChanged="OnIsSelectedChanged"
@@ -33,7 +33,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="1"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="{local:Translate Monday}" TextColor="Black"
+                            FontSize="Small" Text="{local:Translate Monday}" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Monday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -41,7 +41,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="2"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="{local:Translate Tuesday}" TextColor="Black"
+                            FontSize="Small" Text="{local:Translate Tuesday}" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Tuesday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -49,7 +49,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="3"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="{local:Translate Wednesday}" TextColor="Black"
+                            FontSize="Small" Text="{local:Translate Wednesday}" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Wednesday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -57,7 +57,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="4"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="{local:Translate Thursday}" TextColor="Black"
+                            FontSize="Small" Text="{local:Translate Thursday}" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Thursday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -65,7 +65,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="5"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="{local:Translate Friday}" TextColor="Black"
+                            FontSize="Small" Text="{local:Translate Friday}" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Friday}"
                             IsSelectedChanged="OnIsSelectedChanged"
@@ -73,7 +73,7 @@
             <custom:DayOfWeekButton 
                             Grid.Column="6"
                             BackgroundColor="Transparent"
-                            FontSize="16" Text="{local:Translate Saturday}" TextColor="Black"
+                            FontSize="Small" Text="{local:Translate Saturday}" TextColor="Black"
                             BorderWidth="3" CornerRadius="50"
                             IsSelected="{Binding Source={x:Reference ThisView}, Path=Days.Saturday}"
                             IsSelectedChanged="OnIsSelectedChanged"

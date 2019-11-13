@@ -65,5 +65,11 @@ namespace Five_Seconds.Views
                 viewModel.IsToday = false;
             }
         }
+
+        private void TypeButton_Clicked(object sender, EventArgs e)
+        {
+            var button = sender as TypeButton;
+            viewModel.AlarmType = button.ButtonType;
+        }
     }
 }

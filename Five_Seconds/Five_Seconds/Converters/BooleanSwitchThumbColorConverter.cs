@@ -28,7 +28,6 @@ namespace Five_Seconds.Converters
         }
         private object BooleanToColor(object value)
         {
-            Color color;
             var isActive = (bool)value;
             if (isActive)
             {

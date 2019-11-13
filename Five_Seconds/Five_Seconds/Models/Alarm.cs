@@ -21,6 +21,9 @@ namespace Five_Seconds.Models
 
         public bool IsVoiceRecognition { get; set; } = true;
         public bool IsActive { get; set; } = true;
+        public int AlarmType { get; set; } = 1;
+        public bool IsFiveCount  { get; set; } = false;
+        public bool IsNotDelayAlarm  { get; set; } = false;
 
         public void OnIsActiveChanged()
         {
@@ -70,7 +73,10 @@ namespace Five_Seconds.Models
             IsActive = original.IsActive;
             IsAlarmOn = original.IsAlarmOn;
             IsVibrateOn = original.IsVibrateOn;
+            AlarmType = original.AlarmType;
             IsVoiceRecognition = original.IsVoiceRecognition;
+            IsFiveCount = original.IsFiveCount;
+            IsNotDelayAlarm = original.IsNotDelayAlarm;
             Volume = original.Volume;
             TimeOffset = original.TimeOffset;
 

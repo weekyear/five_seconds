@@ -142,7 +142,7 @@
     <value>Ringtone Setting</value>
   </data>
   <data name="App_Name" xml:space="preserve">
-    <value>5 Seconds Rule Alarm</value>
+    <value>5 Second Rule Alarm</value>
   </data>
   <data name="AskDeleteRecord" xml:space="preserve">
     <value>Do you really want to delete this record?</value>
@@ -154,7 +154,7 @@
     <value>5 secodnds rule brief description</value>
   </data>
   <data name="Brief_01" xml:space="preserve">
-    <value>Welcome to the five seconds rule~</value>
+    <value>Welcome to the five second rule~</value>
   </data>
   <data name="Brief_02" xml:space="preserve">
     <value>Let`s make an alarm</value>
@@ -169,7 +169,7 @@
     <value>I'll count five seconds!</value>
   </data>
   <data name="Brief_06" xml:space="preserve">
-    <value>If you want know ablut five seconds rules?</value>
+    <value>If you want know ablut five second rules?</value>
   </data>
   <data name="Brief_Detail_01" xml:space="preserve">
     <value>I`ll show you how to use our application</value>
@@ -187,7 +187,7 @@
     <value>Let's start immediately before the 5 second count is over!</value>
   </data>
   <data name="Brief_Detail_06" xml:space="preserve">
-    <value>Please Search for 5 seconds rules on Google</value>
+    <value>Please Search for 5 second rules on Google</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
@@ -210,6 +210,12 @@
   <data name="Done" xml:space="preserve">
     <value>Done</value>
   </data>
+  <data name="DoNotDelayAlarm" xml:space="preserve">
+    <value>Do not delay alarm</value>
+  </data>
+  <data name="DoNotDelayAlarmDescription" xml:space="preserve">
+    <value>This alarm can only be turned off by voice recognition.</value>
+  </data>
   <data name="Everyday" xml:space="preserve">
     <value>Everyday</value>
   </data>
@@ -222,8 +228,14 @@
   <data name="FiveCountDetail" xml:space="preserve">
     <value>Do you want to start counting 5 seconds?</value>
   </data>
+  <data name="FiveSecAlarm" xml:space="preserve">
+    <value>Five sec Alarm</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>F</value>
+  </data>
+  <data name="IndomitableAlarm" xml:space="preserve">
+    <value>Indomitable Alarm</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>Menu</value>
@@ -270,6 +282,12 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SimpleAlarm" xml:space="preserve">
+    <value>Simple alarm</value>
+  </data>
+  <data name="SimpleAlarmDescription" xml:space="preserve">
+    <value>You can dismiss the alarm with a simple touch.</value>
+  </data>
   <data name="Skip" xml:space="preserve">
     <value>Skip</value>
   </data>
@@ -304,6 +322,6 @@
     <value>Weekend</value>
   </data>
   <data name="WhatFiveSecondsRule" xml:space="preserve">
-    <value>What is the 5 seconds rule?</value>
+    <value>What is the 5 second rule?</value>
   </data>
 </root>

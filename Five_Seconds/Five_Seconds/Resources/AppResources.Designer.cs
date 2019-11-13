@@ -133,7 +133,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 5 Seconds Rule Alarm.
+        ///   Looks up a localized string similar to 5 Second Rule Alarm.
         /// </summary>
         internal static string App_Name {
             get {
@@ -160,7 +160,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Welcome to the five seconds rule~.
+        ///   Looks up a localized string similar to Welcome to the five second rule~.
         /// </summary>
         internal static string Brief_01 {
             get {
@@ -205,7 +205,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If you want know ablut five seconds rules?.
+        ///   Looks up a localized string similar to If you want know ablut five second rules?.
         /// </summary>
         internal static string Brief_06 {
             get {
@@ -259,7 +259,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please Search for 5 seconds rules on Google.
+        ///   Looks up a localized string similar to Please Search for 5 second rules on Google.
         /// </summary>
         internal static string Brief_Detail_06 {
             get {
@@ -340,6 +340,24 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do not delay alarm.
+        /// </summary>
+        internal static string DoNotDelayAlarm {
+            get {
+                return ResourceManager.GetString("DoNotDelayAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This alarm can only be turned off by voice recognition..
+        /// </summary>
+        internal static string DoNotDelayAlarmDescription {
+            get {
+                return ResourceManager.GetString("DoNotDelayAlarmDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Everyday.
         /// </summary>
         internal static string Everyday {
@@ -376,11 +394,29 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Five sec Alarm.
+        /// </summary>
+        internal static string FiveSecAlarm {
+            get {
+                return ResourceManager.GetString("FiveSecAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to F.
         /// </summary>
         internal static string Friday {
             get {
                 return ResourceManager.GetString("Friday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Indomitable Alarm.
+        /// </summary>
+        internal static string IndomitableAlarm {
+            get {
+                return ResourceManager.GetString("IndomitableAlarm", resourceCulture);
             }
         }
         
@@ -520,6 +556,24 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Simple alarm.
+        /// </summary>
+        internal static string SimpleAlarm {
+            get {
+                return ResourceManager.GetString("SimpleAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You can dismiss the alarm with a simple touch..
+        /// </summary>
+        internal static string SimpleAlarmDescription {
+            get {
+                return ResourceManager.GetString("SimpleAlarmDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skip.
         /// </summary>
         internal static string Skip {
@@ -619,7 +673,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to What is the 5 seconds rule?.
+        ///   Looks up a localized string similar to What is the 5 second rule?.
         /// </summary>
         internal static string WhatFiveSecondsRule {
             get {
