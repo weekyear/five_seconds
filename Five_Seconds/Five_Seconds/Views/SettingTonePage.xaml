@@ -65,7 +65,7 @@
                             <ViewCell Height="65">
                                 <ViewCell.IsContextActionsLegacyModeEnabled/>
                                 <ViewCell.ContextActions>
-                                    <MenuItem Command="{Binding DeleteToneCommand}" CommandParameter="{Binding Name}" Text="삭제" IsDestructive="True" />
+                                    <MenuItem Command="{Binding DeleteToneCommand}" CommandParameter="{Binding .}" Text="삭제" IsDestructive="True" />
                                 </ViewCell.ContextActions>
                                 <ViewCell.View>
                                     <StackLayout BackgroundColor="{Binding IsSelected, Converter={StaticResource BooleanLayoutColorConverter}}">

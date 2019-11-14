@@ -3,12 +3,9 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Five_Seconds.Models;
-using Five_Seconds.Repository;
 using Five_Seconds.Services;
 using Five_Seconds.Droid.Services;
 using Plugin.CurrentActivity;
-using SQLite;
-using static Android.App.ActivityManager;
 
 namespace Five_Seconds.Droid.BroadcastReceivers
 {
@@ -35,9 +32,9 @@ namespace Five_Seconds.Droid.BroadcastReceivers
 
                 CreateFailedRecord();
 
-                if (IsApplicationInTheBackground())
+                if (HelperAndroid.IsApplicationInTheBackground())
                 {
-                    CrossCurrentActivity.Current.Activity.FinishAffinity();
+                    CrossCurrentActivity.Current.Activity?.FinishAffinity();
                 }
             }
             else if (intent.Action == context.GetString(Resource.String.GoOffNow))
@@ -48,7 +45,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
 
         private void TurnOffLaterAlarm()
         {
-            alarmService = HelperAndroid.GetAlarmService();
+            alarmService = App.Service;
             Alarm.IsInitFinished = false;
             alarm = alarmService.GetAlarm(id);
 
@@ -57,7 +54,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
                 alarm.IsActive = false;
             }
 
-            TurnOffAlarm(alarm);
+            TurnOffAlarmByNotification(alarm);
 
             Alarm.IsInitFinished = true;
         }
@@ -78,22 +75,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             context.StartActivity(disIntent);
         }
 
-        private void TurnOffAlarm(Alarm alarm)
-        {
-            try
-            {
-                alarmService.TurnOffAlarm(alarm);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.InnerException);
-                Console.WriteLine("TurnOffAlarm_Background_NotificationReceiver");
-                TurnOffAlarmWhenIsBackground(alarm);
-            }
-        }
-
-        private void TurnOffAlarmWhenIsBackground(Alarm alarm)
+        private void TurnOffAlarmByNotification(Alarm alarm)
         {
             alarm.IsLaterAlarm = false;
             var alarmSetter = new AlarmSetterAndroid();
@@ -119,17 +101,6 @@ namespace Five_Seconds.Droid.BroadcastReceivers
                     manager.Cancel(id);
                 }
             }
-        }
-
-        private bool IsApplicationInTheBackground()
-        {
-            bool isInBackground;
-
-            RunningAppProcessInfo myProcess = new RunningAppProcessInfo();
-            GetMyMemoryState(myProcess);
-            isInBackground = myProcess.Importance != Importance.Foreground;
-
-            return isInBackground;
         }
     }
 }

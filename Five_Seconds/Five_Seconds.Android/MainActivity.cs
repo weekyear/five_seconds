@@ -17,23 +17,22 @@ using Android.Gms.Ads;
 using Xamarin.Forms;
 using Five_Seconds.Models;
 using Five_Seconds.ViewModels;
+using Five_Seconds.Repository;
+using SQLite;
 
 namespace Five_Seconds.Droid
 {
     [Activity(Label = "@string/FiveSecondAlarm", Icon = "@drawable/ic_five_seconds", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
-        private Bundle bundle;
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            TabLayoutResource = Resource.Layout.Tabbar;
-            ToolbarResource = Resource.Layout.Toolbar;
-
-            bundle = savedInstanceState;
+            base.OnCreate(savedInstanceState);
 
             InitForOpenApp(savedInstanceState);
 
-            base.OnCreate(savedInstanceState);
+            TabLayoutResource = Resource.Layout.Tabbar;
+            ToolbarResource = Resource.Layout.Toolbar;
 
             SetMobileAds();
 
@@ -43,7 +42,8 @@ namespace Five_Seconds.Droid
 
         private void InitForOpenApp(Bundle savedInstanceState)
         {
-            Forms.Init(this, savedInstanceState);
+            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
             Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
@@ -54,16 +54,8 @@ namespace Five_Seconds.Droid
         protected override void OnStart()
         {
             base.OnStart();
-            try
-            {
-                StartApp();
-            }
-            catch
-            {
-                InitForOpenApp(bundle);
-                StartApp();
-            }
 
+            StartApp();
         }
 
         protected override void OnResume()
@@ -79,6 +71,12 @@ namespace Five_Seconds.Droid
         {
             if (SettingToneViewModel.IsFinding) return;
 
+            if (Build.VERSION.SdkInt < BuildVersionCodes.M)
+            {
+                LoadAppAndRefreshAlarmManager();
+                return;
+            }
+
             if (MyPermissions.RequestAudioPermission(this))
             {
                 LoadAppAndRefreshAlarmManager();
@@ -88,9 +86,8 @@ namespace Five_Seconds.Droid
         private void LoadAppAndRefreshAlarmManager()
         {
             LoadApplication(new App());
-
             Alarm.IsInitFinished = false;
-            var allAlarms = HelperAndroid.GetAlarmService().GetAllAlarms();
+            var allAlarms = App.Service.GetAllAlarms();
             Alarm.IsInitFinished = true;
 
             AlarmHelper.RefreshAlarmByManager(allAlarms);

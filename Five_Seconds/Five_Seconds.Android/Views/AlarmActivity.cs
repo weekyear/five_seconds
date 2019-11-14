@@ -58,7 +58,7 @@ namespace Five_Seconds.Droid
         private LinearLayout reviewButtonLayout;
 
         private Dialog resultDialog;
-        private LinearLayout buttonLayout;
+        private LinearLayout likeButtonLayout;
 
 
         private Dialog laterDialog;
@@ -78,6 +78,8 @@ namespace Five_Seconds.Droid
         private bool IsVibrateOn;
         private bool IsRepeating;
         private bool IsVoiceRecognition;
+        private bool IsNotDelayAlarm;
+        private bool IsFiveCount;
         private int alarmVolume;
 
         public bool CanShowReview;
@@ -122,9 +124,9 @@ namespace Five_Seconds.Droid
 
         private void GetAlarmServiceAndRepository()
         {
-            alarmService = HelperAndroid.GetAlarmService();
+            alarmService = App.Service;
             alarmsRepo = alarmService.Repository;
-            tonesRepo = HelperAndroid.GetAlarmToneRepository();
+            tonesRepo = App.AlarmToneRepo;
         }
 
         private void GetDataFromBundle(Bundle bundle)
@@ -135,6 +137,8 @@ namespace Five_Seconds.Droid
             IsVibrateOn = (bool)bundle.Get("IsVibrateOn");
             IsRepeating = (bool)bundle.Get("IsRepeating");
             IsVoiceRecognition = (bool)bundle.Get("IsVoiceRecognition");
+            IsNotDelayAlarm = (bool)bundle.Get("IsNotDelayAlarm");
+            IsFiveCount = (bool)bundle.Get("IsFiveCount");
             alarmVolume = (int)bundle.Get("alarmVolume");
         }
 
@@ -251,6 +255,11 @@ namespace Five_Seconds.Droid
             finishAlarmText.Text = name;
             timeTextView.Text = AlarmTimeNow.ToShortTimeString();
 
+            if (IsNotDelayAlarm)
+            {
+                laterButton.Visibility = ViewStates.Gone;
+            }
+
             tellmeView.Click += StartListening_Click;
             startButton.Click += StartButton_Click;
             laterButton.Click += LaterButton_Click; ;
@@ -337,7 +346,10 @@ namespace Five_Seconds.Droid
 
             SetResultToDialogResult();
 
-            resultDialog.Show();
+            if (!IsFinishing)
+            {
+                resultDialog.Show();
+            }
         }
 
         private void CreateRecord()
@@ -349,12 +361,15 @@ namespace Five_Seconds.Droid
 
         private void SetResultToDialogResult()
         {
+            if (alarmsRepo == null) GetAlarmServiceAndRepository();
+
             var Records = alarmsRepo.RecordFromDB;
             var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
 
+            if (resultDialog == null) CreateResultDialog();
+
             TextView titleText = resultDialog.FindViewById<TextView>(Resource.Id.titleText);
             TextView messageText = resultDialog.FindViewById<TextView>(Resource.Id.messageText);
-            LinearLayout buttonLayout = resultDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
             Button confirmBtn = resultDialog.FindViewById<Button>(Resource.Id.confirmBtn);
             Button countButton = resultDialog.FindViewById<Button>(Resource.Id.countButton);
             Button failedBtn = resultDialog.FindViewById<Button>(Resource.Id.failedBtn);
@@ -365,13 +380,24 @@ namespace Five_Seconds.Droid
 
                 confirmBtn.Click += ResultDialog_ConfirmBtn_Click;
                 countButton.Click += ResultDialog_CountBtn_Click;
+
+                if (IsFiveCount)
+                {
+                    confirmBtn.Visibility = ViewStates.Gone;
+                    countButton.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    confirmBtn.Visibility = ViewStates.Visible;
+                    countButton.Visibility = ViewStates.Gone;
+                }
             }
             else
             {
                 titleText.Text = GetString(Resource.String.Failure);
                 titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
                 messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
-                buttonLayout.Visibility = ViewStates.Gone;
+                likeButtonLayout.Visibility = ViewStates.Gone;
                 failedBtn.Visibility = ViewStates.Visible;
 
                 failedBtn.Click += ResultDialog_ConfirmBtn_Click;
@@ -478,7 +504,10 @@ namespace Five_Seconds.Droid
 
         private void LaterButton_Click(object sender, EventArgs e)
         {
-            laterDialog.Show();
+            if (!IsFinishing)
+            {
+                laterDialog.Show();
+            }
         }
         private void AddWindowManagerFlags()
         {
@@ -711,18 +740,29 @@ namespace Five_Seconds.Droid
 
         protected override void OnUserLeaveHint()
         {
+            if (IsNotDelayAlarm)
+            {
+                var milliSecond = new TimeSpan(0, 0, 1).TotalMilliseconds;
+                AlarmHelper.SetAlarmByManager(alarm, (long)milliSecond);
+                FinishAndRemoveTask();
+                return;
+            }
+
             if (!IsFinished)
             {
                 SetLaterAlarm(5);
+                FinishAndRemoveTask();
             }
-            FinishAndRemoveTask();
 
             base.OnUserLeaveHint();
         }
 
         public override void FinishAndRemoveTask()
         {
+            Console.WriteLine("FinishAndRemoveTask_00");
             TurnOffSoundAndVibration();
+            countDownForFailed?.Cancel();
+            Console.WriteLine("FinishAndRemoveTask_03");
             base.FinishAndRemoveTask();
         }
 
@@ -749,6 +789,12 @@ namespace Five_Seconds.Droid
 
         public void RequestRecordAudioPermission()
         {
+            if (Build.VERSION.SdkInt < BuildVersionCodes.M)
+            {
+                StartVoiceRecognition();
+                return;
+            }
+
             if (CheckCallingOrSelfPermission(Manifest.Permission.RecordAudio) != Permission.Granted)
             {
                 // Should we show an explanation?
@@ -787,7 +833,10 @@ namespace Five_Seconds.Droid
         {
             SetReviewToDialogResult();
 
-            reviewDialog.Show();
+            if (!IsFinishing)
+            {
+                reviewDialog.Show();
+            }
         }
 
         private void SetReviewToDialogResult()
@@ -799,7 +848,7 @@ namespace Five_Seconds.Droid
             reviewText1 = reviewDialog.FindViewById<TextView>(Resource.Id.reviewText1);
             reviewText2 = reviewDialog.FindViewById<TextView>(Resource.Id.reviewText2);
 
-            buttonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.buttonLayout);
+            likeButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.likeButtonLayout);
             feedbackButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.feedbackButtonLayout);
             reviewButtonLayout = reviewDialog.FindViewById<LinearLayout>(Resource.Id.reviewButtonLayout);
 
@@ -829,7 +878,7 @@ namespace Five_Seconds.Droid
 
         private void ConfirmBtn1_Click(object sender, EventArgs e)
         {
-            buttonLayout.Visibility = ViewStates.Gone;
+            likeButtonLayout.Visibility = ViewStates.Gone;
             reviewButtonLayout.Visibility = ViewStates.Visible;
 
             reviewTitle.Text = GetString(Resource.String.GladToHelpYou);
@@ -839,7 +888,7 @@ namespace Five_Seconds.Droid
 
         private void CancelBtn1_Click(object sender, EventArgs e)
         {
-            buttonLayout.Visibility = ViewStates.Gone;
+            likeButtonLayout.Visibility = ViewStates.Gone;
             feedbackButtonLayout.Visibility = ViewStates.Visible;
 
             reviewTitle.Text = GetString(Resource.String.ImSorry);

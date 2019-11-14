@@ -34,7 +34,7 @@
 		app:adSize="BANNER"
 		app:adUnitId="@string/admob_banner_id" />
     <LinearLayout
-        android:id="@+id/buttonLayout"
+        android:id="@+id/laterButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/adView">
@@ -47,7 +47,7 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
-            android:background="@drawable/ripple_transparent_button" />
+            android:background="@drawable/ripple_cancel_button" />
         <Button
             android:id="@+id/confirmBtn"
             android:layout_width="0dp"
@@ -57,6 +57,6 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
-            android:background="@drawable/ripple_count_button"/>
+            android:background="@drawable/ripple_confirm_button"/>
     </LinearLayout>
 </RelativeLayout>

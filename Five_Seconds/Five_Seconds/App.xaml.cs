@@ -17,7 +17,7 @@ namespace Five_Seconds
 {
     public partial class App : Application
     {
-        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(DependencyService.Get<IDatabase>().DBConnect());
+        public static ItemDatabaseGeneric ItemDatabase { get; } = new ItemDatabaseGeneric(new Database().DBConnect());
         private readonly bool isNotFirst = Preferences.Get(nameof(isNotFirst), false);
         private readonly int MaxAlarmId = Preferences.Get(nameof(MaxAlarmId), 3);
 
@@ -27,13 +27,13 @@ namespace Five_Seconds
 
             AdMaiora.RealXaml.Client.AppManager.Init(this);
 
+            InitializeComponent();
+
             DependencyService.Register<INavigation>();
             DependencyService.Register<IAlarmsRepository>();
             DependencyService.Register<IAlarmService>();
             DependencyService.Register<IMessageBoxService>();
             DependencyService.Register<ISpeechToText>();
-
-            InitializeComponent();
 
             var navigationPage = new NavigationPage(new AlarmsPage());
 
@@ -54,7 +54,7 @@ namespace Five_Seconds
 
                 foreach (var alarm in ListInitAlarm)
                 {
-                    service.SaveAlarmAtLocal(alarm);
+                    Service.SaveAlarmAtLocal(alarm);
                 }
 
                 var welcomePage = AppIntro.CreateAppIntro();
@@ -81,52 +81,19 @@ namespace Five_Seconds
         protected override void OnSleep()
         {
             // Handle when your app sleeps
+            Alarm.IsInitFinished = false;
         }
 
         protected override void OnResume()
         {
             // Handle when your app resumes
+            Alarm.IsInitFinished = true;
         }
         
+        public static IAlarmsRepository AlarmsRepo { get; } = new AlarmsRepository(ItemDatabase);
 
-        private static IAlarmsRepository alarmsRepo;
-        public static IAlarmsRepository AlarmsRepo
-        {
-            get
-            {
-                if (alarmsRepo == null)
-                {
-                    alarmsRepo = new AlarmsRepository(ItemDatabase);
-                }
-                return alarmsRepo;
-            }
-        }
+        public static IAlarmService Service { get; } = new AlarmService(AlarmsRepo);
 
-        private static IAlarmService service;
-        public static IAlarmService Service
-        {
-            get
-            {
-                if (service == null)
-                {
-                    service = new AlarmService(AlarmsRepo);
-                }
-
-                return service;
-            }
-        }
-
-        private static IAlarmToneRepository alarmToneRepo;
-        public static IAlarmToneRepository AlarmToneRepo
-        {
-            get
-            {
-                if (alarmToneRepo == null)
-                {
-                    alarmToneRepo = new AlarmToneRepository(ItemDatabase);
-                }
-                return alarmToneRepo;
-            }
-        }
+        public static IAlarmToneRepository AlarmToneRepo { get; } = new AlarmToneRepository(ItemDatabase);
     }
 }

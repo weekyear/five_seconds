@@ -280,7 +280,7 @@
     <value>저장</value>
   </data>
   <data name="SimpleAlarm" xml:space="preserve">
-    <value>간편한 알람</value>
+    <value>간편 알람</value>
   </data>
   <data name="SimpleAlarmDescription" xml:space="preserve">
     <value>간단한 터치로 해제할 수 있는 알람</value>

@@ -35,7 +35,7 @@ namespace Five_Seconds.ViewModels
             StopToneCommand = new Command(() => StopTone());
             ChangeVolumeCommand = new Command<double>((v) => ChangeVolume(v));
             AddToneCommand = new Command(() => AddTone());
-            DeleteToneCommand = new Command<string>((a) => DeleteTone(a));
+            DeleteToneCommand = new Command<SettingTone>((a) => DeleteTone(a));
         }
 
         public void SetSettingTones()
@@ -60,7 +60,7 @@ namespace Five_Seconds.ViewModels
         public Command StopToneCommand { get; set; }
         public Command<double> ChangeVolumeCommand { get; set; }
         public Command AddToneCommand { get; set; }
-        public Command<string> DeleteToneCommand { get; set; }
+        public Command<SettingTone> DeleteToneCommand { get; set; }
 
 
         public ObservableCollection<SettingTone> AllAlarmTones { get; set; } = new ObservableCollection<SettingTone>();
@@ -196,7 +196,7 @@ namespace Five_Seconds.ViewModels
 
             if (alarmTone.IsCustomTone)
             {
-                MessageBoxService.ShowConfirm($"알람음 삭제", $"'{toneName}'을 정말 삭제하시겠습니까?", null, () => DeleteTone(settingTone.Name));
+                MessageBoxService.ShowConfirm($"알람음 삭제", $"'{toneName}'을 정말 삭제하시겠습니까?", null, () => DeleteTone(settingTone));
             }
             else
             {
@@ -205,10 +205,10 @@ namespace Five_Seconds.ViewModels
 
         }
 
-        private void DeleteTone(string selectedTone)
+        private void DeleteTone(SettingTone selectedTone)
         {
-            var settingTone = AllAlarmTones.ToList().Find(a => a.Name == selectedTone);
-            var alarmTone = App.AlarmToneRepo.Tones.Find(a => a.Name == selectedTone);
+            var settingTone = AllAlarmTones.ToList().Find(a => a.Name == selectedTone.Name);
+            var alarmTone = App.AlarmToneRepo.Tones.Find(a => a.Name == selectedTone.Name);
 
             if (settingTone.IsSelected)
             {

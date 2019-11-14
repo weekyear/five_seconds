@@ -21,23 +21,43 @@ namespace Five_Seconds.Models
 
         public bool IsVoiceRecognition { get; private set; } = true;
         public bool IsNotDelayAlarm { get; private set; } = false;
-        public int AlarmType { get; set; } = 1;
-        public void OnAlarmTypeChanged()
+        public int AlarmType
         {
-            switch (AlarmType)
+            get
             {
-                case 0:
-                    IsVoiceRecognition = false;
-                    IsNotDelayAlarm = false;
-                    break;
-                case 1:
-                    IsVoiceRecognition = true;
-                    IsNotDelayAlarm = false;
-                    break;
-                case 2:
-                    IsVoiceRecognition = true;
-                    IsNotDelayAlarm = true;
-                    break;
+                if (IsVoiceRecognition)
+                {
+                    if (IsNotDelayAlarm)
+                    {
+                        return 2;
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            set
+            {
+                switch (value)
+                {
+                    case 0:
+                        IsVoiceRecognition = false;
+                        IsNotDelayAlarm = false;
+                        break;
+                    case 1:
+                        IsVoiceRecognition = true;
+                        IsNotDelayAlarm = false;
+                        break;
+                    case 2:
+                        IsVoiceRecognition = true;
+                        IsNotDelayAlarm = true;
+                        break;
+                }
             }
         }
 
@@ -46,30 +66,37 @@ namespace Five_Seconds.Models
         public bool IsActive { get; set; } = true;
         public void OnIsActiveChanged()
         {
-            if (IsInitFinished)
+            try
             {
-                if (IsActive)
+                if (IsInitFinished)
                 {
-                    if (!DaysOfWeek.GetHasADayBeenSelected(Days) && TimeOffset.Subtract(DateTimeOffset.Now).Ticks < 0)
+                    if (IsActive)
                     {
-                        if (Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+                        if (!DaysOfWeek.GetHasADayBeenSelected(Days) && TimeOffset.Subtract(DateTimeOffset.Now).Ticks < 0)
                         {
-                            Date = DateTime.Now.Date.AddDays(1);
+                            if (Time.Subtract(DateTime.Now.TimeOfDay).Ticks < 0)
+                            {
+                                Date = DateTime.Now.Date.AddDays(1);
+                            }
+                            else
+                            {
+                                Date = DateTime.Now.Date;
+                            }
                         }
-                        else
-                        {
-                            Date = DateTime.Now.Date;
-                        }
-                    }
 
-                    App.Service.SaveAlarm(this);
-                    var diffString = CreateDateString.CreateTimeRemainingString(NextAlarmTime);
-                    DependencyService.Get<IToastService>().Show(diffString);
+                        App.Service.SaveAlarm(this);
+                        var diffString = CreateDateString.CreateTimeRemainingString(NextAlarmTime);
+                        DependencyService.Get<IToastService>().Show(diffString);
+                    }
+                    else
+                    {
+                        App.Service.TurnOffAlarm(this);
+                    }
                 }
-                else
-                {
-                    App.Service.TurnOffAlarm(this);
-                }
+            }
+            catch
+            {
+                Console.WriteLine("OnIsActiveChangedException");
             }
         }
 
@@ -90,8 +117,7 @@ namespace Five_Seconds.Models
             Name = original.Name;
             Percentage = original.Percentage;
             AlarmType = original.AlarmType;
-
-            IsActive = original.IsActive;
+            ChangeIsActive(this, original.IsActive);
             IsAlarmOn = original.IsAlarmOn;
             IsVibrateOn = original.IsVibrateOn;
             IsVoiceRecognition = original.IsVoiceRecognition;

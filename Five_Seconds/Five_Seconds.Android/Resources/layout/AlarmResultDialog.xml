@@ -32,33 +32,27 @@
         android:layout_below="@id/messageText"
 		app:adSize="BANNER"
 		app:adUnitId="@string/admob_banner_id" />
-    <LinearLayout
-        android:id="@+id/buttonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/adView">
-        <Button 
-            android:id="@+id/confirmBtn"
-            android:layout_width="0dp"
+    
+    <Button android:id="@+id/confirmBtn"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_below="@id/adView"
             android:text="@string/OK"
             android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
             android:background="@drawable/ripple_transparent_button" />
 
-        <Button
-            android:id="@+id/countButton"
-            android:layout_width="0dp"
+    <Button android:id="@+id/countButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="@string/FiveSecondCount"
+            android:layout_below="@id/adView"
             android:textSize="20dp"
             android:textStyle="bold"
+        android:visibility="gone"
             android:textColor="@android:color/white"
             android:background="@drawable/ripple_count_button"/>
-    </LinearLayout>
     <Button
         android:id="@+id/failedBtn"
         android:layout_width="match_parent"

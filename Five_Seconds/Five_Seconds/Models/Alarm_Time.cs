@@ -38,7 +38,7 @@ namespace Five_Seconds.Models
             }
         }
 
-        public DateTime LaterAlarmTime { get; set; } = DateTime.MinValue;
+        public DateTime LaterAlarmTime { get; set; } = DateTimeOffset.MinValue.UtcDateTime;
 
         //public int DaysId { get; set; }
         [OneToOne]

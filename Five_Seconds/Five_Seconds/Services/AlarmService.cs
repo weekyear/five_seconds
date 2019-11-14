@@ -19,7 +19,9 @@ namespace Five_Seconds.Services
         {
             Repository = repository;
 
+            Alarm.IsInitFinished = false;
             Alarms = GetAllAlarms();
+            Alarm.IsInitFinished = true;
         }
 
         public List<Alarm> GetAllAlarms()
@@ -112,11 +114,11 @@ namespace Five_Seconds.Services
 
         public Alarm GetNextAlarm()
         {
-            DateTime min = DateTime.MaxValue;
+            DateTime min = DateTimeOffset.MaxValue.Date;
 
             if (Alarms.Count == 0) return null;
 
-            var nextAlarm = new Alarm() { Date = DateTime.MaxValue.Date };
+            var nextAlarm = new Alarm() { Date = DateTimeOffset.MaxValue.Date };
 
             for (int i = 0; i < Alarms.Count; i++)
             {
@@ -140,7 +142,7 @@ namespace Five_Seconds.Services
                 }
             }
 
-            if (nextAlarm.Date == DateTime.MaxValue.Date)
+            if (nextAlarm.Date == DateTimeOffset.MaxValue.Date)
             {
                 return null;
             }

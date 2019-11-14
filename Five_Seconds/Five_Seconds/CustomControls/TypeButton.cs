@@ -57,13 +57,24 @@ namespace Five_Seconds.CustomControls
             {
                 button.TextColor = Color.White;
                 button.FontSize = Device.GetNamedSize(NamedSize.Medium, button);
-                button.BackgroundColor = Color.FromHex("#3498DB");
+                switch (button.ButtonType)
+                {
+                    case 0:
+                        button.BackgroundColor = Color.FromHex("#64b5f6");
+                        break;
+                    case 1:
+                        button.BackgroundColor = Color.FromHex("#3498DB");
+                        break;
+                    case 2:
+                        button.BackgroundColor = Color.FromHex("#005cb2");
+                        break;
+                }
                 button.FontAttributes = FontAttributes.Bold;
             }
             else
             {
                 button.TextColor = Color.LightGray;
-                button.FontSize = Device.GetNamedSize(NamedSize.Body, button);
+                button.FontSize = Device.GetNamedSize(NamedSize.Small, button);
                 button.BackgroundColor = Color.White;
                 button.FontAttributes = FontAttributes.None;
             }

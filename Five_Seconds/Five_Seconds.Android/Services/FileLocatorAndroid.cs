@@ -29,7 +29,10 @@ namespace Five_Seconds.Droid.Services
 
             _mainActivity.FileChosen += OnFileChosen;
 
-            MyPermissions.RequestReadExternalStoragePermission(_mainActivity);
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            {
+                MyPermissions.RequestReadExternalStoragePermission(_mainActivity);
+            }
         }
 
         public event Action<string> FileChosen;

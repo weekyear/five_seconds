@@ -35,7 +35,7 @@ namespace Five_Seconds.Droid.CustomRenderers
                 }
                 catch (ObjectDisposedException error) 
                 {
-                    Console.WriteLine(error.Message);
+                    Console.WriteLine(error.Message + "_RoundedViewCellRenderer");
                 }
             }
         }

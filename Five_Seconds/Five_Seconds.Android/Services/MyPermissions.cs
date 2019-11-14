@@ -11,6 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Five_Seconds.ViewModels;
+using Plugin.CurrentActivity;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -153,7 +154,10 @@ namespace Five_Seconds.Droid.Services
                         })
                         .SetCancelable(false);
 
-                    alert.Show();
+                    if (!CrossCurrentActivity.Current.Activity.IsFinishing)
+                    {
+                        alert.Show();
+                    }
                 }
             }
         }
@@ -180,7 +184,10 @@ namespace Five_Seconds.Droid.Services
                         })
                         .SetCancelable(false);
 
-                    alert.Show();
+                    if (!CrossCurrentActivity.Current.Activity.IsFinishing)
+                    {
+                        alert.Show();
+                    }
                 }
             }
         }
