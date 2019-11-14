@@ -74,16 +74,18 @@ namespace Five_Seconds.Droid
         private int id;
         private string name;
         private string toneName;
+        public string WakeUpText;
         private bool IsAlarmOn;
         private bool IsVibrateOn;
         private bool IsRepeating;
         private bool IsVoiceRecognition;
         private bool IsNotDelayAlarm;
-        private bool IsFiveCount;
+        public bool IsFiveCount;
+        public bool HasWakeUpText;
         private int alarmVolume;
 
         public bool CanShowReview;
-        private DateTime AlarmTimeNow;
+        public DateTime AlarmTimeNow;
 
         public bool IsSuccess = false;
         public bool IsFinished = false;
@@ -139,6 +141,8 @@ namespace Five_Seconds.Droid
             IsVoiceRecognition = (bool)bundle.Get("IsVoiceRecognition");
             IsNotDelayAlarm = (bool)bundle.Get("IsNotDelayAlarm");
             IsFiveCount = (bool)bundle.Get("IsFiveCount");
+            HasWakeUpText = (bool)bundle.Get("HasWakeUpText");
+            WakeUpText = (string)bundle.Get("WakeUpText");
             alarmVolume = (int)bundle.Get("alarmVolume");
         }
 
@@ -397,7 +401,8 @@ namespace Five_Seconds.Droid
                 titleText.Text = GetString(Resource.String.Failure);
                 titleText.SetTextColor(Resources.GetColor(Resource.Color.failedTitleColor, Theme));
                 messageText.SetTextColor(Resources.GetColor(Resource.Color.failedMessageColor, Theme));
-                likeButtonLayout.Visibility = ViewStates.Gone;
+                confirmBtn.Visibility = ViewStates.Gone;
+                countButton.Visibility = ViewStates.Gone;
                 failedBtn.Visibility = ViewStates.Visible;
 
                 failedBtn.Click += ResultDialog_ConfirmBtn_Click;
@@ -700,7 +705,7 @@ namespace Five_Seconds.Droid
         private void CreateResultDialog()
         {
             resultDialog = new Dialog(this);
-            resultDialog.SetContentView(Resource.Layout.AlarmResultDialog);
+            resultDialog.SetContentView(Resource.Layout.ResultDialog);
             resultDialog.SetCancelable(false);
             resultDialog.SetCanceledOnTouchOutside(false);
 
@@ -759,10 +764,8 @@ namespace Five_Seconds.Droid
 
         public override void FinishAndRemoveTask()
         {
-            Console.WriteLine("FinishAndRemoveTask_00");
             TurnOffSoundAndVibration();
             countDownForFailed?.Cancel();
-            Console.WriteLine("FinishAndRemoveTask_03");
             base.FinishAndRemoveTask();
         }
 

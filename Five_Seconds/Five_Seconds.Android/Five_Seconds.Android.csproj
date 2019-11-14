@@ -375,7 +375,7 @@
     <AndroidResource Include="Resources\drawable\background_tellmebtn_recording.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\AlarmResultDialog.xml">
+    <AndroidResource Include="Resources\layout\ResultDialog.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

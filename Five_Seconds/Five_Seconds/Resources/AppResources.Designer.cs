@@ -394,6 +394,15 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You forgot the alarm name!.
+        /// </summary>
+        internal static string ForgotAlarmName {
+            get {
+                return ResourceManager.GetString("ForgotAlarmName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to F.
         /// </summary>
         internal static string Friday {
@@ -547,6 +556,15 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You set the time past!.
+        /// </summary>
+        internal static string SetTimePast {
+            get {
+                return ResourceManager.GetString("SetTimePast", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Simple alarm.
         /// </summary>
         internal static string SimpleAlarm {
@@ -655,6 +673,24 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When the alarm sounds, the sentence is spoken out every 15 seconds..
+        /// </summary>
+        internal static string WakeUpTextDescription {
+            get {
+                return ResourceManager.GetString("WakeUpTextDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ex) Wake Up! OO!!.
+        /// </summary>
+        internal static string WakeUpTextSample {
+            get {
+                return ResourceManager.GetString("WakeUpTextSample", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to W.
         /// </summary>
         internal static string Wednesday {
@@ -687,6 +723,15 @@ namespace Five_Seconds.Resources {
         internal static string WhatFiveSecondsRule {
             get {
                 return ResourceManager.GetString("WhatFiveSecondsRule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Words that wake me up.
+        /// </summary>
+        internal static string WordsThatWakeMeUp {
+            get {
+                return ResourceManager.GetString("WordsThatWakeMeUp", resourceCulture);
             }
         }
     }

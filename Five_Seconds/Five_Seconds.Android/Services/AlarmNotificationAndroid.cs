@@ -85,7 +85,7 @@ namespace Five_Seconds.Droid.Services
             notificationManager.CancelAll();
         }
 
-        public static void NotifyFailedAlarm(Alarm alarm)
+        public static void NotifyFailedAlarm(Alarm alarm, DateTime alarmTime)
         {
             SetNotificationManager();
 
@@ -102,13 +102,13 @@ namespace Five_Seconds.Droid.Services
                 switch (CultureInfo.CurrentCulture.Name)
                 {
                     case "ko-KR":
-                        message = $"{alarm.LaterAlarmTime.ToShortTimeString()}에 {alarm.Name}를 실패하였습니다.";
+                        message = $"{alarmTime.ToShortTimeString()}에 {alarm.Name}를 실패하였습니다.";
                         break;
                     case "en-US":
-                        message = $"You failed {alarm.Name} at {alarm.LaterAlarmTime.ToShortTimeString()}";
+                        message = $"You failed {alarm.Name} at {alarmTime.ToShortTimeString()}";
                         break;
                     default:
-                        message = $"You failed {alarm.Name} at {alarm.LaterAlarmTime.ToShortTimeString()}";
+                        message = $"You failed {alarm.Name} at {alarmTime.ToShortTimeString()}";
                         break;
                 }
             }

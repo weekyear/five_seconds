@@ -228,6 +228,9 @@
   <data name="FiveCountDetail" xml:space="preserve">
     <value>5초 카운트를 시작하시겠습니까?</value>
   </data>
+  <data name="ForgotAlarmName" xml:space="preserve">
+    <value>알람 이름을 깜빡하셨어요!</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>금</value>
   </data>
@@ -279,6 +282,9 @@
   <data name="Save" xml:space="preserve">
     <value>저장</value>
   </data>
+  <data name="SetTimePast" xml:space="preserve">
+    <value>이미 지나간 시간으로 설정하셨어요!</value>
+  </data>
   <data name="SimpleAlarm" xml:space="preserve">
     <value>간편 알람</value>
   </data>
@@ -315,6 +321,12 @@
   <data name="VoiceRecognition" xml:space="preserve">
     <value>음성 인식</value>
   </data>
+  <data name="WakeUpTextDescription" xml:space="preserve">
+    <value>알람이 울리고 난 뒤, 15초마다 해당 문장이 음성으로 나오는 기능입니다.</value>
+  </data>
+  <data name="WakeUpTextSample" xml:space="preserve">
+    <value>예시) 일어나야 된다 OO아</value>
+  </data>
   <data name="Wednesday" xml:space="preserve">
     <value>수</value>
   </data>
@@ -326,5 +338,8 @@
   </data>
   <data name="WhatFiveSecondsRule" xml:space="preserve">
     <value>5초의 법칙이란?</value>
+  </data>
+  <data name="WordsThatWakeMeUp" xml:space="preserve">
+    <value>나를 일깨우는 말</value>
   </data>
 </root>

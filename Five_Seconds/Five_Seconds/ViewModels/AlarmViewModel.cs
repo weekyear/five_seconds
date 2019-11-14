@@ -121,6 +121,17 @@ namespace Five_Seconds.ViewModels
                 OnPropertyChanged(nameof(Name));
             }
         }
+        
+        public string WakeUpText
+        {
+            get { return Alarm.WakeUpText; }
+            set
+            {
+                if (Alarm.WakeUpText == value) return;
+                Alarm.WakeUpText = value;
+                OnPropertyChanged(nameof(WakeUpText));
+            }
+        }
 
         public DateTime Date
         {
@@ -326,11 +337,11 @@ namespace Five_Seconds.ViewModels
 
             if (string.IsNullOrEmpty(Name))
             {
-                await Application.Current.MainPage.DisplayAlert("", "미션 이름을 깜빡하셨어요!", "확인");
+                await Application.Current.MainPage.DisplayAlert("", AppResources.ForgotAlarmName, AppResources.OK);
             }
             else if (Alarm.TimeOffset.Subtract(DateTime.Now).Ticks < 0 && !DaysOfWeek.GetHasADayBeenSelected(Alarm.Days))
             {
-                await Application.Current.MainPage.DisplayAlert("", "이미 지난 시간으로 설정하셨어요!", "확인");
+                await Application.Current.MainPage.DisplayAlert("", AppResources.SetTimePast, AppResources.OK);
             }
             else
             {

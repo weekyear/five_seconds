@@ -77,6 +77,8 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.PutExtra("IsVoiceRecognition", alarm.IsVoiceRecognition);
             _alarmIntent.PutExtra("IsNotDelayAlarm", alarm.IsNotDelayAlarm);
             _alarmIntent.PutExtra("IsFiveCount", alarm.IsFiveCount);
+            _alarmIntent.PutExtra("HasWakeUpText", alarm.HasWakeUpText);
+            _alarmIntent.PutExtra("WakeUpText", alarm.WakeUpText);
             _alarmIntent.PutExtra("IsRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);

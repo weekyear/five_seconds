@@ -84,11 +84,12 @@
 
             <Frame BackgroundColor="White" CornerRadius="15" Margin="5, 0, 5, 5" Padding="1">
                 <Entry x:Name="Alarm_Name"
-                               Margin="10"
-                               HorizontalOptions="FillAndExpand"
-                               FontSize="Medium"
-                               Placeholder="{local:Translate PleaseAlarmName}"
-                               Text="{Binding Name}" />
+                       Margin="10"
+                       HorizontalOptions="FillAndExpand"
+                       FontSize="Medium"
+                       TextColor="{StaticResource PrimaryTextColor}"
+                       Placeholder="{local:Translate PleaseAlarmName}"
+                       Text="{Binding Name}" />
             </Frame>
 
             <Frame BackgroundColor="White" CornerRadius="10" Margin="5, 0, 5, 5" Padding="1">
@@ -175,6 +176,25 @@
                                 HorizontalOptions="EndAndExpand"
                                 OnColor="LightSteelBlue"
                                 ThumbColor="{Binding Alarm.IsFiveCount, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
+                    </StackLayout>
+                    <BoxView Color="LightGray" HorizontalOptions="FillAndExpand" Margin="10, 0" HeightRequest="1"/>
+                    <StackLayout Orientation="Vertical" Margin="10">
+                        <StackLayout Orientation="Horizontal">
+                            <Label TextColor="Black" Text="{local:Translate WordsThatWakeMeUp}" Margin="10, 0" FontSize="Medium" VerticalOptions="CenterAndExpand" />
+                            <Switch IsToggled="{Binding Alarm.HasWakeUpText}"
+                                HorizontalOptions="EndAndExpand"
+                                OnColor="LightSteelBlue"
+                                ThumbColor="{Binding Alarm.HasWakeUpText, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
+                        </StackLayout>
+                        <Entry x:Name="WakeUpText"
+                               IsVisible="{Binding Alarm.HasWakeUpText}"
+                               HorizontalOptions="FillAndExpand"
+                               FontSize="Medium"
+                               TextColor="{StaticResource PrimaryTextColor}"
+                               Placeholder="{local:Translate WakeUpTextSample}"
+                               Text="{Binding WakeUpText}" />
+                        <Label TextColor="SlateGray" Text="{local:Translate WakeUpTextDescription}" Margin="5, 0" 
+                               FontSize="Small" VerticalOptions="StartAndExpand" />
                     </StackLayout>
                 </StackLayout>
             </Frame>

@@ -228,6 +228,9 @@
   <data name="FiveCountDetail" xml:space="preserve">
     <value>Do you want to start counting 5 seconds?</value>
   </data>
+  <data name="ForgotAlarmName" xml:space="preserve">
+    <value>You forgot the alarm name!</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>F</value>
   </data>
@@ -279,6 +282,9 @@
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SetTimePast" xml:space="preserve">
+    <value>You set the time past!</value>
+  </data>
   <data name="SimpleAlarm" xml:space="preserve">
     <value>Simple alarm</value>
   </data>
@@ -315,6 +321,12 @@
   <data name="VoiceRecognition" xml:space="preserve">
     <value>Voice Recognition</value>
   </data>
+  <data name="WakeUpTextDescription" xml:space="preserve">
+    <value>When the alarm sounds, the sentence is spoken out every 15 seconds.</value>
+  </data>
+  <data name="WakeUpTextSample" xml:space="preserve">
+    <value>ex) Wake Up! OO!!</value>
+  </data>
   <data name="Wednesday" xml:space="preserve">
     <value>W</value>
   </data>
@@ -326,5 +338,8 @@
   </data>
   <data name="WhatFiveSecondsRule" xml:space="preserve">
     <value>What is the 5 second rule?</value>
+  </data>
+  <data name="WordsThatWakeMeUp" xml:space="preserve">
+    <value>Words that wake me up</value>
   </data>
 </root>

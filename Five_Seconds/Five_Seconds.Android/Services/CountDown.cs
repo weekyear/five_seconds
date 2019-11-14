@@ -10,6 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Xamarin.Essentials;
 
 namespace Five_Seconds.Droid.Services
 {
@@ -17,23 +18,33 @@ namespace Five_Seconds.Droid.Services
     {
         public long CountDownInterval { get; }
         public long MillisInFuture { get; }
-        public AlarmActivity Activity { get; set; }
+        private long countForTTS = 60;
+        private long periodForTTS = 15;
+        public AlarmActivity Activity { get; }
 
-        private bool IsCountDown { get; set; }
+        private bool IsFiveCountType { get; }
+        private bool HasWakeUpText { get; }
+        private string WakeUpText { get; }
 
         private Handler Handler => new Handler();
 
-        public CountDown(long millisInFuture, long countDownInterval, Activity activity, bool isCountDown) : base(millisInFuture, countDownInterval)
+        public CountDown(long millisInFuture, long countDownInterval, Activity activity, bool isFiveCountType) : base(millisInFuture, countDownInterval)
         {
             Activity = activity as AlarmActivity;
             MillisInFuture = millisInFuture;
             CountDownInterval = countDownInterval;
-            IsCountDown = isCountDown;
+            IsFiveCountType = isFiveCountType;
+            HasWakeUpText = Activity.HasWakeUpText;
+            if (HasWakeUpText)
+            {
+                countForTTS = countForTTS - periodForTTS;
+                WakeUpText = Activity.WakeUpText;
+            }
         }
 
         public override async void OnFinish()
         {
-            if (IsCountDown)
+            if (IsFiveCountType)
             {
                 await Task.Delay(300);
                 if (Activity.CanShowReview)
@@ -66,16 +77,16 @@ namespace Five_Seconds.Droid.Services
 
         private void NotifyFaieldAlarmAndFinish()
         {
-            AlarmNotificationAndroid.NotifyFailedAlarm(Activity.alarm);
+            AlarmNotificationAndroid.NotifyFailedAlarm(Activity.alarm, Activity.AlarmTimeNow);
             Activity.FinishAndRemoveTask();
         }
 
-        public override void OnTick(long millisUntilFinished)
+        public async override void OnTick(long millisUntilFinished)
         {
             var alarmActivity = Activity as AlarmActivity;
             double count = (double)millisUntilFinished / 1000;
 
-            if (IsCountDown)
+            if (IsFiveCountType)
             {
                 var countTextView = alarmActivity.countTextView;
 
@@ -101,8 +112,32 @@ namespace Five_Seconds.Droid.Services
                         break;
                 }
 
+                if (HasWakeUpText && count < countForTTS)
+                {
+                    countForTTS = countForTTS - periodForTTS;
+                    await SpeakNowDefaultSettings();
+                }
+
                 timeOutTextView.Text = stringFormat;
             }
+        }
+
+        public async Task SpeakNowDefaultSettings()
+        {
+            var locales = await TextToSpeech.GetLocalesAsync();
+
+            var locale = locales.FirstOrDefault();
+
+            var settings = new SpeechOptions()
+            {
+                Volume = .75f,
+                Pitch = 1.0f,
+                Locale = locale
+            };
+
+            await TextToSpeech.SpeakAsync(WakeUpText, settings);
+
+            // This method will block until utterance finishes.
         }
     }
 }

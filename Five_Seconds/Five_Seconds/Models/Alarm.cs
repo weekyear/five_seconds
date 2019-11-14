@@ -108,6 +108,8 @@ namespace Five_Seconds.Models
         }
 
         public bool IsSelected { get; set; } = false;
+        public bool HasWakeUpText { get; set; } = false;
+        public string WakeUpText { get; set; }
 
         public Alarm() { }
 
@@ -123,6 +125,8 @@ namespace Five_Seconds.Models
             IsVoiceRecognition = original.IsVoiceRecognition;
             IsFiveCount = original.IsFiveCount;
             IsNotDelayAlarm = original.IsNotDelayAlarm;
+            HasWakeUpText = original.HasWakeUpText;
+            WakeUpText = original.WakeUpText;
 
             Volume = original.Volume;
             TimeOffset = original.TimeOffset;
