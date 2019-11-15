@@ -166,5 +166,38 @@ namespace Five_Seconds.Droid.Services
                 }
             }
         }
+
+        public static void SetComebackNotification(bool isAlarmComeback)
+        {
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService("alarm");
+
+            PendingIntent pendingIntent;
+            TimeSpan diffTimeSpan;
+            int id;
+
+            if (isAlarmComeback)
+            {
+                id = -99;
+                diffTimeSpan = new TimeSpan(7, 0, 0);
+            }
+            else
+            {
+                id = -98;
+                diffTimeSpan = new TimeSpan(15, 0, 0);
+            }
+
+            var _alarmIntent = new Intent(Application.Context, typeof(ComebackReceiver));
+            _alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            _alarmIntent.PutExtra("id", id);
+
+            pendingIntent = PendingIntent.GetBroadcast(Application.Context, id, _alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+            var diffMillis = (long)diffTimeSpan.TotalMilliseconds;
+
+            Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
+            PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, id, showIntent, PendingIntentFlags.UpdateCurrent);
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
+            alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
+        }
     }
 }

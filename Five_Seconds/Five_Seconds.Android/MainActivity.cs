@@ -38,6 +38,8 @@ namespace Five_Seconds.Droid
 
             Fabric.Fabric.With(this, new Crashlytics.Crashlytics());
             Crashlytics.Crashlytics.HandleManagedExceptions();
+
+            AlarmHelper.SetComebackNotification(false);
         }
 
         private void InitForOpenApp(Bundle savedInstanceState)
@@ -86,11 +88,12 @@ namespace Five_Seconds.Droid
         private void LoadAppAndRefreshAlarmManager()
         {
             LoadApplication(new App());
-            Alarm.IsInitFinished = false;
-            var allAlarms = App.Service.GetAllAlarms();
-            Alarm.IsInitFinished = true;
 
-            AlarmHelper.RefreshAlarmByManager(allAlarms);
+            //Alarm.IsInitFinished = false;
+            //var allAlarms = App.Service.GetAllAlarms();
+            //Alarm.IsInitFinished = true;
+
+            //AlarmHelper.RefreshAlarmByManager(allAlarms);
         }
 
         private void SetMobileAds()

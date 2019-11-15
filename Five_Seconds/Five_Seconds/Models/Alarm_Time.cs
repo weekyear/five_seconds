@@ -80,6 +80,8 @@ namespace Five_Seconds.Models
         {
             var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, Time.Seconds);
 
+            if (dateTime.Year > 9000) return DateTimeOffset.MaxValue;
+
             return new DateTimeOffset(dateTime);
         }
 

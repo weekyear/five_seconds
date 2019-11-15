@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Xamarin.Essentials;
 
 namespace Five_Seconds.Droid.Services
@@ -19,7 +13,7 @@ namespace Five_Seconds.Droid.Services
         public long CountDownInterval { get; }
         public long MillisInFuture { get; }
         private long countForTTS = 60;
-        private long periodForTTS = 15;
+        private long periodForTTS = 12;
         public AlarmActivity Activity { get; }
 
         private bool IsFiveCountType { get; }
@@ -39,6 +33,7 @@ namespace Five_Seconds.Droid.Services
             {
                 countForTTS = countForTTS - periodForTTS;
                 WakeUpText = Activity.WakeUpText;
+                SpeakNowDefaultSettings();
             }
         }
 
@@ -77,7 +72,7 @@ namespace Five_Seconds.Droid.Services
 
         private void NotifyFaieldAlarmAndFinish()
         {
-            AlarmNotificationAndroid.NotifyFailedAlarm(Activity.alarm, Activity.AlarmTimeNow);
+            NotificationAndroid.NotifyFailedAlarm(Activity.alarm, Activity.AlarmTimeNow);
             Activity.FinishAndRemoveTask();
         }
 
@@ -122,7 +117,7 @@ namespace Five_Seconds.Droid.Services
             }
         }
 
-        public async Task SpeakNowDefaultSettings()
+        private async Task SpeakNowDefaultSettings()
         {
             var locales = await TextToSpeech.GetLocalesAsync();
 

@@ -332,6 +332,7 @@ namespace Five_Seconds.ViewModels
         private async Task Save()
         {
             Name = Name.TrimStart().TrimEnd();
+            WakeUpText = WakeUpText.TrimStart().TrimEnd();
 
             Alarm.TimeOffset = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0);
 
@@ -342,6 +343,10 @@ namespace Five_Seconds.ViewModels
             else if (Alarm.TimeOffset.Subtract(DateTime.Now).Ticks < 0 && !DaysOfWeek.GetHasADayBeenSelected(Alarm.Days))
             {
                 await Application.Current.MainPage.DisplayAlert("", AppResources.SetTimePast, AppResources.OK);
+            }
+            else if (string.IsNullOrEmpty(WakeUpText))
+            {
+                await Application.Current.MainPage.DisplayAlert("", AppResources.ForgotWordsThatWakeMeUp, AppResources.OK);
             }
             else
             {

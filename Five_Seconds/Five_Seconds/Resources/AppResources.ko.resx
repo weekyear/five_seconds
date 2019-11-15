@@ -231,6 +231,9 @@
   <data name="ForgotAlarmName" xml:space="preserve">
     <value>알람 이름을 깜빡하셨어요!</value>
   </data>
+  <data name="ForgotWordsThatWakeMeUp" xml:space="preserve">
+    <value>'나를 일깨우는 말'을 깜빡하셨어요!</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>금</value>
   </data>
@@ -325,7 +328,7 @@
     <value>알람이 울리고 난 뒤, 15초마다 해당 문장이 음성으로 나오는 기능입니다.</value>
   </data>
   <data name="WakeUpTextSample" xml:space="preserve">
-    <value>예시) 일어나야 된다 OO아</value>
+    <value>예) 일어나야 된다 OO아</value>
   </data>
   <data name="Wednesday" xml:space="preserve">
     <value>수</value>

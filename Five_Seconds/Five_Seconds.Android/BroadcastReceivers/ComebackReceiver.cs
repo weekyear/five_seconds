@@ -11,21 +11,24 @@ using System.Collections.Generic;
 namespace Five_Seconds.Droid.BroadcastReceivers
 {
     [BroadcastReceiver]
-    public class AlarmReceiver : BroadcastReceiver
+    public class ComebackReceiver : BroadcastReceiver
     {
+        private int id;
         public override void OnReceive(Context context, Intent intent)
         {
-            Console.WriteLine("OnReceive_AlarmReceiver");
+            Console.WriteLine("OnReceive_NotificationReceiver");
             var bundle = intent.Extras;
-            var id = (int)bundle.Get("id");
 
-            NotificationAndroid.CancelLaterNotification(context, id);
+            id = bundle.GetInt("id", -100000);
 
-            var disIntent = new Intent(context, typeof(AlarmActivity));
-            disIntent.PutExtras(bundle);
-
-            disIntent.SetFlags(ActivityFlags.NewTask);
-            context.StartActivity(disIntent);
+            if (id == -98)
+            {
+                NotificationAndroid.NotifyAppComeback();
+            }
+            else if (id == -99)
+            {
+                NotificationAndroid.NotifyAlarmComeback();
+            }
         }
     }
 }

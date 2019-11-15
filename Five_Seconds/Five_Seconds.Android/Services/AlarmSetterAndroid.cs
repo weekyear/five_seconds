@@ -39,7 +39,7 @@ namespace Five_Seconds.Droid.Services
         public void DeleteAlarm(int id)
         {
             AlarmHelper.DeleteAlarmByManager(id);
-            AlarmNotificationAndroid.CancelLaterNotification(Application.Context, id);
+            NotificationAndroid.CancelLaterNotification(Application.Context, id);
         }
 
         public void DeleteAllAlarms(List<Alarm> alarms)

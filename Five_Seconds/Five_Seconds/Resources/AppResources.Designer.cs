@@ -403,6 +403,15 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You forgot the &apos;Words that wake me up&apos;.
+        /// </summary>
+        internal static string ForgotWordsThatWakeMeUp {
+            get {
+                return ResourceManager.GetString("ForgotWordsThatWakeMeUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to F.
         /// </summary>
         internal static string Friday {

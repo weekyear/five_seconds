@@ -231,6 +231,9 @@
   <data name="ForgotAlarmName" xml:space="preserve">
     <value>You forgot the alarm name!</value>
   </data>
+  <data name="ForgotWordsThatWakeMeUp" xml:space="preserve">
+    <value>You forgot the 'Words that wake me up'</value>
+  </data>
   <data name="Friday" xml:space="preserve">
     <value>F</value>
   </data>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Android;
 using Android.App;
@@ -83,6 +84,11 @@ namespace Five_Seconds.Droid
         public bool IsFiveCount;
         public bool HasWakeUpText;
         private int alarmVolume;
+
+        private bool IsFirstFeedbackNotification = false;
+        private bool CanShowFeedbackNotification;
+        private double PreviousRate;
+        private double RecentRate;
 
         public bool CanShowReview;
         public DateTime AlarmTimeNow;
@@ -369,6 +375,39 @@ namespace Five_Seconds.Droid
 
             var Records = alarmsRepo.RecordFromDB;
             var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
+
+            CanShowFeedbackNotification = alarmRecords.Count % 10 == 0;
+            if (CanShowFeedbackNotification)
+            {
+                var RecentRecords = new List<Record>();
+
+                var OrdererdRecords = alarmRecords.OrderByDescending(a => a.DateTime).ToList();
+                for (int i = 0; i < 10; i++)
+                {
+                    var record = OrdererdRecords[i];
+
+                    RecentRecords.Add(record);
+                }
+
+                for (int i = 0; i < 10; i++)
+                {
+                    OrdererdRecords.RemoveAt(0);
+                }
+
+                if (alarmRecords.Count == 10)
+                {
+                    IsFirstFeedbackNotification = true;
+                }
+                else
+                {
+                    var successOrderedRecords = OrdererdRecords.FindAll(a => a.IsSuccess == true);
+                    PreviousRate = (double)successOrderedRecords.Count / OrdererdRecords.Count;
+                }
+
+                var successRecentRecords = RecentRecords.FindAll(a => a.IsSuccess == true);
+                RecentRate = (double)successRecentRecords.Count / RecentRecords.Count;
+
+            }
 
             if (resultDialog == null) CreateResultDialog();
 
@@ -688,7 +727,7 @@ namespace Five_Seconds.Droid
 
             Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
 
-            AlarmNotificationAndroid.NotifyLaterAlarm(alarm, Intent);
+            NotificationAndroid.NotifyLaterAlarm(alarm, Intent);
         }
 
         private DateTime SetLaterAlarmAndGetLaterAlamrTime(int minutes)
@@ -766,6 +805,9 @@ namespace Five_Seconds.Droid
         {
             TurnOffSoundAndVibration();
             countDownForFailed?.Cancel();
+            ShowFeedbackNotification();
+            SetAlarmComeback();
+
             base.FinishAndRemoveTask();
         }
 
@@ -1072,6 +1114,44 @@ namespace Five_Seconds.Droid
         {
             tellmeView.SetImageResource(Resource.Drawable.ic_settings_voice);
             tellmeView.SetBackgroundResource(Resource.Drawable.background_tellmebtn_recording);
+        }
+
+        private void ShowFeedbackNotification()
+        {
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "ko-KR":
+                    if (CanShowFeedbackNotification)
+                    {
+                        if (IsFirstFeedbackNotification)
+                        {
+                            NotificationAndroid.NotifyFirstFeedbackAlarm(alarm, RecentRate);
+                        }
+                        else
+                        {
+                            NotificationAndroid.NotifyFeedbackAlarm(alarm, PreviousRate, RecentRate);
+                        }
+                    }
+                    break;
+                case "en-US":
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void SetAlarmComeback()
+        {
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "ko-KR":
+                    AlarmHelper.SetComebackNotification(true);
+                    break;
+                case "en-US":
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

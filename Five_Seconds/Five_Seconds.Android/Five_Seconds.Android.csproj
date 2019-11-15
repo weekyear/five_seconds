@@ -184,6 +184,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BroadcastReceivers\ComebackReceiver.cs" />
     <Compile Include="CustomRenderers\AdMobViewRenderer.cs" />
     <Compile Include="CustomRenderers\CustomGestureListener.cs" />
     <Compile Include="CustomRenderers\GestureListViewRenderer.cs" />
@@ -198,7 +199,7 @@
     <Compile Include="Services\AdMobInterstitialAndroid.cs" />
     <Compile Include="Services\AlarmHelper.cs" />
     <Compile Include="BroadcastReceivers\AlarmReceiver.cs" />
-    <Compile Include="Services\AlarmNotificationAndroid.cs" />
+    <Compile Include="Services\NotificationAndroid.cs" />
     <Compile Include="BroadcastReceivers\BootReceiver.cs" />
     <Compile Include="Services\CountDown.cs" />
     <Compile Include="Services\CountDownAndroid.cs" />
