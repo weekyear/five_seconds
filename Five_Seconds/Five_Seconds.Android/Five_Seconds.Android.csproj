@@ -60,6 +60,7 @@
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
     <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
+    <AndroidLinkTool>proguard</AndroidLinkTool>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

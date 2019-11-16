@@ -682,7 +682,7 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to When the alarm sounds, the sentence is spoken out every 15 seconds..
+        ///   Looks up a localized string similar to When the alarm sounds, the sentence is spoken out every 12 seconds..
         /// </summary>
         internal static string WakeUpTextDescription {
             get {

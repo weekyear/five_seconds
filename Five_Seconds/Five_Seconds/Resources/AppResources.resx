@@ -325,7 +325,7 @@
     <value>Voice Recognition</value>
   </data>
   <data name="WakeUpTextDescription" xml:space="preserve">
-    <value>When the alarm sounds, the sentence is spoken out every 15 seconds.</value>
+    <value>When the alarm sounds, the sentence is spoken out every 12 seconds.</value>
   </data>
   <data name="WakeUpTextSample" xml:space="preserve">
     <value>ex) Wake Up! OO!!</value>

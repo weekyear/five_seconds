@@ -178,12 +178,12 @@ namespace Five_Seconds.Droid.Services
             if (isAlarmComeback)
             {
                 id = -99;
-                diffTimeSpan = new TimeSpan(7, 0, 0);
+                diffTimeSpan = new TimeSpan(7, 0, 0, 0);
             }
             else
             {
                 id = -98;
-                diffTimeSpan = new TimeSpan(15, 0, 0);
+                diffTimeSpan = new TimeSpan(15, 0, 0, 0);
             }
 
             var _alarmIntent = new Intent(Application.Context, typeof(ComebackReceiver));

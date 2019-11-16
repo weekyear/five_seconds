@@ -325,7 +325,7 @@
     <value>음성 인식</value>
   </data>
   <data name="WakeUpTextDescription" xml:space="preserve">
-    <value>알람이 울리고 난 뒤, 15초마다 해당 문장이 음성으로 나오는 기능입니다.</value>
+    <value>알람이 울리고 난 뒤, 12초마다 해당 문장이 음성으로 나오는 기능입니다.</value>
   </data>
   <data name="WakeUpTextSample" xml:space="preserve">
     <value>예) 일어나야 된다 OO아</value>
