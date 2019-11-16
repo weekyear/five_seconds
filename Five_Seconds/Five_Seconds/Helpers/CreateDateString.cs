@@ -68,14 +68,14 @@ namespace Five_Seconds.Helpers
                 case "ko-KR":
                     if (date.Date.Subtract(DateTime.Now.Date).TotalDays == 1)
                     {
-                        return $"{string.Format("내일-{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
+                        return $"{string.Format("내일 - {0:MM}월 {0:dd}일", date)} ({allDaysString[(int)date.DayOfWeek]})";
                     }
 
-                    return $"{string.Format("{0:MM}월 {0:dd}일", date)}, ({allDaysString[(int)date.DayOfWeek]})";
+                    return $"{string.Format("{0:MM}월 {0:dd}일", date)} ({allDaysString[(int)date.DayOfWeek]})";
                 case "en-US":
-                    return $"{date.ToString("m", CultureInfo.CurrentCulture)}, ({date.DayOfWeek})";
+                    return $"{date.ToString("m", CultureInfo.CurrentCulture)} ({date.DayOfWeek})";
                 default:
-                    return $"{date.ToString("m", CultureInfo.CurrentCulture)}, ({date.DayOfWeek})";
+                    return $"{date.ToString("m", CultureInfo.CurrentCulture)} ({date.DayOfWeek})";
             }
         }
 

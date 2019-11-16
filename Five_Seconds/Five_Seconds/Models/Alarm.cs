@@ -109,7 +109,7 @@ namespace Five_Seconds.Models
 
         public bool IsSelected { get; set; } = false;
         public bool HasWakeUpText { get; set; } = false;
-        public string WakeUpText { get; set; }
+        public string WakeUpText { get; set; } = string.Empty;
 
         public Alarm() { }
 

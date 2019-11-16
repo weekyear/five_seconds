@@ -344,7 +344,7 @@ namespace Five_Seconds.ViewModels
             {
                 await Application.Current.MainPage.DisplayAlert("", AppResources.SetTimePast, AppResources.OK);
             }
-            else if (string.IsNullOrEmpty(WakeUpText))
+            else if (string.IsNullOrEmpty(WakeUpText) && Alarm.HasWakeUpText)
             {
                 await Application.Current.MainPage.DisplayAlert("", AppResources.ForgotWordsThatWakeMeUp, AppResources.OK);
             }

@@ -29,7 +29,8 @@ namespace Five_Seconds.Droid.Services
             CountDownInterval = countDownInterval;
             IsFiveCountType = isFiveCountType;
             HasWakeUpText = Activity.HasWakeUpText;
-            if (HasWakeUpText)
+
+            if (HasWakeUpText && !IsFiveCountType)
             {
                 countForTTS = countForTTS - periodForTTS;
                 WakeUpText = Activity.WakeUpText;
@@ -119,20 +120,28 @@ namespace Five_Seconds.Droid.Services
 
         private async Task SpeakNowDefaultSettings()
         {
-            var locales = await TextToSpeech.GetLocalesAsync();
+            SetCultureToUSEnglish(CultureInfo.CurrentCulture.Name);
 
-            var locale = locales.FirstOrDefault();
+            //var locales = await TextToSpeech.GetLocalesAsync();
 
-            var settings = new SpeechOptions()
-            {
-                Volume = .75f,
-                Pitch = 1.0f,
-                Locale = locale
-            };
+            //var locale = locales.FirstOrDefault();
 
-            await TextToSpeech.SpeakAsync(WakeUpText, settings);
+            //var settings = new SpeechOptions()
+            //{
+            //    Volume = .75f,
+            //    Pitch = 1.0f,
+            //    Locale = locale
+            //};
+
+            await TextToSpeech.SpeakAsync(WakeUpText);
 
             // This method will block until utterance finishes.
+        }
+
+        private void SetCultureToUSEnglish(string currentCultureName)
+        {
+            CultureInfo currentCulture = new CultureInfo(currentCultureName);
+            CultureInfo.DefaultThreadCurrentCulture = currentCulture;
         }
     }
 }

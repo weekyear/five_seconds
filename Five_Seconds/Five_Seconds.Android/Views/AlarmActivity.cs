@@ -337,7 +337,7 @@ namespace Five_Seconds.Droid
         {
             TurnOffSoundAndVibration();
 
-            countDownForFailed.Cancel();
+            countDownForFailed?.Cancel();
 
             IsSuccess = true;
 
