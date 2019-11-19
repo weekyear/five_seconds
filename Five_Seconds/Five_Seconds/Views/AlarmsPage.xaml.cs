@@ -12,7 +12,6 @@ namespace Five_Seconds.Views
 {
     // Learn more about making custom code visible in the Xamarin.Forms previewer
     // by visiting https://aka.ms/xamarinforms-previewer
-    [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmsPage : ContentPage
     {
@@ -20,8 +19,6 @@ namespace Five_Seconds.Views
 
         public AlarmsPage()
         {
-            AdMaiora.RealXaml.Client.AppManager.Init(this);
-
             InitializeComponent();
 
             viewModel = new AlarmsViewModel(Navigation, new MessageBoxService());

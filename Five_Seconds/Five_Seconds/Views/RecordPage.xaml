@@ -67,20 +67,20 @@
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding PreviousMonthCommand}"/>
                         <Label Grid.Column="1" 
-                       Text="{Binding SelectedMonth, Converter={StaticResource SelectedMonthStringConverter}}"
-                       TextColor="Black"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"
-                       FontSize="26" />
+                               Text="{Binding SelectedMonth, Converter={StaticResource SelectedMonthStringConverter}}"
+                               TextColor="Black"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               FontSize="26" />
                         <custom:PercentLabel  
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    Percent="{Binding MonthSuccessRate}"
-                    FontAttributes="Bold"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="CenterAndExpand"
-                    FontSize="28"
-                    TextColor="LightSlateGray"
+                            Grid.Column="1"
+                            Grid.Row="1"
+                            Percent="{Binding MonthSuccessRate}"
+                            FontAttributes="Bold"
+                            HorizontalTextAlignment="Center"
+                            VerticalOptions="CenterAndExpand"
+                            FontSize="28"
+                            TextColor="LightSlateGray"
                     Text="{Binding MonthSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                         <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
                              Margin="10, 0"

@@ -13,7 +13,6 @@ namespace Five_Seconds.Services
     public class Database : IDatabase
     {
         public SQLiteConnection DBConnect()
-        
         {
             //if (Device.RuntimePlatform != "Test")
             //{

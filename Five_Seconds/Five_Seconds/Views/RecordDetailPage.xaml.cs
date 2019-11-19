@@ -15,7 +15,6 @@ using static Five_Seconds.ViewModels.RecordViewModel;
 
 namespace Five_Seconds.Views
 {
-    [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecordDetailPage : ContentPage, ISearchPage
     {

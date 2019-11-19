@@ -9,7 +9,6 @@ using Xamarin.Forms.Xaml;
 
 namespace Five_Seconds.CustomControls
 {
-    [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmsGridView : ContentView
     {

@@ -10,7 +10,6 @@ using Xamarin.Forms.Xaml;
 
 namespace Five_Seconds.Views
 {
-    [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AlarmPage : ContentPage
     {

@@ -58,9 +58,8 @@
     <AndroidUseAapt2>true</AndroidUseAapt2>
     <AndroidDexTool>dx</AndroidDexTool>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
     <JavaMaximumHeapSize>2G</JavaMaximumHeapSize>
-    <AndroidLinkTool>proguard</AndroidLinkTool>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />

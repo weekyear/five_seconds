@@ -121,13 +121,12 @@ namespace Five_Seconds.Droid
             {
                 IsFinished = true;
                 CheckOnlyCountActivityAndRefreshAlarmManager();
-                return;
             }
-
-            SettingForAlarmActivity(savedInstanceState);
-            CreatingForAlarmActivity();
-
-            if (bundle == null) return;
+            else
+            {
+                SettingForAlarmActivity(savedInstanceState);
+                CreatingForAlarmActivity();
+            }
         }
 
         private void GetAlarmServiceAndRepository()
@@ -202,7 +201,7 @@ namespace Five_Seconds.Droid
         private async void SetCountDown()
         {
             await Task.Delay(330);
-            countDownForFiveSeconds = new CountDown(5000, 10, this, true);
+            countDownForFiveSeconds = new CountDown(5000, 50, this, true);
             countDownForFiveSeconds.Start();
         }
 

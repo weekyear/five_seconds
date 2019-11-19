@@ -115,7 +115,7 @@ namespace Five_Seconds.ViewModels
             {
                 if (selectedMonth.Month == value.Month) return;
                 selectedMonth = value;
-                OnPropertyChanged("SelectedMonth");
+                OnPropertyChanged(nameof(SelectedMonth) );
             }
         }
 

@@ -25,8 +25,6 @@ namespace Five_Seconds
         {
             //SetCulture("en-US");
 
-            AdMaiora.RealXaml.Client.AppManager.Init(this);
-
             InitializeComponent();
 
             DependencyService.Register<INavigation>();

@@ -2,10 +2,7 @@
 using Five_Seconds.Repository;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Five_Seconds.Services
@@ -13,15 +10,13 @@ namespace Five_Seconds.Services
     public class AlarmService : IAlarmService
     {
         public IAlarmsRepository Repository { get; }
-        public List<Alarm> Alarms { get; set; } = new List<Alarm>();
+        public List<Alarm> Alarms { get; private set; } = new List<Alarm>();
 
         public AlarmService(IAlarmsRepository repository)
         {
             Repository = repository;
 
-            Alarm.IsInitFinished = false;
-            Alarms = GetAllAlarms();
-            Alarm.IsInitFinished = true;
+            UpdateAlarms();
         }
 
         public List<Alarm> GetAllAlarms()

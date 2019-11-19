@@ -1,5 +1,4 @@
 ﻿using Five_Seconds.Models;
-using System;
 using System.Collections.Generic;
 
 namespace Five_Seconds.Repository
@@ -102,6 +101,7 @@ namespace Five_Seconds.Repository
             return ItemDatabase.DeleteObject<Record>(id);
         }
 
+        
         public void DeleteAllRecords()
         {
             ItemDatabase.DeleteAllObjects<Record>();

@@ -14,7 +14,6 @@ using static Five_Seconds.ViewModels.RecordViewModel;
 
 namespace Five_Seconds.Views
 {
-    [AdMaiora.RealXaml.Client.RootPage]
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RecordPage : ContentPage, ISearchPage
     {
@@ -41,7 +40,6 @@ namespace Five_Seconds.Views
                     new Func<string, object>((arg) => (BindingContext as RecordViewModel)?.ValidateAndReturn(arg))
                 }
             };
-
 
             Application.Current.Resources.Add(Resources);
 
