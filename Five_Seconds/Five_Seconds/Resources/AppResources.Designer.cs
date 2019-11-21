@@ -403,6 +403,15 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need to set the app to link..
+        /// </summary>
+        internal static string ForgotLinkOtherApps {
+            get {
+                return ResourceManager.GetString("ForgotLinkOtherApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You forgot the &apos;Words that wake me up&apos;.
         /// </summary>
         internal static string ForgotWordsThatWakeMeUp {
@@ -426,6 +435,24 @@ namespace Five_Seconds.Resources {
         internal static string IndomitableAlarm {
             get {
                 return ResourceManager.GetString("IndomitableAlarm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link other apps.
+        /// </summary>
+        internal static string LinkOtherApps {
+            get {
+                return ResourceManager.GetString("LinkOtherApps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The app you set opens after a successful alarm..
+        /// </summary>
+        internal static string LinkOtherAppsDescription {
+            get {
+                return ResourceManager.GetString("LinkOtherAppsDescription", resourceCulture);
             }
         }
         

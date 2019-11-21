@@ -111,6 +111,11 @@ namespace Five_Seconds.Models
         public bool HasWakeUpText { get; set; } = false;
         public string WakeUpText { get; set; } = string.Empty;
 
+
+        public bool IsLinkOtherApp { get; set; } = false;
+        public string AppLabel { get; set; } = string.Empty;
+        public string PackageName { get; set; } = string.Empty;
+
         public Alarm() { }
 
         public Alarm(Alarm original)
@@ -127,6 +132,9 @@ namespace Five_Seconds.Models
             IsNotDelayAlarm = original.IsNotDelayAlarm;
             HasWakeUpText = original.HasWakeUpText;
             WakeUpText = original.WakeUpText;
+            IsLinkOtherApp = original.IsLinkOtherApp;
+            PackageName = original.PackageName;
+            AppLabel = original.AppLabel;
 
             Volume = original.Volume;
             TimeOffset = original.TimeOffset;

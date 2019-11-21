@@ -5,6 +5,7 @@ using Five_Seconds.Resources;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -78,6 +79,12 @@ namespace Five_Seconds.ViewModels
                 Alarm.Tone = alarm.Tone;
                 Alarm.Volume = alarm.Volume;
             });
+            
+            MessagingCenter.Subscribe<AppListPage, AppPackage>(this, "changeAppPkg", (sender, appPkg) =>
+            {
+                Alarm.PackageName = appPkg.PackageName;
+                Alarm.AppLabel = appPkg.Label;
+            });
         }
 
         public DateTime SetMinimumDate()
@@ -97,12 +104,14 @@ namespace Five_Seconds.ViewModels
             CloseCommand = new Command(async () => await ClosePopup());
             SaveCommand = new Command(async () => await Save());
             ShowSettingToneCommand = new Command(async () => await ShowSettingTone());
+            OpenAppListCommand = new Command(async() => await OpenAppList());
         }
 
         // Command
         public Command CloseCommand { get; set; }
         public Command SaveCommand { get; set; }
         public Command ShowSettingToneCommand { get; set; }
+        public Command OpenAppListCommand { get; set; }
 
         // Property
 
@@ -130,6 +139,17 @@ namespace Five_Seconds.ViewModels
                 if (Alarm.WakeUpText == value) return;
                 Alarm.WakeUpText = value;
                 OnPropertyChanged(nameof(WakeUpText));
+            }
+        }
+
+        public string PackageName
+        {
+            get { return Alarm.PackageName; }
+            set
+            {
+                if (Alarm.PackageName == value) return;
+                Alarm.PackageName = value;
+                OnPropertyChanged(nameof(PackageName));
             }
         }
 
@@ -333,6 +353,7 @@ namespace Five_Seconds.ViewModels
         {
             if (!string.IsNullOrEmpty(Name)) Name = Name.TrimStart().TrimEnd();
             if (!string.IsNullOrEmpty(WakeUpText)) WakeUpText = WakeUpText.TrimStart().TrimEnd();
+            if (!string.IsNullOrEmpty(PackageName)) PackageName = PackageName.TrimStart().TrimEnd();
 
             Alarm.TimeOffset = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0);
 
@@ -347,6 +368,10 @@ namespace Five_Seconds.ViewModels
             else if (string.IsNullOrEmpty(WakeUpText) && Alarm.HasWakeUpText)
             {
                 await Application.Current.MainPage.DisplayAlert("", AppResources.ForgotWordsThatWakeMeUp, AppResources.OK);
+            }
+            else if (string.IsNullOrEmpty(PackageName) && Alarm.IsLinkOtherApp)
+            {
+                await Application.Current.MainPage.DisplayAlert("", AppResources.ForgotLinkOtherApps, AppResources.OK);
             }
             else
             {
@@ -373,6 +398,13 @@ namespace Five_Seconds.ViewModels
         private async Task ShowSettingTone()
         {
             await Navigation.PushAsync(new SettingTonePage(Navigation, Alarm));
+        }
+
+        private async Task OpenAppList()
+        {
+            var pkgList = DependencyService.Get<IOpenAppList>().OpenAppList();
+
+            await Navigation.PushAsync(new AppListPage(pkgList));
         }
     }
 }

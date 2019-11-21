@@ -231,6 +231,9 @@
   <data name="ForgotAlarmName" xml:space="preserve">
     <value>You forgot the alarm name!</value>
   </data>
+  <data name="ForgotLinkOtherApps" xml:space="preserve">
+    <value>You need to set the app to link.</value>
+  </data>
   <data name="ForgotWordsThatWakeMeUp" xml:space="preserve">
     <value>You forgot the 'Words that wake me up'</value>
   </data>
@@ -239,6 +242,12 @@
   </data>
   <data name="IndomitableAlarm" xml:space="preserve">
     <value>Indomitable Alarm</value>
+  </data>
+  <data name="LinkOtherApps" xml:space="preserve">
+    <value>Link other apps</value>
+  </data>
+  <data name="LinkOtherAppsDescription" xml:space="preserve">
+    <value>The app you set opens after a successful alarm.</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>Menu</value>

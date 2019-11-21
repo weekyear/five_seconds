@@ -93,6 +93,10 @@ namespace Five_Seconds.Droid
         public bool CanShowReview;
         public DateTime AlarmTimeNow;
 
+        public bool CanOpenOtherApp = false;
+        public bool IsLinkOtherApp;
+        public string _PackageName;
+
         public bool IsSuccess = false;
         public bool IsFinished = false;
 
@@ -152,6 +156,8 @@ namespace Five_Seconds.Droid
             IsFiveCount = (bool)bundle.Get("IsFiveCount");
             HasWakeUpText = (bool)bundle.Get("HasWakeUpText");
             WakeUpText = (string)bundle.Get("WakeUpText");
+            IsLinkOtherApp = (bool)bundle.Get("IsLinkOtherApp");
+            _PackageName = (string)bundle.Get("PackageName");
             alarmVolume = (int)bundle.Get("alarmVolume");
         }
 
@@ -363,6 +369,11 @@ namespace Five_Seconds.Droid
             CreateRecord();
 
             IsFinished = true;
+
+            if (IsLinkOtherApp)
+            {
+                CanOpenOtherApp = true;
+            }
 
             SetResultToDialogResult();
 
@@ -839,6 +850,20 @@ namespace Five_Seconds.Droid
             SetAlarmComeback();
 
             base.FinishAndRemoveTask();
+
+            if (CanOpenOtherApp)
+            {
+                OpenOtherApp();
+            }
+        }
+
+        private void OpenOtherApp()
+        {
+            Intent launchIntent = PackageManager.GetLaunchIntentForPackage(_PackageName);
+            if (launchIntent != null)
+            {
+                StartActivity(launchIntent);//null pointer check in case package name was not found
+            }
         }
 
         // 마이크 권한
@@ -1003,12 +1028,12 @@ namespace Five_Seconds.Droid
             Intent googleAppStoreIntent;
             try
             {
-                googleAppStoreIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=" + PackageName));
+                googleAppStoreIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("market://details?id=" + _PackageName));
 
             }
             catch (ActivityNotFoundException)
             {
-                googleAppStoreIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("http://play.google.com/store/apps/details?id=" + PackageName));
+                googleAppStoreIntent = new Intent(Intent.ActionView, Android.Net.Uri.Parse("http://play.google.com/store/apps/details?id=" + _PackageName));
 
             }
             googleAppStoreIntent.AddFlags(ActivityFlags.NewTask);

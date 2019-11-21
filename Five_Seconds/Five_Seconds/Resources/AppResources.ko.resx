@@ -231,6 +231,9 @@
   <data name="ForgotAlarmName" xml:space="preserve">
     <value>알람 이름을 깜빡하셨어요!</value>
   </data>
+  <data name="ForgotLinkOtherApps" xml:space="preserve">
+    <value>연동할 다른 앱을 설정해야 합니다.</value>
+  </data>
   <data name="ForgotWordsThatWakeMeUp" xml:space="preserve">
     <value>'나를 일깨우는 말'을 깜빡하셨어요!</value>
   </data>
@@ -239,6 +242,12 @@
   </data>
   <data name="IndomitableAlarm" xml:space="preserve">
     <value>의지 알람</value>
+  </data>
+  <data name="LinkOtherApps" xml:space="preserve">
+    <value>다른 앱 연동</value>
+  </data>
+  <data name="LinkOtherAppsDescription" xml:space="preserve">
+    <value>알람을 성공한 후, 설정한 앱이 켜지는 기능입니다.</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>메뉴</value>

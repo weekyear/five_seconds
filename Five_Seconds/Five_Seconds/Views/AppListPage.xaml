@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:custom="clr-namespace:Five_Seconds.CustomControls;assembly=Five_Seconds"
+             mc:Ignorable="d"
+             x:Class="Five_Seconds.Views.AppListPage"
+             xmlns:local="clr-namespace:Five_Seconds.Helpers"
+             Title="{local:Translate LinkOtherApps}"
+             BackgroundColor="White">
+    <ContentPage.Content>
+        <ListView x:Name="AppListView" 
+                      ItemsSource="{Binding Apps, Mode=TwoWay}"
+                      ItemTapped="AppListView_ItemTapped"
+                      HasUnevenRows="true">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell Height="65">
+                        <ViewCell.View>
+                            <StackLayout Orientation="Horizontal">
+                                <custom:AppIconImage PackageName="{Binding PackageName}"
+                                                     WidthRequest="35"
+                                                     HeightRequest="35"
+                                                     HorizontalOptions="Start"
+                                                     Margin="15, 0"/>
+                                <Label Text="{Binding Label}"
+                                           FontSize="Medium" 
+                                           TextColor="Black"
+                                           HorizontalOptions="FillAndExpand"
+                                           VerticalTextAlignment="Center"
+                                           LineBreakMode="TailTruncation"
+                                           MaxLines="1"
+                                           Margin="20"/>
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>

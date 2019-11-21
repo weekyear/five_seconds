@@ -79,10 +79,11 @@ namespace Five_Seconds.Droid.Services
             _alarmIntent.PutExtra("IsFiveCount", alarm.IsFiveCount);
             _alarmIntent.PutExtra("HasWakeUpText", alarm.HasWakeUpText);
             _alarmIntent.PutExtra("WakeUpText", alarm.WakeUpText);
+            _alarmIntent.PutExtra("IsLinkOtherApp", alarm.IsLinkOtherApp);
+            _alarmIntent.PutExtra("PackageName", alarm.PackageName);
             _alarmIntent.PutExtra("IsRepeating", DaysOfWeek.GetHasADayBeenSelected(alarm.Days));
             _alarmIntent.PutExtra("toneName", alarm.Tone);
             _alarmIntent.PutExtra("alarmVolume", alarm.Volume);
-
             return _alarmIntent;
         }
 

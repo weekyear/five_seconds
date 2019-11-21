@@ -12,9 +12,9 @@
              BackgroundColor="{StaticResource BackgroundColor}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
             <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
+            <conv:AppLabelStringConverter x:Key="AppLabelStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -195,6 +195,37 @@
                                Text="{Binding WakeUpText}" />
                         <Label TextColor="SlateGray" Text="{local:Translate WakeUpTextDescription}" Margin="5, 0" 
                                FontSize="Small" VerticalOptions="StartAndExpand" />
+                    </StackLayout>
+                    <BoxView Color="LightGray" HorizontalOptions="FillAndExpand" Margin="10, 0" HeightRequest="1"/>
+                    <StackLayout Orientation="Vertical" Margin="10">
+                        <StackLayout Orientation="Horizontal">
+                            <Label TextColor="Black" Text="{local:Translate LinkOtherApps}" Margin="10, 0" FontSize="Medium" VerticalOptions="CenterAndExpand" />
+                            <Switch IsToggled="{Binding Alarm.IsLinkOtherApp}"
+                                HorizontalOptions="EndAndExpand"
+                                OnColor="LightSteelBlue"
+                                ThumbColor="{Binding Alarm.IsLinkOtherApp, Converter={StaticResource BooleanSwitchThumbColorConverter}}"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical">
+                            <StackLayout Orientation="Horizontal" IsVisible="{Binding Alarm.IsLinkOtherApp}">
+                                <custom:AppIconImage PackageName="{Binding Alarm.PackageName}"
+                                                         Margin="5, 0"
+                                                         WidthRequest="35"
+                                                         HeightRequest="35"
+                                                         HorizontalOptions="Start"/>
+                                <Button Text="{Binding Alarm.AppLabel, Converter={StaticResource AppLabelStringConverter}}"
+                                            BorderColor="{StaticResource PrimaryLight}"
+                                            BorderWidth="2"
+                                            CornerRadius="5"
+                                            Margin="0, 2"
+                                            HorizontalOptions="FillAndExpand"
+                                            FontSize="Medium"
+                                            BackgroundColor="White"
+                                            TextColor="{StaticResource PrimaryTextColor}"
+                                            Command="{Binding OpenAppListCommand}"/>
+                            </StackLayout>
+                            <Label TextColor="SlateGray" Text="{local:Translate LinkOtherAppsDescription}" Margin="5, 0" 
+                               FontSize="Small" VerticalOptions="StartAndExpand" />
+                        </StackLayout>
                     </StackLayout>
                 </StackLayout>
             </Frame>

@@ -5,7 +5,6 @@ using Five_Seconds.ViewModels;
 using Five_Seconds.Views;
 using Moq;
 using NUnit.Framework;
-using Rg.Plugins.Popup.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -21,7 +20,6 @@ namespace Five_Seconds.Core.Tests.ViewModels
         private AlarmsViewModel alarmsViewModel;
         private Mock<INavigation> navigation;
         private Mock<IAlarmsRepository> localData;
-        private Mock<IPopupNavigation> popupNavigation;
         private Mock<IMessageBoxService> messageBoxService;
 
         [SetUp]
@@ -32,7 +30,6 @@ namespace Five_Seconds.Core.Tests.ViewModels
             navigation = new Mock<INavigation>();
             localData = new Mock<IAlarmsRepository>();
             messageBoxService = new Mock<IMessageBoxService>();
-            popupNavigation = new Mock<IPopupNavigation>();
 
             alarmsViewModel = new AlarmsViewModel(navigation.Object, messageBoxService.Object);
         }
