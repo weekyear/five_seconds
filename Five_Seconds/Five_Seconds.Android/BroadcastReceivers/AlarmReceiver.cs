@@ -18,6 +18,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             Console.WriteLine("OnReceive_AlarmReceiver");
             var bundle = intent.Extras;
             var id = (int)bundle.Get("id");
+            Console.WriteLine($"Id_AlarmReceiver : {id}");
 
             NotificationAndroid.CancelLaterNotification(context, id);
 

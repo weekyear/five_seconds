@@ -48,8 +48,6 @@ namespace Five_Seconds.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
-            Rg.Plugins.Popup.Popup.Init(this, savedInstanceState);
-
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
         }
 
@@ -89,11 +87,11 @@ namespace Five_Seconds.Droid
         {
             LoadApplication(new App());
 
-            //Alarm.IsInitFinished = false;
-            //var allAlarms = App.Service.GetAllAlarms();
-            //Alarm.IsInitFinished = true;
+            Alarm.IsInitFinished = false;
+            var allAlarms = App.Service.GetAllAlarms();
+            Alarm.IsInitFinished = true;
 
-            //AlarmHelper.RefreshAlarmByManager(allAlarms);
+            AlarmHelper.RefreshAlarmByManager(allAlarms);
         }
 
         private void SetMobileAds()

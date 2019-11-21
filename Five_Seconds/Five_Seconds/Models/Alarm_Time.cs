@@ -40,7 +40,6 @@ namespace Five_Seconds.Models
 
         public DateTime LaterAlarmTime { get; set; } = DateTimeOffset.MinValue.UtcDateTime;
 
-        //public int DaysId { get; set; }
         [OneToOne]
         public DaysOfWeek Days { get; set; } = new DaysOfWeek();
 

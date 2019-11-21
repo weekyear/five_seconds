@@ -331,8 +331,8 @@ namespace Five_Seconds.ViewModels
 
         private async Task Save()
         {
-            Name = Name.TrimStart().TrimEnd();
-            WakeUpText = WakeUpText.TrimStart().TrimEnd();
+            if (!string.IsNullOrEmpty(Name)) Name = Name.TrimStart().TrimEnd();
+            if (!string.IsNullOrEmpty(WakeUpText)) WakeUpText = WakeUpText.TrimStart().TrimEnd();
 
             Alarm.TimeOffset = new DateTime(Date.Year, Date.Month, Date.Day, Time.Hours, Time.Minutes, 0);
 
@@ -357,8 +357,7 @@ namespace Five_Seconds.ViewModels
                 Alarm.IsLaterAlarm = false;
 
                 var id = Service.SaveAlarm(Alarm);
-
-
+                
                 if (Preferences.Get("MaxAlarmId", 3) < id)
                 {
                     Preferences.Set("MaxAlarmId", id);

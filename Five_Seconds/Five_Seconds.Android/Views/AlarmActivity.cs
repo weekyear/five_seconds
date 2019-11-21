@@ -115,16 +115,20 @@ namespace Five_Seconds.Droid
 
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
+            Console.WriteLine($"Id_AlarmActivity : {id}");
             GetDataFromBundle(bundle);
 
             if (id == -100000)
             {
+                Console.WriteLine($"5 Count_AlarmActivity");
                 IsFinished = true;
                 CheckOnlyCountActivityAndRefreshAlarmManager();
             }
             else
             {
+                Console.WriteLine($"Setting_AlarmActivity");
                 SettingForAlarmActivity(savedInstanceState);
+                Console.WriteLine($"Creating_AlarmActivity");
                 CreatingForAlarmActivity();
             }
         }
@@ -153,7 +157,7 @@ namespace Five_Seconds.Droid
 
         private void CheckOnlyCountActivityAndRefreshAlarmManager()
         {
-            // Refresh AlarmManager
+            // Refresh AlarmManager <= 이게 종호형 카운트 범인이 아닐까 생각하고 있음..
             Alarm.IsInitFinished = false;
             var allAlarms = alarmService.GetAllAlarms();
             Alarm.IsInitFinished = true;
@@ -223,7 +227,14 @@ namespace Five_Seconds.Droid
         private void GetAlarmFromDB()
         {
             alarm = alarmsRepo?.GetAlarm(id);
+            Console.WriteLine($"alarm.Name : {alarm.Name}");
+            Console.WriteLine($"alarm.DaysId : {alarm.DaysId}");
             alarm.Days = alarmsRepo?.GetDaysOfWeek(alarm.DaysId);
+
+            for (int i = 0; i < alarm.Days.AllDays.Length; i++)
+            {
+                Console.WriteLine($"alarm.Days[{i}] : {alarm.Days.AllDays[i]}");
+            }
 
             if (alarm == null)
             {
@@ -552,13 +563,6 @@ namespace Five_Seconds.Droid
                 laterDialog.Show();
             }
         }
-        private void AddWindowManagerFlags()
-        {
-            Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
-            Window.AddFlags(WindowManagerFlags.DismissKeyguard);
-            Window.AddFlags(WindowManagerFlags.KeepScreenOn);
-            Window.AddFlags(WindowManagerFlags.TurnScreenOn);
-        }
 
         private void SetMediaPlayerAndVibrator()
         {
@@ -625,6 +629,10 @@ namespace Five_Seconds.Droid
                 AlarmHelper.SetRepeatAlarm(alarm);
             }
 
+            Console.WriteLine($"alarmName_AlarmActivity : {alarm.Name}");
+            Console.WriteLine($"alarmId_AlarmActivity : {alarm.Id}");
+            Console.WriteLine($"alarmDaysId_AlarmActivity : {alarm.DaysId}");
+            Console.WriteLine($"alarmDays.Id_AlarmActivity : {alarm.Days.Id}");
             alarmService.SaveAlarmAtLocal(alarm);
         }
 
@@ -740,6 +748,14 @@ namespace Five_Seconds.Droid
             return alarmTime;
         }
 
+        private DateTime GetLaterAlarmTimeForNotDelayAlarm(int seconds)
+        {
+            var alarmTime = DateTime.Now.AddSeconds(seconds);
+            Alarm.ChangeIsActive(alarm, true);
+            alarm.LaterAlarmTime = alarmTime;
+            return alarmTime;
+        }
+
         private void CreateResultDialog()
         {
             resultDialog = new Dialog(this);
@@ -779,14 +795,29 @@ namespace Five_Seconds.Droid
 
         public override void OnBackPressed()
         {
+            if (id == -100000)
+            {
+                FinishAndRemoveTask();
+            }
         }
+
+        private void AddWindowManagerFlags()
+        {
+            Window.AddFlags(WindowManagerFlags.ShowWhenLocked);
+            Window.AddFlags(WindowManagerFlags.DismissKeyguard);
+            Window.AddFlags(WindowManagerFlags.KeepScreenOn);
+            Window.AddFlags(WindowManagerFlags.TurnScreenOn);
+        }
+
 
         protected override void OnUserLeaveHint()
         {
             if (IsNotDelayAlarm)
             {
-                var milliSecond = new TimeSpan(0, 0, 1).TotalMilliseconds;
-                AlarmHelper.SetAlarmByManager(alarm, (long)milliSecond);
+                var alarmTime = GetLaterAlarmTimeForNotDelayAlarm(3);
+                AlarmHelper.SetLaterAlarm(alarm);
+                alarmService.SaveAlarmAtLocal(alarm);
+                Toast.MakeText(ApplicationContext, CreateDateString.CreateTimeRemainingString(alarmTime), ToastLength.Long).Show();
                 FinishAndRemoveTask();
                 return;
             }
