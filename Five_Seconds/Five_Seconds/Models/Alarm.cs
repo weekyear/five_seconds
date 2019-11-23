@@ -139,7 +139,7 @@ namespace Five_Seconds.Models
             Volume = original.Volume;
             TimeOffset = original.TimeOffset;
 
-            Days = new DaysOfWeek(original.Days);
+            Days = original.Days;
             DaysId = original.DaysId;
             Tone = original.Tone;
         }

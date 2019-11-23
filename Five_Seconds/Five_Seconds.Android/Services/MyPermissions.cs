@@ -22,7 +22,7 @@ namespace Five_Seconds.Droid.Services
         public static readonly int READ_MEDIA_REQUEST_CODE = 42;
         public static readonly int REQUEST_PERMISSION_SETTING = 43;
 
-        public static bool RequestReadExternalStoragePermission(Activity activity)
+        public static bool OpenExternalStorage(Activity activity)
         {
             if (activity.CheckSelfPermission(Manifest.Permission.ReadExternalStorage) != Permission.Granted)
             {
@@ -48,6 +48,29 @@ namespace Five_Seconds.Droid.Services
 
                 activity.StartActivityForResult(intent, READ_MEDIA_REQUEST_CODE);
 
+                return true;
+            }
+        }
+
+        public static bool RequestStoragePermission(Activity activity)
+        {
+            if (activity.CheckCallingOrSelfPermission(Manifest.Permission.ReadExternalStorage) != Permission.Granted)
+            {
+                // Should we show an explanation?
+                if (activity.ShouldShowRequestPermissionRationale(Manifest.Permission.ReadExternalStorage))
+                {
+                    // Explain to the user why we need to read the contacts
+                }
+
+                activity.RequestPermissions(new string[] { Manifest.Permission.ReadExternalStorage }, MY_PERMISSIONS_REQUEST_FILE_STORAGE);
+
+                // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+                // app-defined int constant that should be quite unique
+
+                return false;
+            }
+            else
+            {
                 return true;
             }
         }
@@ -88,12 +111,15 @@ namespace Five_Seconds.Droid.Services
 
                     if (grantResults.Length > 0)
                     {
-                        Intent intent = new Intent(Intent.ActionOpenDocument);
+                        if (SettingToneViewModel.IsFinding)
+                        {
+                            Intent intent = new Intent(Intent.ActionOpenDocument);
 
-                        intent.AddCategory(Intent.CategoryOpenable);
-                        intent.SetType("audio/*");
+                            intent.AddCategory(Intent.CategoryOpenable);
+                            intent.SetType("audio/*");
 
-                        activity.StartActivityForResult(intent, READ_MEDIA_REQUEST_CODE);
+                            activity.StartActivityForResult(intent, READ_MEDIA_REQUEST_CODE);
+                        }
 
                         return true;
                     }

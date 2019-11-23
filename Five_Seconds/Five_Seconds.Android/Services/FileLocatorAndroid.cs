@@ -31,7 +31,7 @@ namespace Five_Seconds.Droid.Services
 
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
-                MyPermissions.RequestReadExternalStoragePermission(_mainActivity);
+                MyPermissions.OpenExternalStorage(_mainActivity);
             }
         }
 

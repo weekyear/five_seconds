@@ -585,6 +585,9 @@ namespace Five_Seconds.Droid
             if (IsAlarmOn)
             {
                 AlarmTone alarmTone = tonesRepo.Tones.Find(a => a.Name == toneName);
+
+                if (alarmTone == null) { alarmTone = tonesRepo.Tones[0]; }
+
                 _soundService?.PlayAudio(alarmTone, true, alarmVolume);
             }
         }

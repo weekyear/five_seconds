@@ -143,14 +143,19 @@
                                FontSize="Medium"
                                VerticalOptions="CenterAndExpand"
                                Margin="10, 0"/>
-                        <custom:MusicSelectionButton Grid.Column="1" 
-                                                     IsEnabled="{Binding Alarm.IsAlarmOn}"
-                                                     Text="{Binding Alarm.Tone}" 
-                                                     BackgroundColor="Transparent"
-                                                     FontSize="Medium"
-                                                     TextColor="DarkBlue"
-                                                     HorizontalOptions="FillAndExpand"                                                             
-                                                     Command="{Binding ShowSettingToneCommand}"/>
+                        <custom:MusicSelectionLabel Grid.Column="1" 
+                                                    IsActive="{Binding Alarm.IsAlarmOn}"
+                                                    Text="{Binding Alarm.Tone}" 
+                                                    BackgroundColor="White"
+                                                    FontSize="Medium"
+                                                    TextColor="DarkBlue"
+                                                    LineBreakMode="TailTruncation"
+                                                    HorizontalOptions="CenterAndExpand"
+                                                    VerticalOptions="CenterAndExpand">
+                            <custom:MusicSelectionLabel.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ShowSettingToneCommand}"/>
+                            </custom:MusicSelectionLabel.GestureRecognizers>
+                        </custom:MusicSelectionLabel>
                         <Switch Grid.Column="2" 
                                 IsToggled="{Binding Alarm.IsAlarmOn}"
                                 HorizontalOptions="EndAndExpand"

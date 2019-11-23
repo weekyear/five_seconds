@@ -79,7 +79,10 @@ namespace Five_Seconds.Droid
 
             if (MyPermissions.RequestAudioPermission(this))
             {
-                LoadAppAndRefreshAlarmManager();
+                if (MyPermissions.RequestStoragePermission(this))
+                {
+                    LoadAppAndRefreshAlarmManager();
+                }
             }
         }
 
@@ -105,7 +108,7 @@ namespace Five_Seconds.Droid
 
             if (MyPermissions.OnRequestPermissionsResult(this, requestCode, grantResults) && !Alarm.IsInitFinished)
             {
-                LoadAppAndRefreshAlarmManager();
+                StartApp();
             }
             else
             {
