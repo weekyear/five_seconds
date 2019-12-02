@@ -195,6 +195,8 @@
     <Compile Include="CustomRenderers\SearchDetailPageRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
     <Compile Include="CustomRenderers\TonesListViewRenderer.cs" />
+    <Compile Include="Helpers\DragListAdapter.cs" />
+    <Compile Include="Helpers\ListViewSortableEffect.cs" />
     <Compile Include="Interface\IAdListener.cs" />
     <Compile Include="Services\AdListener.cs" />
     <Compile Include="Services\AdMobInterstitialAndroid.cs" />

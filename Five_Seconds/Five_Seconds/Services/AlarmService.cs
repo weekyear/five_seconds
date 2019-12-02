@@ -82,6 +82,17 @@ namespace Five_Seconds.Services
             return id;
         }
 
+        public void SaveAlarmsAtLocal(IEnumerable<Alarm> alarms)
+        {
+            foreach(var alarm in alarms)
+            {
+                alarm.DaysId = Repository.SaveDaysOfWeek(alarm.Days);
+                var id = Repository.SaveAlarm(alarm);
+            }
+            UpdateAlarms();
+            SendChangeAlarmsMessage();
+        }
+
         public int SaveAlarmAtLocal(Alarm alarm)
         {
             alarm.DaysId = Repository.SaveDaysOfWeek(alarm.Days);

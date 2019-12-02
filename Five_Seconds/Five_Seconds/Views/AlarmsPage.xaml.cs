@@ -26,6 +26,12 @@ namespace Five_Seconds.Views
             BindingContext = viewModel;
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            viewModel.SetIsSelectedModeFalse();
+        }
+
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
         {
             if (!viewModel.IsSelectedMode)
@@ -84,7 +90,7 @@ namespace Five_Seconds.Views
         {
             if (viewModel.IsSelectedMode)
             {
-                viewModel.ClearAllSelectedAlarm();
+                viewModel.SetIsSelectedModeFalse();
 
                 return true;
             }

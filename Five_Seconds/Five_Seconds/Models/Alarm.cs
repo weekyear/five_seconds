@@ -115,6 +115,7 @@ namespace Five_Seconds.Models
         public bool IsLinkOtherApp { get; set; } = false;
         public string AppLabel { get; set; } = string.Empty;
         public string PackageName { get; set; } = string.Empty;
+        public int Index { get; set; } = 0;
 
         public Alarm() { }
 

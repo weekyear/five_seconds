@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Five_Seconds.Resources;
 using System.Globalization;
+using Xamarin.Forms.Internals;
 
 namespace Five_Seconds.ViewModels
 {
@@ -52,9 +53,13 @@ namespace Five_Seconds.ViewModels
         public Command ShowRecordCommand { get; set; }
         public Command<object> ShowModifyAlarmCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
-        public ObservableCollection<Alarm> Alarms
+        public OrderableCollection<Alarm> Alarms
         {
-            get => ConvertListToObservableCollection(Service.Alarms);
+            get
+            {
+                var alarms = AssignIndexToToDos(Service.Alarms);
+                return ConvertListToObservableCollection(alarms);
+            }
         }
 
         public string NextAlarmString
@@ -87,10 +92,23 @@ namespace Five_Seconds.ViewModels
             {
                 if (isSelectedMode == value) return;
                 isSelectedMode = value;
+                if (!value) ClearAllSelectedAlarms();
                 OnPropertyChanged(nameof(IsSelectedMode));
             }
         }
 
+        public void SetIsSelectedModeFalse()
+        {
+            if (IsSelectedMode == true)
+            {
+                IsSelectedMode = false;
+            }
+        }
+        private void ClearAllSelectedAlarms()
+        {
+            var selectedAlarms = Alarms.Where((t) => t.IsSelected == true);
+            selectedAlarms.ForEach((s) => s.IsSelected = false);
+        }
 
         private async Task ShowAddAlarm()
         {
@@ -111,7 +129,7 @@ namespace Five_Seconds.ViewModels
             {
                 Service.DeleteAlarm(alarm);
             }
-            ClearAllSelectedAlarm();
+            SetIsSelectedModeFalse();
         }
 
         private async Task ShowModifyAlarm(object _alarm)
@@ -154,13 +172,24 @@ namespace Five_Seconds.ViewModels
             Alarm.IsInitFinished = true;
         }
 
-        private ObservableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
+        private OrderableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
         {
-            var collection = new ObservableCollection<T>();
+            var collection = new OrderableCollection<T>();
 
             list.ForEach((item) => collection.Add(item));
 
             return collection;
+        }
+
+        private List<Alarm> AssignIndexToToDos(IEnumerable<Alarm> alarms)
+        {
+            var _alarms = alarms.OrderBy((d) => d.Index);
+            int i = 0;
+            foreach (var alarm in _alarms)
+            {
+                alarm.Index = i++;
+            }
+            return _alarms.ToList();
         }
 
         public void ClearAllSelectedAlarm()

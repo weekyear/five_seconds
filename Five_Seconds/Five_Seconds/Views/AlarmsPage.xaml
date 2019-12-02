@@ -96,7 +96,8 @@
                                           ItemTapped="ShowMenuByItemClicked"
                                           ItemSelected="AlarmsListView_ItemSelected"
                                           VerticalOptions="FillAndExpand"
-                                          SeparatorVisibility="None">
+                                          SeparatorVisibility="None"
+                                          local:Sorting.IsSortable="{Binding IsSelectedMode}">
                     <custom:NoRippleListView.ItemTemplate>
                         <DataTemplate>
                             <custom:RoundedViewCell IsSelected="{Binding IsSelected}">

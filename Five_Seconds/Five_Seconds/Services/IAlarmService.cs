@@ -12,6 +12,7 @@ namespace Five_Seconds.Services
         Alarm GetAlarm(int id);
         int DeleteAlarm(Alarm alarm);
         int SaveAlarm(Alarm alarm);
+        void SaveAlarmsAtLocal(IEnumerable<Alarm> alarms);
         int SaveAlarmAtLocal(Alarm alarm);
         void DeleteAllAlarms();
         int TurnOffAlarm(Alarm alarm);
