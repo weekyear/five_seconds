@@ -163,7 +163,7 @@ namespace Five_Seconds.Droid
 
         private void CheckOnlyCountActivityAndRefreshAlarmManager()
         {
-            // Refresh AlarmManager <= 이게 종호형 카운트 범인이 아닐까 생각하고 있음..
+            // Refresh AlarmManager
             Alarm.IsInitFinished = false;
             var allAlarms = alarmService.GetAllAlarms();
             Alarm.IsInitFinished = true;
@@ -600,12 +600,12 @@ namespace Five_Seconds.Droid
                 long[] mVibratePattern = new long[] { 0, 400, 1000, 600, 1000, 800, 1000, 1000 };
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
                 {
-                    VibrationEffect effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
+                    var effect = VibrationEffect.CreateWaveform(mVibratePattern, 0);
                     _vibrator?.Vibrate(effect);
                 }
                 else
                 {
-                    _vibrator?.Vibrate(mVibratePattern, 100);
+                    _vibrator?.Vibrate(mVibratePattern, 0);
                 }
             }
         }

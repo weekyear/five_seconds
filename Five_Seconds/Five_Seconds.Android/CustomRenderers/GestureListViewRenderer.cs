@@ -9,7 +9,7 @@ using Xamarin.Forms.Platform.Android;
 [assembly: ExportRenderer(typeof(GestureListView), typeof(GestureListViewRenderer))]
 namespace Five_Seconds.Droid.CustomRenderers
 {
-    class GestureListViewRenderer : ListViewRenderer
+    public class GestureListViewRenderer : ListViewRenderer
     {
         readonly CustomGestureListener _listener;
         readonly GestureDetector _detector;

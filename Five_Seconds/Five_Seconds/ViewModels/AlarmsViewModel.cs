@@ -88,13 +88,7 @@ namespace Five_Seconds.ViewModels
                 if (isSelectedMode == value) return;
                 isSelectedMode = value;
                 OnPropertyChanged(nameof(IsSelectedMode));
-                OnPropertyChanged(nameof(IsNotSelectedMode));
             }
-        }
-
-        public bool IsNotSelectedMode
-        {
-            get { return !IsSelectedMode; }
         }
 
 
