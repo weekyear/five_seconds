@@ -395,9 +395,9 @@ namespace Five_Seconds.Droid
             if (alarmsRepo == null) GetAlarmServiceAndRepository();
 
             var Records = alarmsRepo.RecordFromDB;
-            var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
+            var alarmRecords = Records.Where(a => a.Name == alarm.Name);
 
-            CanShowFeedbackNotification = alarmRecords.Count % 10 == 0;
+            CanShowFeedbackNotification = alarmRecords.Count() % 10 == 0;
             if (CanShowFeedbackNotification)
             {
                 var RecentRecords = new List<Record>();
@@ -415,7 +415,7 @@ namespace Five_Seconds.Droid
                     OrdererdRecords.RemoveAt(0);
                 }
 
-                if (alarmRecords.Count == 10)
+                if (alarmRecords.Count() == 10)
                 {
                     IsFirstFeedbackNotification = true;
                 }
@@ -468,7 +468,7 @@ namespace Five_Seconds.Droid
                 failedBtn.Click += ResultDialog_ConfirmBtn_Click;
             }
 
-            if (alarmRecords.Count == 1)
+            if (alarmRecords.Count() == 1)
             {
                 switch (CultureInfo.CurrentCulture.Name)
                 {
@@ -485,14 +485,14 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                var successRecords = alarmRecords.FindAll(a => a.IsSuccess == true);
-                double successRate = (double)successRecords.Count / alarmRecords.Count;
+                var successRecords = alarmRecords.Where(a => a.IsSuccess == true);
+                double successRate = (double)successRecords.Count() / alarmRecords.Count();
 
                 if (successRate > 0.7)
                 {
                     bool HasShownReview = Preferences.Get("HasShownReview", false);
                     var successStack = Preferences.Get("SuccessStack", 0);
-                    CanShowReview = alarmRecords.Count > 4 && IsSuccess && !HasShownReview && successStack > 9;
+                    CanShowReview = alarmRecords.Count() > 4 && IsSuccess && !HasShownReview && successStack > 9;
 
                     if (CanShowReview)
                     {
@@ -584,9 +584,9 @@ namespace Five_Seconds.Droid
         {
             if (IsAlarmOn)
             {
-                AlarmTone alarmTone = tonesRepo.Tones.Find(a => a.Name == toneName);
+                AlarmTone alarmTone = tonesRepo.Tones.FirstOrDefault(a => a.Name == toneName);
 
-                if (alarmTone == null) { alarmTone = tonesRepo.Tones[0]; }
+                if (alarmTone == null) { alarmTone = tonesRepo.Tones.First(); }
 
                 _soundService?.PlayAudio(alarmTone, true, alarmVolume);
             }
@@ -945,7 +945,7 @@ namespace Five_Seconds.Droid
         private void SetReviewToDialogResult()
         {
             var Records = alarmsRepo.RecordFromDB;
-            var alarmRecords = Records.FindAll(a => a.Name == alarm.Name);
+            var alarmRecords = Records.Where(a => a.Name == alarm.Name);
 
             reviewTitle = reviewDialog.FindViewById<TextView>(Resource.Id.reviewTitle);
             reviewText1 = reviewDialog.FindViewById<TextView>(Resource.Id.reviewText1);

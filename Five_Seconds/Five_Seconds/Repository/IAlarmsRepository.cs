@@ -9,9 +9,9 @@ namespace Five_Seconds.Repository
     public interface IAlarmsRepository
     {
         // getters
-        List<Alarm> AlarmsFromDB { get; }
-        List<DaysOfWeek> DaysOfWeeksFromDB { get; }
-        List<Record> RecordFromDB { get; }
+        IEnumerable<Alarm> AlarmsFromDB { get; }
+        IEnumerable<DaysOfWeek> DaysOfWeeksFromDB { get; }
+        IEnumerable<Record> RecordFromDB { get; }
 
         // Alarm
 

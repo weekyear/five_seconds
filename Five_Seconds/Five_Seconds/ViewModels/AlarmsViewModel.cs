@@ -172,7 +172,7 @@ namespace Five_Seconds.ViewModels
             Alarm.IsInitFinished = true;
         }
 
-        private OrderableCollection<T> ConvertListToObservableCollection<T>(List<T> list)
+        private OrderableCollection<T> ConvertListToObservableCollection<T>(IEnumerable<T> list)
         {
             var collection = new OrderableCollection<T>();
 
@@ -181,7 +181,7 @@ namespace Five_Seconds.ViewModels
             return collection;
         }
 
-        private List<Alarm> AssignIndexToToDos(IEnumerable<Alarm> alarms)
+        private IEnumerable<Alarm> AssignIndexToToDos(IEnumerable<Alarm> alarms)
         {
             var _alarms = alarms.OrderBy((d) => d.Index);
             int i = 0;
@@ -189,7 +189,7 @@ namespace Five_Seconds.ViewModels
             {
                 alarm.Index = i++;
             }
-            return _alarms.ToList();
+            return _alarms;
         }
 
         public void ClearAllSelectedAlarm()

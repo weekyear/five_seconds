@@ -179,12 +179,12 @@ namespace Five_Seconds.ViewModels
                 foreach (var _record in TestRecords)
                 {
                     App.AlarmsRepo.SaveRecord(_record);
-                    Records = App.AlarmsRepo.RecordFromDB;
+                    Records = App.AlarmsRepo.RecordFromDB.ToList();
                 }
             }
         }
 
-        public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB;
+        public List<Record> Records { get; set; } = App.AlarmsRepo.RecordFromDB.ToList();
 
         public List<string> AllRecordsByName { get; set; } = new List<string>();
         public ObservableCollection<string> RecordsBySearch { get; set; } = new ObservableCollection<string>();

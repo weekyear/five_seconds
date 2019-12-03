@@ -8,7 +8,7 @@ namespace Five_Seconds.Services
     public interface IAlarmService
     {
         IAlarmsRepository Repository { get; }
-        List<Alarm> Alarms { get; }
+        IEnumerable<Alarm> Alarms { get; }
         Alarm GetAlarm(int id);
         int DeleteAlarm(Alarm alarm);
         int SaveAlarm(Alarm alarm);
@@ -17,7 +17,7 @@ namespace Five_Seconds.Services
         void DeleteAllAlarms();
         int TurnOffAlarm(Alarm alarm);
         void SendChangeAlarmsMessage();
-        List<Alarm> GetAllAlarms();
+        IEnumerable<Alarm> GetAllAlarms();
         Alarm GetNextAlarm();
     }
 }

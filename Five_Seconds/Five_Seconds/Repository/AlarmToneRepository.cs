@@ -12,9 +12,9 @@ namespace Five_Seconds.Repository
     {
         public ItemDatabaseGeneric ItemDatabase { get; }
 
-        public List<AlarmTone> Tones
+        public IEnumerable<AlarmTone> Tones
         {
-            get { return GetAllAlarmTones() as List<AlarmTone>; }
+            get { return GetAllAlarmTones() as IEnumerable<AlarmTone>; }
         }
 
         public AlarmToneRepository(ItemDatabaseGeneric itemDatabase)
@@ -43,7 +43,7 @@ namespace Five_Seconds.Repository
             return ItemDatabase.GetObject<AlarmTone>(id);
         }
 
-        private List<AlarmTone> GetAllAlarmTones()
+        private IEnumerable<AlarmTone> GetAllAlarmTones()
         {
             var defaultTones = new List<AlarmTone>()
             {

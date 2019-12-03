@@ -120,7 +120,7 @@ namespace Five_Seconds.Droid.Services
             alarmManager.Cancel(toDeletePendingIntent);
         }
 
-        public static void RefreshAlarmByManager(List<Alarm> alarms)
+        public static void RefreshAlarmByManager(IEnumerable<Alarm> alarms)
         {
             var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
             Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
@@ -147,7 +147,7 @@ namespace Five_Seconds.Droid.Services
             }
         }
 
-        public static void RefreshAlarmByManager100(List<Alarm> alarms)
+        public static void RefreshAlarmByManager100(IEnumerable<Alarm> alarms)
         {
             var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
             Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));

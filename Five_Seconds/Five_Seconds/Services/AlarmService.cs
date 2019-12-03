@@ -10,7 +10,7 @@ namespace Five_Seconds.Services
     public class AlarmService : IAlarmService
     {
         public IAlarmsRepository Repository { get; }
-        public List<Alarm> Alarms { get; private set; } = new List<Alarm>();
+        public IEnumerable<Alarm> Alarms { get; private set; } = new List<Alarm>();
 
         public AlarmService(IAlarmsRepository repository)
         {
@@ -19,23 +19,23 @@ namespace Five_Seconds.Services
             UpdateAlarms();
         }
 
-        public List<Alarm> GetAllAlarms()
+        public IEnumerable<Alarm> GetAllAlarms()
         {
             return AssignDaysToAlarms();
         }
 
-        private List<Alarm> AssignDaysToAlarms()
+        private IEnumerable<Alarm> AssignDaysToAlarms()
         {
             var alarms = Repository.AlarmsFromDB;
             var daysOfWeeks = Repository.DaysOfWeeksFromDB;
 
             foreach (var days in daysOfWeeks)
             {
-                for (int i = 0; i < alarms.Count; i++)
+                foreach(var alarm in alarms)
                 {
-                    if (alarms[i].DaysId == days.Id)
+                    if (alarm.DaysId == days.Id)
                     {
-                        alarms[i].Days = days;
+                        alarm.Days = days;
                     }
                 }
             }
@@ -53,16 +53,8 @@ namespace Five_Seconds.Services
             DependencyService.Get<IAlarmSetter>().DeleteAlarm(alarm.Id);
             var id = Repository.DeleteAlarm(alarm.Id);
             Repository.DeleteDaysOfWeek(alarm.Id);
-            
-            foreach(var m in Alarms)
-            {
-                if (m.Id == alarm.Id)
-                {
-                    Alarms.Remove(m);
-                    break;
-                }
-            }
 
+            UpdateAlarms();
             SendChangeAlarmsMessage();
             return id;
         }
@@ -122,28 +114,28 @@ namespace Five_Seconds.Services
         {
             DateTime min = DateTimeOffset.MaxValue.Date;
 
-            if (Alarms.Count == 0) return null;
+            if (Alarms.Count() == 0) return null;
 
             var nextAlarm = new Alarm() { Date = DateTimeOffset.MaxValue.Date };
 
-            for (int i = 0; i < Alarms.Count; i++)
+            foreach (var alarm in Alarms)
             {
-                if (Alarms[i].IsActive)
+                if (alarm.IsActive)
                 {
                     DateTime alarmNextTime;
-                    if (Alarms[i].IsLaterAlarm)
+                    if (alarm.IsLaterAlarm)
                     {
-                        alarmNextTime = Alarms[i].LaterAlarmTime;
+                        alarmNextTime = alarm.LaterAlarmTime;
                     }
                     else
                     {
-                        alarmNextTime = Alarms[i].NextAlarmTime;
+                        alarmNextTime = alarm.NextAlarmTime;
                     }
 
                     if (min.Subtract(alarmNextTime).TotalMilliseconds > 0)
                     {
                         min = alarmNextTime;
-                        nextAlarm = Alarms[i];
+                        nextAlarm = alarm;
                     }
                 }
             }

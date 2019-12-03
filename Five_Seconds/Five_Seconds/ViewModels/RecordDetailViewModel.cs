@@ -20,13 +20,13 @@ namespace Five_Seconds.ViewModels
     {
         private readonly IMessageBoxService MessageBoxService;
 
-        public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord, List<Record> allRecords, IMessageBoxService messageBoxService) : base(navigation)
+        public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord, IEnumerable<Record> allRecords, IMessageBoxService messageBoxService) : base(navigation)
         {
             ConstructCommand();
 
             MessageBoxService = messageBoxService;
 
-            Records = allRecords;
+            Records = allRecords.ToList();
 
             WeekRecord = weekRecord;
 
@@ -217,7 +217,7 @@ namespace Five_Seconds.ViewModels
         private void UpdateRecordsByTag(TagItem tagItem)
         {
             var recordsByTag = new List<Record>();
-            var tagItems = new List<TagItem>(TagItems.ToList());
+            var tagItems = new List<TagItem>(TagItems);
 
             if (tagItem != null)
             {
@@ -375,11 +375,11 @@ namespace Five_Seconds.ViewModels
             var list = new List<string>();
             if (string.IsNullOrEmpty(searchText))
             {
-                list = AllRecordsByName;
+                list = AllRecordsByName.ToList();
             }
             else
             {
-                list = AllRecordsByName.FindAll(s => s.Contains(searchText));
+                list = AllRecordsByName.Where(s => s.Contains(searchText)).ToList();
                 if (list.Count == 0)
                 {
                     OnPropertyChanged(nameof(IsNotExistSearchResult));
@@ -405,9 +405,7 @@ namespace Five_Seconds.ViewModels
 
         private void RefreshRecordsBySearch()
         {
-            var list = new List<string>();
-            
-            list = AllRecordsByName;
+            List<string> list = AllRecordsByName.ToList();
 
             foreach (var tagItem in TagItems)
             {

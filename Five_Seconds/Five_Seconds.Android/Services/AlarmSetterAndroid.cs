@@ -3,6 +3,7 @@ using Five_Seconds.Droid.Services;
 using Five_Seconds.Models;
 using Five_Seconds.Services;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 using Application = Android.App.Application;
 
 [assembly: Dependency(typeof(AlarmSetterAndroid))]
@@ -26,7 +27,7 @@ namespace Five_Seconds.Droid.Services
             NotificationAndroid.CancelLaterNotification(Application.Context, id);
         }
 
-        public void DeleteAllAlarms(List<Alarm> alarms)
+        public void DeleteAllAlarms(IEnumerable<Alarm> alarms)
         {
             alarms.ForEach((alarm) => DeleteAlarm(alarm.Id));
         }

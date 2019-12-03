@@ -14,17 +14,17 @@ namespace Five_Seconds.Repository
             ItemDatabase = itemDatabase;
         }
 
-        public List<Alarm> AlarmsFromDB
+        public IEnumerable<Alarm> AlarmsFromDB
         {
-            get { return GetAllAlarms() as List<Alarm>; }
+            get { return GetAllAlarms() as IEnumerable<Alarm>; }
         }
-        public List<DaysOfWeek> DaysOfWeeksFromDB
+        public IEnumerable<DaysOfWeek> DaysOfWeeksFromDB
         {
-            get { return GetAllDaysOfWeeks() as List<DaysOfWeek>; }
+            get { return GetAllDaysOfWeeks() as IEnumerable<DaysOfWeek>; }
         }
-        public List<Record> RecordFromDB
+        public IEnumerable<Record> RecordFromDB
         {
-            get { return GetAllRecords() as List<Record>; }
+            get { return GetAllRecords() as IEnumerable<Record>; }
         }
 
         // Alarm

@@ -9,7 +9,7 @@ namespace Five_Seconds.Repository
     public interface IAlarmToneRepository
     {
         ItemDatabaseGeneric ItemDatabase { get; }
-        List<AlarmTone> Tones { get; }
+        IEnumerable<AlarmTone> Tones { get; }
 
         //Settings GetSettings();
         IEnumerable<AlarmTone> GetAllTones();
