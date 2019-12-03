@@ -31,7 +31,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="36" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10*" />
@@ -42,13 +42,13 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.ColumnSpan="5" 
                            Text="{local:Translate App_Name}"
-                           FontSize="22"
+                           FontSize="20"
                            HorizontalOptions="CenterAndExpand"/>
                     <Label x:Name="NextAlarmStrng" 
                            Grid.Row="1" Grid.ColumnSpan="5" 
                            Text="{Binding NextAlarmString}"
                            FontAttributes="Bold"
-                           FontSize="28"
+                           FontSize="25"
                            Margin="0, 0, 0, 10"
                            HorizontalOptions="CenterAndExpand"/>
                     <ImageButton Grid.Row="2" Grid.Column="0"
@@ -79,13 +79,14 @@
                                  HorizontalOptions="CenterAndExpand"
                                  VerticalOptions="CenterAndExpand"
                                  Command="{Binding ShowMainMenuCommand}"/>
-                    <Button x:Name="DeleteBtn" Grid.Row="2" Grid.ColumnSpan="5" 
+                    <Button x:Name="DeleteBtn" Grid.Row="2" Grid.ColumnSpan="5" Padding="0"
+                            HeightRequest="35"
                             BackgroundColor="IndianRed"
                             IsVisible="{Binding IsSelectedMode}"
                             VerticalOptions="CenterAndExpand"
                             Text="{Binding DeleteAlarmString}"
                             Command="{Binding DeleteAlarmsCommand}"
-                            FontSize="20"
+                            FontSize="Body"
                             FontAttributes="Bold"
                             TextColor="White"/>
             </Grid>
@@ -97,7 +98,7 @@
                                           ItemSelected="AlarmsListView_ItemSelected"
                                           VerticalOptions="FillAndExpand"
                                           SeparatorVisibility="None"
-                                          local:Sorting.IsSortable="{Binding IsSelectedMode}">
+                                          local:Sorting.IsSortable="True">
                     <custom:NoRippleListView.ItemTemplate>
                         <DataTemplate>
                             <custom:RoundedViewCell IsSelected="{Binding IsSelected}">
