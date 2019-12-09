@@ -22,6 +22,7 @@ namespace Five_Seconds.Droid.Services
     public class FileLocatorAndroid : IFileLocator
     {
         MainActivity _mainActivity;
+        public static readonly int READ_MEDIA_REQUEST_CODE = 42;
 
         public void OpenFileLocator()
         {
@@ -32,6 +33,15 @@ namespace Five_Seconds.Droid.Services
             if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
                 MyPermissions.OpenExternalStorage(_mainActivity);
+            }
+            else
+            {
+                Intent intent = new Intent(Intent.ActionOpenDocument);
+
+                intent.AddCategory(Intent.CategoryOpenable);
+                intent.SetType("audio/*");
+
+                _mainActivity.StartActivityForResult(intent, READ_MEDIA_REQUEST_CODE);
             }
         }
 

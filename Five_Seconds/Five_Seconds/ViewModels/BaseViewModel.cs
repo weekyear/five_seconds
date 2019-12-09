@@ -19,7 +19,7 @@ namespace Five_Seconds.ViewModels
         public BaseViewModel(INavigation navigation)
         {
             Navigation = navigation;
-            Service = App.Service;
+            Service = App.AlarmService;
         }
 
         bool isBusy = false;

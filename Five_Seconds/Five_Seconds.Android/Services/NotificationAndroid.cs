@@ -38,7 +38,7 @@ namespace Five_Seconds.Droid.Services
             string nextNameString;
             string nextTimeString;
 
-            var alarm = App.Service.GetNextAlarm();
+            var alarm = App.AlarmService.GetNextAlarm();
 
             if (alarm != null)
             {

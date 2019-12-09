@@ -119,27 +119,23 @@ namespace Five_Seconds.Droid
 
             Bundle bundle = Intent.Extras;
             id = (int)bundle.Get("id");
-            Console.WriteLine($"Id_AlarmActivity : {id}");
             GetDataFromBundle(bundle);
 
             if (id == -100000)
             {
-                Console.WriteLine($"5 Count_AlarmActivity");
                 IsFinished = true;
                 CheckOnlyCountActivityAndRefreshAlarmManager();
             }
             else
             {
-                Console.WriteLine($"Setting_AlarmActivity");
                 SettingForAlarmActivity(savedInstanceState);
-                Console.WriteLine($"Creating_AlarmActivity");
                 CreatingForAlarmActivity();
             }
         }
 
         private void GetAlarmServiceAndRepository()
         {
-            alarmService = App.Service;
+            alarmService = App.AlarmService;
             alarmsRepo = alarmService.Repository;
             tonesRepo = App.AlarmToneRepo;
         }

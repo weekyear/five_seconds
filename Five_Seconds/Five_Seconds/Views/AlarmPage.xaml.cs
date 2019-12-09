@@ -15,15 +15,6 @@ namespace Five_Seconds.Views
     {
         readonly AlarmViewModel viewModel;
 
-        public AlarmPage(INavigation navigation)
-        {
-            viewModel = new AlarmViewModel(navigation);
-
-            BindingContext = viewModel;
-
-            InitializeComponent();
-        }
-
         public AlarmPage(INavigation navigation, Alarm alarm)
         {
             viewModel = new AlarmViewModel(navigation, alarm);

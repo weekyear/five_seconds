@@ -12,7 +12,7 @@ namespace Five_Seconds.Helpers
             var nextDate = CalculateNextDate(alarm);
             var nextTime = alarm.Time;
 
-            var nextAlarmDateTime = new DateTime(nextDate.Year, nextDate.Month, nextDate.Day, nextTime.Hours, nextTime.Minutes, nextTime.Seconds);
+            var nextAlarmDateTime = new DateTime(nextDate.Year, nextDate.Month, nextDate.Day, nextTime.Hours, nextTime.Minutes, 0);
 
             return nextAlarmDateTime;
         }

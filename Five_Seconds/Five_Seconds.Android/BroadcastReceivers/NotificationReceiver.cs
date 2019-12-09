@@ -45,7 +45,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
 
         private void TurnOffLaterAlarm()
         {
-            alarmService = App.Service;
+            alarmService = App.AlarmService;
             Alarm.IsInitFinished = false;
             alarm = alarmService.GetAlarm(id);
 

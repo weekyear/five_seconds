@@ -14,19 +14,6 @@ namespace Five_Seconds.ViewModels
 {
     public class AlarmViewModel : BaseViewModel
     {
-        public AlarmViewModel(INavigation navigation) : base(navigation)
-        {
-            Alarm = new Alarm();
-
-            InitTimePicker();
-
-            SubscribeMessage();
-
-            ConstructCommand();
-
-            ResetWhenAlarmTypeChanged(AlarmType);
-        }
-
         public AlarmViewModel(INavigation navigation, Alarm alarm) : base(navigation)
         {
             Alarm = new Alarm(alarm);

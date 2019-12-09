@@ -57,7 +57,7 @@ namespace Five_Seconds.Helpers
                     }
                 }
 
-                App.Service.SaveAlarmsAtLocal(alarms);
+                App.AlarmService.SaveAlarmsAtLocal(alarms);
             }
         }
     }

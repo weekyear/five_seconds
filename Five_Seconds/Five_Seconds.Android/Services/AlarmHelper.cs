@@ -44,11 +44,9 @@ namespace Five_Seconds.Droid.Services
 
         private static long CalculateTimeDiff(Alarm alarm)
         {
-            var dateTimeNow = DateTime.Now;
-
             var nextAlarmDateTime = alarm.NextAlarmTime;
 
-            var diffTimeSpan = nextAlarmDateTime.Subtract(dateTimeNow);
+            var diffTimeSpan = nextAlarmDateTime.Subtract(DateTime.Now);
 
             return (long)diffTimeSpan.TotalMilliseconds;
         }
@@ -123,15 +121,16 @@ namespace Five_Seconds.Droid.Services
         public static void RefreshAlarmByManager(IEnumerable<Alarm> alarms)
         {
             var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-            Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-
-            var maxId = Preferences.Get("MaxAlarmId", 3);
-
-            for (int id = 1; id <= maxId; id++)
+            using (var alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver)))
             {
-                PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+                var maxId = Preferences.Get("MaxAlarmId", 3);
 
-                alarmManager.Cancel(pendingAlarmIntent);
+                for (int id = 1; id <= maxId; id++)
+                {
+                    PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+
+                    alarmManager.Cancel(pendingAlarmIntent);
+                }
             }
 
             foreach (var alarm in alarms)
@@ -150,13 +149,14 @@ namespace Five_Seconds.Droid.Services
         public static void RefreshAlarmByManager100(IEnumerable<Alarm> alarms)
         {
             var alarmManager = Application.Context.GetSystemService(Context.AlarmService) as AlarmManager;
-            Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver));
-
-            for (int id = 1; id <= 100; id++)
+            using (Intent alarmIntent = new Intent(Application.Context, typeof(AlarmReceiver)))
             {
-                PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+                for (int id = 1; id <= 100; id++)
+                {
+                    PendingIntent pendingAlarmIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
-                alarmManager.Cancel(pendingAlarmIntent);
+                    alarmManager.Cancel(pendingAlarmIntent);
+                }
             }
 
             foreach (var alarm in alarms)

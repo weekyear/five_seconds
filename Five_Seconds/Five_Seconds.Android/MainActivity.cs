@@ -91,7 +91,7 @@ namespace Five_Seconds.Droid
             LoadApplication(new App());
 
             Alarm.IsInitFinished = false;
-            var allAlarms = App.Service.GetAllAlarms();
+            var allAlarms = App.AlarmService.GetAllAlarms();
             Alarm.IsInitFinished = true;
 
             AlarmHelper.RefreshAlarmByManager(allAlarms);
@@ -133,8 +133,8 @@ namespace Five_Seconds.Droid
                     if (data == null) return;
                     var _uri = data.Data;
                     var realPath = GetRealPathFromURI(_uri);
-                    var stringUri = data.ToUri(IntentUriType.None);
-                    Uri uri = new Uri(stringUri);
+                    //var stringUri = data.ToUri(IntentUriType.None);
+                    //Uri uri = new Uri(stringUri);
 
                     FileChosen?.Invoke(realPath);
                 }

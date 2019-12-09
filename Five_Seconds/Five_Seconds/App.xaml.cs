@@ -52,7 +52,7 @@ namespace Five_Seconds
 
                 foreach (var alarm in ListInitAlarm)
                 {
-                    Service.SaveAlarmAtLocal(alarm);
+                    AlarmService.SaveAlarmAtLocal(alarm);
                 }
 
                 var welcomePage = AppIntro.CreateAppIntro();
@@ -90,7 +90,7 @@ namespace Five_Seconds
         
         public static IAlarmsRepository AlarmsRepo { get; } = new AlarmsRepository(ItemDatabase);
 
-        public static IAlarmService Service { get; } = new AlarmService(AlarmsRepo);
+        public static IAlarmService AlarmService { get; } = new AlarmService(AlarmsRepo);
 
         public static IAlarmToneRepository AlarmToneRepo { get; } = new AlarmToneRepository(ItemDatabase);
     }

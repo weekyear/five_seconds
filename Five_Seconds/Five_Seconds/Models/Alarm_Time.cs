@@ -71,13 +71,13 @@ namespace Five_Seconds.Models
         public DateTimeOffset TimeOffset { get; set; } = new DateTimeOffset(DateTimeNow.AddMinutes(1));
         protected DateTimeOffset GetDateTimeOffsetFromTimeSpan(TimeSpan time)
         {
-            var dateTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hours, time.Minutes, time.Seconds);
+            var dateTime = new DateTime(Date.Year, Date.Month, Date.Day, time.Hours, time.Minutes, 0);
             return new DateTimeOffset(dateTime);
         }
 
         protected DateTimeOffset GetDateTimeOffsetFromDateTime(DateTime date)
         {
-            var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, Time.Seconds);
+            var dateTime = new DateTime(date.Year, date.Month, date.Day, Time.Hours, Time.Minutes, 0);
 
             if (dateTime.Year > 9000) return DateTimeOffset.MaxValue;
 

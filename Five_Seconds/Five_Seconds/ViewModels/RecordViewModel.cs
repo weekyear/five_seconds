@@ -121,7 +121,7 @@ namespace Five_Seconds.ViewModels
 
         public List<Record> TestRecords { get; set; } = new List<Record>
         {
-            new Record(new Alarm() { Id = 1, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, false),
+            new Record(new Alarm() { Id = 1, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 9, 29, 15, 30, 00))}, false),
             new Record(new Alarm() { Id = 1, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 02, 15, 30, 00))}, false),
             new Record(new Alarm() { Id = 1, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 07, 15, 30, 00))}, false),
             new Record(new Alarm() { Id = 1, Name = "일어나서 이불개자", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 15, 15, 30, 00))}, false),
@@ -169,7 +169,7 @@ namespace Five_Seconds.ViewModels
             new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 12, 5, 30, 00))}, true),
             new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 21, 5, 30, 00))}, true),
             new Record(new Alarm() { Id = 6, Name = "점심 먹고 짜투리 독서", TimeOffset = new DateTimeOffset(new DateTime(2019, 10, 25, 5, 30, 00))}, true),
-            new Record(new Alarm() { Id = 7, Name = "점심 먹고", TimeOffset = new DateTimeOffset(new DateTime(2019, 11, 5, 5, 30, 00))}, true),
+            new Record(new Alarm() { Id = 7, Name = "점심 먹고", TimeOffset = new DateTimeOffset(new DateTime(2019, 11, 2, 5, 30, 00))}, true),
         };
 
         private void SaveTestRecords()
@@ -201,7 +201,25 @@ namespace Five_Seconds.ViewModels
             get
             {
                 var selectedMonth = SelectedMonth;
-                return Records.FindAll((r) => r.Date.Year == selectedMonth.Year && r.Date.Month == selectedMonth.Month);
+                return Records.FindAll(r => r.Date.Year == selectedMonth.Year && IsCheckedSelectedMonthForMonthRecords(r));
+            }
+        }
+
+        private bool IsCheckedSelectedMonthForMonthRecords(Record record)
+        {
+            var prevMonth = SelectedMonth.AddMonths(-1);
+            while (prevMonth.Date.DayOfWeek != DayOfWeek.Monday) prevMonth = prevMonth.AddDays(-1);
+
+            var nextMonth = SelectedMonth.AddMonths(1);
+            while (nextMonth.Date.DayOfWeek != DayOfWeek.Sunday) nextMonth = nextMonth.AddDays(1);
+
+            if (prevMonth <= record.Date && record.Date <= nextMonth)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -299,7 +317,7 @@ namespace Five_Seconds.ViewModels
 
             while (startDateOfMonth.Ticks <= startDateOfSelectedMonth.Ticks)
             {
-                var RecordsOfWeek = MonthRecordsByTag.FindAll((r) => r.DateTime.Ticks > startDateOfWeek.Ticks && r.DateTime.Ticks <= startDateOfWeek.AddDays(7).Ticks);
+                var RecordsOfWeek = MonthRecordsByTag.FindAll(r => startDateOfWeek.Ticks < r.DateTime.Ticks && r.DateTime.Ticks <= startDateOfWeek.AddDays(7).Ticks);
 
                 var weekRecord = new WeekRecord()
                 {

@@ -64,7 +64,7 @@ namespace Five_Seconds.ViewModels
 
         public string NextAlarmString
         {
-            get => CreateDateString.CreateNextDateTimeString(App.Service.GetNextAlarm());
+            get => CreateDateString.CreateNextDateTimeString(App.AlarmService.GetNextAlarm());
         }
 
         public string DeleteAlarmString
@@ -112,7 +112,7 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowAddAlarm()
         {
-            await Navigation.PushAsync(new AlarmPage(Navigation)).ConfigureAwait(false);
+            await Navigation.PushAsync(new AlarmPage(Navigation, new Alarm() { Index = Alarms.Count })).ConfigureAwait(false);
         }
 
         private void ShowCountDown()

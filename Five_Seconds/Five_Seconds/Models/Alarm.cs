@@ -84,13 +84,13 @@ namespace Five_Seconds.Models
                             }
                         }
 
-                        App.Service.SaveAlarm(this);
+                        App.AlarmService.SaveAlarm(this);
                         var diffString = CreateDateString.CreateTimeRemainingString(NextAlarmTime);
                         DependencyService.Get<IToastService>().Show(diffString);
                     }
                     else
                     {
-                        App.Service.TurnOffAlarm(this);
+                        App.AlarmService.TurnOffAlarm(this);
                     }
                 }
             }
@@ -135,6 +135,7 @@ namespace Five_Seconds.Models
             WakeUpText = original.WakeUpText;
             IsLinkOtherApp = original.IsLinkOtherApp;
             PackageName = original.PackageName;
+            Index = original.Index;
             AppLabel = original.AppLabel;
 
             Volume = original.Volume;
