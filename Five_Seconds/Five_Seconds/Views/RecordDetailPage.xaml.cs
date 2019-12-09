@@ -106,7 +106,23 @@ namespace Five_Seconds.Views
 
         private void DayRecords_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            viewModel.ShowRecordMenuCommand.Execute(e.Item);
+            if (IsBusy) return;
+
+            IsBusy = true;
+
+            try
+            {
+                viewModel.ShowRecordMenuCommand.Execute(e.Item);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private void SearchListView_ItemTapped(object sender, ItemTappedEventArgs e)

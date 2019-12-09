@@ -30,6 +30,7 @@ namespace Five_Seconds.Views
         {
             base.OnDisappearing();
             viewModel.SetIsSelectedModeFalse();
+            App.AlarmService.SaveAlarmsAtLocal(viewModel.Alarms);
         }
 
         protected void ShowMenuByItemClicked(object sender, ItemTappedEventArgs e)
@@ -77,13 +78,6 @@ namespace Five_Seconds.Views
             {
                 _switch.ThumbColor = Color.LightGray;
             }
-        }
-
-        private void ViewCell_Tapped(object sender, EventArgs e)
-        {
-            var viewCell = sender as ViewCell;
-            var item = viewCell.BindingContext as Alarm;
-            viewModel.ShowModifyAlarmCommand.Execute(item);
         }
 
         protected override bool OnBackButtonPressed()

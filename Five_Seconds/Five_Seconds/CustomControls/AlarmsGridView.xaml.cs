@@ -16,5 +16,10 @@ namespace Five_Seconds.CustomControls
         {
             InitializeComponent();
         }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+
+        }
     }
 }

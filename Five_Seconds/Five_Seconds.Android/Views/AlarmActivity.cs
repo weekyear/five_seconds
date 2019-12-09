@@ -14,6 +14,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Speech;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Views.InputMethods;
 using Android.Widget;
 using Five_Seconds.Droid.Services;
@@ -24,6 +25,7 @@ using Five_Seconds.Services;
 using Plugin.CurrentActivity;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Animation = Android.Views.Animations.Animation;
 using Button = Android.Widget.Button;
 using RelativeLayout = Android.Widget.RelativeLayout;
 
@@ -37,6 +39,7 @@ namespace Five_Seconds.Droid
 
         private LinearLayout countLayout;
         private RelativeLayout notCountLayout;
+        private FrameLayout tellmeLayout;
 
         private Button startButton;
         private Button laterButton;
@@ -248,6 +251,7 @@ namespace Five_Seconds.Droid
         {
             notCountLayout = FindViewById<RelativeLayout>(Resource.Id.notCountLayout);
             countLayout = FindViewById<LinearLayout>(Resource.Id.countLayout);
+            tellmeLayout = FindViewById<FrameLayout>(Resource.Id.tellmeLayout);
 
             startButton = FindViewById<Button>(Resource.Id.startButton);
             laterButton = FindViewById<Button>(Resource.Id.laterButton);
@@ -282,13 +286,22 @@ namespace Five_Seconds.Droid
                 laterButton.Visibility = ViewStates.Gone;
             }
 
+            SetAnimToTellmeView();
             tellmeView.Click += StartListening_Click;
             startButton.Click += StartButton_Click;
             laterButton.Click += LaterButton_Click; ;
         }
 
+        private void SetAnimToTellmeView()
+        {
+            Animation myAnim = AnimationUtils.LoadAnimation(this, Resource.Animation.bounce);
+
+            tellmeLayout.StartAnimation(myAnim);
+        }
+
         private void StartListening_Click(object sender, EventArgs e)
         {
+            tellmeLayout.ClearAnimation();
             RequestRecordAudioPermission();
         }
 
@@ -362,6 +375,7 @@ namespace Five_Seconds.Droid
 
         public void ShowResultDialog()
         {
+            tellmeLayout.ClearAnimation();
             CreateRecord();
 
             IsFinished = true;
@@ -680,7 +694,8 @@ namespace Five_Seconds.Droid
 
         private void SetVisibleOfStartButton()
         {
-            tellmeView.Visibility = ViewStates.Gone;
+            tellmeLayout.ClearAnimation();
+            tellmeLayout.Visibility = ViewStates.Gone;
             alarmEditText.Visibility = ViewStates.Visible;
             startButton.Visibility = ViewStates.Visible;
         }
@@ -865,7 +880,7 @@ namespace Five_Seconds.Droid
             }
         }
 
-        // 마이크 권한
+        #region MIC_PERMISSION
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
@@ -915,6 +930,8 @@ namespace Five_Seconds.Droid
                 StartVoiceRecognition();
             }
         }
+
+        #endregion
 
         // Review Dialog
 
@@ -1058,7 +1075,7 @@ namespace Five_Seconds.Droid
             FinishAndRemoveTask();
         }
 
-        // Voice Recognition
+        #region VOICE_RECOGNITION
         public void OnBeginningOfSpeech()
         {
         }
@@ -1151,6 +1168,8 @@ namespace Five_Seconds.Droid
         {
         }
 
+        #endregion
+
         private void StartVoiceRecognition()
         {
             TurnOffSoundAndVibration();
@@ -1162,6 +1181,7 @@ namespace Five_Seconds.Droid
         {
             tellmeView.SetImageResource(Resource.Drawable.ic_mic);
             tellmeView.SetBackgroundResource(Resource.Drawable.rounded_button);
+            SetAnimToTellmeView();
         }
 
         private void SetTellmeBtnRecording()

@@ -91,7 +91,23 @@ namespace Five_Seconds.Views
 
         private void WeekRecords_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            viewModel.ShowRecordDetailCommand.Execute(e.Item);
+            if (IsBusy) return;
+
+            IsBusy = true;
+
+            try
+            {
+                viewModel.ShowRecordDetailCommand.Execute(e.Item);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private void WeekRecords_ItemSelected(object sender, SelectedItemChangedEventArgs e)

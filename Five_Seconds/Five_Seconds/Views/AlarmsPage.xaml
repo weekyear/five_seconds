@@ -104,7 +104,7 @@
                             <custom:RoundedViewCell IsSelected="{Binding IsSelected}">
                                 <custom:AlarmsGridView x:Name="AlarmsGrid" Padding="7"/>
                             </custom:RoundedViewCell>
-                        </DataTemplate>
+                    </DataTemplate>
                     </custom:NoRippleListView.ItemTemplate>
                 </custom:NoRippleListView>
             </StackLayout>

@@ -10,6 +10,7 @@ using System.Linq;
 using Five_Seconds.Resources;
 using System.Globalization;
 using Xamarin.Forms.Internals;
+using System;
 
 namespace Five_Seconds.ViewModels
 {
@@ -112,14 +113,46 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowAddAlarm()
         {
-            await Navigation.PushAsync(new AlarmPage(Navigation, new Alarm() { Index = Alarms.Count })).ConfigureAwait(false);
+            if (IsBusy) return;
+
+            IsBusy = true;
+
+            try
+            {
+                await Navigation.PushAsync(new AlarmPage(Navigation, new Alarm() { Index = Alarms.Count })).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private void ShowCountDown()
         {
-            void action() => DependencyService.Get<ICountDown>().ShowCountDown();
-            //void action() => DependencyService.Get<ICrashTest>().CrashTest();
-            MessageBoxService.ShowConfirm(AppResources.FiveCount, AppResources.FiveCountDetail, null, action);
+            if (IsBusy) return;
+
+            IsBusy = true;
+
+            try
+            {
+                void action() => DependencyService.Get<ICountDown>().ShowCountDown();
+                //void action() => DependencyService.Get<ICrashTest>().CrashTest();
+                MessageBoxService.ShowConfirm(AppResources.FiveCount, AppResources.FiveCountDetail, null, action);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
         
         private void DeleteAlarms()
@@ -131,20 +164,36 @@ namespace Five_Seconds.ViewModels
             }
             SetIsSelectedModeFalse();
         }
-
+        
         private async Task ShowModifyAlarm(object _alarm)
         {
-            var alarm = _alarm as Alarm; 
+            var alarm = _alarm as Alarm;
             await ModifyAlarm(alarm);
         }
 
         private async Task ShowMainMenu()
         {
-            string[] actionSheetBtns = { AppResources.WhatFiveSecondsRule, AppResources.BriefDescription };
+            if (IsBusy) return;
 
-            string action = await MessageBoxService.ShowActionSheet(AppResources.Menu, AppResources.Cancel, null, actionSheetBtns);
+            IsBusy = true;
 
-            await ClickMenuAction(action);
+            try
+            {
+                string[] actionSheetBtns = { AppResources.WhatFiveSecondsRule, AppResources.BriefDescription };
+
+                string action = await MessageBoxService.ShowActionSheet(AppResources.Menu, AppResources.Cancel, null, actionSheetBtns);
+
+                await ClickMenuAction(action);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async Task ClickMenuAction(string action)
@@ -162,7 +211,23 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowRecord()
         {
-            await Navigation.PushAsync(new RecordPage(Navigation, MessageBoxService));
+            if (IsBusy) return;
+
+            IsBusy = true;
+
+            try
+            {
+                await Navigation.PushAsync(new RecordPage(Navigation, MessageBoxService));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async Task ModifyAlarm(Alarm alarm)

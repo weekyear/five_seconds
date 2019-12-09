@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2286" android:versionName="2.2.8.6" package="com.beside.Five_Seconds" android:installLocation="preferExternal">
-	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2288" android:versionName="2.2.8.8" package="com.beside.Five_Seconds" android:installLocation="preferExternal">
+	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28" />
 	<application android:label="@string/FiveSecondAlarm" android:largeHeap="true" android:icon="@drawable/ic_five_seconds">
 		<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-8413101784746060~4411896846" />
 		<activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" android:theme="@android:style/Theme.Translucent" />

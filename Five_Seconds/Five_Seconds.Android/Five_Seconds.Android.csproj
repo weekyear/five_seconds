@@ -472,5 +472,11 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_blank_app.png" />
   </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\anim\bounce.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_finger.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

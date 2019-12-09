@@ -384,14 +384,46 @@ namespace Five_Seconds.ViewModels
 
         private async Task ShowSettingTone()
         {
-            await Navigation.PushAsync(new SettingTonePage(Navigation, Alarm));
+            if (IsBusy) return;
+
+            IsBusy = true;
+
+            try
+            {
+                await Navigation.PushAsync(new SettingTonePage(Navigation, Alarm));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async Task OpenAppList()
         {
-            var pkgList = DependencyService.Get<IOpenAppList>().OpenAppList();
+            if (IsBusy) return;
 
-            await Navigation.PushAsync(new AppListPage(pkgList));
+            IsBusy = true;
+
+            try
+            {
+                var pkgList = DependencyService.Get<IOpenAppList>().OpenAppList();
+
+                await Navigation.PushAsync(new AppListPage(pkgList));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
     }
 }
