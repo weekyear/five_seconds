@@ -430,6 +430,15 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Graph.
+        /// </summary>
+        internal static string Graph {
+            get {
+                return ResourceManager.GetString("Graph", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Icon Copyright.
         /// </summary>
         internal static string IconCopyright {
@@ -462,6 +471,15 @@ namespace Five_Seconds.Resources {
         internal static string LinkOtherAppsDescription {
             get {
                 return ResourceManager.GetString("LinkOtherAppsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List.
+        /// </summary>
+        internal static string List {
+            get {
+                return ResourceManager.GetString("List", resourceCulture);
             }
         }
         

@@ -13,7 +13,7 @@ namespace Five_Seconds.CustomControls
                 typeof(DayOfWeekButton), 
                 false, 
                 BindingMode.TwoWay,
-                propertyChanged : OnIsSelectedChanged);
+                propertyChanged : IsSelectedPropertyChanged);
 
         public bool IsSelected
         {
@@ -29,7 +29,7 @@ namespace Five_Seconds.CustomControls
 
         public event EventHandler IsSelectedChanged;
 
-        static void OnIsSelectedChanged(BindableObject bindable, object oldValue, object newValue)
+        static void IsSelectedPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var button = (DayOfWeekButton)bindable;

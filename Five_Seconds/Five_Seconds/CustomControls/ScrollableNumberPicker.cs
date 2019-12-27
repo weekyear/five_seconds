@@ -26,14 +26,6 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        static void OnValueChanged(BindableObject bindable, object oldValue, object newValue)
-        {
-            // Property changed implementation goes here
-            var numberPicker = bindable as ScrollableNumberPicker;
-
-            numberPicker.Value = (int)newValue;
-        }
-
         public static readonly BindableProperty PickerTypeProperty =
             BindableProperty.Create(nameof(PickerType),
                 typeof(string),

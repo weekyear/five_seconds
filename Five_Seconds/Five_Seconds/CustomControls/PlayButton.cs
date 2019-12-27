@@ -13,7 +13,7 @@ namespace Five_Seconds.CustomControls
                 typeof(PlayButton),
                 false,
                 BindingMode.TwoWay,
-                propertyChanged: OnIsPlayingChanged);
+                propertyChanged: IsPlayingPropertyChanged);
 
         public bool IsPlaying
         {
@@ -51,7 +51,7 @@ namespace Five_Seconds.CustomControls
             set { SetValue(ImageSourcePauseProperty, value); }
         }
 
-        static void OnIsPlayingChanged(BindableObject bindable, object oldValue, object newValue)
+        static void IsPlayingPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var button = (PlayButton)bindable;

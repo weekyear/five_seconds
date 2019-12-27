@@ -69,6 +69,7 @@
     <Compile Include="CustomRenderers\DayOfWeekButtonRenderer.cs" />
     <Compile Include="CustomRenderers\ScrollableNumberPickerRenderer.cs" />
     <Compile Include="CustomRenderers\SearchPageRenderer.cs" />
+    <Compile Include="Helpers\NativeFont.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="Services\AdMobInterstitialIos.cs" />

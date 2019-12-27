@@ -32,7 +32,7 @@ namespace Five_Seconds.CustomControls
                 typeof(TypeButton),
                 1,
                 BindingMode.TwoWay,
-                propertyChanged: OnAlarmTypeChanged);
+                propertyChanged: AlarmTypePropertyChanged);
 
         public int AlarmType
         {
@@ -46,7 +46,7 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        static void OnAlarmTypeChanged(BindableObject bindable, object oldValue, object newValue)
+        static void AlarmTypePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var button = (TypeButton)bindable;

@@ -14,7 +14,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <conv:BooleanLayoutColorConverter x:Key="BooleanLayoutColorConverter"/>
+            <conv:BooleanColorConverter x:Key="BooleanColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -68,7 +68,7 @@
                                     <MenuItem Command="{Binding DeleteToneCommand}" CommandParameter="{Binding .}" Text="삭제" IsDestructive="True" />
                                 </ViewCell.ContextActions>
                                 <ViewCell.View>
-                                    <StackLayout BackgroundColor="{Binding IsSelected, Converter={StaticResource BooleanLayoutColorConverter}}">
+                                    <StackLayout BackgroundColor="{Binding IsSelected, Converter={StaticResource BooleanColorConverter}}">
                                         <Label Text="{Binding Name}"
                                            FontSize="Medium" 
                                            TextColor="Black"

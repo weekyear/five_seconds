@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class BooleanLayoutColorConverter : IValueConverter
+    public class BooleanColorConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -16,7 +16,7 @@ namespace Five_Seconds.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var color = (Color)value;
-            if (color == Color.LightSkyBlue)
+            if (color == Color.Blue)
             {
                 return true;
             }
@@ -31,7 +31,7 @@ namespace Five_Seconds.Converters
             var isSelected = (bool)value;
             if (isSelected)
             {
-                return Color.LightSkyBlue;
+                return Color.FromHex("#3498DB");
             }
             else
             {

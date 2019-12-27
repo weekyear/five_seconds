@@ -7,6 +7,7 @@
              xmlns:conv="clr-namespace:Five_Seconds.Converters"
              xmlns:dltag="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.TagEntryView"
              xmlns:local="clr-namespace:Five_Seconds.Helpers"
+             xmlns:charts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
              mc:Ignorable="d"
              Title="{local:Translate AlarmRecord_Week}"
              BackgroundColor="{StaticResource BackgroundColor}"
@@ -20,6 +21,7 @@
             <conv:DateStringConverter x:Key="DateStringConverter"/>
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
+            <conv:BooleanColorConverter x:Key="BooleanColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -33,7 +35,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
             <dltag:TagEntryView  TagItems="{Binding TagItems}" TagTappedCommand="{Binding RemoveTagCommand}" 
                                  ShowEntryBox="False" TagValidatorFactory="{StaticResource TagValidatorFactory}" 
                                  AllowKeyboardReturnToAddNewTag="True"
@@ -47,12 +48,14 @@
                     </DataTemplate>
                 </dltag:TagEntryView.TagItemTemplate>
             </dltag:TagEntryView>
-            <StackLayout BackgroundColor="{StaticResource BackgroundColor}" Grid.Row="1">
+
+            <StackLayout Grid.Row="1">
                 <StackLayout.GestureRecognizers>
                     <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
                     <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
                 </StackLayout.GestureRecognizers>
-                <Grid VerticalOptions="StartAndExpand" Margin="5, 0, 5, 0">
+
+                <Grid VerticalOptions="Start" Margin="5, 0, 5, 0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -65,147 +68,189 @@
                     <ImageButton Grid.RowSpan="2" Source="ic_left.png"
                              Margin="10, 0"
                              BackgroundColor="{StaticResource BackgroundColor}"
-                             WidthRequest="40" HeightRequest="40"
+                             WidthRequest="35" HeightRequest="35"
                              HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand"
                              Command="{Binding PreviousWeekCommand}"/>
                     <Label Grid.Column="1" 
-                       Text="{Binding SelectedWeek, Converter={StaticResource SelectedWeekStringConverter}}"
-                       TextColor="Black"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"
-                       FontSize="28" />
-                    <custom:PercentLabel  
-                    Grid.Column="1"
-                    Grid.Row="1"
-                    Percent="{Binding WeekSuccessRate}"
-                    FontAttributes="Bold"
-                    HorizontalTextAlignment="Center"
-                    VerticalOptions="CenterAndExpand"
-                    FontSize="32"
-                    TextColor="LightSlateGray"
-                    Text="{Binding WeekSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
+                           Text="{Binding SelectedWeek, Converter={StaticResource SelectedWeekStringConverter}}"
+                           TextColor="Black"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           FontSize="Large" />
+                    <custom:PercentLabel  Grid.Column="1"
+                                          Grid.Row="1"
+                                          Percent="{Binding WeekSuccessRate}"
+                                          FontAttributes="Bold"
+                                          HorizontalTextAlignment="Center"
+                                          VerticalOptions="CenterAndExpand"
+                                          FontSize="Large"
+                                          TextColor="LightSlateGray"
+                                          Text="{Binding WeekSuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                     <ImageButton Grid.Column="2" Grid.RowSpan="2" Source="ic_right.png"
-                             Margin="10, 0"
-                             BackgroundColor="{StaticResource BackgroundColor}"
-                             WidthRequest="40" HeightRequest="40"
-                             HorizontalOptions="CenterAndExpand"
-                             VerticalOptions="CenterAndExpand"
-                             Command="{Binding NextWeekCommand}"/>
+                                     Margin="10, 0"
+                                     BackgroundColor="{StaticResource BackgroundColor}"
+                                     WidthRequest="35" HeightRequest="35"
+                                     HorizontalOptions="CenterAndExpand"
+                                     VerticalOptions="CenterAndExpand"
+                                     Command="{Binding NextWeekCommand}"/>
                 </Grid>
-                <custom:GestureListView x:Name="DayRecords" 
-                                    Margin="10" 
-                                    ItemsSource="{Binding DayRecords}"
-                                    VerticalOptions="CenterAndExpand"
-                                    IsGroupingEnabled="True"
-                                    ItemSelected="DayRecords_ItemSelected"
-                                    ItemTapped="DayRecords_ItemTapped"
-                                    SwipeLeft="DayRecords_SwipeLeft"
-                                    SwipeRight="DayRecords_SwipeRight" 
-                                    IsVisible="{Binding HasRecord}">
-                    <custom:GestureListView.GestureRecognizers>
-                        <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
-                        <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
-                    </custom:GestureListView.GestureRecognizers>
-                    <custom:GestureListView.GroupHeaderTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid HorizontalOptions="FillAndExpand"
-                                  VerticalOptions="CenterAndExpand"
-                                  Margin="10, 0, 10, 0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="50" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-                                    <custom:PercentLabel 
-                                    Percent="{Binding SuccessRate}"
-                                    Text="{Binding DayOfWeek}"
-                                    TextColor="LightSlateGray"
-                                    FontSize="22"
-                                    VerticalOptions="CenterAndExpand"
-                                    FontAttributes="Bold"
-                                    Margin="10, 0"/>
-                                    <custom:PercentLabel 
-                                    Grid.Column="1"
-                                    Percent="{Binding SuccessRate}"
-                                    Text="{Binding Date, Converter={StaticResource DateStringConverter}}"
-                                    TextColor="LightSlateGray"
-                                    FontSize="20"
-                                    VerticalOptions="CenterAndExpand"
-                                    FontAttributes="Bold"
-                                    Margin="10, 0"/>
-                                    <custom:PercentLabel 
-                                    Grid.Column="2" 
-                                    Percent="{Binding SuccessRate}"
-                                    Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"
-                                    TextColor="LightSlateGray"
-                                    FontSize="22"
-                                    FontAttributes="Bold"
-                                    HorizontalOptions="EndAndExpand"
-                                    VerticalOptions="CenterAndExpand"/>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </custom:GestureListView.GroupHeaderTemplate>
-                    <custom:GestureListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid HorizontalOptions="FillAndExpand"
-                                  VerticalOptions="CenterAndExpand"
-                                  Margin="0, 0, 10, 0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="40" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="10*"/>
-                                        <ColumnDefinition Width="25*"/>
-                                        <ColumnDefinition Width="60*"/>
-                                        <ColumnDefinition Width="20*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
-                                       TextColor="Black"
-                                       FontSize="15"
-                                       HorizontalOptions="EndAndExpand"
-                                       VerticalOptions="CenterAndExpand"/>
-                                    <Label Grid.Column="1" Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
-                                       TextColor="Black"
-                                       FontSize="15"
-                                       HorizontalOptions="StartAndExpand"
-                                       VerticalOptions="CenterAndExpand"
-                                       Margin="10, 0"/>
-                                    <Label Grid.Column="2" 
-                                       Text="{Binding Name}"
-                                       TextColor="Black"
-                                       FontSize="15"
-                                       VerticalOptions="CenterAndExpand"
-                                       Margin="10, 0"/>
-                                    <custom:SuccessLabel 
-                                    Grid.Column="3" 
-                                    IsSuccess="{Binding IsSuccess}"
-                                    Text="{Binding IsSuccess, Converter={StaticResource SuccessStringConverter}}"
-                                    TextColor="DarkRed"
-                                    FontSize="15"
-                                    FontAttributes="Bold"
-                                    VerticalOptions="CenterAndExpand"
-                                    Margin="10, 0"/>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </custom:GestureListView.ItemTemplate>
-                </custom:GestureListView>
+                <Frame BackgroundColor="White" CornerRadius="10" Margin="5" Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <StackLayout VerticalOptions="FillAndExpand">
+                        <Grid ColumnSpacing="0" VerticalOptions="FillAndExpand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0"
+                                        CornerRadius="10"
+                                        Text="{local:Translate List}"
+                                        TextColor="{Binding IsGraph, Converter={StaticResource BooleanColorConverter}}"
+                                        FontSize="Medium"
+                                        Clicked="Button_Clicked"
+                                        BackgroundColor="{Binding IsNotGraph, Converter={StaticResource BooleanColorConverter}}"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"/>
+                            <Button Grid.Column="1"
+                                        CornerRadius="10"
+                                        Text="{local:Translate Graph}"
+                                        BackgroundColor="{Binding IsGraph, Converter={StaticResource BooleanColorConverter}}"
+                                        TextColor="{Binding IsNotGraph, Converter={StaticResource BooleanColorConverter}}"
+                                        FontAttributes="Bold"
+                                        Clicked="Button_Clicked"
+                                        FontSize="Medium"
+                                        HorizontalOptions="FillAndExpand"
+                                        VerticalOptions="FillAndExpand"/>
+                            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" VerticalOptions="FillAndExpand">
+                                <custom:GestureListView x:Name="DayRecords" 
+                                                        Margin="10" 
+                                                        ItemsSource="{Binding DayRecords}"
+                                                        VerticalOptions="CenterAndExpand"
+                                                        IsGroupingEnabled="True"
+                                                        IsVisible="{Binding IsNotGraph}"
+                                                        ItemSelected="DayRecords_ItemSelected"
+                                                        ItemTapped="DayRecords_ItemTapped"            
+                                                        SwipeLeft="DayRecords_SwipeLeft"
+                                                        SwipeRight="DayRecords_SwipeRight">
+                                    <custom:GestureListView.GestureRecognizers>
+                                        <SwipeGestureRecognizer Direction="Left" Command="{Binding NextWeekCommand}"/>
+                                        <SwipeGestureRecognizer Direction="Right" Command="{Binding PreviousWeekCommand}"/>
+                                    </custom:GestureListView.GestureRecognizers>
+                                    <custom:GestureListView.GroupHeaderTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Grid HorizontalOptions="FillAndExpand"
+                                                      VerticalOptions="CenterAndExpand"
+                                                      Margin="10, 0, 10, 0">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="50" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="60"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="100"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <custom:PercentLabel Percent="{Binding SuccessRate}"
+                                                                         Text="{Binding DayOfWeek}"
+                                                                         TextColor="LightSlateGray"
+                                                                         FontSize="22"
+                                                                         VerticalOptions="CenterAndExpand"
+                                                                         FontAttributes="Bold"
+                                                                         Margin="10, 0"/>
+                                                    <custom:PercentLabel Grid.Column="1"
+                                                                         Percent="{Binding SuccessRate}"
+                                                                         Text="{Binding Date, Converter={StaticResource DateStringConverter}}"
+                                                                         TextColor="LightSlateGray"
+                                                                         FontSize="20"
+                                                                         VerticalOptions="CenterAndExpand"
+                                                                         FontAttributes="Bold"
+                                                                         Margin="10, 0"/>
+                                                    <custom:PercentLabel Grid.Column="2" 
+                                                                         Percent="{Binding SuccessRate}"
+                                                                         Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"
+                                                                         TextColor="LightSlateGray"
+                                                                         FontSize="22"
+                                                                         FontAttributes="Bold"
+                                                                         HorizontalOptions="EndAndExpand"
+                                                                         VerticalOptions="CenterAndExpand"/>
+                                                </Grid>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </custom:GestureListView.GroupHeaderTemplate>
+                                    <custom:GestureListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Grid HorizontalOptions="FillAndExpand"
+                                                      VerticalOptions="CenterAndExpand"
+                                                      Margin="0, 0, 10, 0">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="40" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="10*"/>
+                                                        <ColumnDefinition Width="25*"/>
+                                                        <ColumnDefinition Width="60*"/>
+                                                        <ColumnDefinition Width="20*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
+                                                           TextColor="Black"
+                                                           FontSize="15"
+                                                           HorizontalOptions="EndAndExpand"
+                                                           VerticalOptions="CenterAndExpand"/>
+                                                    <Label Grid.Column="1" Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                                           TextColor="Black"
+                                                           FontSize="15"
+                                                           HorizontalOptions="StartAndExpand"
+                                                           VerticalOptions="CenterAndExpand"
+                                                           Margin="10, 0"/>
+                                                    <Label Grid.Column="2" 
+                                                           Text="{Binding Name}"
+                                                           TextColor="Black"
+                                                           FontSize="15"
+                                                           VerticalOptions="CenterAndExpand"
+                                                           Margin="10, 0"/>
+                                                    <custom:SuccessLabel Grid.Column="3" 
+                                                                         IsSuccess="{Binding IsSuccess}"
+                                                                         Text="{Binding IsSuccess, Converter={StaticResource SuccessStringConverter}}"
+                                                                         TextColor="DarkRed"
+                                                                         FontSize="15"
+                                                                         FontAttributes="Bold"
+                                                                         VerticalOptions="CenterAndExpand"
+                                                                         Margin="10, 0"/>
+                                                </Grid>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </custom:GestureListView.ItemTemplate>
+                                </custom:GestureListView>
+                                <charts:ChartView Chart="{Binding SuccessChart}"
+                                                  IsVisible="{Binding IsGraph}"
+                                                  HorizontalOptions="FillAndExpand"
+                                                  VerticalOptions="CenterAndExpand"
+                                                  HeightRequest="250"/>
+                            </StackLayout>
+                            <Label Text="{local:Translate ThereIsNoRecord}"
+                                   Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                                   FontSize="28"
+                                   IsVisible="{Binding HasNoRecord}"
+                                   HorizontalOptions="CenterAndExpand"
+                                   VerticalOptions="CenterAndExpand"
+                                   VerticalTextAlignment="Center"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
             </StackLayout>
             <ListView x:Name="SearchListView" Grid.RowSpan="2"
-                  BackgroundColor="White"
-                  ItemsSource="{Binding RecordsBySearch}"
-                  IsVisible="{Binding IsSearching}"
-                  ItemTapped="SearchListView_ItemTapped"
-                  ItemSelected="SearchListView_ItemSelected"
-                  RowHeight="50"
-                  VerticalOptions="FillAndExpand">
+                      BackgroundColor="White"
+                      ItemsSource="{Binding RecordsBySearch}"
+                      IsVisible="{Binding IsSearching}"
+                      ItemTapped="SearchListView_ItemTapped"
+                      ItemSelected="SearchListView_ItemSelected"
+                      RowHeight="50"
+                      VerticalOptions="FillAndExpand">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -217,15 +262,8 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-
         </Grid>
-        <Label Grid.Row="0" Text="{local:Translate ThereIsNoRecord}"
-               FontSize="28"
-               IsVisible="{Binding HasNoRecord}"
-               HorizontalOptions="CenterAndExpand"
-               VerticalOptions="CenterAndExpand"
-               VerticalTextAlignment="Center"/>
-
+        
         <Label Grid.Row="0" Margin="0, 60" 
                    HorizontalTextAlignment="Center"
                    VerticalOptions="StartAndExpand"

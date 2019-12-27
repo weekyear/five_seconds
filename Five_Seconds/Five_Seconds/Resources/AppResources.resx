@@ -240,6 +240,9 @@
   <data name="Friday" xml:space="preserve">
     <value>F</value>
   </data>
+  <data name="Graph" xml:space="preserve">
+    <value>Graph</value>
+  </data>
   <data name="IconCopyright" xml:space="preserve">
     <value>Icon Copyright</value>
   </data>
@@ -251,6 +254,9 @@
   </data>
   <data name="LinkOtherAppsDescription" xml:space="preserve">
     <value>The app you set opens after a successful alarm.</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>List</value>
   </data>
   <data name="Menu" xml:space="preserve">
     <value>Menu</value>

@@ -33,7 +33,7 @@ namespace Five_Seconds.CustomControls
                 typeof(AppIconImage),
                 false,
                 BindingMode.TwoWay,
-                propertyChanged: OnIsActiveChanged);
+                propertyChanged: IsActiveChanged);
 
         public bool IsActive
         {
@@ -47,7 +47,7 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        static void OnIsActiveChanged(BindableObject bindable, object oldValue, object newValue)
+        static void IsActiveChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var image = (AppIconImage)bindable;

@@ -11,7 +11,7 @@ namespace Five_Seconds.CustomControls
                 typeof(SuccessLabel),
                 false,
                 BindingMode.TwoWay,
-                propertyChanged: OnIsSuccessChanged);
+                propertyChanged: IsSuccessPropertyChanged);
 
         public bool IsSuccess
         {
@@ -25,7 +25,7 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        static void OnIsSuccessChanged(BindableObject bindable, object oldValue, object newValue)
+        static void IsSuccessPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var label = (SuccessLabel)bindable;

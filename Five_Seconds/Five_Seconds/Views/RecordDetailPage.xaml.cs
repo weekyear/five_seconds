@@ -1,5 +1,6 @@
 ﻿using Five_Seconds.CustomControls;
 using Five_Seconds.Models;
+using Five_Seconds.Resources;
 using Five_Seconds.Services;
 using Five_Seconds.ViewModels;
 using System;
@@ -137,6 +138,20 @@ namespace Five_Seconds.Views
             if (SearchListView.SelectedItem != null || e.SelectedItem != null)
             {
                 ((ListView)sender).SelectedItem = null;
+            }
+        }
+        private void Button_Clicked(object sender, EventArgs e)
+        {
+            var button = sender as Button;
+            var name = button.Text;
+
+            if (name == AppResources.List)
+            {
+                viewModel.IsGraph = false;
+            }
+            else
+            {
+                viewModel.IsGraph = true;
             }
         }
     }

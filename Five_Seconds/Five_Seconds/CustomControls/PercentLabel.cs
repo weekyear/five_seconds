@@ -12,7 +12,7 @@ namespace Five_Seconds.CustomControls
                 typeof(PercentLabel),
                 -1.0,
                 BindingMode.TwoWay,
-                propertyChanged: OnPercentChanged);
+                propertyChanged: PercentPropertyChanged);
 
         public double Percent
         {
@@ -28,7 +28,7 @@ namespace Five_Seconds.CustomControls
 
         public event EventHandler IsActiveChanged;
 
-        static void OnPercentChanged(BindableObject bindable, object oldValue, object newValue)
+        static void PercentPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var label = (PercentLabel)bindable;

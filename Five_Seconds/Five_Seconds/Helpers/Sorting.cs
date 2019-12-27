@@ -11,7 +11,7 @@ namespace Five_Seconds.Helpers
             BindableProperty.CreateAttached(
                             "IsSortabble", typeof(bool),
                             typeof(ListViewSortableEffect), false,
-                            propertyChanged: OnIsSortabbleChanged);
+                            propertyChanged: IsSortabblePropertyChanged);
 
         public static bool GetIsSortable(BindableObject view)
         {
@@ -23,7 +23,7 @@ namespace Five_Seconds.Helpers
             view.SetValue(IsSortableProperty, value);
         }
 
-        static void OnIsSortabbleChanged(BindableObject bindable, object oldValue, object newValue)
+        static void IsSortabblePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             if (!(bindable is ListView view))
             {

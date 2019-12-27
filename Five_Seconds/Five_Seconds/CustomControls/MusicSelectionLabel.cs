@@ -13,7 +13,7 @@ namespace Five_Seconds.CustomControls
                 typeof(MusicSelectionLabel),
                 false,
                 BindingMode.TwoWay,
-                propertyChanged: OnIsActiveChanged);
+                propertyChanged: IsActivePropertyChanged);
 
         public bool IsActive
         {
@@ -27,7 +27,7 @@ namespace Five_Seconds.CustomControls
             }
         }
 
-        static void OnIsActiveChanged(BindableObject bindable, object oldValue, object newValue)
+        static void IsActivePropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {
             // Property changed implementation goes here
             var label = (MusicSelectionLabel)bindable;

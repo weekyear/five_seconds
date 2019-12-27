@@ -3,6 +3,7 @@ using Five_Seconds.Models;
 using Five_Seconds.Resources;
 using Five_Seconds.Services;
 using Five_Seconds.Views;
+using Microcharts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using static Five_Seconds.Helpers.SearchTag;
+using Entry = Microcharts.Entry;
 
 namespace Five_Seconds.ViewModels
 {
@@ -18,6 +20,8 @@ namespace Five_Seconds.ViewModels
     {
         private readonly IMessageBoxService MessageBoxService;
 
+        private readonly int LabelFontSize = 15;
+        private readonly int AnimationSec = 1;
         public RecordViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
             ConstructCommand();
@@ -30,7 +34,7 @@ namespace Five_Seconds.ViewModels
 
             SubscribeMessage();
 
-            //SaveTestRecords();
+            SaveTestRecords();
 
             InitRecordsForSearch();
         }
@@ -195,6 +199,23 @@ namespace Five_Seconds.ViewModels
             get { return IsSearching && RecordsBySearch.Count == 0; }
         }
 
+        private bool isGraph = false;
+        public bool IsGraph 
+        {
+            get { return isGraph; }
+            set
+            {
+                if (isGraph == value) return;
+                SetProperty(ref isGraph, value, nameof(IsGraph));
+                OnPropertyChanged(nameof(IsNotGraph));
+            }
+        }
+        public bool IsNotGraph
+        {
+            get { return !IsGraph; }
+        }
+        public Chart SuccessChart { get; set; }
+
 
         public List<Record> MonthRecords
         {
@@ -340,6 +361,9 @@ namespace Five_Seconds.ViewModels
 
             WeekRecords = weekRecords;
 
+            RefreshRecordChart();
+
+            OnPropertyChanged(nameof(SuccessChart));
             OnPropertyChanged(nameof(HasNoWeekRecords));
         }
 
@@ -474,6 +498,36 @@ namespace Five_Seconds.ViewModels
             }
 
             SortRecordsBySearch(list);
+        }
+
+        private void RefreshRecordChart()
+        {
+            var entries = new List<Entry>();
+
+            for (int i = 0; i < WeekRecords.Count; i++)
+            {
+                var weekRecord = WeekRecords[i];
+
+                var startDate = weekRecord.StartDateOfWeek;
+                var endDate = startDate.AddDays(6);
+
+                var entry = new Entry((float)weekRecord.SuccessRate)
+                {
+                    Label = $"{startDate.Month}.{startDate.Day} ~ {endDate.Month}.{endDate.Day}",
+                    Color = SkiaSharp.SKColor.Parse("#1565c0"),
+                    ValueLabel = $"{string.Format("{0:0.##}", Math.Round(weekRecord.SuccessRate * 100))}%"
+                };
+                entries.Add(entry);
+            }
+
+            SuccessChart = new BarChart()
+            {
+                Entries = entries,
+                LabelTextSize = DependencyService.Get<INativeFont>().GetNativeSize(LabelFontSize),
+                LabelOrientation = Orientation.Horizontal,
+                ValueLabelOrientation = Orientation.Horizontal,
+                AnimationDuration = TimeSpan.FromSeconds(AnimationSec)
+            };
         }
 
         public class WeekRecord

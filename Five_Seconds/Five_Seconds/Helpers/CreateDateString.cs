@@ -210,5 +210,27 @@ namespace Five_Seconds.Helpers
                 return "이미 지난 시간입니다.";
             }
         }
+        public static string ConvertDayOfWeekToKorDayOfWeek(DateTime dateTime)
+        {
+            switch (dateTime.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    return "Mon";
+                case DayOfWeek.Tuesday:
+                    return "Tue";
+                case DayOfWeek.Wednesday:
+                    return "Wed";
+                case DayOfWeek.Thursday:
+                    return "Thu";
+                case DayOfWeek.Friday:
+                    return "Fri";
+                case DayOfWeek.Saturday:
+                    return "Sat";
+                case DayOfWeek.Sunday:
+                    return "Sun";
+                default:
+                    return "Mon";
+            }
+        }
     }
 }
