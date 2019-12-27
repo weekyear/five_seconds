@@ -14,13 +14,13 @@
             <conv:TimeStringConverter x:Key="TimeStringConverter"/>
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
+            <conv:BooleanOpacityConverter x:Key="BooleanOpacityConverter"/>
             <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
-            <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
         </ResourceDictionary>
     </ContentView.Resources>
 
     <ContentView.Content>
-        <Grid x:Name="AlarmsGrid" BackgroundColor="Transparent" Padding="10" 
+        <Grid x:Name="AlarmsGrid" BackgroundColor="Transparent" Padding="10" Opacity="{Binding IsActive, Converter={StaticResource BooleanOpacityConverter}}"
               HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -32,33 +32,43 @@
                 <ColumnDefinition Width="15*" />
             </Grid.ColumnDefinitions>
             <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
-                <custom:ActiveImage Source="ic_repeat_inactive.png" ImageSourceActive="ic_repeat_active.png" ImageSourceInactive="ic_repeat_inactive.png"
-                                    IsVisible="{Binding HasADayBeenSelected}" IsActive="{Binding IsActive}"
-                                    WidthRequest="18" HeightRequest="18" />
-                <custom:ListItemLabel Text="{Binding DateString}"
-                                  TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                  FontSize="16"
-                                  VerticalOptions="EndAndExpand"
-                                  LineBreakMode="TailTruncation"/>
+                <Image Source="ic_repeat_active.png" 
+                       IsVisible="{Binding HasADayBeenSelected}"
+                       WidthRequest="18" HeightRequest="18" />
+                <Label Text="{Binding DateString}"
+                                      TextColor="{StaticResource PrimaryTextColor}"
+                                      FontSize="16"
+                                      VerticalOptions="EndAndExpand"
+                                      LineBreakMode="TailTruncation"/>
             </StackLayout>
             <StackLayout Grid.Column="1" Orientation="Horizontal" HorizontalOptions="EndAndExpand">
-                <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
-                                      TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
+                <Label Text="{Binding Time, Converter={StaticResource AmPmStringConverter}}"
+                                      TextColor="{StaticResource PrimaryTextColor}"
                                       FontSize="12"
                                       Margin="0"
                                       VerticalOptions="EndAndExpand"/>
-                <custom:ListItemLabel Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
-                                      TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
+                <Label Text="{Binding Time, Converter={StaticResource TimeStringConverter}}"
+                                      TextColor="{StaticResource PrimaryTextColor}"
                                       Margin="0"
                                       FontSize="16" />
             </StackLayout>
-            <custom:ListItemLabel x:Name="AlarmNameLabel" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
-                                  TextColor="{Binding IsActive, Converter={StaticResource BooleanLabelColorConverter}}"
-                                  FontSize="22"
-                                  Text="{Binding Name}"
-                                  MaxLines="1" 
-                                  LineBreakMode="TailTruncation"
-                                  FontAttributes="Bold" />
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <Label x:Name="AlarmNameLabel" 
+                                      HorizontalOptions="StartAndExpand"
+                                      TextColor="{StaticResource PrimaryTextColor}"
+                                      FontSize="22"
+                                      Text="{Binding Name}"
+                                      MaxLines="1" 
+                                      LineBreakMode="TailTruncation"
+                                      FontAttributes="Bold" />
+                <custom:AppIconImage PackageName="{Binding PackageName}"
+                                     IsVisible="{Binding IsLinkOtherApp}"
+                                     IsActive="{Binding IsActive}"
+                                     WidthRequest="35"
+                                     HeightRequest="35"
+                                     HorizontalOptions="End"
+                                     Margin="10, 0"/>
+            </StackLayout>
             <Switch Grid.Row="0" Grid.Column="2" Grid.RowSpan="2"
                     IsToggled="{Binding IsActive}"
                     HorizontalOptions="EndAndExpand"

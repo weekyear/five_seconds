@@ -430,6 +430,15 @@ namespace Five_Seconds.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Icon Copyright.
+        /// </summary>
+        internal static string IconCopyright {
+            get {
+                return ResourceManager.GetString("IconCopyright", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Indomitable Alarm.
         /// </summary>
         internal static string IndomitableAlarm {

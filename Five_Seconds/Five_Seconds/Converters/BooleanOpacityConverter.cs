@@ -6,36 +6,36 @@ using Xamarin.Forms;
 
 namespace Five_Seconds.Converters
 {
-    public class BooleanLabelColorConverter : IValueConverter
+    public class BooleanOpacityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return BooleanToColor(value);
+            return BooleanToDouble(value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var color = (Color)value;
-            if (color == Color.FromHex("#263238"))
+            var _value = (double)value;
+            if (_value == 1)
             {
                 return true;
             }
-            else if (color == Color.LightGray)
+            else if (_value == 0.5f)
             {
                 return false;
             }
             return null;
         }
-        private object BooleanToColor(object value)
+        private object BooleanToDouble(object value)
         {
             var isActive = (bool)value;
             if (isActive)
             {
-                return Color.FromHex("#263238");
+                return 1;
             }
             else
             {
-                return Color.LightGray;
+                return 0.35f;
             }
         }
     }

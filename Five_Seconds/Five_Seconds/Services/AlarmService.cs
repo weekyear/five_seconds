@@ -52,7 +52,7 @@ namespace Five_Seconds.Services
         {
             DependencyService.Get<IAlarmSetter>().DeleteAlarm(alarm.Id);
             var id = Repository.DeleteAlarm(alarm.Id);
-            Repository.DeleteDaysOfWeek(alarm.Id);
+            Repository.DeleteDaysOfWeek(alarm.DaysId);
 
             UpdateAlarms();
             SendChangeAlarmsMessage();

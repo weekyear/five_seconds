@@ -13,7 +13,6 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
-            <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
             <conv:AppLabelStringConverter x:Key="AppLabelStringConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>

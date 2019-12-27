@@ -240,6 +240,9 @@
   <data name="Friday" xml:space="preserve">
     <value>금</value>
   </data>
+  <data name="IconCopyright" xml:space="preserve">
+    <value>앱 아이콘 출처</value>
+  </data>
   <data name="IndomitableAlarm" xml:space="preserve">
     <value>의지 알람</value>
   </data>

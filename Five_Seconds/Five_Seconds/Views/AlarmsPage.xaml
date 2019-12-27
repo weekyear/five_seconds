@@ -17,7 +17,6 @@
             <conv:AmPmStringConverter x:Key="AmPmStringConverter"/>
             <conv:PercentStringConverter x:Key="PercentStringConverter"/>
             <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
-            <conv:BooleanLabelColorConverter x:Key="BooleanLabelColorConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
     

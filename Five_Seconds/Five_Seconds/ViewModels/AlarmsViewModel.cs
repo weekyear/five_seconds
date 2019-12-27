@@ -179,7 +179,7 @@ namespace Five_Seconds.ViewModels
 
             try
             {
-                string[] actionSheetBtns = { AppResources.WhatFiveSecondsRule, AppResources.BriefDescription };
+                string[] actionSheetBtns = { AppResources.WhatFiveSecondsRule, AppResources.BriefDescription, AppResources.IconCopyright };
 
                 string action = await MessageBoxService.ShowActionSheet(AppResources.Menu, AppResources.Cancel, null, actionSheetBtns);
 
@@ -206,6 +206,10 @@ namespace Five_Seconds.ViewModels
             {
                 var welcomePage = AppIntro.CreateAppIntro();
                 await Navigation.PushModalAsync(welcomePage);
+            }
+            else if (action == AppResources.IconCopyright)
+            {
+                await Application.Current.MainPage.DisplayAlert(AppResources.IconCopyright, "https://icons8.com", AppResources.OK);
             }
         }
 

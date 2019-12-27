@@ -112,28 +112,23 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <custom:ListItemLabel 
-                                        IsActive="{Binding HasRecord}"
-                                        Text="{Binding StartDateOfWeek, Converter={StaticResource SelectedWeekStringConverter}}"
-                                        TextColor="LightSlateGray"
-                                        FontSize="22"
-                                        FontAttributes="Bold" />
-                                        <custom:ListItemLabel 
-                                        Grid.Row="1"
-                                        IsActive="{Binding HasRecord}"
-                                        Text="{Binding NumOfDayRecords}"
-                                        TextColor="LightSlateGray"
-                                        FontSize="14" />
-                                        <custom:PercentLabel  
-                                        Grid.Column="2"
-                                        Grid.RowSpan="2"
-                                        Percent="{Binding SuccessRate}"
-                                        FontAttributes="Bold"
-                                        HorizontalTextAlignment="Center"
-                                        VerticalOptions="CenterAndExpand"
-                                        FontSize="24"
-                                        TextColor="LightSlateGray"
-                                        Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
+                                        <Label Text="{Binding StartDateOfWeek, Converter={StaticResource SelectedWeekStringConverter}}"
+                                               TextColor="LightSlateGray"
+                                               FontSize="22"
+                                               FontAttributes="Bold" />
+                                        <Label  Grid.Row="1"
+                                                Text="{Binding NumOfDayRecords}"
+                                                TextColor="LightSlateGray"
+                                                FontSize="14" />
+                                        <custom:PercentLabel Grid.Column="2"
+                                                             Grid.RowSpan="2"
+                                                             Percent="{Binding SuccessRate}"
+                                                             FontAttributes="Bold"
+                                                             HorizontalTextAlignment="Center"
+                                                             VerticalOptions="CenterAndExpand"
+                                                             FontSize="24"
+                                                             TextColor="LightSlateGray"
+                                                             Text="{Binding SuccessRate, Converter={StaticResource PercentStringConverter}}"/>
                                     </Grid>
                                 </ViewCell>
                             </DataTemplate>
@@ -141,13 +136,13 @@
                     </custom:GestureListView>
                 </StackLayout>
                 <ListView x:Name="SearchListView" Grid.RowSpan="2"
-                      BackgroundColor="White"
-                      ItemsSource="{Binding RecordsBySearch}"
-                      IsVisible="{Binding IsSearching}"
-                      ItemTapped="SearchListView_ItemTapped"
-                      ItemSelected="SearchListView_ItemSelected"
-                      RowHeight="50"
-                      VerticalOptions="FillAndExpand">
+                          BackgroundColor="White"
+                          ItemsSource="{Binding RecordsBySearch}"
+                          IsVisible="{Binding IsSearching}"
+                          ItemTapped="SearchListView_ItemTapped"
+                          ItemSelected="SearchListView_ItemSelected"
+                          RowHeight="50"
+                          VerticalOptions="FillAndExpand">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

@@ -54,19 +54,6 @@ namespace Five_Seconds.Views
             }
         }
 
-        private void ListItemLabel_IsActiveChanged(object sender, EventArgs e)
-        {
-            var label = sender as ListItemLabel;
-            if (label.IsActive)
-            {
-                label.TextColor = Color.Black;
-            }
-            else
-            {
-                label.TextColor = Color.LightGray;
-            }
-        }
-
         private void Switch_Toggled(object sender, ToggledEventArgs e)
         {
             var _switch = sender as Switch;

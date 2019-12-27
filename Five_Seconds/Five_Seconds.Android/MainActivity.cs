@@ -143,19 +143,26 @@ namespace Five_Seconds.Droid
 
         private string GetRealPathFromURI(Android.Net.Uri contentURI)
         {
+            var documentId = string.Empty;
             ICursor cursor = ContentResolver.Query(contentURI, null, null, null, null);
-            cursor.MoveToFirst();
-            string documentId = cursor.GetString(0);
-            documentId = documentId.Split(':')[1];
-            cursor.Close();
+            if (cursor != null && cursor.MoveToFirst())
+            {
+                documentId = cursor.GetString(0);
+                documentId = documentId.Split(':')[1];
+                cursor.Close();
+            }
 
+
+            var path = string.Empty;
             cursor = ContentResolver.Query(
             MediaStore.Audio.Media.ExternalContentUri,
             null, 
             MediaStore.Audio.Media.InterfaceConsts.Id + " = ? ", new[] { documentId }, null);
-            cursor.MoveToFirst();
-            string path = cursor.GetString(cursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Data));
-            cursor.Close();
+            if (cursor != null && cursor.MoveToFirst())
+            {
+                path = cursor.GetString(cursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.Data));
+                cursor.Close();
+            }
 
             return path;
         }

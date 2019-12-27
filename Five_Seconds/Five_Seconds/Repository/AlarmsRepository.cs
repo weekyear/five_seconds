@@ -67,15 +67,6 @@ namespace Five_Seconds.Repository
 
         public int SaveDaysOfWeek(DaysOfWeek daysOfWeek)
         {
-            if (daysOfWeek == null)
-            {
-                Console.WriteLine("daysOfWeek is null");
-            }
-            
-            if (ItemDatabase == null)
-            {
-                Console.WriteLine("ItemDatabase is null");
-            }
             return ItemDatabase.SaveObject(daysOfWeek);
         }
 

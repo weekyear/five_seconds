@@ -25,5 +25,41 @@ namespace Five_Seconds.CustomControls
                 SetValue(PackageNameProperty, value);
             }
         }
+
+
+        public static readonly BindableProperty IsActiveProperty =
+            BindableProperty.Create(nameof(IsActive),
+                typeof(bool),
+                typeof(AppIconImage),
+                false,
+                BindingMode.TwoWay,
+                propertyChanged: OnIsActiveChanged);
+
+        public bool IsActive
+        {
+            get
+            {
+                return (bool)GetValue(IsActiveProperty);
+            }
+            set
+            {
+                SetValue(IsActiveProperty, value);
+            }
+        }
+
+        static void OnIsActiveChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            // Property changed implementation goes here
+            var image = (AppIconImage)bindable;
+
+            if (image.IsActive)
+            {
+                image.Opacity = 1f;
+            }
+            else
+            {
+                image.Opacity = 0.3f;
+            }
+        }
     }
 }
