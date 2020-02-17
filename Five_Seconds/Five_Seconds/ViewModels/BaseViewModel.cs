@@ -26,8 +26,19 @@ namespace Five_Seconds.ViewModels
         public bool IsBusy
         {
             get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            set 
+            { 
+                SetProperty(ref isBusy, value);
+                OnPropertyChanged(nameof(IsNotBusy));
+            }
         }
+
+        public bool IsNotBusy
+        {
+            get { return !IsBusy; }
+        }
+
+
 
         string title = string.Empty;
         public string Title

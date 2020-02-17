@@ -45,9 +45,11 @@
   <string name="Am">AM</string>
   <string name="Pm">PM</string>
   <string name="AlarmOff">Alarm off</string>
+  <string name="AlarmPreOff">Alarm Pre-Cancel</string>
   <string name="GoOffNow">Go off now</string>
   
   <string name="admob_app_id">ca-app-pub-8413101784746060~4411896846</string>
   <string name="admob_banner_id">ca-app-pub-8413101784746060/7584855097</string>
+  <string name="admob_interstitial_id">ca-app-pub-8413101784746060/6812351989</string>
   <string name="com.crashlytics.android.build_id">crashlytics_8413101784746060_7584855097</string>
 </resources>

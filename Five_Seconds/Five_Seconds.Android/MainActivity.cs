@@ -90,11 +90,11 @@ namespace Five_Seconds.Droid
         {
             LoadApplication(new App());
 
-            Alarm.IsInitFinished = false;
-            var allAlarms = App.AlarmService.GetAllAlarms();
-            Alarm.IsInitFinished = true;
+            //Alarm.IsInitFinished = false;
+            //var allAlarms = App.AlarmService.GetAllAlarms();
+            //Alarm.IsInitFinished = true;
 
-            AlarmHelper.RefreshAlarmByManager(allAlarms);
+            //AlarmHelper.RefreshAlarmByManager(allAlarms);
         }
 
         private void SetMobileAds()

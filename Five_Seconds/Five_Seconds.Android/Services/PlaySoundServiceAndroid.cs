@@ -95,6 +95,18 @@ namespace Five_Seconds.Droid.Services
             _mediaPlayer.Reset();
         }
 
+        public void PauseOrStartAudio()
+        {
+            if (_mediaPlayer.IsPlaying) 
+            {
+                _mediaPlayer.Pause();
+            }
+            else
+            {
+                _mediaPlayer.Start();
+            }
+        }
+
         public void ChangeVolume(int volume)
         {
             if (_mediaPlayer.IsPlaying)

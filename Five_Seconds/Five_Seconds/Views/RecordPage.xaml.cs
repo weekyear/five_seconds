@@ -68,7 +68,7 @@ namespace Five_Seconds.Views
             }
             else
             {
-                DependencyService.Get<IAdMobInterstitial>().Show("ca-app-pub-8413101784746060/6812351989");
+                DependencyService.Get<IAdMobInterstitial>().Show();
             }
 
             return base.OnBackButtonPressed();

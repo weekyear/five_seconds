@@ -11,10 +11,7 @@ namespace Five_Seconds.Droid.Services
 {
     public class AlarmSetterAndroid : IAlarmSetter
     {
-        public AlarmSetterAndroid()
-        {
-
-        }
+        public AlarmSetterAndroid() { }
 
         public void SetAlarm(Alarm alarm)
         {

@@ -23,7 +23,11 @@ namespace Five_Seconds.Droid.CustomRenderers
         {
             base.OnElementChanged(e);
 
-            var numberPicker = new NumberPicker(_context);
+            var numberPicker = new NumberPicker(_context)
+            {
+                VerticalScrollBarEnabled = false,
+                HorizontalScrollBarEnabled = false
+            };
 
             switch (Element.PickerType)
             {

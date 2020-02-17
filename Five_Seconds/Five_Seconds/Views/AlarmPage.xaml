@@ -10,6 +10,7 @@
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmPage"
              BackgroundColor="{StaticResource BackgroundColor}">
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <conv:BooleanSwitchThumbColorConverter x:Key="BooleanSwitchThumbColorConverter"/>
@@ -142,19 +143,26 @@
                                FontSize="Medium"
                                VerticalOptions="CenterAndExpand"
                                Margin="10, 0"/>
-                        <custom:MusicSelectionLabel Grid.Column="1" 
-                                                    IsActive="{Binding Alarm.IsAlarmOn}"
-                                                    Text="{Binding Alarm.Tone}" 
-                                                    BackgroundColor="White"
-                                                    FontSize="Medium"
-                                                    TextColor="DarkBlue"
-                                                    LineBreakMode="TailTruncation"
-                                                    HorizontalOptions="CenterAndExpand"
-                                                    VerticalOptions="CenterAndExpand">
-                            <custom:MusicSelectionLabel.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ShowSettingToneCommand}"/>
-                            </custom:MusicSelectionLabel.GestureRecognizers>
-                        </custom:MusicSelectionLabel>
+
+                        <Label Text="{Binding Alarm.Tone}" Grid.Column="1"
+                               BackgroundColor="White"
+                               FontSize="Small"
+                               TextColor="DarkBlue"
+                               LineBreakMode="TailTruncation"
+                               Margin="5, 0"
+                               HorizontalOptions="CenterAndExpand"
+                               VerticalOptions="CenterAndExpand"/>
+                        <Button BorderColor="{StaticResource PrimaryLight}" Grid.Column="1"
+                                BorderWidth="2"
+                                CornerRadius="5"
+                                Margin="0, 2"
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                                FontSize="Small"
+                                BackgroundColor="Transparent"
+                                TextColor="DarkBlue"
+                                Command="{Binding ShowSettingToneCommand}"/>
+
                         <Switch Grid.Column="2" 
                                 IsToggled="{Binding Alarm.IsAlarmOn}"
                                 HorizontalOptions="EndAndExpand"
@@ -212,20 +220,19 @@
                         <StackLayout Orientation="Vertical">
                             <StackLayout Orientation="Horizontal" IsVisible="{Binding Alarm.IsLinkOtherApp}">
                                 <custom:AppIconImage PackageName="{Binding Alarm.PackageName}"
-                                                         Margin="5, 0"
-                                                         WidthRequest="35"
-                                                         HeightRequest="35"
-                                                         HorizontalOptions="Start"/>
+                                                     Margin="5, 0"
+                                                     WidthRequest="35" HeightRequest="35"
+                                                     HorizontalOptions="Start"/>
                                 <Button Text="{Binding Alarm.AppLabel, Converter={StaticResource AppLabelStringConverter}}"
-                                            BorderColor="{StaticResource PrimaryLight}"
-                                            BorderWidth="2"
-                                            CornerRadius="5"
-                                            Margin="0, 2"
-                                            HorizontalOptions="FillAndExpand"
-                                            FontSize="Medium"
-                                            BackgroundColor="White"
-                                            TextColor="{StaticResource PrimaryTextColor}"
-                                            Command="{Binding OpenAppListCommand}"/>
+                                        BorderColor="{StaticResource PrimaryLight}"
+                                        BorderWidth="2"
+                                        CornerRadius="5"
+                                        Margin="0, 2"
+                                        HorizontalOptions="FillAndExpand"
+                                        FontSize="Medium"
+                                        BackgroundColor="White"
+                                        TextColor="{StaticResource PrimaryTextColor}"
+                                        Command="{Binding OpenAppListCommand}"/>
                             </StackLayout>
                             <Label TextColor="SlateGray" Text="{local:Translate LinkOtherAppsDescription}" Margin="5, 0" 
                                FontSize="Small" VerticalOptions="StartAndExpand" />

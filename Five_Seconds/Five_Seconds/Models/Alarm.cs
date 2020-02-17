@@ -68,6 +68,7 @@ namespace Five_Seconds.Models
         {
             try
             {
+                IsGoOffPreAlarm = false;
                 if (IsInitFinished)
                 {
                     if (IsActive)
@@ -115,6 +116,11 @@ namespace Five_Seconds.Models
         public bool IsLinkOtherApp { get; set; } = false;
         public string AppLabel { get; set; } = string.Empty;
         public string PackageName { get; set; } = string.Empty;
+
+        public bool IsGoOffPreAlarm { get; set; } = false;
+        [Ignore]
+        public bool IsTurnOffPreAlarm { get; set; } = false;
+
         public int Index { get; set; } = 0;
 
         public Alarm() { }

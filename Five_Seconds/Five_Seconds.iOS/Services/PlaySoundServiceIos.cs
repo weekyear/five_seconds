@@ -51,6 +51,18 @@ namespace Five_Seconds.iOS.Services
             OnFinishedPlaying?.Invoke();
         }
 
+        public void PauseOrStartAudio()
+        {
+            if (_audioPlayer.Playing)
+            {
+                Pause();
+            }
+            else
+            {
+                Play();
+            }
+        }
+
         public void Pause()
         {
             _audioPlayer?.Pause();

@@ -89,6 +89,10 @@ namespace Five_Seconds.Helpers
                 {
                     nextTime = alarm.LaterAlarmTime;
                 }
+                else if (alarm.IsGoOffPreAlarm)
+                {
+                    nextTime = alarm.NextAlarmTimeExceptForPreAlarm;
+                }
                 else
                 {
                     nextTime = alarm.NextAlarmTime;

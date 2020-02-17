@@ -9,6 +9,7 @@
              mc:Ignorable="d"
              x:Class="Five_Seconds.Views.AlarmsPage"
              NavigationPage.HasNavigationBar="False"
+             IsEnabled="{Binding IsNotBusy}"
              x:Name="BrowseItemsPage">
 
     <ContentPage.Resources>

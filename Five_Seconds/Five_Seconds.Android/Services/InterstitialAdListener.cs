@@ -1,22 +1,20 @@
 ﻿using Android.Gms.Ads;
+using Five_Seconds.Droid.Services;
 
 namespace Five_Seconds.Services
 {
-    public class InterstitialAdListener : AdListener
+    public class InterstitialAdListener : Android.Gms.Ads.AdListener
     {
-        readonly InterstitialAd _ad;
+        readonly AdMobInterstitialAndroid _interstitialAd;
 
-        public InterstitialAdListener(InterstitialAd ad)
+        public InterstitialAdListener(AdMobInterstitialAndroid interstitialAd)
         {
-            _ad = ad;
+            _interstitialAd = interstitialAd;
         }
 
-        public override void OnAdLoaded()
+        public override void OnAdClosed()
         {
-            base.OnAdLoaded();
-
-            if (_ad.IsLoaded)
-                _ad.Show();
+            _interstitialAd.LoadAd();
         }
     }
 }

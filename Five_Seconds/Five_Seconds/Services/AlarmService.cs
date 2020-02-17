@@ -79,7 +79,7 @@ namespace Five_Seconds.Services
             foreach(var alarm in alarms)
             {
                 alarm.DaysId = Repository.SaveDaysOfWeek(alarm.Days);
-                var id = Repository.SaveAlarm(alarm);
+                Repository.SaveAlarm(alarm);
             }
             UpdateAlarms();
             SendChangeAlarmsMessage();
@@ -126,6 +126,10 @@ namespace Five_Seconds.Services
                     if (alarm.IsLaterAlarm)
                     {
                         alarmNextTime = alarm.LaterAlarmTime;
+                    }
+                    else if (alarm.IsGoOffPreAlarm)
+                    {
+                        alarmNextTime = alarm.NextAlarmTimeExceptForPreAlarm;
                     }
                     else
                     {

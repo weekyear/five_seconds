@@ -31,8 +31,7 @@ namespace Five_Seconds.ViewModels
         {
             MessagingCenter.Subscribe<AlarmService>(this, "changeAlarms", (sender) =>
             {
-                OnPropertyChanged(nameof(Alarms));
-                OnPropertyChanged(nameof(NextAlarmString));
+                RefreshAlarms();
             });
         }
 
@@ -44,6 +43,7 @@ namespace Five_Seconds.ViewModels
             ShowRecordCommand = new Command(async() => await ShowRecord());
             ShowModifyAlarmCommand = new Command<object>(async (m) => await ShowModifyAlarm(m));
             ShowMainMenuCommand = new Command(async () => await ShowMainMenu());
+            RefreshAlarmsCommand = new Command(() => RefreshAlarms());
         }
 
         // Property
@@ -54,12 +54,19 @@ namespace Five_Seconds.ViewModels
         public Command ShowRecordCommand { get; set; }
         public Command<object> ShowModifyAlarmCommand { get; set; }
         public Command ShowMainMenuCommand { get; set; }
+        public static Command RefreshAlarmsCommand { get; set; }
+
+        private OrderableCollection<Alarm> alarms;
         public OrderableCollection<Alarm> Alarms
         {
             get
             {
-                var alarms = AssignIndexToToDos(Service.Alarms);
-                return ConvertListToObservableCollection(alarms);
+                if (alarms == null)
+                {
+                    var orderedAlarms = AssignIndexToAlarms(Service.Alarms.OrderBy(a => a.Index));
+                    alarms = ConvertListToObservableCollection(orderedAlarms);
+                }
+                return alarms;
             }
         }
 
@@ -250,7 +257,7 @@ namespace Five_Seconds.ViewModels
             return collection;
         }
 
-        private IEnumerable<Alarm> AssignIndexToToDos(IEnumerable<Alarm> alarms)
+        private IEnumerable<Alarm> AssignIndexToAlarms(IEnumerable<Alarm> alarms)
         {
             var _alarms = alarms.OrderBy((d) => d.Index);
             int i = 0;
@@ -275,6 +282,15 @@ namespace Five_Seconds.ViewModels
         {
             alarm.IsSelected = !alarm.IsSelected;
             OnPropertyChanged(nameof(DeleteAlarmString));
+        }
+
+        private void RefreshAlarms()
+        {
+            var _alarms = App.AlarmService.Alarms.OrderBy(a => a.Index);
+            var orderedAlarms = AssignIndexToAlarms(_alarms);
+            alarms = ConvertListToObservableCollection(orderedAlarms);
+            OnPropertyChanged(nameof(Alarms));
+            OnPropertyChanged(nameof(NextAlarmString));
         }
     }
 }

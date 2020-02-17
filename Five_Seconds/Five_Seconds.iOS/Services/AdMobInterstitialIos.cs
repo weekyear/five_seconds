@@ -35,5 +35,15 @@ namespace Five_Seconds.iOS.Services
             _adInterstitial.LoadRequest(request);
 
         }
+
+        public void Show()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

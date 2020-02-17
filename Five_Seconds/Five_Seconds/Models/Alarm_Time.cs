@@ -89,6 +89,11 @@ namespace Five_Seconds.Models
             get { return CalculateNextAlarmTime.NextAlarmTime(this); }
         }
 
+        public DateTime NextAlarmTimeExceptForPreAlarm
+        {
+            get { return CalculateNextAlarmTime.NextAlarmTimeExceptForPreAlarm(this); }
+        }
+
         public Alarm(TimeSpan timeSpan)
         {
             Time = timeSpan;

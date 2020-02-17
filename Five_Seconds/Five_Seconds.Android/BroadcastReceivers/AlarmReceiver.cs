@@ -13,20 +13,40 @@ namespace Five_Seconds.Droid.BroadcastReceivers
     [BroadcastReceiver]
     public class AlarmReceiver : BroadcastReceiver
     {
+        private int id;
         public override void OnReceive(Context context, Intent intent)
         {
             Console.WriteLine("OnReceive_AlarmReceiver");
             var bundle = intent.Extras;
-            var id = (int)bundle.Get("id");
+            id = (int)bundle.Get("id");
+            var IsTurnOffPreAlarm = (bool)bundle.Get("IsTurnOffPreAlarm");
             Console.WriteLine($"Id_AlarmReceiver : {id}");
 
             NotificationAndroid.CancelLaterNotification(context, id);
 
-            var disIntent = new Intent(context, typeof(AlarmActivity));
-            disIntent.PutExtras(bundle);
+            if (!IsTurnOffPreAlarm)
+            {
+                var disIntent = new Intent(context, typeof(AlarmActivity));
+                disIntent.PutExtras(bundle);
 
-            disIntent.SetFlags(ActivityFlags.NewTask);
-            context.StartActivity(disIntent);
+                disIntent.SetFlags(ActivityFlags.NewTask);
+                context.StartActivity(disIntent);
+            }
+            else
+            {
+                var alarm = GetAlarmById();
+                alarm.IsGoOffPreAlarm = false;
+                App.AlarmService.SaveAlarm(alarm);
+            }
+        }
+        private Alarm GetAlarmById()
+        {
+            var alarmService = App.AlarmService;
+            Alarm.IsInitFinished = false;
+            var alarm = alarmService.GetAlarm(id);
+            Alarm.IsInitFinished = true;
+
+            return alarm;
         }
     }
 }

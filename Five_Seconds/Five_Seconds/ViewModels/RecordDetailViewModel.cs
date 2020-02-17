@@ -22,7 +22,7 @@ namespace Five_Seconds.ViewModels
     {
         private readonly IMessageBoxService MessageBoxService;
 
-        private readonly int LabelFontSize = 15;
+        private readonly int LabelFontSize = 12;
         private readonly int AnimationSec = 1;
 
         public RecordDetailViewModel(INavigation navigation, WeekRecord weekRecord, IEnumerable<Record> allRecords, IMessageBoxService messageBoxService) : base(navigation)
@@ -541,12 +541,15 @@ namespace Five_Seconds.ViewModels
                 entries.Add(entry);
             }
 
-            SuccessChart = new BarChart()
+            SuccessChart = new LineChart()
             {
                 Entries = entries,
                 LabelTextSize = DependencyService.Get<INativeFont>().GetNativeSize(LabelFontSize),
                 LabelOrientation = Orientation.Horizontal,
                 ValueLabelOrientation = Orientation.Horizontal,
+                LineMode = LineMode.Spline,
+                LineAreaAlpha = 64,
+                AnimationProgress = 3f,
                 AnimationDuration = TimeSpan.FromSeconds(AnimationSec)
             };
         }

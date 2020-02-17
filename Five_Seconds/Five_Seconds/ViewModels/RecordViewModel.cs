@@ -20,7 +20,7 @@ namespace Five_Seconds.ViewModels
     {
         private readonly IMessageBoxService MessageBoxService;
 
-        private readonly int LabelFontSize = 15;
+        private readonly int LabelFontSize = 12;
         private readonly int AnimationSec = 1;
         public RecordViewModel(INavigation navigation, IMessageBoxService messageBoxService) : base(navigation)
         {
@@ -34,7 +34,7 @@ namespace Five_Seconds.ViewModels
 
             SubscribeMessage();
 
-            SaveTestRecords();
+            //SaveTestRecords();
 
             InitRecordsForSearch();
         }

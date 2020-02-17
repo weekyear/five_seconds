@@ -6,6 +6,8 @@ using Five_Seconds.Models;
 using Five_Seconds.Services;
 using Five_Seconds.Droid.Services;
 using Plugin.CurrentActivity;
+using Five_Seconds.Helpers;
+using Five_Seconds.ViewModels;
 
 namespace Five_Seconds.Droid.BroadcastReceivers
 {
@@ -21,42 +23,73 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             var bundle = intent.Extras;
 
             id = bundle.GetInt("id", -100000);
+            GetAlarmById();
 
-            CancelNotification(context, intent);
-            
-            context.GetString(Resource.String.GoOffNow);
-
-            if (intent.Action == context.GetString(Resource.String.AlarmOff))
+            try
             {
-                TurnOffLaterAlarm();
-
-                CreateFailedRecord();
-
-                if (HelperAndroid.IsApplicationInTheBackground())
+                if (intent.Action == context.GetString(Resource.String.AlarmOff))
                 {
-                    CrossCurrentActivity.Current.Activity?.FinishAffinity();
+                    TurnOffLaterAlarm();
+
+                    CreateFailedRecord();
+
+                    if (HelperAndroid.IsApplicationInTheBackground())
+                    {
+                        CrossCurrentActivity.Current.Activity?.FinishAffinity();
+                    }
+                }
+                else if (intent.Action == context.GetString(Resource.String.GoOffNow))
+                {
+                    OpenAlarmActivity(context, bundle);
+                }
+                else if (intent.Action == context.GetString(Resource.String.AlarmPreOff))
+                {
+                    alarm.IsTurnOffPreAlarm = true;
+                    alarm.IsGoOffPreAlarm = true;
+                    App.AlarmService.SaveAlarmAtLocal(alarm);
+
+                    TurnOffPreAlarm();
+
+                    if (HelperAndroid.IsApplicationInTheBackground()) CrossCurrentActivity.Current.Activity?.FinishAffinity();
+                }
+                else if (intent.Action == "GoOffPre")
+                {
+                    alarm.IsGoOffPreAlarm = true;
+                    App.AlarmService.SaveAlarmAtLocal(alarm);
+
+                    alarm.LaterAlarmTime = DateTime.Now.AddSeconds(0.5);
+                    AlarmHelper.SetLaterAlarm(alarm);
                 }
             }
-            else if (intent.Action == context.GetString(Resource.String.GoOffNow))
+            catch { }
+            finally
             {
-                OpenAlarmActivity(context, bundle);
+                CancelNotification(context, intent);
+                AlarmsViewModel.RefreshAlarmsCommand?.Execute(null);
             }
         }
 
         private void TurnOffLaterAlarm()
         {
-            alarmService = App.AlarmService;
-            Alarm.IsInitFinished = false;
-            alarm = alarmService.GetAlarm(id);
+            if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
+            {
+                Alarm.ChangeIsActive(alarm, false);
+            }
 
+            TurnOffLaterAlarmByNotification(alarm);
+        }
+        
+        private void TurnOffPreAlarm()
+        {
             if (!DaysOfWeek.GetHasADayBeenSelected(alarm.Days))
             {
                 alarm.IsActive = false;
+                TurnOffAlarmByNotification(alarm);
             }
-
-            TurnOffAlarmByNotification(alarm);
-
-            Alarm.IsInitFinished = true;
+            else
+            {
+                AlarmHelper.SetAlarmAtFirst(alarm);
+            }
         }
 
         private void CreateFailedRecord()
@@ -75,9 +108,14 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             context.StartActivity(disIntent);
         }
 
+        private void TurnOffLaterAlarmByNotification(Alarm alarm)
+        {
+            alarm.IsLaterAlarm = false; 
+            TurnOffAlarmByNotification(alarm);
+        }
+        
         private void TurnOffAlarmByNotification(Alarm alarm)
         {
-            alarm.IsLaterAlarm = false;
             var alarmSetter = new AlarmSetterAndroid();
             alarmSetter.DeleteAlarm(alarm.Id);
             SaveAlarmAtLocal();
@@ -101,6 +139,14 @@ namespace Five_Seconds.Droid.BroadcastReceivers
                     manager.Cancel(id);
                 }
             }
+        }
+
+        private void GetAlarmById()
+        {
+            alarmService = App.AlarmService;
+            Alarm.IsInitFinished = false;
+            alarm = alarmService.GetAlarm(id);
+            Alarm.IsInitFinished = true;
         }
     }
 }

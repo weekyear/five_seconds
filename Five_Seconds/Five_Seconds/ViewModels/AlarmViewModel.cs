@@ -362,11 +362,9 @@ namespace Five_Seconds.ViewModels
             }
             else
             {
-                if (!Alarm.IsActive)
-                {
-                    Alarm.ChangeIsActive(Alarm, true);
-                }
+                if (!Alarm.IsActive) { Alarm.ChangeIsActive(Alarm, true); }
                 Alarm.IsLaterAlarm = false;
+                Alarm.IsGoOffPreAlarm = false;
 
                 var id = Service.SaveAlarm(Alarm);
                 

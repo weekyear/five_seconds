@@ -6,6 +6,7 @@ namespace Five_Seconds.Services
 {
     public interface IAdMobInterstitial
     {
-        void Show(string adUnit);
+        void Start();
+        void Show();
     }
 }

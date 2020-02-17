@@ -10,33 +10,39 @@ namespace Five_Seconds.Droid.Services
 {
     public class AdMobInterstitialAndroid : IAdMobInterstitial
     {
-        InterstitialAd _ad;
-        private AdRequest requestBuilder;
+        public InterstitialAd _interstitialAd;
 
-        public void Show(string adUnit)
+        public void Start()
         {
             var context = Application.Context;
-            _ad = new InterstitialAd(context)
+            _interstitialAd = new InterstitialAd(context)
             {
-                AdUnitId = adUnit
+                AdUnitId = "ca-app-pub-8413101784746060/6812351989"
             };
 
-            var intlistener = new InterstitialAdListener(_ad);
-            intlistener.OnAdLoaded();
-            _ad.AdListener = intlistener;
+            var adListener = new InterstitialAdListener(this);
 
-            requestBuilder = new AdRequest.Builder().Build();
+            _interstitialAd.AdListener = adListener;
 
+            LoadAd();
+        }
+
+        public void LoadAd()
+        {
+            _interstitialAd.LoadAd(new AdRequest.Builder().Build());
             //CreateRequestBuilderWhenTest();
+        }
 
-            _ad.LoadAd(requestBuilder);
+        public void Show()
+        {
+            if (_interstitialAd.IsLoaded) _interstitialAd.Show();
+            else LoadAd();
         }
 
         [Conditional("DEBUG")]
         private void CreateRequestBuilderWhenTest()
         {
-            requestBuilder.Dispose();
-            requestBuilder = new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build();
+            _interstitialAd.LoadAd(new AdRequest.Builder().AddTestDevice("FA3E0133F649B126EB4B86A6DA3E60D2").Build());
         }
     }
 }

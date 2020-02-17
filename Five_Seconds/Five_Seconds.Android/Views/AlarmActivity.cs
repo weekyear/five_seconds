@@ -109,6 +109,7 @@ namespace Five_Seconds.Droid
         private IAlarmToneRepository tonesRepo;
 
         private AdRequest requestBuilder;
+        private AdMobInterstitialAndroid interstitialAd;
 
         public Handler Handler => new Handler();
 
@@ -219,6 +220,8 @@ namespace Five_Seconds.Droid
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             Forms.Init(this, savedInstanceState);
             MobileAds.Initialize(ApplicationContext, GetString(Resource.String.admob_app_id));
+            interstitialAd = new AdMobInterstitialAndroid();
+            interstitialAd.Start();
 
             SetContentView(Resource.Layout.AlarmActivity);
             GetAlarmFromDB();
@@ -330,7 +333,7 @@ namespace Five_Seconds.Droid
             }
             else
             {
-                SetMediaPlayerAndVibrator();
+                RestartAudioAndVibarator();
 
                 FailedAlarm();
             }
@@ -377,6 +380,8 @@ namespace Five_Seconds.Droid
         {
             tellmeLayout.ClearAnimation();
             CreateRecord();
+
+            Window.ClearFlags(WindowManagerFlags.KeepScreenOn);
 
             IsFinished = true;
 
@@ -748,7 +753,7 @@ namespace Five_Seconds.Droid
 
         private void SetLaterAlarm(int minutes)
         {
-            var alarmTime = SetLaterAlarmAndGetLaterAlamrTime(minutes);
+            var alarmTime = SetLaterAlarmAndGetLaterAlarmTime(minutes);
 
             AlarmHelper.SetLaterAlarm(alarm);
             //AlarmController.SetLaterAlarmByManager(alarm, (long)diffTimeSpan.TotalMilliseconds);
@@ -762,7 +767,7 @@ namespace Five_Seconds.Droid
             NotificationAndroid.NotifyLaterAlarm(alarm, Intent);
         }
 
-        private DateTime SetLaterAlarmAndGetLaterAlamrTime(int minutes)
+        private DateTime SetLaterAlarmAndGetLaterAlarmTime(int minutes)
         {
             var alarmTime = AlarmTimeNow.AddMinutes(minutes);
 
@@ -868,6 +873,10 @@ namespace Five_Seconds.Droid
             if (CanOpenOtherApp)
             {
                 OpenOtherApp();
+            }
+            else
+            {
+                interstitialAd?.Show();
             }
         }
 
@@ -1142,7 +1151,13 @@ namespace Five_Seconds.Droid
                     break;
             }
 
-            SetMediaPlayerAndVibrator();
+            RestartAudioAndVibarator();
+        }
+
+        private void RestartAudioAndVibarator()
+        {
+            _soundService.PauseOrStartAudio();
+            SetVibrator();
         }
 
         public void OnEvent(int eventType, Bundle @params)
@@ -1172,7 +1187,7 @@ namespace Five_Seconds.Droid
 
         private void StartVoiceRecognition()
         {
-            TurnOffSoundAndVibration();
+            _soundService.PauseOrStartAudio();
             SetTellmeBtnRecording();
             mSpeechRecognizer?.StartListening(mSpeechRecognizerIntent);
         }

@@ -33,6 +33,8 @@ namespace Five_Seconds
             DependencyService.Register<IMessageBoxService>();
             DependencyService.Register<ISpeechToText>();
 
+            DependencyService.Get<IAdMobInterstitial>().Start();
+
             var navigationPage = new NavigationPage(new AlarmsPage());
 
             navigationPage.On<iOS>().SetPrefersLargeTitles(true);
@@ -45,9 +47,9 @@ namespace Five_Seconds
 
                 var ListInitAlarm = new List<Alarm>()
                 {
-                    new Alarm() { Name = "일어나서 이불개자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 0, 0), IsActive = false },
-                    new Alarm() { Name = "아침 운동 좋아", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 30, 0), IsActive = false },
-                    new Alarm() { Name = "일단 침대에 눕자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(23, 30, 0), IsActive = false }
+                    new Alarm() { Name = "일어나서 이불개자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 0, 0), IsActive = false, Index = 0 },
+                    new Alarm() { Name = "아침 운동 좋아", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(7, 30, 0), IsActive = false, Index = 1 },
+                    new Alarm() { Name = "일단 침대에 눕자", Days = new DaysOfWeek(everdayBool), Time = new TimeSpan(23, 30, 0), IsActive = false, Index = 2 }
                 };
 
                 foreach (var alarm in ListInitAlarm)

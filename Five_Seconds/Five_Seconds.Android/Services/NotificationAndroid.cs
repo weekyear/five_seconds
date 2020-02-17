@@ -33,59 +33,73 @@ namespace Five_Seconds.Droid.Services
             return manager;
         }
 
-        public static Notification GetNextAlarmNotification(Context context)
-        {
-            string nextNameString;
-            string nextTimeString;
-
-            var alarm = App.AlarmService.GetNextAlarm();
-
-            if (alarm != null)
-            {
-                nextNameString = alarm.Name;
-                nextTimeString = alarm.NextAlarmTime.ToString();
-            }
-            else
-            {
-                nextNameString = "다음 알람이 없습니다.";
-                nextTimeString = string.Empty;
-            }
-            
-
-            var notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
-            var notification = notificationBuilder.SetOngoing(true)
-                    .SetSmallIcon(Resource.Drawable.ic_five_seconds_mini)
-                    .SetContentTitle(nextNameString)
-                    .SetContentText(nextTimeString)
-                    .SetPriority((int)NotificationImportance.Low)
-                    .SetVisibility(NotificationCompat.VisibilitySecret)
-                    .Build();
-
-            return notification;
-        }
-
-        public void UpdateNotification()
-        {
-            var manager = Application.Context.GetSystemService("notification") as NotificationManager;
-
-            var notification = GetNextAlarmNotification(Application.Context);
-
-            manager.Notify(2, notification);
-        }
-
         public void CancelAllNotification()
         {
             var notificationManager = Application.Context.GetSystemService("notification") as NotificationManager;
             notificationManager.CancelAll();
         }
 
-        public static void NotifyFailedAlarm(Alarm alarm, DateTime alarmTime)
+        public static void NotifyPreAlarm(Alarm alarm, Intent intent)
         {
-            SetNotificationManager();
-
             var context = Application.Context;
 
-            var manager = context.GetSystemService("notification") as NotificationManager;
+            var manager = SetNotificationManager();
+
+            string nameString;
+            string timeString;
+
+            if (alarm != null)
+            {
+                nameString = $"'{alarm.Name}' 알람이 곧 울립니다.";
+
+                switch (CultureInfo.CurrentCulture.Name)
+                {
+                    case "ko-KR":
+                        timeString = $"{alarm.TimeOffset.DateTime.ToShortTimeString()}";
+                        break;
+                    case "en-US":
+                        timeString = $"{alarm.TimeOffset.DateTime.ToShortTimeString()}";
+                        break;
+                    default:
+                        timeString = $"{alarm.TimeOffset.DateTime.ToShortTimeString()}";
+                        break;
+                }
+            }
+            else
+            {
+                nameString = "다음 알람이 없습니다.";
+                timeString = string.Empty;
+            }
+
+            var bundle = intent.Extras;
+
+            var actionIntent1 = CreateActionIntent(bundle, context.GetString(Resource.String.AlarmPreOff));
+            var pIntent1 = PendingIntent.GetBroadcast(context, alarm.Id, actionIntent1, PendingIntentFlags.OneShot);
+
+            var actionIntent2 = CreateActionIntent(bundle, "GoOffPre");
+            var pIntent2 = PendingIntent.GetBroadcast(context, alarm.Id, actionIntent2, PendingIntentFlags.OneShot);
+
+            var notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+            var notification = notificationBuilder.SetOngoing(true)
+                    .SetSmallIcon(Resource.Drawable.ic_five_seconds_mini)
+                    .SetContentTitle(nameString)
+                    .SetContentText(timeString)
+                    .SetPriority((int)NotificationImportance.Default)
+                    .SetVisibility(NotificationCompat.VisibilityPublic)
+                    .SetContentIntent(OpenAppIntent())
+                    .AddAction(0, context.GetString(Resource.String.AlarmPreOff), pIntent1)
+                    .AddAction(0, context.GetString(Resource.String.GoOffNow), pIntent2)
+                    .SetAutoCancel(false)
+                    .Build();
+
+            manager.Notify(alarm.Id, notification);
+        }
+
+        public static void NotifyFailedAlarm(Alarm alarm, DateTime alarmTime)
+        {
+            var context = Application.Context;
+
+            var manager = SetNotificationManager();
 
             string title;
             string message;
@@ -128,11 +142,9 @@ namespace Five_Seconds.Droid.Services
 
         public static void NotifyLaterAlarm(Alarm alarm, Intent intent)
         {
-            SetNotificationManager();
-
             var context = Application.Context;
 
-            var manager = context.GetSystemService("notification") as NotificationManager;
+            var manager = SetNotificationManager();
 
             string nameString;
             string timeString;
@@ -186,11 +198,9 @@ namespace Five_Seconds.Droid.Services
 
         public static void NotifyFeedbackAlarm(Alarm alarm, double previousRate, double recentRate)
         {
-            SetNotificationManager();
-
             var context = Application.Context;
 
-            var manager = context.GetSystemService("notification") as NotificationManager;
+            var manager = SetNotificationManager();
 
             string title;
             string message;
@@ -244,11 +254,9 @@ namespace Five_Seconds.Droid.Services
         
         public static void NotifyFirstFeedbackAlarm(Alarm alarm, double recentRate)
         {
-            SetNotificationManager();
-
             var context = Application.Context;
 
-            var manager = context.GetSystemService("notification") as NotificationManager;
+            var manager = SetNotificationManager();
 
             string title;
             string message;
@@ -312,11 +320,9 @@ namespace Five_Seconds.Droid.Services
 
         public static void NotifyAppComeback()
         {
-            SetNotificationManager();
-
             var context = Application.Context;
 
-            var manager = context.GetSystemService("notification") as NotificationManager;
+            var manager = SetNotificationManager();
 
             string title = "5초의 알람으로 돌아와요~";
             string message = "5초의 알람엔 기록, 음성 알람, 의지 알람 등 많은 기능이 있어요."
@@ -348,11 +354,9 @@ namespace Five_Seconds.Droid.Services
 
         public static void NotifyAlarmComeback()
         {
-            SetNotificationManager();
-
             var context = Application.Context;
 
-            var manager = context.GetSystemService("notification") as NotificationManager;
+            var manager = SetNotificationManager();
 
             string title = "5초의 알람을 잊으신건 아니시죠..";
             string message = "5초의 법칙으로 삶을 바꾸겠다는 의지를 떠올리세요! 마포대교는 무너져도 우리의 굳건한 의지는 무너지지 않습니다!"
