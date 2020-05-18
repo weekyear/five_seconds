@@ -45,8 +45,8 @@ namespace Five_Seconds.Droid.BroadcastReceivers
                 else if (intent.Action == context.GetString(Resource.String.AlarmPreOff))
                 {
                     alarm.IsTurnOffPreAlarm = true;
+                    App.AlarmService.SaveAlarm(alarm);
                     alarm.IsGoOffPreAlarm = true;
-                    App.AlarmService.SaveAlarmAtLocal(alarm);
 
                     TurnOffPreAlarm();
 
@@ -85,10 +85,6 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             {
                 alarm.IsActive = false;
                 TurnOffAlarmByNotification(alarm);
-            }
-            else
-            {
-                AlarmHelper.SetAlarmAtFirst(alarm);
             }
         }
 

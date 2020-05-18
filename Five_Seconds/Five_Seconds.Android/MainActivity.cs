@@ -77,11 +77,14 @@ namespace Five_Seconds.Droid
                 return;
             }
 
-            if (MyPermissions.RequestAudioPermission(this))
+            if (MyPermissions.Request_AudioPermission(this))
             {
-                if (MyPermissions.RequestStoragePermission(this))
+                if (MyPermissions.Request_StoragePermission(this))
                 {
-                    LoadAppAndRefreshAlarmManager();
+                    if (MyPermissions.Request_SystemAlertWindowPermission(this))
+                    {
+                        LoadAppAndRefreshAlarmManager();
+                    }
                 }
             }
         }
@@ -151,7 +154,6 @@ namespace Five_Seconds.Droid
                 documentId = documentId.Split(':')[1];
                 cursor.Close();
             }
-
 
             var path = string.Empty;
             cursor = ContentResolver.Query(

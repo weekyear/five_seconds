@@ -92,6 +92,17 @@ namespace Five_Seconds.Droid.Services
             return _alarmIntent;
         }
 
+        public static void DeletePreAlarmByManager(int id)
+        {
+            var alarmIntent = new Intent(Application.Context, typeof(PreAlarmReceiver));
+            alarmIntent.SetFlags(ActivityFlags.IncludeStoppedPackages);
+            alarmIntent.PutExtra("id", id);
+
+            var alarmManager = (AlarmManager)Application.Context.GetSystemService(Context.AlarmService);
+            var toDeletePendingIntent = PendingIntent.GetBroadcast(Application.Context, id, alarmIntent, PendingIntentFlags.UpdateCurrent);
+            alarmManager.Cancel(toDeletePendingIntent);
+        }
+
         public static void SetAlarmByManager(Alarm alarm, long diffMillis)
         {
             var _alarmIntent = SetAlarmIntent(alarm);
@@ -101,6 +112,7 @@ namespace Five_Seconds.Droid.Services
 
             Intent showIntent = new Intent(Application.Context, typeof(MainActivity));
             PendingIntent showOperation = PendingIntent.GetActivity(Application.Context, alarm.Id, showIntent, PendingIntentFlags.UpdateCurrent);
+
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + diffMillis, showOperation);
             alarmManager.SetAlarmClock(alarmClockInfo, pendingIntent);
         }

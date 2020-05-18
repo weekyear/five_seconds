@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2302" android:versionName="2.3.0.2" package="com.beside.Five_Seconds" android:installLocation="preferExternal">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2305" android:versionName="2.3.0.5" package="com.beside.Five_Seconds" android:installLocation="preferExternal">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28" />
 	<application android:label="@string/FiveSecondAlarm" android:largeHeap="true" android:icon="@drawable/ic_five_seconds">
 		<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-8413101784746060~4411896846" />

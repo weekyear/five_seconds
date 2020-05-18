@@ -29,6 +29,7 @@ namespace Five_Seconds.Droid.BroadcastReceivers
             var alarm = GetAlarmFromDB();
 
             NotificationAndroid.NotifyPreAlarm(GetAlarmFromDB(), intent);
+
             AlarmHelper.SetAlarmAtFirst(alarm);
         }
         private Alarm GetAlarmFromDB()

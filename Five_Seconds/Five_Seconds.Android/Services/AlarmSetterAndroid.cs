@@ -15,12 +15,14 @@ namespace Five_Seconds.Droid.Services
 
         public void SetAlarm(Alarm alarm)
         {
+            NotificationAndroid.CancelLaterNotification(Application.Context, alarm.Id);
             AlarmHelper.SetAlarmAtFirst(alarm);
         }
 
         public void DeleteAlarm(int id)
         {
             AlarmHelper.DeleteAlarmByManager(id);
+            AlarmHelper.DeletePreAlarmByManager(id);
             NotificationAndroid.CancelLaterNotification(Application.Context, id);
         }
 

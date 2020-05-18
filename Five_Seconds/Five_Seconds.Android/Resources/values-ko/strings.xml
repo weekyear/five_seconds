@@ -19,6 +19,7 @@
   <string name="CanYouTellMe">불편, 건의 사항이 있다면 말씀해주시겠어요?</string>
   <string name="ErrorReport">5초의 알람 오류 보고</string>
   <string name="PleaseAllowAudioPermission">오디오 녹음 권한을 허용해주세요</string>
+  <string name="PleaseAllowAlertWindowPermission">알람이 울릴 경우 화면을 켜기 위한 권한을 허용해주세요</string>
   <string name="NetworkError">네트워크 에러입니다. 네트워크 연결 확인을 해주세요.</string>
   <string name="ServerError">서버에 문제가 있습니다. 다시 시도해주세요.</string>
   <string name="RecordingTimeOut">음성 녹음 시간이 초과되었습니다. 다시 시도해주세요.</string>
